@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scribed.translation &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="scribed.util" href="util.html" />
+    <link rel="prev" title="scribed.tools" href="tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">scribed.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catalog.html">scribed.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">scribed.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services.html">scribed.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">scribed.tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">scribed.translation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.translation.make_kwargs_translator"><code class="docutils literal notranslate"><span class="pre">make_kwargs_translator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.translation.validate_param"><code class="docutils literal notranslate"><span class="pre">validate_param()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">scribed.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">scribed.translation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/scribed/translation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-scribed.translation">
+<span id="scribed-translation"></span><h1>scribed.translation<a class="headerlink" href="#module-scribed.translation" title="Link to this heading"></a></h1>
+<p>Parameter translation between scribed’s normalized kwargs and native engines.</p>
+<p>Every backend exposes its own parameter names and scales (<code class="docutils literal notranslate"><span class="pre">language</span></code> vs
+<code class="docutils literal notranslate"><span class="pre">lang</span></code> vs <code class="docutils literal notranslate"><span class="pre">language_code</span></code>; <code class="docutils literal notranslate"><span class="pre">diarize</span></code> vs <code class="docutils literal notranslate"><span class="pre">speaker_labels</span></code>;
+<code class="docutils literal notranslate"><span class="pre">timestamps='word'</span></code> vs <code class="docutils literal notranslate"><span class="pre">word_timestamps=True</span></code>). A backend declares a
+<code class="docutils literal notranslate"><span class="pre">param_map</span></code> in its <code class="docutils literal notranslate"><span class="pre">BACKEND_CONFIG</span></code> mapping <em>normalized</em> names to native
+ones, and <a class="reference internal" href="#scribed.translation.make_kwargs_translator" title="scribed.translation.make_kwargs_translator"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_kwargs_translator()</span></code></a> turns that declaration into a function
+that rewrites caller kwargs into the shape the engine wants. This keeps the
+facade’s vocabulary stable while letting each adapter stay a thin shim.</p>
+<p>This mirrors the translation layer used by the sibling <code class="docutils literal notranslate"><span class="pre">ocracy</span></code> facade so the
+two packages feel the same to read and extend.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.translation.make_kwargs_translator">
+<span class="sig-prename descclassname"><span class="pre">scribed.translation.</span></span><span class="sig-name descname"><span class="pre">make_kwargs_translator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_unsupported</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'warn'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/scribed/translation.html#make_kwargs_translator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.translation.make_kwargs_translator" title="Link to this definition"></a></dt>
+<dd><p>Create a function that translates normalized kwargs to native kwargs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param_map</strong> – <p>Mapping of <code class="docutils literal notranslate"><span class="pre">normalized_name</span> <span class="pre">-&gt;</span> <span class="pre">native</span> <span class="pre">config</span> <span class="pre">dict</span></code> where the
+config dict may have:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">native_name</span></code> (str): the backend’s parameter name (defaults to
+the normalized name).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coerce</span></code> (callable): transform the value (e.g. a bool -&gt; the
+string a vendor expects, <code class="docutils literal notranslate"><span class="pre">[&quot;en&quot;]</span> <span class="pre">-&gt;</span> <span class="pre">&quot;en&quot;</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">default</span></code> (Any): value to inject when the caller omits the param.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> as the whole value: the parameter is explicitly <em>not</em>
+supported by this backend.</p></li>
+</ul>
+</p></li>
+<li><p><strong>on_unsupported</strong> – What to do with caller params absent from <code class="docutils literal notranslate"><span class="pre">param_map</span></code>:
+<code class="docutils literal notranslate"><span class="pre">&quot;warn&quot;</span></code> (default), <code class="docutils literal notranslate"><span class="pre">&quot;raise&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;ignore&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">translate(**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">dict</span></code> function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.translation.validate_param">
+<span class="sig-prename descclassname"><span class="pre">scribed.translation.</span></span><span class="sig-name descname"><span class="pre">validate_param</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../../_modules/scribed/translation.html#validate_param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.translation.validate_param" title="Link to this definition"></a></dt>
+<dd><p>Validate a single parameter against <code class="docutils literal notranslate"><span class="pre">min</span></code>/<code class="docutils literal notranslate"><span class="pre">max</span></code>/<code class="docutils literal notranslate"><span class="pre">choices</span></code> in config.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tools.html" class="btn btn-neutral float-left" title="scribed.tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="util.html" class="btn btn-neutral float-right" title="scribed.util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

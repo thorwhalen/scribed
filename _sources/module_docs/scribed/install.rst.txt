@@ -1,0 +1,4 @@
+scribed.install
+===============
+.. automodule:: scribed.install
+   :members:

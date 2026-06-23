@@ -1,0 +1,4 @@
+scribed.backends.assemblyai.config
+==================================
+.. automodule:: scribed.backends.assemblyai.config
+   :members:

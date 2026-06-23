@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scribed.make_backend &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="scribed.registry" href="registry.html" />
+    <link rel="prev" title="scribed.install" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">scribed.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catalog.html">scribed.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">scribed.install</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">scribed.make_backend</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.make_backend.make_segment"><code class="docutils literal notranslate"><span class="pre">make_segment()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.make_backend.make_test_audio"><code class="docutils literal notranslate"><span class="pre">make_test_audio()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.make_backend.make_word"><code class="docutils literal notranslate"><span class="pre">make_word()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.make_backend.normalize_confidence"><code class="docutils literal notranslate"><span class="pre">normalize_confidence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.make_backend.scaffold_backend"><code class="docutils literal notranslate"><span class="pre">scaffold_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.make_backend.validate_adapter"><code class="docutils literal notranslate"><span class="pre">validate_adapter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services.html">scribed.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">scribed.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">scribed.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">scribed.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">scribed.make_backend</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/scribed/make_backend.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-scribed.make_backend">
+<span id="scribed-make-backend"></span><h1>scribed.make_backend<a class="headerlink" href="#module-scribed.make_backend" title="Link to this heading"></a></h1>
+<p>Abstraction tools for <em>building</em> transcription facades.</p>
+<p>Writing a new backend should be mostly declarative. This module supplies the
+reusable machinery so an adapter is just “call the engine, return normalized
+segments”:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter" title="scribed.make_backend.BaseTranscriberAdapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTranscriberAdapter</span></code></a> — subclass it and implement
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_transcribe()</span></code>; kwarg translation (via the
+backend’s <code class="docutils literal notranslate"><span class="pre">param_map</span></code>) is handled for you.</p></li>
+<li><p><a class="reference internal" href="#scribed.make_backend.make_segment" title="scribed.make_backend.make_segment"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_segment()</span></code></a> / <a class="reference internal" href="#scribed.make_backend.make_word" title="scribed.make_backend.make_word"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_word()</span></code></a> / <a class="reference internal" href="#scribed.make_backend.normalize_confidence" title="scribed.make_backend.normalize_confidence"><code class="xref py py-func docutils literal notranslate"><span class="pre">normalize_confidence()</span></code></a> — build
+normalized <a class="reference internal" href="base.html#scribed.base.Segment" title="scribed.base.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a> / <a class="reference internal" href="base.html#scribed.base.Word" title="scribed.base.Word"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a> from
+whatever shape the engine returned, including confidence-scale normalization.</p></li>
+<li><p><a class="reference internal" href="#scribed.make_backend.scaffold_backend" title="scribed.make_backend.scaffold_backend"><code class="xref py py-func docutils literal notranslate"><span class="pre">scaffold_backend()</span></code></a> — generate a new <code class="docutils literal notranslate"><span class="pre">scribed/backends/&lt;id&gt;/</span></code> package
+from the template, pre-filled from the ledger entry. This is the one-command
+way to start a facade for any backend in the catalog.</p></li>
+<li><p><a class="reference internal" href="#scribed.make_backend.make_test_audio" title="scribed.make_backend.make_test_audio"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_test_audio()</span></code></a> / <a class="reference internal" href="#scribed.make_backend.validate_adapter" title="scribed.make_backend.validate_adapter"><code class="xref py py-func docutils literal notranslate"><span class="pre">validate_adapter()</span></code></a> — smoke-test an adapter end
+to end so you know a new facade actually wires up and returns the right type.</p></li>
+</ul>
+<p>These are the “abstraction tools and skills that know the process” — the
+companion <code class="file docutils literal notranslate"><span class="pre">SKILL.md</span></code> walks an agent (or human) through using them.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="scribed.make_backend.BaseTranscriberAdapter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scribed.make_backend.</span></span><span class="sig-name descname"><span class="pre">BaseTranscriberAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scribed/make_backend.html#BaseTranscriberAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.make_backend.BaseTranscriberAdapter" title="Link to this definition"></a></dt>
+<dd><p>Optional base class for backend adapters.</p>
+<p>Stores the config, builds a kwarg translator from <code class="docutils literal notranslate"><span class="pre">config['param_map']</span></code>,
+and implements <code class="docutils literal notranslate"><span class="pre">transcribe</span></code> as: translate normalized kwargs -&gt; native
+kwargs -&gt; <code class="xref py py-meth docutils literal notranslate"><span class="pre">_transcribe()</span></code>. Subclasses implement <code class="xref py py-meth docutils literal notranslate"><span class="pre">_transcribe()</span></code> and
+return a <a class="reference internal" href="base.html#scribed.base.Transcript" title="scribed.base.Transcript"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transcript</span></code></a>.</p>
+<p>Adapters are not <em>required</em> to subclass this — the registry only needs an
+<code class="docutils literal notranslate"><span class="pre">Adapter</span></code> class with a <code class="docutils literal notranslate"><span class="pre">transcribe(audio,</span> <span class="pre">**kwargs)</span></code> method — but doing
+so removes the boilerplate.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.make_backend.make_segment">
+<span class="sig-prename descclassname"><span class="pre">scribed.make_backend.</span></span><span class="sig-name descname"><span class="pre">make_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speaker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'segment'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="base.html#scribed.base.Word" title="scribed.base.Word"><span class="pre">Word</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="base.html#scribed.base.Segment" title="scribed.base.Segment"><span class="pre">Segment</span></a></span></span><a class="reference internal" href="../../_modules/scribed/make_backend.html#make_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.make_backend.make_segment" title="Link to this definition"></a></dt>
+<dd><p>Build a normalized <a class="reference internal" href="base.html#scribed.base.Segment" title="scribed.base.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">start</span></code>/<code class="docutils literal notranslate"><span class="pre">end</span></code> are seconds. <code class="docutils literal notranslate"><span class="pre">confidence</span></code> is normalized to <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code> via
+<code class="docutils literal notranslate"><span class="pre">conf_scale</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">conf_scale=100</span></code> for percent-scale engines).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.make_backend.make_test_audio">
+<span class="sig-prename descclassname"><span class="pre">scribed.make_backend.</span></span><span class="sig-name descname"><span class="pre">make_test_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">440.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/scribed/make_backend.html#make_test_audio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.make_backend.make_test_audio" title="Link to this definition"></a></dt>
+<dd><p>Return WAV <code class="docutils literal notranslate"><span class="pre">bytes</span></code> of a short sine tone (needs numpy + soundfile).</p>
+<p>A tone carries no speech, so it is a <em>wiring</em> smoke test: it proves an
+adapter accepts audio, runs, and returns a <a class="reference internal" href="base.html#scribed.base.Transcript" title="scribed.base.Transcript"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transcript</span></code></a>
+of the right shape. To check actual recognition, pass a real speech clip to
+<a class="reference internal" href="#scribed.make_backend.validate_adapter" title="scribed.make_backend.validate_adapter"><code class="xref py py-func docutils literal notranslate"><span class="pre">validate_adapter()</span></code></a> via <code class="docutils literal notranslate"><span class="pre">audio=</span></code> together with <code class="docutils literal notranslate"><span class="pre">expect_text=</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.make_backend.make_word">
+<span class="sig-prename descclassname"><span class="pre">scribed.make_backend.</span></span><span class="sig-name descname"><span class="pre">make_word</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speaker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="base.html#scribed.base.Word" title="scribed.base.Word"><span class="pre">Word</span></a></span></span><a class="reference internal" href="../../_modules/scribed/make_backend.html#make_word"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.make_backend.make_word" title="Link to this definition"></a></dt>
+<dd><p>Build a normalized <a class="reference internal" href="base.html#scribed.base.Word" title="scribed.base.Word"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">confidence</span></code> is normalized to <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code> via <code class="docutils literal notranslate"><span class="pre">conf_scale</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.make_backend.normalize_confidence">
+<span class="sig-prename descclassname"><span class="pre">scribed.make_backend.</span></span><span class="sig-name descname"><span class="pre">normalize_confidence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/scribed/make_backend.html#normalize_confidence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.make_backend.normalize_confidence" title="Link to this definition"></a></dt>
+<dd><p>Normalize a raw confidence to <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code> (dividing by <code class="docutils literal notranslate"><span class="pre">scale</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">None</span></code> passes through. Use <code class="docutils literal notranslate"><span class="pre">scale=100</span></code> for engines that report <code class="docutils literal notranslate"><span class="pre">0..100</span></code>.
+Engines that report a log-probability should convert before calling this.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.make_backend.scaffold_backend">
+<span class="sig-prename descclassname"><span class="pre">scribed.make_backend.</span></span><span class="sig-name descname"><span class="pre">scaffold_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ledger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_overrides</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../../_modules/scribed/make_backend.html#scaffold_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.make_backend.scaffold_backend" title="Link to this definition"></a></dt>
+<dd><p>Create a new <code class="docutils literal notranslate"><span class="pre">scribed/backends/&lt;id&gt;/</span></code> package from the template.</p>
+<p>Pre-fills <code class="docutils literal notranslate"><span class="pre">config.py</span></code> from the backend’s ledger entry (if any) so you only
+have to flesh out <code class="docutils literal notranslate"><span class="pre">param_map</span></code> and implement <code class="docutils literal notranslate"><span class="pre">adapter.py</span></code>’s
+<code class="docutils literal notranslate"><span class="pre">_transcribe</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>backend_id</strong> – The ledger id (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;deepgram&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;faster-whisper&quot;</span></code>).
+The on-disk module name uses underscores; the config <code class="docutils literal notranslate"><span class="pre">id</span></code> keeps the
+id verbatim.</p></li>
+<li><p><strong>dest</strong> – Target directory (defaults to <code class="docutils literal notranslate"><span class="pre">scribed/backends/&lt;id_underscored&gt;</span></code>).</p></li>
+<li><p><strong>overwrite</strong> – Allow writing into an existing non-empty directory.</p></li>
+<li><p><strong>ledger</strong> – A <a class="reference internal" href="catalog.html#scribed.catalog.Catalog" title="scribed.catalog.Catalog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Catalog</span></code></a> to read the record from
+(defaults to the shipped catalog).</p></li>
+<li><p><strong>extra_overrides</strong> – Extra config-key overrides applied on top of the record.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the created backend package.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.make_backend.validate_adapter">
+<span class="sig-prename descclassname"><span class="pre">scribed.make_backend.</span></span><span class="sig-name descname"><span class="pre">validate_adapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expect_text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/scribed/make_backend.html#validate_adapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.make_backend.validate_adapter" title="Link to this definition"></a></dt>
+<dd><p>Smoke-test a backend adapter end to end, returning a report dict.</p>
+<p>Loads the adapter (reporting unavailability instead of raising), runs
+<code class="docutils literal notranslate"><span class="pre">transcribe</span></code> on a generated tone (or supplied <code class="docutils literal notranslate"><span class="pre">audio</span></code>), and checks the
+contract: a <a class="reference internal" href="base.html#scribed.base.Transcript" title="scribed.base.Transcript"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transcript</span></code></a> came back. Never raises on a
+<em>recognition</em> mismatch — it returns what happened so callers can decide.</p>
+<p>With a tone (no <code class="docutils literal notranslate"><span class="pre">audio</span></code>), <code class="docutils literal notranslate"><span class="pre">ok</span></code> means “ran and returned a Transcript”.
+With <code class="docutils literal notranslate"><span class="pre">expect_text</span></code>, <code class="docutils literal notranslate"><span class="pre">ok</span></code> additionally requires the substring to appear.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="scribed.install" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="registry.html" class="btn btn-neutral float-right" title="scribed.registry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

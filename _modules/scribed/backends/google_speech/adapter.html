@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scribed.backends.google_speech.adapter &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/base.html">scribed.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/catalog.html">scribed.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/install.html">scribed.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/services.html">scribed.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/tools.html">scribed.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/translation.html">scribed.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/util.html">scribed.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../../scribed.html">scribed</a></li>
+      <li class="breadcrumb-item active">scribed.backends.google_speech.adapter</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scribed.backends.google_speech.adapter</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Adapter for the Google Cloud Speech-to-Text (v1) backend.</span>
+
+<span class="sd">Maps scribed&#39;s normalized request onto ``google.cloud.speech`` and the response</span>
+<span class="sd">onto a :class:`scribed.base.Transcript`. The audio is decoded to a mono float32</span>
+<span class="sd">waveform and re-encoded as int16 LINEAR16 PCM at the *source* sample rate (Google</span>
+<span class="sd">accepts 8000-48000 Hz for LINEAR16, so no resampling is needed), which avoids</span>
+<span class="sd">format/encoding guesswork. ``long_running_recognize`` is used for robustness with</span>
+<span class="sd">audio longer than a minute.</span>
+
+<span class="sd">The SDK and credentials are resolved lazily so ``import scribed`` stays</span>
+<span class="sd">dependency-free. Google uses Application Default Credentials</span>
+<span class="sd">(``GOOGLE_APPLICATION_CREDENTIALS``); the client picks them up from the</span>
+<span class="sd">environment, so no ``api_key`` is passed.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scribed.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transcript</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scribed.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseTranscriberAdapter</span><span class="p">,</span> <span class="n">make_segment</span><span class="p">,</span> <span class="n">make_word</span>
+
+<span class="c1">#: Language used when the caller does not specify one (Google requires a code).</span>
+<span class="n">DFLT_LANGUAGE_CODE</span> <span class="o">=</span> <span class="s2">&quot;en-US&quot;</span>
+<span class="c1">#: Timeout (seconds) waiting on the long-running recognize operation.</span>
+<span class="n">DFLT_OP_TIMEOUT</span> <span class="o">=</span> <span class="mi">600</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_pcm16_bytes</span><span class="p">(</span><span class="n">wave</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode a numpy float32 mono waveform as little-endian int16 PCM bytes.&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">32767</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;&lt;i2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_word_speaker</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the diarization speaker tag for a word as a string, or ``None``.&quot;&quot;&quot;</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;speaker_tag&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="k">if</span> <span class="n">tag</span> <span class="k">else</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_majority_speaker</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Most common (non-None) word-level speaker label, or ``None``.&quot;&quot;&quot;</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">speaker</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">speaker</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tags</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">Counter</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Adapter">
+<a class="viewcode-back" href="../../../../module_docs/scribed/backends/google_speech/adapter.html#scribed.backends.google_speech.adapter.Adapter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseTranscriberAdapter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Google Cloud Speech-to-Text (v1) adapter.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">audio</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">diarize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">native_kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">google.cloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">speech</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_credential</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_waveform</span>
+
+        <span class="c1"># Optional friendly check: surface a guidance error if nothing is</span>
+        <span class="c1"># configured. ADC is picked up by the client from the environment, so we</span>
+        <span class="c1"># do NOT pass an api_key.</span>
+        <span class="n">resolve_credential</span><span class="p">(</span>
+            <span class="s2">&quot;google-speech&quot;</span><span class="p">,</span>
+            <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_env_var&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Decode to mono float32 at the SOURCE sample rate, then to int16 PCM.</span>
+        <span class="n">wave</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">to_waveform</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+        <span class="n">pcm_bytes</span> <span class="o">=</span> <span class="n">_pcm16_bytes</span><span class="p">(</span><span class="n">wave</span><span class="p">)</span>
+
+        <span class="n">diarization_config</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">speech</span><span class="o">.</span><span class="n">SpeakerDiarizationConfig</span><span class="p">(</span><span class="n">enable_speaker_diarization</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">diarize</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">config_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="o">.</span><span class="n">AudioEncoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
+            <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sr</span><span class="p">),</span>
+            <span class="n">audio_channel_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">language_code</span><span class="o">=</span><span class="n">language_code</span> <span class="ow">or</span> <span class="n">DFLT_LANGUAGE_CODE</span><span class="p">,</span>
+            <span class="n">enable_word_time_offsets</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">enable_automatic_punctuation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">diarization_config</span><span class="o">=</span><span class="n">diarization_config</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">model</span><span class="p">:</span>
+            <span class="n">config_kwargs</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="n">config_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">native_kwargs</span><span class="p">)</span>
+
+        <span class="n">config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config_kwargs</span><span class="p">)</span>
+        <span class="n">audio_msg</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">RecognitionAudio</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">pcm_bytes</span><span class="p">)</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">long_running_recognize</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="n">audio_msg</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">DFLT_OP_TIMEOUT</span><span class="p">)</span>
+
+        <span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segments_from_response</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">diarize</span><span class="o">=</span><span class="n">diarize</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Transcript</span><span class="o">.</span><span class="n">from_segments</span><span class="p">(</span>
+            <span class="n">segments</span><span class="p">,</span>
+            <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span>
+            <span class="n">raw</span><span class="o">=</span><span class="n">resp</span><span class="p">,</span>
+            <span class="n">language</span><span class="o">=</span><span class="n">language_code</span> <span class="ow">or</span> <span class="n">DFLT_LANGUAGE_CODE</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_segments_from_response</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">diarize</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build segments from a recognize response (handles Google&#39;s quirks).</span>
+
+<span class="sd">        One segment per result&#39;s top alternative. With diarization, Google tags</span>
+<span class="sd">        speakers only on the words of the LAST result&#39;s top alternative; those</span>
+<span class="sd">        per-word tags are surfaced on the words and a majority tag is set as the</span>
+<span class="sd">        segment speaker.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="ow">or</span> <span class="p">[])</span>
+        <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">alternatives</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;alternatives&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">alternatives</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">alt</span> <span class="o">=</span> <span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">raw_words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">alt</span><span class="p">,</span> <span class="s2">&quot;words&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">make_word</span><span class="p">(</span>
+                    <span class="n">w</span><span class="o">.</span><span class="n">word</span><span class="p">,</span>
+                    <span class="n">start</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">start_time</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
+                    <span class="n">end</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">end_time</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
+                    <span class="n">speaker</span><span class="o">=</span><span class="n">_word_speaker</span><span class="p">(</span><span class="n">w</span><span class="p">),</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">raw_words</span>
+            <span class="p">]</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">start</span> <span class="k">if</span> <span class="n">words</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">end</span> <span class="k">if</span> <span class="n">words</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">seg_speaker</span> <span class="o">=</span> <span class="n">_majority_speaker</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="k">if</span> <span class="n">diarize</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">make_segment</span><span class="p">(</span>
+                    <span class="n">alt</span><span class="o">.</span><span class="n">transcript</span><span class="p">,</span>
+                    <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span>
+                    <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span>
+                    <span class="n">confidence</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">alt</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">speaker</span><span class="o">=</span><span class="n">seg_speaker</span><span class="p">,</span>
+                    <span class="n">words</span><span class="o">=</span><span class="n">words</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">segments</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

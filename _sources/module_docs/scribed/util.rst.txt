@@ -1,0 +1,4 @@
+scribed.util
+============
+.. automodule:: scribed.util
+   :members:

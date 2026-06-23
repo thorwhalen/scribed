@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scribed.catalog &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/base.html">scribed.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/catalog.html">scribed.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/install.html">scribed.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/services.html">scribed.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/tools.html">scribed.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/translation.html">scribed.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/util.html">scribed.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../scribed.html">scribed</a></li>
+      <li class="breadcrumb-item active">scribed.catalog</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scribed.catalog</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The ledger: a data-driven gallery of speech-to-text backends.</span>
+
+<span class="sd">scribed ships a *ledger* — a JSON catalog (``scribed/data/backends.json``) that</span>
+<span class="sd">describes **every** ASR engine/service we know about, whether or not scribed</span>
+<span class="sd">ships a working facade for it. Keeping this data *out of the code* is deliberate:</span>
+<span class="sd">the catalog is curated research, it changes far more often than the code, and</span>
+<span class="sd">users (and downstream tools) can read, filter, diff, and extend it without</span>
+<span class="sd">touching Python.</span>
+
+<span class="sd">This module reads that JSON and exposes it as a filterable, dict-like</span>
+<span class="sd">:class:`Catalog` of :class:`BackendInfo` records::</span>
+
+<span class="sd">    from scribed import catalog</span>
+
+<span class="sd">    catalog[&quot;faster-whisper&quot;]                       # one backend&#39;s info</span>
+<span class="sd">    catalog.filter(is_local=True, open_source=True)  # only local OSS engines</span>
+<span class="sd">    catalog.filter(diarization=&quot;yes&quot;)               # engines that label speakers</span>
+<span class="sd">    catalog.filter(implemented=True)                # only what scribed can run today</span>
+<span class="sd">    catalog.supports_language(&quot;French&quot;)             # engines that list French</span>
+<span class="sd">    catalog.to_dataframe()                          # pandas view (if installed)</span>
+
+<span class="sd">Each record follows the schema documented in ``data/SCHEMA.md``. The special</span>
+<span class="sd">``implemented`` flag is computed *live* from the backend registry, so it can</span>
+<span class="sd">never drift from the code: a backend is &quot;implemented&quot; iff a real adapter exists</span>
+<span class="sd">under :mod:`scribed.backends`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BackendInfo&quot;</span><span class="p">,</span> <span class="s2">&quot;Catalog&quot;</span><span class="p">,</span> <span class="s2">&quot;catalog&quot;</span><span class="p">,</span> <span class="s2">&quot;DEFAULT_LEDGER_PATH&quot;</span><span class="p">]</span>
+
+<span class="n">DEFAULT_LEDGER_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;backends.json&quot;</span>
+
+<span class="c1"># Fields whose meaning is &quot;membership in a free-text description&quot;, handled</span>
+<span class="c1"># specially by :meth:`Catalog.filter` rather than by exact equality.</span>
+<span class="n">_TEXT_MEMBERSHIP_FIELDS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;languages_note&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;beyond_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;output_formats&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pros&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cons&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="BackendInfo">
+<a class="viewcode-back" href="../../module_docs/scribed/catalog.html#scribed.BackendInfo">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BackendInfo</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;One backend&#39;s ledger entry — a read-only, attribute-and-dict accessible record.</span>
+
+<span class="sd">    Wraps the raw record dict so that new fields added to the JSON are available</span>
+<span class="sd">    immediately (via attribute or key access) without code changes, while a few</span>
+<span class="sd">    commonly used fields get typed properties for convenience and discoverability.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">implemented</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># Store a shallow copy plus the live-computed implemented flag.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;implemented&quot;</span><span class="p">,</span> <span class="n">implemented</span><span class="p">)</span>
+
+    <span class="c1"># -- Mapping interface (dict-like) -------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="p">)</span>
+
+    <span class="c1"># -- attribute access ---------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="c1"># Only called when normal attribute lookup fails.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># -- common typed conveniences -----------------------------------------</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_local</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_local&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_remote</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_remote&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">implemented</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;implemented&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_record</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">where</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;+&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">w</span>
+                <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">on</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_local</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;remote&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_remote</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">on</span>
+            <span class="p">)</span>
+            <span class="ow">or</span> <span class="s2">&quot;?&quot;</span>
+        <span class="p">)</span>
+        <span class="n">impl</span> <span class="o">=</span> <span class="s2">&quot;implemented&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">implemented</span> <span class="k">else</span> <span class="s2">&quot;listed&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;BackendInfo </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">!r}</span><span class="s2"> [</span><span class="si">{</span><span class="n">where</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">impl</span><span class="si">}</span><span class="s2">&gt;&quot;</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_matches</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">BackendInfo</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">wanted</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether a single ``field == wanted`` criterion holds for ``info``.</span>
+
+<span class="sd">    Equality by default; for free-text fields (``languages_note``,</span>
+<span class="sd">    ``beyond_text``, ``output_formats``, ``pros``, ``cons``) a case-insensitive</span>
+<span class="sd">    *membership* test is used. A ``wanted`` that is a set/list/tuple means &quot;value</span>
+<span class="sd">    is one of these&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">_TEXT_MEMBERSHIP_FIELDS</span><span class="p">:</span>
+        <span class="n">hay</span> <span class="o">=</span> <span class="n">value</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span> <span class="ow">or</span> <span class="p">[]))</span>
+        <span class="n">needles</span> <span class="o">=</span> <span class="n">wanted</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wanted</span><span class="p">,</span> <span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="k">else</span> <span class="p">[</span><span class="n">wanted</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">hay</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">needles</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wanted</span><span class="p">,</span> <span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">wanted</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">==</span> <span class="n">wanted</span>
+
+
+<div class="viewcode-block" id="Catalog">
+<a class="viewcode-back" href="../../module_docs/scribed/catalog.html#scribed.Catalog">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Catalog</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A filterable, dict-like collection of :class:`BackendInfo`, keyed by id.</span>
+
+<span class="sd">    Loaded lazily from :data:`DEFAULT_LEDGER_PATH` (override via the ``path``</span>
+<span class="sd">    argument or the ``SCRIBED_LEDGER`` environment variable). :meth:`filter`</span>
+<span class="sd">    returns a *new* ``Catalog`` over the matching subset, so filters compose::</span>
+
+<span class="sd">        catalog.filter(is_remote=True).filter(pricing_model=&quot;free_tier_then_paid&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">_records</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="n">path</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_explicit_records</span> <span class="o">=</span> <span class="n">_records</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BackendInfo</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># -- loading ------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SCRIBED_LEDGER&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="k">if</span> <span class="n">env</span> <span class="k">else</span> <span class="n">DEFAULT_LEDGER_PATH</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BackendInfo</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_explicit_records</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">records</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_explicit_records</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_path</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+                <span class="n">records</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;backends&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">data</span>
+
+        <span class="n">implemented_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_implemented_ids</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">r</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]:</span> <span class="n">BackendInfo</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">implemented</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">implemented_ids</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_implemented_ids</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ids of backends with a real adapter, computed live from the registry.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+
+            <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># -- Mapping interface --------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BackendInfo</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown backend id: </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Known ids: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())[:</span><span class="mi">20</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">())</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">())</span>
+
+    <span class="c1"># -- filtering / querying ----------------------------------------------</span>
+<div class="viewcode-block" id="Catalog.filter">
+<a class="viewcode-back" href="../../module_docs/scribed/catalog.html#scribed.Catalog.filter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">predicate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">BackendInfo</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">implemented</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Catalog&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a new ``Catalog`` of backends matching every criterion.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            predicate: An arbitrary ``BackendInfo -&gt; bool`` callable.</span>
+<span class="sd">            implemented: If set, keep only (un)implemented backends.</span>
+<span class="sd">            **criteria: ``field=value`` constraints. ``value`` may be a</span>
+<span class="sd">                set/list/tuple meaning &quot;one of&quot;. Free-text fields</span>
+<span class="sd">                (``languages_note``, ``beyond_text``, ``output_formats``,</span>
+<span class="sd">                ``pros``, ``cons``) use a case-insensitive substring match.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            catalog.filter(is_local=True, open_source=True, diarization=&quot;yes&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">keep</span><span class="p">(</span><span class="n">info</span><span class="p">:</span> <span class="n">BackendInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">implemented</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">info</span><span class="o">.</span><span class="n">implemented</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">implemented</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">predicate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">predicate</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">_matches</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">Catalog</span><span class="p">(</span><span class="n">_records</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span> <span class="k">if</span> <span class="n">keep</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="Catalog.supports_language">
+<a class="viewcode-back" href="../../module_docs/scribed/catalog.html#scribed.Catalog.supports_language">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">supports_language</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Catalog&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Backends whose ``languages_note`` mentions ``language`` (name or code).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">languages_note</span><span class="o">=</span><span class="n">language</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Catalog.can">
+<a class="viewcode-back" href="../../module_docs/scribed/catalog.html#scribed.Catalog.can">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">can</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capability</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Catalog&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Backends advertising a ``capability`` beyond plain transcription.</span>
+
+<span class="sd">        Matches either the ``beyond_text`` list or a ``&lt;capability&gt;`` field set</span>
+<span class="sd">        to ``&quot;yes&quot;`` (e.g. ``diarization``, ``streaming``, ``word_timestamps``,</span>
+<span class="sd">        ``translation``).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">predicate</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">capability</span> <span class="ow">in</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;beyond_text&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+                <span class="ow">or</span> <span class="n">i</span><span class="o">.</span><span class="n">_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">capability</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+    <span class="c1"># -- export -------------------------------------------------------------</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+
+<div class="viewcode-block" id="Catalog.to_dataframe">
+<a class="viewcode-back" href="../../module_docs/scribed/catalog.html#scribed.Catalog.to_dataframe">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a pandas DataFrame of the catalog (pandas imported lazily).&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_import</span>
+
+        <span class="n">pd</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">&quot;pandas&quot;</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;to_dataframe()&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_records</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="Catalog.compare">
+<a class="viewcode-back" href="../../module_docs/scribed/catalog.html#scribed.Catalog.compare">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compare</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">fields</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_local&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_remote&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;open_source&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;pricing_model&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;price_note&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;accuracy_tier&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;languages_count&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;streaming&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;diarization&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;word_timestamps&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;best_for&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A trimmed, side-by-side view of selected backends and fields.&quot;&quot;&quot;</span>
+        <span class="n">chosen</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">ids</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">chosen</span><span class="p">:</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">info</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">f</span><span class="p">:</span> <span class="n">info</span><span class="o">.</span><span class="n">_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">})</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+        <span class="n">n_impl</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">records</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">implemented</span><span class="p">)</span>
+        <span class="n">n_local</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">records</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">is_local</span><span class="p">)</span>
+        <span class="n">n_remote</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">records</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">is_remote</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&lt;Catalog </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> backends | </span><span class="si">{</span><span class="n">n_impl</span><span class="si">}</span><span class="s2"> implemented | &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_local</span><span class="si">}</span><span class="s2"> local, </span><span class="si">{</span><span class="n">n_remote</span><span class="si">}</span><span class="s2"> remote&gt;&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="c1"># Module-level singleton — the canonical ledger.</span>
+<span class="n">catalog</span> <span class="o">=</span> <span class="n">Catalog</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

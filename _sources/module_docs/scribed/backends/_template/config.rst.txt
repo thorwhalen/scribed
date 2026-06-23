@@ -1,0 +1,4 @@
+scribed.backends._template.config
+=================================
+.. automodule:: scribed.backends._template.config
+   :members:

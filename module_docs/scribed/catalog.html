@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scribed.catalog &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="scribed.credentials" href="credentials.html" />
+    <link rel="prev" title="scribed.base" href="base.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">scribed.base</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">scribed.catalog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.catalog.BackendInfo"><code class="docutils literal notranslate"><span class="pre">BackendInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.catalog.Catalog"><code class="docutils literal notranslate"><span class="pre">Catalog</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#scribed.catalog.Catalog.can"><code class="docutils literal notranslate"><span class="pre">Catalog.can()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scribed.catalog.Catalog.compare"><code class="docutils literal notranslate"><span class="pre">Catalog.compare()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scribed.catalog.Catalog.filter"><code class="docutils literal notranslate"><span class="pre">Catalog.filter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scribed.catalog.Catalog.supports_language"><code class="docutils literal notranslate"><span class="pre">Catalog.supports_language()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scribed.catalog.Catalog.to_dataframe"><code class="docutils literal notranslate"><span class="pre">Catalog.to_dataframe()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">scribed.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services.html">scribed.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">scribed.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">scribed.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">scribed.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">scribed.catalog</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/scribed/catalog.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-scribed.catalog">
+<span id="scribed-catalog"></span><h1>scribed.catalog<a class="headerlink" href="#module-scribed.catalog" title="Link to this heading"></a></h1>
+<p>The ledger: a data-driven gallery of speech-to-text backends.</p>
+<p>scribed ships a <em>ledger</em> — a JSON catalog (<code class="docutils literal notranslate"><span class="pre">scribed/data/backends.json</span></code>) that
+describes <strong>every</strong> ASR engine/service we know about, whether or not scribed
+ships a working facade for it. Keeping this data <em>out of the code</em> is deliberate:
+the catalog is curated research, it changes far more often than the code, and
+users (and downstream tools) can read, filter, diff, and extend it without
+touching Python.</p>
+<p>This module reads that JSON and exposes it as a filterable, dict-like
+<a class="reference internal" href="#scribed.catalog.Catalog" title="scribed.catalog.Catalog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Catalog</span></code></a> of <a class="reference internal" href="#scribed.catalog.BackendInfo" title="scribed.catalog.BackendInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendInfo</span></code></a> records:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span>
+
+<span class="n">catalog</span><span class="p">[</span><span class="s2">&quot;faster-whisper&quot;</span><span class="p">]</span>                       <span class="c1"># one backend&#39;s info</span>
+<span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># only local OSS engines</span>
+<span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">diarization</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>               <span class="c1"># engines that label speakers</span>
+<span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">implemented</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>                <span class="c1"># only what scribed can run today</span>
+<span class="n">catalog</span><span class="o">.</span><span class="n">supports_language</span><span class="p">(</span><span class="s2">&quot;French&quot;</span><span class="p">)</span>             <span class="c1"># engines that list French</span>
+<span class="n">catalog</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>                          <span class="c1"># pandas view (if installed)</span>
+</pre></div>
+</div>
+<p>Each record follows the schema documented in <code class="docutils literal notranslate"><span class="pre">data/SCHEMA.md</span></code>. The special
+<code class="docutils literal notranslate"><span class="pre">implemented</span></code> flag is computed <em>live</em> from the backend registry, so it can
+never drift from the code: a backend is “implemented” iff a real adapter exists
+under <a class="reference internal" href="backends.html#module-scribed.backends" title="scribed.backends"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scribed.backends</span></code></a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="scribed.catalog.BackendInfo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scribed.catalog.</span></span><span class="sig-name descname"><span class="pre">BackendInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">implemented</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scribed/catalog.html#BackendInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.catalog.BackendInfo" title="Link to this definition"></a></dt>
+<dd><p>One backend’s ledger entry — a read-only, attribute-and-dict accessible record.</p>
+<p>Wraps the raw record dict so that new fields added to the JSON are available
+immediately (via attribute or key access) without code changes, while a few
+commonly used fields get typed properties for convenience and discoverability.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="scribed.catalog.Catalog">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">scribed.catalog.</span></span><span class="sig-name descname"><span class="pre">Catalog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">_records</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scribed/catalog.html#Catalog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.catalog.Catalog" title="Link to this definition"></a></dt>
+<dd><p>A filterable, dict-like collection of <a class="reference internal" href="#scribed.catalog.BackendInfo" title="scribed.catalog.BackendInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendInfo</span></code></a>, keyed by id.</p>
+<p>Loaded lazily from <code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_LEDGER_PATH</span></code> (override via the <code class="docutils literal notranslate"><span class="pre">path</span></code>
+argument or the <code class="docutils literal notranslate"><span class="pre">SCRIBED_LEDGER</span></code> environment variable). <a class="reference internal" href="#scribed.catalog.Catalog.filter" title="scribed.catalog.Catalog.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a>
+returns a <em>new</em> <code class="docutils literal notranslate"><span class="pre">Catalog</span></code> over the matching subset, so filters compose:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pricing_model</span><span class="o">=</span><span class="s2">&quot;free_tier_then_paid&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="scribed.catalog.Catalog.can">
+<span class="sig-name descname"><span class="pre">can</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scribed.catalog.Catalog" title="scribed.catalog.Catalog"><span class="pre">Catalog</span></a></span></span><a class="reference internal" href="../../_modules/scribed/catalog.html#Catalog.can"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.catalog.Catalog.can" title="Link to this definition"></a></dt>
+<dd><p>Backends advertising a <code class="docutils literal notranslate"><span class="pre">capability</span></code> beyond plain transcription.</p>
+<p>Matches either the <code class="docutils literal notranslate"><span class="pre">beyond_text</span></code> list or a <code class="docutils literal notranslate"><span class="pre">&lt;capability&gt;</span></code> field set
+to <code class="docutils literal notranslate"><span class="pre">&quot;yes&quot;</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">diarization</span></code>, <code class="docutils literal notranslate"><span class="pre">streaming</span></code>, <code class="docutils literal notranslate"><span class="pre">word_timestamps</span></code>,
+<code class="docutils literal notranslate"><span class="pre">translation</span></code>).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scribed.catalog.Catalog.compare">
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('name',</span> <span class="pre">'is_local',</span> <span class="pre">'is_remote',</span> <span class="pre">'open_source',</span> <span class="pre">'pricing_model',</span> <span class="pre">'price_note',</span> <span class="pre">'accuracy_tier',</span> <span class="pre">'languages_count',</span> <span class="pre">'streaming',</span> <span class="pre">'diarization',</span> <span class="pre">'word_timestamps',</span> <span class="pre">'best_for')</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/scribed/catalog.html#Catalog.compare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.catalog.Catalog.compare" title="Link to this definition"></a></dt>
+<dd><p>A trimmed, side-by-side view of selected backends and fields.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scribed.catalog.Catalog.filter">
+<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">predicate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#scribed.catalog.BackendInfo" title="scribed.catalog.BackendInfo"><span class="pre">BackendInfo</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">implemented</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">criteria</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scribed.catalog.Catalog" title="scribed.catalog.Catalog"><span class="pre">Catalog</span></a></span></span><a class="reference internal" href="../../_modules/scribed/catalog.html#Catalog.filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.catalog.Catalog.filter" title="Link to this definition"></a></dt>
+<dd><p>Return a new <code class="docutils literal notranslate"><span class="pre">Catalog</span></code> of backends matching every criterion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predicate</strong> – An arbitrary <code class="docutils literal notranslate"><span class="pre">BackendInfo</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></code> callable.</p></li>
+<li><p><strong>implemented</strong> – If set, keep only (un)implemented backends.</p></li>
+<li><p><strong>**criteria</strong> – <code class="docutils literal notranslate"><span class="pre">field=value</span></code> constraints. <code class="docutils literal notranslate"><span class="pre">value</span></code> may be a
+set/list/tuple meaning “one of”. Free-text fields
+(<code class="docutils literal notranslate"><span class="pre">languages_note</span></code>, <code class="docutils literal notranslate"><span class="pre">beyond_text</span></code>, <code class="docutils literal notranslate"><span class="pre">output_formats</span></code>,
+<code class="docutils literal notranslate"><span class="pre">pros</span></code>, <code class="docutils literal notranslate"><span class="pre">cons</span></code>) use a case-insensitive substring match.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">diarization</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scribed.catalog.Catalog.supports_language">
+<span class="sig-name descname"><span class="pre">supports_language</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scribed.catalog.Catalog" title="scribed.catalog.Catalog"><span class="pre">Catalog</span></a></span></span><a class="reference internal" href="../../_modules/scribed/catalog.html#Catalog.supports_language"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.catalog.Catalog.supports_language" title="Link to this definition"></a></dt>
+<dd><p>Backends whose <code class="docutils literal notranslate"><span class="pre">languages_note</span></code> mentions <code class="docutils literal notranslate"><span class="pre">language</span></code> (name or code).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scribed.catalog.Catalog.to_dataframe">
+<span class="sig-name descname"><span class="pre">to_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scribed/catalog.html#Catalog.to_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.catalog.Catalog.to_dataframe" title="Link to this definition"></a></dt>
+<dd><p>Return a pandas DataFrame of the catalog (pandas imported lazily).</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="base.html" class="btn btn-neutral float-left" title="scribed.base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="credentials.html" class="btn btn-neutral float-right" title="scribed.credentials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

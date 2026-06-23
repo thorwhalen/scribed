@@ -1,0 +1,4 @@
+scribed.catalog
+===============
+.. automodule:: scribed.catalog
+   :members:

@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/base.html">scribed.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/catalog.html">scribed.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/install.html">scribed.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/services.html">scribed.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/tools.html">scribed.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/translation.html">scribed.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/util.html">scribed.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/table_of_contents.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed.html">scribed</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.BackendInfo"><code class="docutils literal notranslate"><span class="pre">BackendInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.BaseTranscriberAdapter"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.Catalog"><code class="docutils literal notranslate"><span class="pre">Catalog</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.Requirements"><code class="docutils literal notranslate"><span class="pre">Requirements</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.Segment"><code class="docutils literal notranslate"><span class="pre">Segment</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.ServiceCollection"><code class="docutils literal notranslate"><span class="pre">ServiceCollection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.TimeSpan"><code class="docutils literal notranslate"><span class="pre">TimeSpan</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.Transcript"><code class="docutils literal notranslate"><span class="pre">Transcript</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.Word"><code class="docutils literal notranslate"><span class="pre">Word</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.available_backends"><code class="docutils literal notranslate"><span class="pre">available_backends()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.backend_ids"><code class="docutils literal notranslate"><span class="pre">backend_ids()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.backend_info"><code class="docutils literal notranslate"><span class="pre">backend_info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.check"><code class="docutils literal notranslate"><span class="pre">check()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.doctor"><code class="docutils literal notranslate"><span class="pre">doctor()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.find"><code class="docutils literal notranslate"><span class="pre">find()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.get_default_backend"><code class="docutils literal notranslate"><span class="pre">get_default_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.is_set_up"><code class="docutils literal notranslate"><span class="pre">is_set_up()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.is_tested"><code class="docutils literal notranslate"><span class="pre">is_tested()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.list_backends"><code class="docutils literal notranslate"><span class="pre">list_backends()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.make_segment"><code class="docutils literal notranslate"><span class="pre">make_segment()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.make_word"><code class="docutils literal notranslate"><span class="pre">make_word()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.names_with_sites"><code class="docutils literal notranslate"><span class="pre">names_with_sites()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.register_backend"><code class="docutils literal notranslate"><span class="pre">register_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.requirements"><code class="docutils literal notranslate"><span class="pre">requirements()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.scaffold_backend"><code class="docutils literal notranslate"><span class="pre">scaffold_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.services"><code class="docutils literal notranslate"><span class="pre">services</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.status_table"><code class="docutils literal notranslate"><span class="pre">status_table()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.transcribe"><code class="docutils literal notranslate"><span class="pre">transcribe()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.transcribe_text"><code class="docutils literal notranslate"><span class="pre">transcribe_text()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed.html#scribed.validate_adapter"><code class="docutils literal notranslate"><span class="pre">validate_adapter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/_template/adapter.html">scribed.backends._template.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/_template/adapter.html#scribed.backends._template.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/assemblyai/adapter.html#scribed.backends.assemblyai.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/deepgram/adapter.html#scribed.backends.deepgram.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/elevenlabs/adapter.html#scribed.backends.elevenlabs.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/faster_whisper/adapter.html#scribed.backends.faster_whisper.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/google_speech/adapter.html#scribed.backends.google_speech.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/google_speech/adapter.html#scribed.backends.google_speech.adapter.DFLT_LANGUAGE_CODE"><code class="docutils literal notranslate"><span class="pre">DFLT_LANGUAGE_CODE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/google_speech/adapter.html#scribed.backends.google_speech.adapter.DFLT_OP_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">DFLT_OP_TIMEOUT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/groq/adapter.html">scribed.backends.groq.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/groq/adapter.html#scribed.backends.groq.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/openai/adapter.html">scribed.backends.openai.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/openai/adapter.html#scribed.backends.openai.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/vosk/adapter.html">scribed.backends.vosk.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/vosk/adapter.html#scribed.backends.vosk.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whisper/adapter.html">scribed.backends.whisper.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/whisper/adapter.html#scribed.backends.whisper.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/backends/whispercpp/adapter.html#scribed.backends.whispercpp.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/base.html">scribed.base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/base.html#scribed.base.Segment"><code class="docutils literal notranslate"><span class="pre">Segment</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/base.html#scribed.base.TimeSpan"><code class="docutils literal notranslate"><span class="pre">TimeSpan</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/base.html#scribed.base.Transcript"><code class="docutils literal notranslate"><span class="pre">Transcript</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/base.html#scribed.base.Word"><code class="docutils literal notranslate"><span class="pre">Word</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/catalog.html">scribed.catalog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/catalog.html#scribed.catalog.BackendInfo"><code class="docutils literal notranslate"><span class="pre">BackendInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/catalog.html#scribed.catalog.Catalog"><code class="docutils literal notranslate"><span class="pre">Catalog</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/credentials.html">scribed.credentials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/credentials.html#scribed.credentials.CREDENTIAL_GUIDANCE"><code class="docutils literal notranslate"><span class="pre">CREDENTIAL_GUIDANCE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/credentials.html#scribed.credentials.MissingCredentialError"><code class="docutils literal notranslate"><span class="pre">MissingCredentialError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/credentials.html#scribed.credentials.PROVIDER_ENV_VARS"><code class="docutils literal notranslate"><span class="pre">PROVIDER_ENV_VARS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/credentials.html#scribed.credentials.credential_help"><code class="docutils literal notranslate"><span class="pre">credential_help()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/credentials.html#scribed.credentials.resolve_credential"><code class="docutils literal notranslate"><span class="pre">resolve_credential()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/install.html">scribed.install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/install.html#scribed.install.Requirements"><code class="docutils literal notranslate"><span class="pre">Requirements</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/install.html#scribed.install.available_backends"><code class="docutils literal notranslate"><span class="pre">available_backends()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/install.html#scribed.install.check"><code class="docutils literal notranslate"><span class="pre">check()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/install.html#scribed.install.doctor"><code class="docutils literal notranslate"><span class="pre">doctor()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/install.html#scribed.install.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/install.html#scribed.install.requirements"><code class="docutils literal notranslate"><span class="pre">requirements()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/make_backend.html">scribed.make_backend</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/make_backend.html#scribed.make_backend.BaseTranscriberAdapter"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/make_backend.html#scribed.make_backend.make_segment"><code class="docutils literal notranslate"><span class="pre">make_segment()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/make_backend.html#scribed.make_backend.make_test_audio"><code class="docutils literal notranslate"><span class="pre">make_test_audio()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/make_backend.html#scribed.make_backend.make_word"><code class="docutils literal notranslate"><span class="pre">make_word()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/make_backend.html#scribed.make_backend.normalize_confidence"><code class="docutils literal notranslate"><span class="pre">normalize_confidence()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/make_backend.html#scribed.make_backend.scaffold_backend"><code class="docutils literal notranslate"><span class="pre">scaffold_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/make_backend.html#scribed.make_backend.validate_adapter"><code class="docutils literal notranslate"><span class="pre">validate_adapter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/registry.html">scribed.registry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/registry.html#scribed.registry.PRIMARY_CAPABILITY"><code class="docutils literal notranslate"><span class="pre">PRIMARY_CAPABILITY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/registry.html#scribed.registry.clear_registry"><code class="docutils literal notranslate"><span class="pre">clear_registry()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/registry.html#scribed.registry.get_backend"><code class="docutils literal notranslate"><span class="pre">get_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/registry.html#scribed.registry.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/registry.html#scribed.registry.get_default_backend"><code class="docutils literal notranslate"><span class="pre">get_default_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/registry.html#scribed.registry.list_backends"><code class="docutils literal notranslate"><span class="pre">list_backends()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/registry.html#scribed.registry.register_backend"><code class="docutils literal notranslate"><span class="pre">register_backend()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/services.html">scribed.services</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/services.html#scribed.services.ServiceCollection"><code class="docutils literal notranslate"><span class="pre">ServiceCollection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/services.html#scribed.services.ServiceHandle"><code class="docutils literal notranslate"><span class="pre">ServiceHandle</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/status.html">scribed.status</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/status.html#scribed.status.backend_ids"><code class="docutils literal notranslate"><span class="pre">backend_ids()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/status.html#scribed.status.backend_info"><code class="docutils literal notranslate"><span class="pre">backend_info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/status.html#scribed.status.is_set_up"><code class="docutils literal notranslate"><span class="pre">is_set_up()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/status.html#scribed.status.is_tested"><code class="docutils literal notranslate"><span class="pre">is_tested()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/status.html#scribed.status.names_with_sites"><code class="docutils literal notranslate"><span class="pre">names_with_sites()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/status.html#scribed.status.status_table"><code class="docutils literal notranslate"><span class="pre">status_table()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/tools.html">scribed.tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/tools.html#scribed.tools.backends"><code class="docutils literal notranslate"><span class="pre">backends()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/tools.html#scribed.tools.doctor"><code class="docutils literal notranslate"><span class="pre">doctor()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/tools.html#scribed.tools.find"><code class="docutils literal notranslate"><span class="pre">find()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/tools.html#scribed.tools.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/tools.html#scribed.tools.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/tools.html#scribed.tools.requirements"><code class="docutils literal notranslate"><span class="pre">requirements()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/tools.html#scribed.tools.scaffold"><code class="docutils literal notranslate"><span class="pre">scaffold()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/tools.html#scribed.tools.status"><code class="docutils literal notranslate"><span class="pre">status()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/tools.html#scribed.tools.transcribe"><code class="docutils literal notranslate"><span class="pre">transcribe()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/tools.html#scribed.tools.validate"><code class="docutils literal notranslate"><span class="pre">validate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/translation.html">scribed.translation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/translation.html#scribed.translation.make_kwargs_translator"><code class="docutils literal notranslate"><span class="pre">make_kwargs_translator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/translation.html#scribed.translation.validate_param"><code class="docutils literal notranslate"><span class="pre">validate_param()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/util.html">scribed.util</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/util.html#scribed.util.audio_path"><code class="docutils literal notranslate"><span class="pre">audio_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/util.html#scribed.util.check_import"><code class="docutils literal notranslate"><span class="pre">check_import()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/util.html#scribed.util.classify_input"><code class="docutils literal notranslate"><span class="pre">classify_input()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/util.html#scribed.util.cleanup_temp"><code class="docutils literal notranslate"><span class="pre">cleanup_temp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/util.html#scribed.util.ensure_file_path"><code class="docutils literal notranslate"><span class="pre">ensure_file_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/util.html#scribed.util.is_url"><code class="docutils literal notranslate"><span class="pre">is_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/util.html#scribed.util.load_audio_bytes"><code class="docutils literal notranslate"><span class="pre">load_audio_bytes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/scribed/util.html#scribed.util.to_waveform"><code class="docutils literal notranslate"><span class="pre">to_waveform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+scribed.translation
+===================
+.. automodule:: scribed.translation
+   :members:

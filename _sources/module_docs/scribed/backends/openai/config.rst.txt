@@ -1,0 +1,4 @@
+scribed.backends.openai.config
+==============================
+.. automodule:: scribed.backends.openai.config
+   :members:

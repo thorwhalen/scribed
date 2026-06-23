@@ -1,0 +1,4 @@
+scribed.backends.google_speech.adapter
+======================================
+.. automodule:: scribed.backends.google_speech.adapter
+   :members:

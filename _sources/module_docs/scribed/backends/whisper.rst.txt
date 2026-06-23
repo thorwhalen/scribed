@@ -1,0 +1,4 @@
+scribed.backends.whisper
+========================
+.. automodule:: scribed.backends.whisper
+   :members:

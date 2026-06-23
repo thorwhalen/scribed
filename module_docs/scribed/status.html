@@ -1,0 +1,252 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scribed.status &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="scribed.tools" href="tools.html" />
+    <link rel="prev" title="scribed.services" href="services.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">scribed.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catalog.html">scribed.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">scribed.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services.html">scribed.services</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">scribed.status</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.status.backend_ids"><code class="docutils literal notranslate"><span class="pre">backend_ids()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.status.backend_info"><code class="docutils literal notranslate"><span class="pre">backend_info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.status.is_set_up"><code class="docutils literal notranslate"><span class="pre">is_set_up()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.status.is_tested"><code class="docutils literal notranslate"><span class="pre">is_tested()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.status.names_with_sites"><code class="docutils literal notranslate"><span class="pre">names_with_sites()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.status.status_table"><code class="docutils literal notranslate"><span class="pre">status_table()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">scribed.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">scribed.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">scribed.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">scribed.status</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/scribed/status.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-scribed.status">
+<span id="scribed-status"></span><h1>scribed.status<a class="headerlink" href="#module-scribed.status" title="Link to this heading"></a></h1>
+<p>Backend readiness status — four nested levels, info dicts, and a Markdown table.</p>
+<p>scribed describes far more ASR engines than any one machine has ready to run, so
+it helps to know, at a glance, where each one stands. Four <strong>nested</strong> levels:</p>
+<ol class="arabic simple">
+<li><p><strong>all</strong> — every engine in the ledger (<code class="docutils literal notranslate"><span class="pre">scribed/data/backends.json</span></code>).</p></li>
+<li><p><strong>implemented</strong> — scribed ships a working facade for it (<code class="docutils literal notranslate"><span class="pre">⊆</span> <span class="pre">all</span></code>).</p></li>
+<li><p><strong>set_up</strong> — ready to run <em>here, now</em>: the engine/client library is importable
+and, for a remote backend, its credential env var is present (<code class="docutils literal notranslate"><span class="pre">⊆</span> <span class="pre">implemented</span></code>).</p></li>
+<li><p><strong>tested</strong> — actually produced a transcript from a tone clip on this machine
+(<code class="docutils literal notranslate"><span class="pre">⊆</span> <span class="pre">set_up</span></code>).</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">all</span> <span class="pre">⊇</span> <span class="pre">implemented</span> <span class="pre">⊇</span> <span class="pre">set_up</span> <span class="pre">⊇</span> <span class="pre">tested</span></code>.</p>
+<p>API:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#scribed.status.backend_ids" title="scribed.status.backend_ids"><code class="xref py py-func docutils literal notranslate"><span class="pre">backend_ids()</span></code></a> — the id list at a level.</p></li>
+<li><p><a class="reference internal" href="#scribed.status.backend_info" title="scribed.status.backend_info"><code class="xref py py-func docutils literal notranslate"><span class="pre">backend_info()</span></code></a> — <code class="docutils literal notranslate"><span class="pre">{id:</span> <span class="pre">{...all</span> <span class="pre">ledger</span> <span class="pre">fields...,</span> <span class="pre">implemented,</span> <span class="pre">set_up,</span> <span class="pre">tested}}</span></code>.</p></li>
+<li><p><a class="reference internal" href="#scribed.status.status_table" title="scribed.status.status_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">status_table()</span></code></a> — an aligned Markdown table (also readable as plain text).</p></li>
+<li><p><a class="reference internal" href="#scribed.status.names_with_sites" title="scribed.status.names_with_sites"><code class="xref py py-func docutils literal notranslate"><span class="pre">names_with_sites()</span></code></a> — <code class="docutils literal notranslate"><span class="pre">&quot;Name</span> <span class="pre">(website),</span> <span class="pre">...&quot;</span></code> for a set of ids.</p></li>
+</ul>
+<p>Note: computing <strong>tested</strong> runs real transcription — for <em>remote</em> backends that
+means a real (possibly billed) API call. Use the <code class="docutils literal notranslate"><span class="pre">run_tests</span></code> argument to
+control exactly which backends get called.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.status.backend_ids">
+<span class="sig-prename descclassname"><span class="pre">scribed.status.</span></span><span class="sig-name descname"><span class="pre">backend_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/scribed/status.html#backend_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.status.backend_ids" title="Link to this definition"></a></dt>
+<dd><p>Sorted backend ids at a readiness <code class="docutils literal notranslate"><span class="pre">level</span></code> (one of <code class="xref py py-data docutils literal notranslate"><span class="pre">LEVELS</span></code>).</p>
+<p>Pass a precomputed <code class="docutils literal notranslate"><span class="pre">info</span></code> (from <a class="reference internal" href="#scribed.status.backend_info" title="scribed.status.backend_info"><code class="xref py py-func docutils literal notranslate"><span class="pre">backend_info()</span></code></a>) to avoid recomputation
+— important for <code class="docutils literal notranslate"><span class="pre">&quot;tested&quot;</span></code>, which otherwise re-runs transcription.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.status.backend_info">
+<span class="sig-prename descclassname"><span class="pre">scribed.status.</span></span><span class="sig-name descname"><span class="pre">backend_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_tests</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/scribed/status.html#backend_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.status.backend_info" title="Link to this definition"></a></dt>
+<dd><p>Per-backend status: every ledger field plus <code class="docutils literal notranslate"><span class="pre">implemented</span></code>/<code class="docutils literal notranslate"><span class="pre">set_up</span></code>/<code class="docutils literal notranslate"><span class="pre">tested</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ids</strong> – Which backends (default: every ledger id).</p></li>
+<li><p><strong>run_tests</strong> – Which set-up backends to actually transcription-test. <code class="docutils literal notranslate"><span class="pre">True</span></code> =
+all set-up (real API calls for remotes!); <code class="docutils literal notranslate"><span class="pre">False</span></code> = none (<code class="docutils literal notranslate"><span class="pre">tested</span></code>
+is <code class="docutils literal notranslate"><span class="pre">None</span></code>); or an iterable of ids to limit testing to those.</p></li>
+<li><p><strong>test_audio</strong> – Audio to test with (default: a generated tone, shared across all).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">{id:</span> <span class="pre">{...,</span> <span class="pre">&quot;name&quot;,</span> <span class="pre">&quot;website&quot;,</span> <span class="pre">&quot;implemented&quot;,</span> <span class="pre">&quot;set_up&quot;,</span> <span class="pre">&quot;tested&quot;}}</span></code> where
+<code class="docutils literal notranslate"><span class="pre">tested</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code>/<code class="docutils literal notranslate"><span class="pre">None</span></code> (None = not attempted).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.status.is_set_up">
+<span class="sig-prename descclassname"><span class="pre">scribed.status.</span></span><span class="sig-name descname"><span class="pre">is_set_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/scribed/status.html#is_set_up"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.status.is_set_up" title="Link to this definition"></a></dt>
+<dd><p>Ready to run here &amp; now.</p>
+<p>Requires the engine/client to be importable (local <em>and</em> remote), and — for a
+remote backend — its (primary) credential env var to resolve. So a remote
+whose key is set but whose client library isn’t installed is <em>not</em> set up
+(it couldn’t actually run). Returns False for ledger-only backends.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.status.is_tested">
+<span class="sig-prename descclassname"><span class="pre">scribed.status.</span></span><span class="sig-name descname"><span class="pre">is_tested</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/scribed/status.html#is_tested"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.status.is_tested" title="Link to this definition"></a></dt>
+<dd><p>Actually run transcription on <code class="docutils literal notranslate"><span class="pre">audio</span></code> (a generated tone if None); True iff it worked.</p>
+<p>For remote backends this performs a real API call. Returns False if the
+backend isn’t set up or the run fails.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.status.names_with_sites">
+<span class="sig-prename descclassname"><span class="pre">scribed.status.</span></span><span class="sig-name descname"><span class="pre">names_with_sites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/scribed/status.html#names_with_sites"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.status.names_with_sites" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">&quot;Name</span> <span class="pre">(website),</span> <span class="pre">Name2</span> <span class="pre">(website2),</span> <span class="pre">...&quot;</span></code> for <code class="docutils literal notranslate"><span class="pre">ids</span></code> (name, not id).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.status.status_table">
+<span class="sig-prename descclassname"><span class="pre">scribed.status.</span></span><span class="sig-name descname"><span class="pre">status_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_tests</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/scribed/status.html#status_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.status.status_table" title="Link to this definition"></a></dt>
+<dd><p>Render an aligned Markdown table of backend status (also plain-text readable).</p>
+<p>Rows are ordered tested → set-up → implemented → listed, then by name, so the
+“live” backends float to the top. Pass a precomputed <code class="docutils literal notranslate"><span class="pre">info</span></code> to avoid re-running
+tests; otherwise <code class="docutils literal notranslate"><span class="pre">run_tests</span></code> controls which set-up backends get tested.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="services.html" class="btn btn-neutral float-left" title="scribed.services" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tools.html" class="btn btn-neutral float-right" title="scribed.tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

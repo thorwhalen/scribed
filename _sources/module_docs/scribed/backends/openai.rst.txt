@@ -1,0 +1,4 @@
+scribed.backends.openai
+=======================
+.. automodule:: scribed.backends.openai
+   :members:

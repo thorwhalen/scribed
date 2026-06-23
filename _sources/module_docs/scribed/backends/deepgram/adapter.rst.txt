@@ -1,0 +1,4 @@
+scribed.backends.deepgram.adapter
+=================================
+.. automodule:: scribed.backends.deepgram.adapter
+   :members:

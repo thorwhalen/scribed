@@ -1,0 +1,244 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scribed.backends.whispercpp.adapter &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/base.html">scribed.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/catalog.html">scribed.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/install.html">scribed.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/services.html">scribed.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/tools.html">scribed.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/translation.html">scribed.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/util.html">scribed.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../../scribed.html">scribed</a></li>
+      <li class="breadcrumb-item active">scribed.backends.whispercpp.adapter</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scribed.backends.whispercpp.adapter</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Adapter for the whisper.cpp backend (via the ``pywhispercpp`` binding).</span>
+
+<span class="sd">Maps scribed&#39;s normalized request onto :class:`pywhispercpp.model.Model` and its</span>
+<span class="sd">native ``Segment`` stream onto a :class:`scribed.base.Transcript`. The engine is</span>
+<span class="sd">imported and the model constructed lazily so ``import scribed`` stays</span>
+<span class="sd">dependency-free; one ``Model`` is cached per requested size on the adapter.</span>
+
+<span class="sd">whisper.cpp reports segment timestamps in *centiseconds* (1/100th of a second),</span>
+<span class="sd">so ``seg.t0`` / ``seg.t1`` are divided by 100 to get seconds. There are no</span>
+<span class="sd">per-word timestamps by default; a per-segment confidence (the geometric mean of</span>
+<span class="sd">token probabilities, in ``[0, 1]``) is surfaced when whisper.cpp computes it.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scribed.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transcript</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scribed.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseTranscriberAdapter</span><span class="p">,</span> <span class="n">make_segment</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_segment_confidence</span><span class="p">(</span><span class="n">seg</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return ``seg.probability`` as a ``[0, 1]`` confidence, or ``None``.</span>
+
+<span class="sd">    whisper.cpp only fills ``probability`` when probability extraction is on; it</span>
+<span class="sd">    is ``NaN`` otherwise. ``make_segment`` clamps to ``[0, 1]`` but cannot read a</span>
+<span class="sd">    ``NaN``, so guard it here.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;probability&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">prob</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span> <span class="k">else</span> <span class="n">prob</span>
+
+
+<div class="viewcode-block" id="Adapter">
+<a class="viewcode-back" href="../../../../module_docs/scribed/backends/whispercpp/adapter.html#scribed.backends.whispercpp.adapter.Adapter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseTranscriberAdapter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;whisper.cpp adapter (caches one model per requested size).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SCRIBED_WHISPERCPP_MODEL&quot;</span><span class="p">,</span> <span class="s2">&quot;base&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_size</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pywhispercpp.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Model</span>
+
+        <span class="k">if</span> <span class="n">model_size</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">:</span>
+            <span class="c1"># Downloads the ggml weights for this size on first construction.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">model_size</span><span class="p">]</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">model_size</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">model_size</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">cleanup_temp</span><span class="p">,</span> <span class="n">ensure_file_path</span>
+
+        <span class="n">engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model</span><span class="p">(</span><span class="n">model</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_size</span><span class="p">)</span>
+
+        <span class="c1"># whisper.cpp uses &quot;&quot; (not None) for auto-detect; drop an empty language.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">native_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">):</span>
+            <span class="n">native_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span> <span class="o">=</span> <span class="n">ensure_file_path</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># extract_probability=True populates each segment&#39;s confidence;</span>
+                <span class="c1"># older pywhispercpp bindings may not accept the kwarg.</span>
+                <span class="n">segments</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span>
+                    <span class="n">path</span><span class="p">,</span> <span class="n">extract_probability</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="n">segments</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">cleanup_temp</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">make_segment</span><span class="p">(</span>
+                <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                <span class="n">start</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;t0&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">,</span>
+                <span class="n">end</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="s2">&quot;t1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">,</span>
+                <span class="n">confidence</span><span class="o">=</span><span class="n">_segment_confidence</span><span class="p">(</span><span class="n">seg</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">segments</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">Transcript</span><span class="o">.</span><span class="n">from_segments</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">segments</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

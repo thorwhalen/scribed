@@ -1,0 +1,4 @@
+scribed.backends.faster_whisper.adapter
+=======================================
+.. automodule:: scribed.backends.faster_whisper.adapter
+   :members:

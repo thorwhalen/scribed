@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scribed.util &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="scribed.translation" href="translation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">scribed.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catalog.html">scribed.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">scribed.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services.html">scribed.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">scribed.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">scribed.translation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">scribed.util</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.util.audio_path"><code class="docutils literal notranslate"><span class="pre">audio_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.util.check_import"><code class="docutils literal notranslate"><span class="pre">check_import()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.util.classify_input"><code class="docutils literal notranslate"><span class="pre">classify_input()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.util.cleanup_temp"><code class="docutils literal notranslate"><span class="pre">cleanup_temp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.util.ensure_file_path"><code class="docutils literal notranslate"><span class="pre">ensure_file_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.util.is_url"><code class="docutils literal notranslate"><span class="pre">is_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.util.load_audio_bytes"><code class="docutils literal notranslate"><span class="pre">load_audio_bytes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scribed.util.to_waveform"><code class="docutils literal notranslate"><span class="pre">to_waveform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">scribed.util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/scribed/util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-scribed.util">
+<span id="scribed-util"></span><h1>scribed.util<a class="headerlink" href="#module-scribed.util" title="Link to this heading"></a></h1>
+<p>Audio-input normalization and small shared helpers.</p>
+<p>Different ASR backends want their input in different forms: a filesystem path
+(local Whisper, faster-whisper — they shell out to ffmpeg), raw <code class="docutils literal notranslate"><span class="pre">bytes</span></code> or a
+file object (most cloud REST APIs), or a numpy waveform (deep-learning engines).
+Callers, meanwhile, want to pass whatever they have — a path, an <code class="docutils literal notranslate"><span class="pre">http(s)</span></code> URL,
+bytes, a file-like object, or a numpy array. This module bridges the two with a
+handful of converters that <strong>lazily</strong> import soundfile / numpy / urllib only when
+actually exercised, so <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">scribed</span></code> stays dependency-free.</p>
+<p>The key converters:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#scribed.util.load_audio_bytes" title="scribed.util.load_audio_bytes"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_audio_bytes()</span></code></a> — anything -&gt; encoded audio <code class="docutils literal notranslate"><span class="pre">bytes</span></code> (for REST APIs).</p></li>
+<li><p><a class="reference internal" href="#scribed.util.ensure_file_path" title="scribed.util.ensure_file_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">ensure_file_path()</span></code></a> — anything -&gt; a path on disk (writing a temp file for
+in-memory inputs); pair with <a class="reference internal" href="#scribed.util.cleanup_temp" title="scribed.util.cleanup_temp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup_temp()</span></code></a> or use <a class="reference internal" href="#scribed.util.audio_path" title="scribed.util.audio_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">audio_path()</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="#scribed.util.audio_path" title="scribed.util.audio_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">audio_path()</span></code></a> — a context manager yielding a path and cleaning up.</p></li>
+<li><p><a class="reference internal" href="#scribed.util.to_waveform" title="scribed.util.to_waveform"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_waveform()</span></code></a> — anything -&gt; <code class="docutils literal notranslate"><span class="pre">(numpy</span> <span class="pre">float32</span> <span class="pre">mono,</span> <span class="pre">sample_rate)</span></code>.</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.util.audio_path">
+<span class="sig-prename descclassname"><span class="pre">scribed.util.</span></span><span class="sig-name descname"><span class="pre">audio_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AudioInput</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.wav'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/scribed/util.html#audio_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.util.audio_path" title="Link to this definition"></a></dt>
+<dd><p>Context manager yielding a filesystem path for <code class="docutils literal notranslate"><span class="pre">audio</span></code>, cleaning up temps.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">audio_path</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+    <span class="n">segments</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.util.check_import">
+<span class="sig-prename descclassname"><span class="pre">scribed.util.</span></span><span class="sig-name descname"><span class="pre">check_import</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">install_hint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'this'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scribed/util.html#check_import"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.util.check_import" title="Link to this definition"></a></dt>
+<dd><p>Import <code class="docutils literal notranslate"><span class="pre">module_name</span></code> or raise a friendly, actionable ImportError.</p>
+<p>Centralizes the “you need to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">X</span></code>” guidance so adapters and
+converters don’t each hand-roll it.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.util.classify_input">
+<span class="sig-prename descclassname"><span class="pre">scribed.util.</span></span><span class="sig-name descname"><span class="pre">classify_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AudioInput</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/scribed/util.html#classify_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.util.classify_input" title="Link to this definition"></a></dt>
+<dd><p>Classify an audio input as <code class="docutils literal notranslate"><span class="pre">url</span></code>/<code class="docutils literal notranslate"><span class="pre">path</span></code>/<code class="docutils literal notranslate"><span class="pre">bytes</span></code>/<code class="docutils literal notranslate"><span class="pre">file</span></code>/<code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p>
+<p>Decided structurally (and via duck typing for file objects / numpy) so we
+never import soundfile or numpy just to look at the input.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.util.cleanup_temp">
+<span class="sig-prename descclassname"><span class="pre">scribed.util.</span></span><span class="sig-name descname"><span class="pre">cleanup_temp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_temp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/scribed/util.html#cleanup_temp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.util.cleanup_temp" title="Link to this definition"></a></dt>
+<dd><p>Delete <code class="docutils literal notranslate"><span class="pre">path</span></code> iff <code class="docutils literal notranslate"><span class="pre">is_temp</span></code> (the flag returned by <a class="reference internal" href="#scribed.util.ensure_file_path" title="scribed.util.ensure_file_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">ensure_file_path()</span></code></a>).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.util.ensure_file_path">
+<span class="sig-prename descclassname"><span class="pre">scribed.util.</span></span><span class="sig-name descname"><span class="pre">ensure_file_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AudioInput</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.wav'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/scribed/util.html#ensure_file_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.util.ensure_file_path" title="Link to this definition"></a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">(path,</span> <span class="pre">is_temp)</span></code> for any supported input.</p>
+<p>Existing on-disk paths are returned untouched (<code class="docutils literal notranslate"><span class="pre">is_temp=False</span></code>). In-memory
+inputs (bytes/URL/file/numpy) are written to a temp file (<code class="docutils literal notranslate"><span class="pre">is_temp=True</span></code>);
+the caller is responsible for cleanup (use <a class="reference internal" href="#scribed.util.cleanup_temp" title="scribed.util.cleanup_temp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cleanup_temp()</span></code></a>, or prefer
+the <a class="reference internal" href="#scribed.util.audio_path" title="scribed.util.audio_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">audio_path()</span></code></a> context manager).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.util.is_url">
+<span class="sig-prename descclassname"><span class="pre">scribed.util.</span></span><span class="sig-name descname"><span class="pre">is_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/scribed/util.html#is_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.util.is_url" title="Link to this definition"></a></dt>
+<dd><p>True if <code class="docutils literal notranslate"><span class="pre">x</span></code> is a string that looks like an http(s) URL.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.util.load_audio_bytes">
+<span class="sig-prename descclassname"><span class="pre">scribed.util.</span></span><span class="sig-name descname"><span class="pre">load_audio_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AudioInput</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/scribed/util.html#load_audio_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.util.load_audio_bytes" title="Link to this definition"></a></dt>
+<dd><p>Return encoded audio <code class="docutils literal notranslate"><span class="pre">bytes</span></code> for any supported input.</p>
+<p>Pass-through for <code class="docutils literal notranslate"><span class="pre">bytes</span></code>; reads files and file objects; fetches URLs;
+encodes numpy waveforms as WAV (at <code class="docutils literal notranslate"><span class="pre">sample_rate</span></code>).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.util.to_waveform">
+<span class="sig-prename descclassname"><span class="pre">scribed.util.</span></span><span class="sig-name descname"><span class="pre">to_waveform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AudioInput</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/scribed/util.html#to_waveform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.util.to_waveform" title="Link to this definition"></a></dt>
+<dd><p>Convert any supported input into <code class="docutils literal notranslate"><span class="pre">(numpy</span> <span class="pre">float32</span> <span class="pre">mono,</span> <span class="pre">sample_rate)</span></code>.</p>
+<p>Numpy input is returned as-is (paired with <code class="docutils literal notranslate"><span class="pre">sample_rate</span></code>). Everything else
+is decoded with soundfile and resampled is <em>not</em> performed — the returned
+sample rate is whatever the source had (numpy inputs excepted).</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="translation.html" class="btn btn-neutral float-left" title="scribed.translation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

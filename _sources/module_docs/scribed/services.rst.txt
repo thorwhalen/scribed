@@ -1,0 +1,4 @@
+scribed.services
+================
+.. automodule:: scribed.services
+   :members:

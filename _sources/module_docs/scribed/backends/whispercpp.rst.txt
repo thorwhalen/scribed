@@ -1,0 +1,4 @@
+scribed.backends.whispercpp
+===========================
+.. automodule:: scribed.backends.whispercpp
+   :members:

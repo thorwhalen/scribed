@@ -1,0 +1,363 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scribed.backends.deepgram.adapter &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/base.html">scribed.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/catalog.html">scribed.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/install.html">scribed.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/services.html">scribed.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/tools.html">scribed.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/translation.html">scribed.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/scribed/util.html">scribed.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../../scribed.html">scribed</a></li>
+      <li class="breadcrumb-item active">scribed.backends.deepgram.adapter</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scribed.backends.deepgram.adapter</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Adapter for the Deepgram (Nova-3) transcription backend.</span>
+
+<span class="sd">Maps scribed&#39;s normalized request onto Deepgram&#39;s pre-recorded REST endpoint and</span>
+<span class="sd">the returned JSON onto a :class:`scribed.base.Transcript`. The SDK and credential</span>
+<span class="sd">are resolved lazily so ``import scribed`` stays dependency-free.</span>
+
+<span class="sd">When ``utterances=True`` (always, here) Deepgram returns</span>
+<span class="sd">``results.utterances`` — one diarized speaker turn each, with nested words — and</span>
+<span class="sd">we build one :class:`~scribed.base.Segment` per utterance (carrying</span>
+<span class="sd">``speaker=str(utt.speaker)``). When utterances are absent we fall back to a single</span>
+<span class="sd">segment built from ``channels[0].alternatives[0]``. Deepgram reports times in</span>
+<span class="sd">**seconds** and confidence already in ``[0, 1]``, so no rescaling is needed.</span>
+
+<span class="sd">The Deepgram Python SDK surface has shifted across major versions, so both the</span>
+<span class="sd">SDK accessor and the response parsing here are deliberately defensive: we try the</span>
+<span class="sd">v3 ``listen.rest.v(&quot;1&quot;)`` accessor first, fall back to the older</span>
+<span class="sd">``listen.prerecorded.v(&quot;1&quot;)`` one, and read response fields through ``.to_dict()``</span>
+<span class="sd">(falling back to ``getattr``) so plain dicts and SDK objects are handled alike.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scribed.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transcript</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scribed.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseTranscriberAdapter</span><span class="p">,</span> <span class="n">make_segment</span><span class="p">,</span> <span class="n">make_word</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read ``key`` from a plain dict or a pydantic-ish SDK object.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_dict</span><span class="p">(</span><span class="n">resp</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Best-effort convert a Deepgram response object to a plain dict.</span>
+
+<span class="sd">    The SDK returns rich objects across versions; ``.to_dict()`` gives a stable,</span>
+<span class="sd">    uniform shape to parse. Falls back to the object itself (handled by ``_get``)</span>
+<span class="sd">    when no converter is available.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;to_dict&quot;</span><span class="p">,</span> <span class="s2">&quot;to_json&quot;</span><span class="p">):</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">fn</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - fall through to next strategy</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">out</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
+                    <span class="k">continue</span>
+    <span class="k">return</span> <span class="n">resp</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_speaker_str</span><span class="p">(</span><span class="n">speaker</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize a Deepgram (int) speaker label to a non-empty ``str`` or ``None``.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">speaker</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">speaker</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span> <span class="ow">or</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="Adapter">
+<a class="viewcode-back" href="../../../../module_docs/scribed/backends/deepgram/adapter.html#scribed.backends.deepgram.adapter.Adapter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseTranscriberAdapter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deepgram (Nova-3) transcription adapter.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">deepgram</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeepgramClient</span>
+
+            <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_credential</span>
+
+            <span class="n">key</span> <span class="o">=</span> <span class="n">resolve_credential</span><span class="p">(</span>
+                <span class="s2">&quot;deepgram&quot;</span><span class="p">,</span>
+                <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_env_var&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">DeepgramClient</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_call_transcribe_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Call the SDK&#39;s pre-recorded transcribe across known accessor paths.</span>
+
+<span class="sd">        v3 exposes ``listen.rest.v(&quot;1&quot;).transcribe_file``; older versions expose</span>
+<span class="sd">        ``listen.prerecorded.v(&quot;1&quot;).transcribe_file``. Try them in turn.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">listen</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">listen</span>
+        <span class="k">for</span> <span class="n">accessor</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;rest&quot;</span><span class="p">,</span> <span class="s2">&quot;prerecorded&quot;</span><span class="p">):</span>
+            <span class="n">namespace</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">listen</span><span class="p">,</span> <span class="n">accessor</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">namespace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">versioned</span> <span class="o">=</span> <span class="n">namespace</span><span class="o">.</span><span class="n">v</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - try the next accessor</span>
+                <span class="k">continue</span>
+            <span class="k">return</span> <span class="n">versioned</span><span class="o">.</span><span class="n">transcribe_file</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">&quot;Could not find a Deepgram pre-recorded transcribe accessor &quot;</span>
+            <span class="s2">&quot;(tried client.listen.rest.v(&#39;1&#39;) and &quot;</span>
+            <span class="s2">&quot;client.listen.prerecorded.v(&#39;1&#39;)). The installed deepgram-sdk &quot;</span>
+            <span class="s2">&quot;version may have an incompatible API surface.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;nova-3&quot;</span><span class="p">,</span> <span class="n">diarize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">deepgram</span><span class="w"> </span><span class="kn">import</span> <span class="n">PrerecordedOptions</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_audio_bytes</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_client</span><span class="p">()</span>
+        <span class="n">audio_bytes</span> <span class="o">=</span> <span class="n">load_audio_bytes</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;buffer&quot;</span><span class="p">:</span> <span class="n">audio_bytes</span><span class="p">}</span>
+
+        <span class="n">options</span> <span class="o">=</span> <span class="n">PrerecordedOptions</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">smart_format</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">punctuate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">diarize</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">diarize</span><span class="p">),</span>
+            <span class="n">utterances</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">native_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_transcribe_file</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">_as_dict</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;results&quot;</span><span class="p">)</span>
+        <span class="n">channels</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="s2">&quot;channels&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">alternative</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">channels</span><span class="p">:</span>
+            <span class="n">alternatives</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;alternatives&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">alternatives</span><span class="p">:</span>
+                <span class="n">alternative</span> <span class="o">=</span> <span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">language_out</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">detected</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;detected_language&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_get</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="s2">&quot;language&quot;</span><span class="p">)</span>
+            <span class="n">language_out</span> <span class="o">=</span> <span class="n">detected</span> <span class="ow">or</span> <span class="n">language</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">language_out</span> <span class="o">=</span> <span class="n">language</span>
+
+        <span class="n">utterances</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="s2">&quot;utterances&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">utterances</span><span class="p">:</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">make_segment</span><span class="p">(</span>
+                    <span class="n">_get</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s2">&quot;transcript&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">start</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">),</span>
+                    <span class="n">end</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">),</span>
+                    <span class="n">confidence</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">),</span>
+                    <span class="n">speaker</span><span class="o">=</span><span class="n">_speaker_str</span><span class="p">(</span><span class="n">_get</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s2">&quot;speaker&quot;</span><span class="p">)),</span>
+                    <span class="n">words</span><span class="o">=</span><span class="p">[</span>
+                        <span class="n">make_word</span><span class="p">(</span>
+                            <span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;punctuated_word&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;word&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                            <span class="n">start</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">),</span>
+                            <span class="n">end</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">),</span>
+                            <span class="n">confidence</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">),</span>
+                            <span class="n">speaker</span><span class="o">=</span><span class="n">_speaker_str</span><span class="p">(</span><span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;speaker&quot;</span><span class="p">)),</span>
+                        <span class="p">)</span>
+                        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_get</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s2">&quot;words&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+                    <span class="p">],</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">utterances</span>
+            <span class="p">]</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">_get</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s2">&quot;transcript&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">utterances</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">transcript_text</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">alternative</span><span class="p">,</span> <span class="s2">&quot;transcript&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">make_word</span><span class="p">(</span>
+                    <span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;punctuated_word&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;word&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">start</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">),</span>
+                    <span class="n">end</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">),</span>
+                    <span class="n">confidence</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">),</span>
+                    <span class="n">speaker</span><span class="o">=</span><span class="n">_speaker_str</span><span class="p">(</span><span class="n">_get</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;speaker&quot;</span><span class="p">)),</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_get</span><span class="p">(</span><span class="n">alternative</span><span class="p">,</span> <span class="s2">&quot;words&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+            <span class="p">]</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">make_segment</span><span class="p">(</span>
+                    <span class="n">transcript_text</span><span class="p">,</span>
+                    <span class="n">confidence</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">alternative</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">),</span>
+                    <span class="n">words</span><span class="o">=</span><span class="n">words</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">]</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">transcript_text</span>
+
+        <span class="k">return</span> <span class="n">Transcript</span><span class="o">.</span><span class="n">from_segments</span><span class="p">(</span>
+            <span class="n">segments</span><span class="p">,</span>
+            <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span>
+            <span class="n">raw</span><span class="o">=</span><span class="n">resp</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">language</span><span class="o">=</span><span class="n">language_out</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

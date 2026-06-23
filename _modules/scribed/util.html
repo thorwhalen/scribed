@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scribed.util &mdash; scribed 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            scribed
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed.html">scribed</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends.html">scribed.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/_template.html">scribed.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/_template/config.html">scribed.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/assemblyai.html">scribed.backends.assemblyai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/assemblyai/adapter.html">scribed.backends.assemblyai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/assemblyai/config.html">scribed.backends.assemblyai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/deepgram.html">scribed.backends.deepgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/deepgram/adapter.html">scribed.backends.deepgram.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/deepgram/config.html">scribed.backends.deepgram.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/elevenlabs.html">scribed.backends.elevenlabs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/elevenlabs/adapter.html">scribed.backends.elevenlabs.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/elevenlabs/config.html">scribed.backends.elevenlabs.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/faster_whisper.html">scribed.backends.faster_whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/faster_whisper/adapter.html">scribed.backends.faster_whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/faster_whisper/config.html">scribed.backends.faster_whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/google_speech.html">scribed.backends.google_speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/google_speech/adapter.html">scribed.backends.google_speech.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/google_speech/config.html">scribed.backends.google_speech.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/groq.html">scribed.backends.groq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/groq/adapter.html">scribed.backends.groq.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/groq/config.html">scribed.backends.groq.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/openai.html">scribed.backends.openai</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/openai/adapter.html">scribed.backends.openai.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/openai/config.html">scribed.backends.openai.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/vosk.html">scribed.backends.vosk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/vosk/adapter.html">scribed.backends.vosk.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/vosk/config.html">scribed.backends.vosk.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whisper.html">scribed.backends.whisper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whisper/adapter.html">scribed.backends.whisper.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whisper/config.html">scribed.backends.whisper.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whispercpp.html">scribed.backends.whispercpp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whispercpp/adapter.html">scribed.backends.whispercpp.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/whispercpp/config.html">scribed.backends.whispercpp.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/base.html">scribed.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/catalog.html">scribed.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/credentials.html">scribed.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/install.html">scribed.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/registry.html">scribed.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/services.html">scribed.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/tools.html">scribed.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/translation.html">scribed.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/util.html">scribed.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">scribed</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../scribed.html">scribed</a></li>
+      <li class="breadcrumb-item active">scribed.util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scribed.util</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Audio-input normalization and small shared helpers.</span>
+
+<span class="sd">Different ASR backends want their input in different forms: a filesystem path</span>
+<span class="sd">(local Whisper, faster-whisper — they shell out to ffmpeg), raw ``bytes`` or a</span>
+<span class="sd">file object (most cloud REST APIs), or a numpy waveform (deep-learning engines).</span>
+<span class="sd">Callers, meanwhile, want to pass whatever they have — a path, an ``http(s)`` URL,</span>
+<span class="sd">bytes, a file-like object, or a numpy array. This module bridges the two with a</span>
+<span class="sd">handful of converters that **lazily** import soundfile / numpy / urllib only when</span>
+<span class="sd">actually exercised, so ``import scribed`` stays dependency-free.</span>
+
+<span class="sd">The key converters:</span>
+
+<span class="sd">- :func:`load_audio_bytes` — anything -&gt; encoded audio ``bytes`` (for REST APIs).</span>
+<span class="sd">- :func:`ensure_file_path` — anything -&gt; a path on disk (writing a temp file for</span>
+<span class="sd">  in-memory inputs); pair with :func:`cleanup_temp` or use :func:`audio_path`.</span>
+<span class="sd">- :func:`audio_path` — a context manager yielding a path and cleaning up.</span>
+<span class="sd">- :func:`to_waveform` — anything -&gt; ``(numpy float32 mono, sample_rate)``.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">scribed.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioInput</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;classify_input&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_url&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;load_audio_bytes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ensure_file_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cleanup_temp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;audio_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_waveform&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_import&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1">#: Default sample rate (Hz) used when encoding/decoding raw waveforms. 16 kHz is</span>
+<span class="c1">#: the de-facto standard for speech models (Whisper, wav2vec2, ...).</span>
+<span class="n">DFLT_SAMPLE_RATE</span> <span class="o">=</span> <span class="mi">16_000</span>
+
+
+<div class="viewcode-block" id="check_import">
+<a class="viewcode-back" href="../../module_docs/scribed/util.html#scribed.util.check_import">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_import</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">install_hint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;this&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Import ``module_name`` or raise a friendly, actionable ImportError.</span>
+
+<span class="sd">    Centralizes the &quot;you need to ``pip install X``&quot; guidance so adapters and</span>
+<span class="sd">    converters don&#39;t each hand-roll it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+
+        <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pragma: no cover - exercised via adapters</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2"> requires </span><span class="si">{</span><span class="n">module_name</span><span class="si">!r}</span><span class="s2">. Install it with: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;pip install </span><span class="si">{</span><span class="n">install_hint</span><span class="si">}</span><span class="se">\n</span><span class="s2">Original error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+
+<div class="viewcode-block" id="is_url">
+<a class="viewcode-back" href="../../module_docs/scribed/util.html#scribed.util.is_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_url</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;True if ``x`` is a string that looks like an http(s) URL.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="s2">&quot;https://&quot;</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="classify_input">
+<a class="viewcode-back" href="../../module_docs/scribed/util.html#scribed.util.classify_input">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">classify_input</span><span class="p">(</span><span class="n">audio</span><span class="p">:</span> <span class="n">AudioInput</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classify an audio input as ``url``/``path``/``bytes``/``file``/``numpy``.</span>
+
+<span class="sd">    Decided structurally (and via duck typing for file objects / numpy) so we</span>
+<span class="sd">    never import soundfile or numpy just to look at the input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="s2">&quot;bytes&quot;</span>
+    <span class="k">if</span> <span class="n">is_url</span><span class="p">(</span><span class="n">audio</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;url&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="s2">&quot;path&quot;</span>
+    <span class="c1"># Duck-type without importing the libs.</span>
+    <span class="k">if</span> <span class="n">audio</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;numpy&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="s2">&quot;__array__&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;numpy&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;file&quot;</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Unsupported audio input of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. Expected a path, &quot;</span>
+        <span class="s2">&quot;URL, bytes, file-like object, or numpy waveform.&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fetch_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">60.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.request</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlopen</span>  <span class="c1"># stdlib, no extra dependency</span>
+
+    <span class="k">with</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>  <span class="c1"># noqa: S310 - user-supplied URL</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_encode_wav</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode a numpy waveform to WAV ``bytes`` via soundfile (lazy import).&quot;&quot;&quot;</span>
+    <span class="n">sf</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span>
+        <span class="s2">&quot;soundfile&quot;</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">&quot;soundfile&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;waveform encoding&quot;</span>
+    <span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+
+    <span class="n">buf</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">sf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;WAV&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="load_audio_bytes">
+<a class="viewcode-back" href="../../module_docs/scribed/util.html#scribed.util.load_audio_bytes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_audio_bytes</span><span class="p">(</span>
+    <span class="n">audio</span><span class="p">:</span> <span class="n">AudioInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DFLT_SAMPLE_RATE</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return encoded audio ``bytes`` for any supported input.</span>
+
+<span class="sd">    Pass-through for ``bytes``; reads files and file objects; fetches URLs;</span>
+<span class="sd">    encodes numpy waveforms as WAV (at ``sample_rate``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;bytes&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">audio</span><span class="p">))</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_fetch_url</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">audio</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">data</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="k">else</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1"># numpy -&gt; encode in-memory</span>
+    <span class="k">return</span> <span class="n">_encode_wav</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ensure_file_path">
+<a class="viewcode-back" href="../../module_docs/scribed/util.html#scribed.util.ensure_file_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_file_path</span><span class="p">(</span>
+    <span class="n">audio</span><span class="p">:</span> <span class="n">AudioInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.wav&quot;</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DFLT_SAMPLE_RATE</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return ``(path, is_temp)`` for any supported input.</span>
+
+<span class="sd">    Existing on-disk paths are returned untouched (``is_temp=False``). In-memory</span>
+<span class="sd">    inputs (bytes/URL/file/numpy) are written to a temp file (``is_temp=True``);</span>
+<span class="sd">    the caller is responsible for cleanup (use :func:`cleanup_temp`, or prefer</span>
+<span class="sd">    the :func:`audio_path` context manager).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">audio</span><span class="p">),</span> <span class="kc">False</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">load_audio_bytes</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">)</span>
+    <span class="n">fd</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;scribed_&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">fdopen</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path</span><span class="p">,</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="cleanup_temp">
+<a class="viewcode-back" href="../../module_docs/scribed/util.html#scribed.util.cleanup_temp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cleanup_temp</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_temp</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete ``path`` iff ``is_temp`` (the flag returned by :func:`ensure_file_path`).&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">is_temp</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">OSError</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="audio_path">
+<a class="viewcode-back" href="../../module_docs/scribed/util.html#scribed.util.audio_path">[docs]</a>
+<span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_path</span><span class="p">(</span><span class="n">audio</span><span class="p">:</span> <span class="n">AudioInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.wav&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager yielding a filesystem path for ``audio``, cleaning up temps.</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        with audio_path(raw_bytes) as p:</span>
+<span class="sd">            segments = model.transcribe(p)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span> <span class="o">=</span> <span class="n">ensure_file_path</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">path</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">cleanup_temp</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="to_waveform">
+<a class="viewcode-back" href="../../module_docs/scribed/util.html#scribed.util.to_waveform">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_waveform</span><span class="p">(</span><span class="n">audio</span><span class="p">:</span> <span class="n">AudioInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DFLT_SAMPLE_RATE</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert any supported input into ``(numpy float32 mono, sample_rate)``.</span>
+
+<span class="sd">    Numpy input is returned as-is (paired with ``sample_rate``). Everything else</span>
+<span class="sd">    is decoded with soundfile and resampled is *not* performed — the returned</span>
+<span class="sd">    sample rate is whatever the source had (numpy inputs excepted).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">np</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;waveform conversion&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;numpy&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">audio</span><span class="p">,</span> <span class="n">sample_rate</span>
+    <span class="n">sf</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">&quot;soundfile&quot;</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">&quot;soundfile&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;audio decoding&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">audio_path</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;ndim&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># downmix to mono</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">sr</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

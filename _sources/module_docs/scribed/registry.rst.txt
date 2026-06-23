@@ -1,0 +1,4 @@
+scribed.registry
+================
+.. automodule:: scribed.registry
+   :members:

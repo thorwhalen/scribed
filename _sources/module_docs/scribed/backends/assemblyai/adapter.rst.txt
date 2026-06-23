@@ -1,0 +1,4 @@
+scribed.backends.assemblyai.adapter
+===================================
+.. automodule:: scribed.backends.assemblyai.adapter
+   :members:
