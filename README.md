@@ -49,7 +49,7 @@ pip install "scribed[cli]"              # the `scribed` command
 | Deepgram | `deepgram` | remote | free tier | ✓ | ✓ | Nova-3: real-time + diarization, cheap, feature-rich |
 | AssemblyAI | `assemblyai` | remote | free tier | ✓ | ✓ | Audio intelligence (diarization, sentiment, topics, summary) |
 | Google STT | `google-speech` | remote | free tier | ✓ | ✓ | Widest language coverage (125+); Chirp models |
-| ElevenLabs | `elevenlabs` | remote | free tier | ✓ | ~ | Scribe v1 — top accuracy, diarization, audio-event tags |
+| ElevenLabs | `elevenlabs` | remote | free tier | ✓ | ~ | Scribe — top accuracy, diarization, audio-event tags |
 
 …plus more engines catalogued in the ledger (NVIDIA Parakeet/Canary, WhisperX,
 wav2vec2, Moonshine, sherpa-onnx, AWS Transcribe, Azure Speech, Speechmatics,
