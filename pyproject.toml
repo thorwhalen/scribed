@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scribed"
-version = "0.0.1"
+version = "0.0.2"
 description = "One facade over many speech-to-text (ASR) engines, plus a ledger to help you choose between them."
 readme = "README.md"
 requires-python = ">=3.10"
