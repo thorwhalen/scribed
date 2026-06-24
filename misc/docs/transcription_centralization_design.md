@@ -109,6 +109,45 @@ rounding); seconds accessors are Python ergonomics only.
 tests), full `--doctest-modules` sweep, all 34 modules import, ruff clean, and an
 adapter-pattern smoke (elevenlabs/google_speech/tools/SRT) all green.
 
+**Steps 2–3 — generic audio/VAD + the streaming seam — DONE** (same branch).
+New modules:
+- `scribed/audio.py` — channel-agnostic conditioning ported from hearing
+  (`load_audio` + ffmpeg fallback, `to_mono`, `resample`, `to_mono_16k`,
+  `rms_energy`, `STT_SAMPLE_RATE`) + `to_wav_bytes` (encode an utterance to WAV
+  bytes for the batch path).
+- `scribed/vad.py` — `VAD` Protocol, `EnergyVAD`, `SileroVAD`, `segment_utterances`
+  (ported from hearing; `rms_energy` now sourced from `scribed.audio`).
+- `scribed/streaming.py` — `Transcriber` + `AudioSource` Protocols;
+  `vad_segmented_stream` (hardened: `asyncio.to_thread` offload + per-utterance 16k
+  resample + bounded-concurrency-with-ordered-emission via `max_inflight`);
+  `file_to_stream` (file/bytes/array → live source) + `from_mic` (lazy sounddevice);
+  `transcribe_live` (async facade, native-or-fallback routing) + `iter_live` (sync
+  driver).
+- `scribed/testing.py` — `FakeTranscriber`, `FakeStreamingTranscriber`,
+  `speech_silence_stream` (model-free, hardware-free fixtures).
+- `make_backend.BaseTranscriberAdapter` gains `natively_streams` +
+  `transcribe_live` (fallback) + `_stream_native` hook; `ServiceHandle.transcribe_live`
+  added; `__init__` exposes the streaming surface via **lazy PEP 562 `__getattr__`**
+  (so `import scribed` stays numpy-free); `pyproject` gains `streaming`/`mic` extras.
+
+**Refinements vs. the doc:** (a) the fallback feeds the batch engine **16k-mono WAV
+bytes** (scribed's existing `bytes` input) instead of `engine.transcribe(ndarray,
+sample_rate=...)` — so no batch-adapter change was needed for the ndarray+rate gap;
+(b) `transcribe_live` resolves the **normal default backend** (not
+`capability="stream"`) since every batch engine streams via fallback —
+`capability="stream"` stays for *surfacing* native streamers; (c) `file_to_stream`
+also accepts bytes/arrays (with `sample_rate=`) for easy synthetic tests.
+
+**Verified:** 44/44 tests (12 new streaming tests: VAD counts/offsets, fallback
+finalization + offsets + silent-skip, native-vs-fallback routing, `iter_live` sync +
+running-loop guard, and a subprocess **import-hygiene** test proving `import scribed`
+pulls neither numpy nor the streaming modules), doctest sweep, ruff clean.
+
+**Not yet done:** step 4 (a real `deepgram_live` native streamer + the shared
+push→pull bridge, §8-Q5) and step 5+ (repoint hearing onto scribed, delete the
+duplicated `hearing/stt.py` + `hearing/vad.py`). §8-Q6 (registry lock) not yet
+applied.
+
 ---
 
 ## 1. Executive summary

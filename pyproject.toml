@@ -51,12 +51,17 @@ elevenlabs = ["elevenlabs>=1.0"]
 # --- feature extras ---
 cli = ["argh>=0.30", "argcomplete>=3"]  # the `scribed` command
 audio = ["soundfile>=0.12", "numpy>=1.23"]  # audio loading / normalization helpers
+streaming = ["soundfile>=0.12", "numpy>=1.23"]  # real-time transcribe_live (soxr optional, for fast resampling)
+mic = ["sounddevice>=0.4"]  # scribed.from_mic() live device capture
 table = ["pandas>=1.5"]  # catalog.to_dataframe()
 # --- dev/docs ---
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
     "ruff>=0.1.0",
+    # test deps for the streaming/audio surface (so CI exercises them, not skips)
+    "numpy>=1.23",
+    "soundfile>=0.12",
 ]
 docs = [
     "sphinx>=6.0",

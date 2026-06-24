@@ -100,6 +100,17 @@ __all__ = [
     "TimeSpan",
     "Channel",
     "AudioInput",
+    # streaming surface (lazily imported; see module __getattr__)
+    "transcribe_live",
+    "iter_live",
+    "Transcriber",
+    "AudioSource",
+    "file_to_stream",
+    "from_mic",
+    "VAD",
+    "EnergyVAD",
+    "SileroVAD",
+    "segment_utterances",
     "BackendInfo",
     "Catalog",
     "ServiceCollection",
@@ -171,3 +182,38 @@ def find(**criteria) -> Catalog:
         scribed.find(implemented=True)        # only backends scribed can run now
     """
     return catalog.filter(**criteria)
+
+
+# ---------------------------------------------------------------------------
+# Lazy streaming surface (PEP 562)
+# ---------------------------------------------------------------------------
+# The real-time API lives in scribed.streaming / scribed.vad, which need numpy.
+# Importing them lazily on first attribute access keeps ``import scribed`` light
+# (no numpy, no audio libs) for the batch-only and ledger-only use cases.
+
+_LAZY_ATTRS = {
+    "transcribe_live": "scribed.streaming",
+    "iter_live": "scribed.streaming",
+    "Transcriber": "scribed.streaming",
+    "AudioSource": "scribed.streaming",
+    "file_to_stream": "scribed.streaming",
+    "from_mic": "scribed.streaming",
+    "VAD": "scribed.vad",
+    "EnergyVAD": "scribed.vad",
+    "SileroVAD": "scribed.vad",
+    "segment_utterances": "scribed.vad",
+}
+
+
+def __getattr__(name: str):
+    """Lazily resolve the streaming symbols (PEP 562 module-level hook)."""
+    module_path = _LAZY_ATTRS.get(name)
+    if module_path is None:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    import importlib
+
+    return getattr(importlib.import_module(module_path), name)
+
+
+def __dir__():
+    return sorted([*globals().keys(), *_LAZY_ATTRS])

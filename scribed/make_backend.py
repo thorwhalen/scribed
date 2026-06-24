@@ -67,6 +67,11 @@ class BaseTranscriberAdapter:
         param_map = config.get("param_map")
         self._translate = make_kwargs_translator(param_map) if param_map else None
 
+    #: Override to ``True`` in a backend that talks a live protocol (WebSocket /
+    #: streaming recognizer) and implements :meth:`_stream_native`. When ``False``
+    #: (the default), live transcription is synthesized from batch ``transcribe``.
+    natively_streams: bool = False
+
     def transcribe(self, audio, **kwargs) -> Transcript:
         native = self._translate(**kwargs) if self._translate else dict(kwargs)
         return self._transcribe(audio, **native)
@@ -76,6 +81,30 @@ class BaseTranscriberAdapter:
             f"{type(self).__name__}._transcribe is not implemented for "
             f"backend {self.backend_id!r}."
         )
+
+    async def transcribe_live(self, source, *, vad=None, **kwargs):
+        """Stream :class:`~scribed.base.Segment`\\ s from a live ``AudioSource``.
+
+        Native-streaming backends set :attr:`natively_streams` and override
+        :meth:`_stream_native`; everyone else streams for free here via the
+        VAD-segmented batch fallback. ``kwargs`` flow to the per-utterance
+        ``transcribe`` (e.g. ``language=``).
+        """
+        if self.natively_streams:
+            async for seg in self._stream_native(source, vad=vad, **kwargs):
+                yield seg
+        else:
+            from scribed.streaming import vad_segmented_stream
+
+            async for seg in vad_segmented_stream(self, source, vad=vad, **kwargs):
+                yield seg
+
+    async def _stream_native(self, source, *, vad=None, **kwargs):  # pragma: no cover
+        raise NotImplementedError(
+            f"{type(self).__name__} set natively_streams=True but did not implement "
+            "_stream_native."
+        )
+        yield  # pragma: no cover - makes this an async generator
 
 
 # ---------------------------------------------------------------------------
