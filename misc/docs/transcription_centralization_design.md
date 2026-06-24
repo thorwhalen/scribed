@@ -143,10 +143,30 @@ finalization + offsets + silent-skip, native-vs-fallback routing, `iter_live` sy
 running-loop guard, and a subprocess **import-hygiene** test proving `import scribed`
 pulls neither numpy nor the streaming modules), doctest sweep, ruff clean.
 
-**Not yet done:** step 4 (a real `deepgram_live` native streamer + the shared
-push→pull bridge, §8-Q5) and step 5+ (repoint hearing onto scribed, delete the
-duplicated `hearing/stt.py` + `hearing/vad.py`). §8-Q6 (registry lock) not yet
-applied.
+**Step 5 — repoint hearing onto scribed — DONE** (in the `hearing` repo, branch
+`refactor/consume-scribed-stt`, PR thorwhalen/hearing#22). hearing now *consumes*
+scribed instead of duplicating STT:
+- `hearing/stt.py`: `FasterWhisperSTT`/`OpenAISTT`/`vad_stream_transcribe` replaced by
+  a thin `ScribedSTT` (batch + live) that wraps scribed and maps `scribed.Segment` →
+  `hearing.TranscriptSegment` (`is_final` → `meta['final']`). `get_engine`/
+  `default_engine`/`FasterWhisperSTT`/`OpenAISTT` kept as compat constructors returning
+  `ScribedSTT`, so `cli.py`/`http_app.py`/integration tests are untouched.
+- `hearing/vad.py` → re-exports `scribed.vad`; `hearing/capture.py` → sources generic
+  conditioning from `scribed.audio`, keeps the channel split + capture sources.
+- `pyproject` depends on `scribed`; `whisper`/`openai` extras pull scribed's backends.
+- Tests: `test_openai_stt.py` → `test_scribed_stt.py` (the bridge, model-free); the
+  OpenAI verbose_json mapping coverage ported to scribed `tests/test_openai_backend.py`.
+
+**Decision recorded:** hearing's data model (`TranscriptSegment`/`Transcript`/`Channel`)
+was **kept as-is** (the bridge is at the STT boundary, lossless across spine fields)
+rather than aliased to `scribed.Segment` — full type unification would change
+`test_data_model`'s pinned positional/`channel=MIXED` contract, so it's deferred as an
+opt-in follow-up. Net −313 LOC in hearing; all 58 hearing tests green (incl. the real
+faster-whisper integration tests, now running through scribed).
+
+**Still not done:** step 4 (a real `deepgram_live` native streamer + the shared
+push→pull bridge, §8-Q5); §8-Q6 (registry discovery lock); optional full type
+unification of hearing onto `scribed.Segment`.
 
 ---
 
