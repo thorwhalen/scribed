@@ -27,7 +27,7 @@ import re
 from pathlib import Path
 from typing import Any, List, Optional, Union
 
-from scribed.base import Segment, Transcript, Word
+from scribed.base import Segment, TimeSpan, Transcript, Word
 from scribed.translation import make_kwargs_translator
 
 __all__ = [
@@ -97,6 +97,19 @@ def normalize_confidence(
     return max(0.0, min(1.0, v))
 
 
+def _span_from_seconds(
+    start: Optional[float], end: Optional[float]
+) -> Optional[TimeSpan]:
+    """Build a :class:`~scribed.base.TimeSpan` from float seconds, or ``None``.
+
+    Returns ``None`` unless *both* bounds are given — a partially-timed unit is
+    treated as untimed (matching the old flat-field behavior).
+    """
+    if start is None or end is None:
+        return None
+    return TimeSpan.from_seconds(float(start), float(end))
+
+
 def make_word(
     text: str,
     *,
@@ -108,12 +121,13 @@ def make_word(
 ) -> Word:
     """Build a normalized :class:`~scribed.base.Word`.
 
-    ``confidence`` is normalized to ``[0, 1]`` via ``conf_scale``.
+    ``start``/``end`` are **seconds** (converted to the millisecond
+    :class:`~scribed.base.TimeSpan` internally). ``confidence`` is normalized to
+    ``[0, 1]`` via ``conf_scale``.
     """
     return Word(
         text=text,
-        start=None if start is None else float(start),
-        end=None if end is None else float(end),
+        span=_span_from_seconds(start, end),
         confidence=normalize_confidence(confidence, scale=conf_scale),
         speaker=speaker,
     )
@@ -128,24 +142,23 @@ def make_segment(
     conf_scale: float = 1.0,
     speaker: Optional[str] = None,
     language: Optional[str] = None,
-    level: str = "segment",
     words: Optional[List[Word]] = None,
     **meta: Any,
 ) -> Segment:
     """Build a normalized :class:`~scribed.base.Segment`.
 
-    ``start``/``end`` are seconds. ``confidence`` is normalized to ``[0, 1]`` via
-    ``conf_scale`` (e.g. ``conf_scale=100`` for percent-scale engines).
+    ``start``/``end`` are **seconds** (converted to the millisecond
+    :class:`~scribed.base.TimeSpan` internally). ``confidence`` is normalized to
+    ``[0, 1]`` via ``conf_scale`` (e.g. ``conf_scale=100`` for percent-scale
+    engines).
     """
     return Segment(
         text=text,
-        start=None if start is None else float(start),
-        end=None if end is None else float(end),
+        span=_span_from_seconds(start, end),
         confidence=normalize_confidence(confidence, scale=conf_scale),
         speaker=speaker,
         language=language,
-        level=level,
-        words=list(words) if words else [],
+        words=tuple(words) if words else (),
         meta=meta,
     )
 

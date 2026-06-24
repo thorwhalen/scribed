@@ -46,7 +46,7 @@ Three tiers of access, from simplest to most powerful::
 
 from scribed.base import (
     AudioInput,
-    LEVELS,
+    Channel,
     Segment,
     TimeSpan,
     Transcript,
@@ -98,8 +98,8 @@ __all__ = [
     "Segment",
     "Word",
     "TimeSpan",
+    "Channel",
     "AudioInput",
-    "LEVELS",
     "BackendInfo",
     "Catalog",
     "ServiceCollection",
