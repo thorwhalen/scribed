@@ -27,7 +27,7 @@ import re
 from pathlib import Path
 from typing import Any, List, Optional, Union
 
-from scribed.base import Segment, Transcript, Word
+from scribed.base import Segment, TimeSpan, Transcript, Word
 from scribed.translation import make_kwargs_translator
 
 __all__ = [
@@ -67,6 +67,11 @@ class BaseTranscriberAdapter:
         param_map = config.get("param_map")
         self._translate = make_kwargs_translator(param_map) if param_map else None
 
+    #: Override to ``True`` in a backend that talks a live protocol (WebSocket /
+    #: streaming recognizer) and implements :meth:`_stream_native`. When ``False``
+    #: (the default), live transcription is synthesized from batch ``transcribe``.
+    natively_streams: bool = False
+
     def transcribe(self, audio, **kwargs) -> Transcript:
         native = self._translate(**kwargs) if self._translate else dict(kwargs)
         return self._transcribe(audio, **native)
@@ -76,6 +81,30 @@ class BaseTranscriberAdapter:
             f"{type(self).__name__}._transcribe is not implemented for "
             f"backend {self.backend_id!r}."
         )
+
+    async def transcribe_live(self, source, *, vad=None, **kwargs):
+        """Stream :class:`~scribed.base.Segment`\\ s from a live ``AudioSource``.
+
+        Native-streaming backends set :attr:`natively_streams` and override
+        :meth:`_stream_native`; everyone else streams for free here via the
+        VAD-segmented batch fallback. ``kwargs`` flow to the per-utterance
+        ``transcribe`` (e.g. ``language=``).
+        """
+        if self.natively_streams:
+            async for seg in self._stream_native(source, vad=vad, **kwargs):
+                yield seg
+        else:
+            from scribed.streaming import vad_segmented_stream
+
+            async for seg in vad_segmented_stream(self, source, vad=vad, **kwargs):
+                yield seg
+
+    async def _stream_native(self, source, *, vad=None, **kwargs):  # pragma: no cover
+        raise NotImplementedError(
+            f"{type(self).__name__} set natively_streams=True but did not implement "
+            "_stream_native."
+        )
+        yield  # pragma: no cover - makes this an async generator
 
 
 # ---------------------------------------------------------------------------
@@ -97,6 +126,19 @@ def normalize_confidence(
     return max(0.0, min(1.0, v))
 
 
+def _span_from_seconds(
+    start: Optional[float], end: Optional[float]
+) -> Optional[TimeSpan]:
+    """Build a :class:`~scribed.base.TimeSpan` from float seconds, or ``None``.
+
+    Returns ``None`` unless *both* bounds are given — a partially-timed unit is
+    treated as untimed (matching the old flat-field behavior).
+    """
+    if start is None or end is None:
+        return None
+    return TimeSpan.from_seconds(float(start), float(end))
+
+
 def make_word(
     text: str,
     *,
@@ -108,12 +150,13 @@ def make_word(
 ) -> Word:
     """Build a normalized :class:`~scribed.base.Word`.
 
-    ``confidence`` is normalized to ``[0, 1]`` via ``conf_scale``.
+    ``start``/``end`` are **seconds** (converted to the millisecond
+    :class:`~scribed.base.TimeSpan` internally). ``confidence`` is normalized to
+    ``[0, 1]`` via ``conf_scale``.
     """
     return Word(
         text=text,
-        start=None if start is None else float(start),
-        end=None if end is None else float(end),
+        span=_span_from_seconds(start, end),
         confidence=normalize_confidence(confidence, scale=conf_scale),
         speaker=speaker,
     )
@@ -128,24 +171,23 @@ def make_segment(
     conf_scale: float = 1.0,
     speaker: Optional[str] = None,
     language: Optional[str] = None,
-    level: str = "segment",
     words: Optional[List[Word]] = None,
     **meta: Any,
 ) -> Segment:
     """Build a normalized :class:`~scribed.base.Segment`.
 
-    ``start``/``end`` are seconds. ``confidence`` is normalized to ``[0, 1]`` via
-    ``conf_scale`` (e.g. ``conf_scale=100`` for percent-scale engines).
+    ``start``/``end`` are **seconds** (converted to the millisecond
+    :class:`~scribed.base.TimeSpan` internally). ``confidence`` is normalized to
+    ``[0, 1]`` via ``conf_scale`` (e.g. ``conf_scale=100`` for percent-scale
+    engines).
     """
     return Segment(
         text=text,
-        start=None if start is None else float(start),
-        end=None if end is None else float(end),
+        span=_span_from_seconds(start, end),
         confidence=normalize_confidence(confidence, scale=conf_scale),
         speaker=speaker,
         language=language,
-        level=level,
-        words=list(words) if words else [],
+        words=tuple(words) if words else (),
         meta=meta,
     )
 

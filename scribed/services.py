@@ -58,6 +58,20 @@ class ServiceHandle:
         """Transcribe ``audio`` with this backend. Returns a ``Transcript``."""
         return self.adapter.transcribe(audio, **kwargs)
 
+    def transcribe_live(self, source, *, vad=None, **kwargs):
+        """Stream ``Segment``\\ s live from this backend (an async generator).
+
+        Uses the backend's native streamer if it has one, else the synthesized
+        VAD-segmented fallback over its batch ``transcribe``.
+        """
+        adapter = self.adapter
+        native = getattr(adapter, "transcribe_live", None)
+        if native is not None:
+            return native(source, vad=vad, **kwargs)
+        from scribed.streaming import vad_segmented_stream
+
+        return vad_segmented_stream(adapter, source, vad=vad, **kwargs)
+
     def __getattr__(self, name: str):
         """Proxy unknown attributes to the adapter (backend-specific methods)."""
         if name.startswith("_"):
