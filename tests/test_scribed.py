@@ -11,8 +11,17 @@ import warnings
 
 import pytest
 
+import dataclasses
+
 import scribed
-from scribed.base import Segment, TimeSpan, Transcript, Word, _format_timestamp
+from scribed.base import (
+    Channel,
+    Segment,
+    TimeSpan,
+    Transcript,
+    Word,
+    _format_timestamp,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -32,32 +41,71 @@ def test_import_is_light():
 
 
 def test_timespan():
-    ts = TimeSpan(1.0, 3.5)
-    assert ts.duration == 2.5
-    assert ts.as_tuple == (1.0, 3.5)
-    assert TimeSpan.from_tuple((2, 4)).duration == 2.0
+    ts = TimeSpan(1000, 3500)  # integer milliseconds
+    assert ts.duration_ms == 2500
+    assert ts.as_seconds == (1.0, 3.5)
+    assert TimeSpan.from_seconds(2.0, 4.0) == TimeSpan(2000, 4000)
+    assert TimeSpan.from_seconds(2.0, 4.0).duration_ms == 2000
+    assert TimeSpan(0, 1500).offset(500) == TimeSpan(500, 2000)
 
 
 def test_segment_and_word_span():
-    w = Word("hi", start=0.0, end=0.5, confidence=0.9)
-    assert w.span == TimeSpan(0.0, 0.5)
-    s = Segment("hi there", start=0.0, end=1.0, words=[w])
-    assert s.span == TimeSpan(0.0, 1.0)
+    w = Word("hi", span=TimeSpan.from_seconds(0.0, 0.5), confidence=0.9)
+    assert w.span == TimeSpan(0, 500)
+    assert (w.start, w.end) == (0.0, 0.5)  # float-second convenience accessors
+    s = Segment("hi there", span=TimeSpan.from_seconds(0.0, 1.0), words=(w,))
+    assert s.span == TimeSpan(0, 1000)
+    assert (s.start, s.end) == (0.0, 1.0)
     assert str(s) == "hi there"
+    assert s.is_final is True  # batch segments are final by default
+    assert s.channel is None  # generic STT leaves channel unset
     assert Word("x").span is None
+    assert Word("x").start is None
+
+
+def test_segment_streaming_and_channel_fields():
+    """The spine's live-streaming + multi-source fields, enriched by frozen copy."""
+    s = Segment("hi", span=TimeSpan(0, 500))
+    interim = Segment("hi", span=TimeSpan(0, 500), is_final=False)
+    assert interim.is_final is False
+
+    spk = s.with_speaker("A")
+    assert spk.speaker == "A" and s.speaker is None  # original untouched (frozen)
+
+    ch = s.with_channel(Channel.MIC)
+    assert ch.channel is Channel.MIC and s.channel is None
+    assert Channel.MIC == "mic"  # str-enum wire value
+
+    assert s.offset(1000).span == TimeSpan(1000, 1500)  # shift to absolute time
+    assert Segment("x").offset(1000).span is None  # untimed stays untimed
+
+
+def test_result_types_are_frozen():
+    s = Segment("hi", span=TimeSpan(0, 500))
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        s.text = "no"  # type: ignore[misc]
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        TimeSpan(0, 1).start_ms = 5  # type: ignore[misc]
 
 
 def test_transcript_basics():
     t = Transcript.from_segments(
         [
-            Segment("Hello there.", start=0.0, end=1.2, speaker="A", confidence=0.95),
+            Segment(
+                "Hello there.",
+                span=TimeSpan.from_seconds(0.0, 1.2),
+                speaker="A",
+                confidence=0.95,
+            ),
             Segment(
                 "General Kenobi.",
-                start=1.3,
-                end=2.8,
+                span=TimeSpan.from_seconds(1.3, 2.8),
                 speaker="B",
                 confidence=0.85,
-                words=[Word("General", 1.3, 1.9), Word("Kenobi", 2.0, 2.8)],
+                words=(
+                    Word("General", TimeSpan.from_seconds(1.3, 1.9)),
+                    Word("Kenobi", TimeSpan.from_seconds(2.0, 2.8)),
+                ),
             ),
         ],
         backend="demo",
@@ -72,6 +120,8 @@ def test_transcript_basics():
     assert len(t.words) == 2
     assert abs(t.mean_confidence - 0.90) < 1e-9
     assert bool(t) is True
+    assert t.duration == 2.8  # seconds field, unchanged
+    assert t.duration_ms == 2800  # millisecond convenience accessor
 
 
 def test_transcript_from_text():
@@ -79,7 +129,7 @@ def test_transcript_from_text():
     assert t.text == "just text"
     assert t.language == "en"
     assert t.duration == 1.0
-    assert t.segments == []
+    assert t.segments == ()  # frozen -> tuple, empty
     assert t.srt == ""  # no timed segments
     assert not Transcript.from_text("")
 
@@ -87,9 +137,9 @@ def test_transcript_from_text():
 def test_filter_confidence():
     t = Transcript.from_segments(
         [
-            Segment("keep", start=0, end=1, confidence=0.9),
-            Segment("drop", start=1, end=2, confidence=0.3),
-            Segment("nounce", start=2, end=3, confidence=None),
+            Segment("keep", span=TimeSpan.from_seconds(0, 1), confidence=0.9),
+            Segment("drop", span=TimeSpan.from_seconds(1, 2), confidence=0.3),
+            Segment("nounce", span=TimeSpan.from_seconds(2, 3), confidence=None),
         ],
         backend="x",
     )
@@ -112,8 +162,8 @@ def test_format_timestamp():
 def test_srt_and_vtt():
     t = Transcript.from_segments(
         [
-            Segment("Hello.", start=0.0, end=1.0, speaker="A"),
-            Segment("World.", start=1.0, end=2.0),
+            Segment("Hello.", span=TimeSpan.from_seconds(0.0, 1.0), speaker="A"),
+            Segment("World.", span=TimeSpan.from_seconds(1.0, 2.0)),
         ],
         backend="x",
     )
@@ -282,7 +332,8 @@ def test_kwargs_translator_none_means_unsupported():
 def test_make_segment_confidence_normalization():
     s = scribed.make_segment("hi", start=0, end=1, confidence=87, conf_scale=100)
     assert abs(s.confidence - 0.87) < 1e-9
-    assert s.level == "segment"
+    assert s.span == TimeSpan(0, 1000)  # seconds surface -> millisecond TimeSpan
+    assert (s.start, s.end) == (0.0, 1.0)  # float-second convenience accessors
     w = scribed.make_word("hi", start=0, end=1, confidence=1.5)  # clamped
     assert w.confidence == 1.0
 
