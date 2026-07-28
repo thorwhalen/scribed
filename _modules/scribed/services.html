@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed.services &mdash; scribed 0.0.1 documentation</title>
+  <title>scribed.services &mdash; scribed 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -48,6 +48,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed.html">scribed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/audio.html">scribed.audio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends.html">scribed.backends</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/_template.html">scribed.backends._template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
@@ -90,9 +91,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/registry.html">scribed.registry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/services.html">scribed.services</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/streaming.html">scribed.streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/testing.html">scribed.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/tools.html">scribed.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/translation.html">scribed.translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/util.html">scribed.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/scribed/vad.html">scribed.vad</a></li>
 </ul>
 
         </div>
@@ -184,6 +188,23 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transcribe ``audio`` with this backend. Returns a ``Transcript``.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">adapter</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ServiceHandle.transcribe_live">
+<a class="viewcode-back" href="../../module_docs/scribed/services.html#scribed.ServiceHandle.transcribe_live">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transcribe_live</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stream ``Segment``\\ s live from this backend (an async generator).</span>
+
+<span class="sd">        Uses the backend&#39;s native streamer if it has one, else the synthesized</span>
+<span class="sd">        VAD-segmented fallback over its batch ``transcribe``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">adapter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adapter</span>
+        <span class="n">native</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">adapter</span><span class="p">,</span> <span class="s2">&quot;transcribe_live&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">native</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">native</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="n">vad</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.streaming</span><span class="w"> </span><span class="kn">import</span> <span class="n">vad_segmented_stream</span>
+
+        <span class="k">return</span> <span class="n">vad_segmented_stream</span><span class="p">(</span><span class="n">adapter</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="n">vad</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>

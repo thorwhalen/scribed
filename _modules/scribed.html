@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed &mdash; scribed 0.0.1 documentation</title>
+  <title>scribed &mdash; scribed 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/documentation_options.js?v=e3a6060d"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -48,6 +48,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed.html">scribed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/audio.html">scribed.audio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/backends.html">scribed.backends</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/backends/_template.html">scribed.backends._template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
@@ -90,9 +91,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/registry.html">scribed.registry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/services.html">scribed.services</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/streaming.html">scribed.streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/testing.html">scribed.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/tools.html">scribed.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/translation.html">scribed.translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/util.html">scribed.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../module_docs/scribed/vad.html">scribed.vad</a></li>
 </ul>
 
         </div>
@@ -168,7 +172,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.base</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AudioInput</span><span class="p">,</span>
-    <span class="n">LEVELS</span><span class="p">,</span>
+    <span class="n">Channel</span><span class="p">,</span>
     <span class="n">Segment</span><span class="p">,</span>
     <span class="n">TimeSpan</span><span class="p">,</span>
     <span class="n">Transcript</span><span class="p">,</span>
@@ -220,8 +224,19 @@
     <span class="s2">&quot;Segment&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Word&quot;</span><span class="p">,</span>
     <span class="s2">&quot;TimeSpan&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Channel&quot;</span><span class="p">,</span>
     <span class="s2">&quot;AudioInput&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;LEVELS&quot;</span><span class="p">,</span>
+    <span class="c1"># streaming surface (lazily imported; see module __getattr__)</span>
+    <span class="s2">&quot;transcribe_live&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iter_live&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Transcriber&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AudioSource&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;file_to_stream&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_mic&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;VAD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EnergyVAD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SileroVAD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;segment_utterances&quot;</span><span class="p">,</span>
     <span class="s2">&quot;BackendInfo&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Catalog&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ServiceCollection&quot;</span><span class="p">,</span>
@@ -302,6 +317,41 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span></div>
 
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Lazy streaming surface (PEP 562)</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># The real-time API lives in scribed.streaming / scribed.vad, which need numpy.</span>
+<span class="c1"># Importing them lazily on first attribute access keeps ``import scribed`` light</span>
+<span class="c1"># (no numpy, no audio libs) for the batch-only and ledger-only use cases.</span>
+
+<span class="n">_LAZY_ATTRS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;transcribe_live&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iter_live&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Transcriber&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AudioSource&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;file_to_stream&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_mic&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;VAD&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.vad&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EnergyVAD&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.vad&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SileroVAD&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.vad&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;segment_utterances&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.vad&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lazily resolve the streaming symbols (PEP 562 module-level hook).&quot;&quot;&quot;</span>
+    <span class="n">module_path</span> <span class="o">=</span> <span class="n">_LAZY_ATTRS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">module_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_path</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">([</span><span class="o">*</span><span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="o">*</span><span class="n">_LAZY_ATTRS</span><span class="p">])</span>
 </pre></div>
 
            </div>

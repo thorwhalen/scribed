@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; scribed 0.0.1 documentation</title>
+  <title>Index &mdash; scribed 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/documentation_options.js?v=e3a6060d"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -48,6 +48,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed.html">scribed</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/__main__.html">scribed.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/audio.html">scribed.audio</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends.html">scribed.backends</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/_template.html">scribed.backends._template</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/backends/_template/adapter.html">scribed.backends._template.adapter</a></li>
@@ -90,9 +91,12 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/registry.html">scribed.registry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/services.html">scribed.services</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/status.html">scribed.status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/streaming.html">scribed.streaming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/testing.html">scribed.testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/tools.html">scribed.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/translation.html">scribed.translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/util.html">scribed.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/scribed/vad.html">scribed.vad</a></li>
 </ul>
 
         </div>
@@ -133,6 +137,7 @@
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -170,16 +175,16 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/scribed/base.html#scribed.base.TimeSpan.as_seconds">as_seconds (scribed.base.TimeSpan property)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed.html#scribed.TimeSpan.as_seconds">(scribed.TimeSpan property)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/scribed/base.html#scribed.base.Transcript.as_srt">as_srt() (scribed.base.Transcript method)</a>
 
       <ul>
         <li><a href="module_docs/scribed.html#scribed.Transcript.as_srt">(scribed.Transcript method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/scribed/base.html#scribed.base.TimeSpan.as_tuple">as_tuple (scribed.base.TimeSpan property)</a>
-
-      <ul>
-        <li><a href="module_docs/scribed.html#scribed.TimeSpan.as_tuple">(scribed.TimeSpan property)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/scribed/base.html#scribed.base.Transcript.as_vtt">as_vtt() (scribed.base.Transcript method)</a>
@@ -254,6 +259,18 @@
         <li><a href="module_docs/scribed/catalog.html#scribed.catalog.Catalog">(class in scribed.catalog)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/scribed.html#scribed.Channel">Channel (class in scribed)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed/base.html#scribed.base.Channel">(class in scribed.base)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.channel">channel (scribed.base.Segment attribute)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed.html#scribed.Segment.channel">(scribed.Segment attribute)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/scribed.html#scribed.check">check() (in module scribed)</a>
 
       <ul>
@@ -262,12 +279,12 @@
       </ul></li>
       <li><a href="module_docs/scribed/util.html#scribed.util.check_import">check_import() (in module scribed.util)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/scribed/util.html#scribed.util.classify_input">classify_input() (in module scribed.util)</a>
 </li>
       <li><a href="module_docs/scribed/util.html#scribed.util.cleanup_temp">cleanup_temp() (in module scribed.util)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/scribed/registry.html#scribed.registry.clear_registry">clear_registry() (in module scribed.registry)</a>
 </li>
       <li><a href="module_docs/scribed.html#scribed.Catalog.compare">compare() (scribed.Catalog method)</a>
@@ -300,8 +317,6 @@
 </li>
       <li><a href="module_docs/scribed/backends/google_speech/adapter.html#scribed.backends.google_speech.adapter.DFLT_OP_TIMEOUT">DFLT_OP_TIMEOUT (in module scribed.backends.google_speech.adapter)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/scribed.html#scribed.doctor">doctor() (in module scribed)</a>
 
       <ul>
@@ -311,19 +326,31 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/scribed/base.html#scribed.base.TimeSpan.duration_ms">duration_ms (scribed.base.TimeSpan property)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed/base.html#scribed.base.Transcript.duration_ms">(scribed.base.Transcript property)</a>
+</li>
+        <li><a href="module_docs/scribed.html#scribed.TimeSpan.duration_ms">(scribed.TimeSpan property)</a>
+</li>
+        <li><a href="module_docs/scribed.html#scribed.Transcript.duration_ms">(scribed.Transcript property)</a>
+</li>
+      </ul></li>
+  </ul></td>
 </tr></table>
 
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.end">end (scribed.base.Segment attribute)</a>
+      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.end">end (scribed.base.Segment property)</a>
 
       <ul>
-        <li><a href="module_docs/scribed/base.html#scribed.base.Word.end">(scribed.base.Word attribute)</a>
+        <li><a href="module_docs/scribed/base.html#scribed.base.Word.end">(scribed.base.Word property)</a>
 </li>
-        <li><a href="module_docs/scribed.html#scribed.Segment.end">(scribed.Segment attribute)</a>
+        <li><a href="module_docs/scribed.html#scribed.Segment.end">(scribed.Segment property)</a>
 </li>
-        <li><a href="module_docs/scribed.html#scribed.Word.end">(scribed.Word attribute)</a>
+        <li><a href="module_docs/scribed.html#scribed.Word.end">(scribed.Word property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -356,6 +383,12 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/scribed/base.html#scribed.base.TimeSpan.from_seconds">from_seconds() (scribed.base.TimeSpan class method)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed.html#scribed.TimeSpan.from_seconds">(scribed.TimeSpan class method)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/scribed/base.html#scribed.base.Transcript.from_segments">from_segments() (scribed.base.Transcript class method)</a>
 
       <ul>
@@ -416,6 +449,12 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.is_final">is_final (scribed.base.Segment attribute)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed.html#scribed.Segment.is_final">(scribed.Segment attribute)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/scribed.html#scribed.is_set_up">is_set_up() (in module scribed)</a>
 
       <ul>
@@ -440,12 +479,6 @@
 
       <ul>
         <li><a href="module_docs/scribed.html#scribed.Segment.language">(scribed.Segment attribute)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.level">level (scribed.base.Segment attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/scribed.html#scribed.Segment.level">(scribed.Segment attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -607,8 +640,30 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/scribed.html#scribed.BaseTranscriberAdapter.natively_streams">natively_streams (scribed.BaseTranscriberAdapter attribute)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed/make_backend.html#scribed.make_backend.BaseTranscriberAdapter.natively_streams">(scribed.make_backend.BaseTranscriberAdapter attribute)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/scribed/make_backend.html#scribed.make_backend.normalize_confidence">normalize_confidence() (in module scribed.make_backend)</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.offset">offset() (scribed.base.Segment method)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed/base.html#scribed.base.TimeSpan.offset">(scribed.base.TimeSpan method)</a>
+</li>
+        <li><a href="module_docs/scribed.html#scribed.Segment.offset">(scribed.Segment method)</a>
+</li>
+        <li><a href="module_docs/scribed.html#scribed.TimeSpan.offset">(scribed.TimeSpan method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -868,8 +923,6 @@
         <li><a href="module_docs/scribed/backends/vosk/adapter.html#module-scribed.backends.vosk.adapter">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     scribed.backends.vosk.config
 
@@ -877,6 +930,8 @@
         <li><a href="module_docs/scribed/backends/vosk/config.html#module-scribed.backends.vosk.config">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     scribed.backends.whisper
 
@@ -1012,6 +1067,16 @@
 </li>
       <li><a href="module_docs/scribed.html#scribed.services">services (in module scribed)</a>
 </li>
+      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.span">span (scribed.base.Segment attribute)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed/base.html#scribed.base.Word.span">(scribed.base.Word attribute)</a>
+</li>
+        <li><a href="module_docs/scribed.html#scribed.Segment.span">(scribed.Segment attribute)</a>
+</li>
+        <li><a href="module_docs/scribed.html#scribed.Word.span">(scribed.Word attribute)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/scribed/base.html#scribed.base.Segment.speaker">speaker (scribed.base.Segment attribute)</a>
 
       <ul>
@@ -1034,14 +1099,14 @@
         <li><a href="module_docs/scribed.html#scribed.Transcript.srt">(scribed.Transcript property)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.start">start (scribed.base.Segment attribute)</a>
+      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.start">start (scribed.base.Segment property)</a>
 
       <ul>
-        <li><a href="module_docs/scribed/base.html#scribed.base.Word.start">(scribed.base.Word attribute)</a>
+        <li><a href="module_docs/scribed/base.html#scribed.base.Word.start">(scribed.base.Word property)</a>
 </li>
-        <li><a href="module_docs/scribed.html#scribed.Segment.start">(scribed.Segment attribute)</a>
+        <li><a href="module_docs/scribed.html#scribed.Segment.start">(scribed.Segment property)</a>
 </li>
-        <li><a href="module_docs/scribed.html#scribed.Word.start">(scribed.Word attribute)</a>
+        <li><a href="module_docs/scribed.html#scribed.Word.start">(scribed.Word property)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/scribed/tools.html#scribed.tools.status">status() (in module scribed.tools)</a>
@@ -1086,16 +1151,24 @@
         <li><a href="module_docs/scribed/catalog.html#scribed.catalog.Catalog.to_dataframe">(scribed.catalog.Catalog method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/scribed/util.html#scribed.util.to_waveform">to_waveform() (in module scribed.util)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/scribed.html#scribed.transcribe">transcribe() (in module scribed)</a>
 
       <ul>
         <li><a href="module_docs/scribed/tools.html#scribed.tools.transcribe">(in module scribed.tools)</a>
 </li>
         <li><a href="module_docs/scribed/services.html#scribed.services.ServiceHandle.transcribe">(scribed.services.ServiceHandle method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/scribed.html#scribed.BaseTranscriberAdapter.transcribe_live">transcribe_live() (scribed.BaseTranscriberAdapter method)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed/make_backend.html#scribed.make_backend.BaseTranscriberAdapter.transcribe_live">(scribed.make_backend.BaseTranscriberAdapter method)</a>
+</li>
+        <li><a href="module_docs/scribed/services.html#scribed.services.ServiceHandle.transcribe_live">(scribed.services.ServiceHandle method)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/scribed.html#scribed.transcribe_text">transcribe_text() (in module scribed)</a>
@@ -1135,6 +1208,26 @@
 
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.with_channel">with_channel() (scribed.base.Segment method)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed.html#scribed.Segment.with_channel">(scribed.Segment method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/scribed/base.html#scribed.base.Transcript.with_meta">with_meta() (scribed.base.Transcript method)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed.html#scribed.Transcript.with_meta">(scribed.Transcript method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/scribed/base.html#scribed.base.Segment.with_speaker">with_speaker() (scribed.base.Segment method)</a>
+
+      <ul>
+        <li><a href="module_docs/scribed.html#scribed.Segment.with_speaker">(scribed.Segment method)</a>
+</li>
+      </ul></li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/scribed.html#scribed.Word">Word (class in scribed)</a>
 

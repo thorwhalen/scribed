@@ -4,6 +4,7 @@
 
    module_docs/scribed
    module_docs/scribed/__main__
+   module_docs/scribed/audio
    module_docs/scribed/backends
    module_docs/scribed/backends/_template
    module_docs/scribed/backends/_template/adapter
@@ -46,6 +47,9 @@
    module_docs/scribed/registry
    module_docs/scribed/services
    module_docs/scribed/status
+   module_docs/scribed/streaming
+   module_docs/scribed/testing
    module_docs/scribed/tools
    module_docs/scribed/translation
    module_docs/scribed/util
+   module_docs/scribed/vad
