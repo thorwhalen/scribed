@@ -12,12 +12,14 @@ every option, and the tools to wrap any of them.
 ```python
 import scribed
 
-text = scribed.transcribe_text("talk.mp3")     # just the text, default backend
-t = scribed.transcribe("talk.mp3")             # full result: text + timed segments
-print(t)                                       # -> the transcript
-print(t.srt)                                   # -> SRT subtitles
+text = scribed.transcribe_text("talk.mp3")  # just the text, default backend
+t = scribed.transcribe("talk.mp3")  # full result: text + timed segments
+print(t)  # -> the transcript
+print(t.srt)  # -> SRT subtitles
 for seg in t:
-    print(seg.start, seg.speaker, seg.text)    # iterate timed (optionally diarized) segments
+    print(
+        seg.start, seg.speaker, seg.text
+    )  # iterate timed (optionally diarized) segments
 ```
 
 The same call, the same `Transcript` back, no matter which engine ran.
@@ -63,10 +65,12 @@ first-run model weights, or an API key). scribed turns that into structured,
 OS-aware guidance — handy for humans and AI agents alike:
 
 ```python
-scribed.doctor()                       # what's usable now vs what each missing one needs
-scribed.check("faster-whisper")        # -> True/False (usable right now?)
-print(scribed.requirements("whisper").instructions())   # exact plan: system deps + pip + weights
-scribed.install("faster-whisper", yes=True)             # plan, or actually run the pip install
+scribed.doctor()  # what's usable now vs what each missing one needs
+scribed.check("faster-whisper")  # -> True/False (usable right now?)
+print(
+    scribed.requirements("whisper").instructions()
+)  # exact plan: system deps + pip + weights
+scribed.install("faster-whisper", yes=True)  # plan, or actually run the pip install
 ```
 
 ## The ledger — choose with eyes open
@@ -76,12 +80,12 @@ working façade. It lives in data (`scribed/data/backends.json`), not code, so y
 can read, filter, diff, and extend it:
 
 ```python
-scribed.catalog                                   # the whole ledger
-scribed.find(is_local=True, open_source=True)     # only local OSS engines
-scribed.find(diarization="yes", is_remote=True)   # speaker-labelling cloud APIs
-scribed.find(implemented=True)                    # only what scribed can run today
-scribed.catalog.supports_language("French")       # engines that list French
-scribed.catalog.to_dataframe()                    # browse as a pandas table
+scribed.catalog  # the whole ledger
+scribed.find(is_local=True, open_source=True)  # only local OSS engines
+scribed.find(diarization="yes", is_remote=True)  # speaker-labelling cloud APIs
+scribed.find(implemented=True)  # only what scribed can run today
+scribed.catalog.supports_language("French")  # engines that list French
+scribed.catalog.to_dataframe()  # browse as a pandas table
 ```
 
 `implemented` is computed live from the registry, so the ledger can never lie
@@ -95,25 +99,27 @@ the text" to full structure:
 ```python
 t = scribed.transcribe("interview.wav", backend="deepgram", diarize=True)
 
-str(t)            # the full transcript text
-t.text            # same string
-t.language        # detected language
-t.duration        # audio duration (seconds)
-for seg in t:     # Segment: .text .start .end .speaker .confidence .words
+str(t)  # the full transcript text
+t.text  # same string
+t.language  # detected language
+t.duration  # audio duration (seconds)
+for seg in t:  # Segment: .text .start .end .speaker .confidence .words
     ...
-t.words           # flattened word-level units (when the engine reports them)
-t.speakers        # ['speaker_0', 'speaker_1', ...] when diarized
-t.srt             # SRT subtitles
-t.vtt             # WebVTT subtitles
-t.raw             # the untouched backend response
+t.words  # flattened word-level units (when the engine reports them)
+t.speakers  # ['speaker_0', 'speaker_1', ...] when diarized
+t.srt  # SRT subtitles
+t.vtt  # WebVTT subtitles
+t.raw  # the untouched backend response
 ```
 
 ## Three tiers of access
 
 ```python
-scribed.transcribe(audio)                                  # 1. facade, default backend
-scribed.services.deepgram.transcribe(audio, diarize=True)  # 2. pick a backend explicitly
-scribed.services.deepgram.adapter                          # 3. the raw engine adapter
+scribed.transcribe(audio)  # 1. facade, default backend
+scribed.services.deepgram.transcribe(
+    audio, diarize=True
+)  # 2. pick a backend explicitly
+scribed.services.deepgram.adapter  # 3. the raw engine adapter
 ```
 
 ## CLI
@@ -136,9 +142,11 @@ the machinery (and a SKILL) to wrap any other in minutes:
 ```python
 from scribed.make_backend import scaffold_backend, validate_adapter
 
-scaffold_backend("speechmatics")     # generate scribed/backends/speechmatics/ from the ledger entry
+scaffold_backend(
+    "speechmatics"
+)  # generate scribed/backends/speechmatics/ from the ledger entry
 # ...fill in param_map (config.py) and implement adapter.py's _transcribe...
-validate_adapter("speechmatics")     # smoke-test it end to end
+validate_adapter("speechmatics")  # smoke-test it end to end
 ```
 
 A backend is just a subpackage with a `config.py` (`BACKEND_CONFIG`) and an

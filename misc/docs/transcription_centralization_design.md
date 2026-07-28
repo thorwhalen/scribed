@@ -239,13 +239,14 @@ from enum import Enum
 from typing import Any, Iterable, Iterator, Mapping, Optional, Union
 from pathlib import Path
 
-AudioInput = Union[str, Path, bytes, "BinaryIO", "NDArray"]   # batch input (unchanged)
-AudioChunk = "NDArray"                                        # one mono float32 block (streaming)
+AudioInput = Union[str, Path, bytes, "BinaryIO", "NDArray"]  # batch input (unchanged)
+AudioChunk = "NDArray"  # one mono float32 block (streaming)
 
 
 @dataclass(frozen=True, slots=True)
 class TimeSpan:
     """Half-open [start_ms, end_ms) in INTEGER milliseconds: accumulation-safe, hashable."""
+
     start_ms: int
     end_ms: int
 
@@ -258,7 +259,7 @@ class TimeSpan:
         return cls(int(round(start * 1000)), int(round(end * 1000)))
 
     @property
-    def as_seconds(self) -> tuple[float, float]:        # read-path bridge for SRT/VTT
+    def as_seconds(self) -> tuple[float, float]:  # read-path bridge for SRT/VTT
         return self.start_ms / 1000.0, self.end_ms / 1000.0
 
     def offset(self, by_ms: int) -> "TimeSpan":
@@ -267,6 +268,7 @@ class TimeSpan:
 
 class Channel(str, Enum):
     """OPTIONAL capture provenance. Generic STT leaves Segment.channel=None; hearing stamps it."""
+
     MIC = "mic"
     SYSTEM = "system"
     MIXED = "mixed"
@@ -276,22 +278,27 @@ class Channel(str, Enum):
 class Word:
     text: str
     span: Optional[TimeSpan] = None
-    confidence: Optional[float] = None        # normalized [0, 1]
+    confidence: Optional[float] = None  # normalized [0, 1]
     speaker: Optional[str] = None
 
 
 @dataclass(frozen=True, slots=True)
 class Segment:
     """The spine unit. Frozen; enrich-by-copy via replace / with_*."""
+
     text: str
     span: Optional[TimeSpan] = None
     confidence: Optional[float] = None
-    speaker: Optional[str] = None             # diarization rides here; scribed leaves None
+    speaker: Optional[str] = None  # diarization rides here; scribed leaves None
     language: Optional[str] = None
-    channel: Optional[Channel] = None         # FIRST-CLASS optional field (None for generic STT)
-    is_final: bool = True                     # FORMALIZED (was hearing meta['final']); batch=True
+    channel: Optional[Channel] = (
+        None  # FIRST-CLASS optional field (None for generic STT)
+    )
+    is_final: bool = True  # FORMALIZED (was hearing meta['final']); batch=True
     words: tuple[Word, ...] = ()
-    meta: Mapping[str, Any] = field(default_factory=dict)   # avg_logprob, no_speech_prob, engine...
+    meta: Mapping[str, Any] = field(
+        default_factory=dict
+    )  # avg_logprob, no_speech_prob, engine...
 
     def with_speaker(self, speaker: str) -> "Segment":
         return replace(self, speaker=speaker)
@@ -300,7 +307,9 @@ class Segment:
         return replace(self, channel=channel)
 
     def offset(self, by_ms: int) -> "Segment":
-        return self if self.span is None else replace(self, span=self.span.offset(by_ms))
+        return (
+            self if self.span is None else replace(self, span=self.span.offset(by_ms))
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -310,17 +319,24 @@ class Transcript:
     language: Optional[str] = None
     duration_ms: Optional[int] = None
     sample_rate: Optional[int] = None
-    raw: Any = None                           # untouched native response (lossless escape hatch)
+    raw: Any = None  # untouched native response (lossless escape hatch)
     meta: Mapping[str, Any] = field(default_factory=dict)
 
     @property
     def text(self) -> str:
         return " ".join(s.text for s in self.segments)
 
-    def __str__(self) -> str: return self.text
-    def __iter__(self) -> Iterator[Segment]: return iter(self.segments)
-    def __len__(self) -> int: return len(self.segments)
-    def __bool__(self) -> bool: return bool(self.segments)
+    def __str__(self) -> str:
+        return self.text
+
+    def __iter__(self) -> Iterator[Segment]:
+        return iter(self.segments)
+
+    def __len__(self) -> int:
+        return len(self.segments)
+
+    def __bool__(self) -> bool:
+        return bool(self.segments)
 
     @property
     def words(self) -> tuple[Word, ...]:
@@ -331,17 +347,26 @@ class Transcript:
         return tuple(sorted({s.speaker for s in self.segments if s.speaker}))
 
     @property
-    def srt(self) -> str: ...                  # uses span.as_seconds at the format boundary
+    def srt(self) -> str: ...  # uses span.as_seconds at the format boundary
     @property
     def vtt(self) -> str: ...
     def at_speaker(self, speaker: str) -> "Transcript": ...
 
     @classmethod
-    def from_segments(cls, segments: Iterable[Segment], *, backend: str = "", raw: Any = None,
-                      language: Optional[str] = None, duration_ms: Optional[int] = None,
-                      **meta) -> "Transcript": ...
+    def from_segments(
+        cls,
+        segments: Iterable[Segment],
+        *,
+        backend: str = "",
+        raw: Any = None,
+        language: Optional[str] = None,
+        duration_ms: Optional[int] = None,
+        **meta,
+    ) -> "Transcript": ...
     @classmethod
-    def from_text(cls, text: str, *, backend: str = "", raw: Any = None, **meta) -> "Transcript": ...
+    def from_text(
+        cls, text: str, *, backend: str = "", raw: Any = None, **meta
+    ) -> "Transcript": ...
 ```
 
 **Why this shape (resolving the type conflict):** the type-model judge is decisive —
@@ -395,11 +420,13 @@ that delegates to the synthesized fallback, plus a capability flag:
 ```python
 # scribed/make_backend.py  — ADDITIONS to BaseTranscriberAdapter
 class BaseTranscriberAdapter:
-    natively_streams: bool = False            # registry reads this for capability='stream'
+    natively_streams: bool = False  # registry reads this for capability='stream'
 
     # ... existing __init__, transcribe, _transcribe unchanged ...
 
-    async def transcribe_live(self, source, *, vad=None, **kwargs) -> AsyncIterator[Segment]:
+    async def transcribe_live(
+        self, source, *, vad=None, **kwargs
+    ) -> AsyncIterator[Segment]:
         """DEFAULT: VAD-segmented batch (synthesized streaming). Native-streaming backends
         (deepgram-live, vosk) OVERRIDE _stream_native and set natively_streams=True."""
         if self.natively_streams:
@@ -407,11 +434,16 @@ class BaseTranscriberAdapter:
                 yield seg
         else:
             from scribed.streaming import vad_segmented_stream
+
             async for seg in vad_segmented_stream(self, source, vad=vad, **kwargs):
                 yield seg
 
-    async def _stream_native(self, source, *, vad=None, **kwargs) -> AsyncIterator[Segment]:
-        raise NotImplementedError("declare natively_streams=True and implement _stream_native")
+    async def _stream_native(
+        self, source, *, vad=None, **kwargs
+    ) -> AsyncIterator[Segment]:
+        raise NotImplementedError(
+            "declare natively_streams=True and implement _stream_native"
+        )
 ```
 
 ### 2.3 Audio source — a channel-agnostic async-iterable of chunks — `scribed/streaming.py`
@@ -423,19 +455,28 @@ class AudioSource(Protocol):
 
     Channel-agnostic ON PURPOSE — multi-channel/Channel routing is the consumer's job
     (hearing demuxes per channel and feeds N AudioSources to N transcribe_live calls)."""
+
     sample_rate: int
+
     def __aiter__(self) -> AsyncIterator[AudioChunk]: ...
 
 
 def file_to_stream(
-    audio: AudioInput, *, sample_rate: int = 16_000, block_ms: int = 200, realtime: bool = False
+    audio: AudioInput,
+    *,
+    sample_rate: int = 16_000,
+    block_ms: int = 200,
+    realtime: bool = False,
 ) -> AudioSource:
     """File -> simulated live stream. The hardware-free CI harness for the whole streaming path
     (absorbs hearing.StreamingFileCapture, channel-stripped). realtime=True paces with asyncio.sleep."""
 
 
 def from_mic(
-    *, device: Optional[int | str] = None, block_ms: int = 200, sample_rate: int = 16_000
+    *,
+    device: Optional[int | str] = None,
+    block_ms: int = 200,
+    sample_rate: int = 16_000,
 ) -> AudioSource:
     """Generic single-device mic source (NOT the meeting Aggregate Device). Lazy sounddevice."""
 ```
@@ -462,20 +503,26 @@ class VAD(Protocol):
 
 
 @dataclass(frozen=True)
-class EnergyVAD:                              # dependency-free default
+class EnergyVAD:  # dependency-free default
     threshold: float = 0.01
+
     def is_speech(self, block, sample_rate) -> bool: ...
 
 
 @dataclass
-class SileroVAD:                             # optional neural, lazy torch/silero-vad import
+class SileroVAD:  # optional neural, lazy torch/silero-vad import
     speech_prob_threshold: float = 0.5
+
     def is_speech(self, block, sample_rate) -> bool: ...
 
 
 async def segment_utterances(
-    frames: AsyncIterator[AudioChunk], *, sample_rate: int, vad: Optional[VAD] = None,
-    silence_ms: int = DEFAULT_SILENCE_MS, min_speech_ms: int = DEFAULT_MIN_SPEECH_MS,
+    frames: AsyncIterator[AudioChunk],
+    *,
+    sample_rate: int,
+    vad: Optional[VAD] = None,
+    silence_ms: int = DEFAULT_SILENCE_MS,
+    min_speech_ms: int = DEFAULT_MIN_SPEECH_MS,
     max_utterance_ms: int = DEFAULT_MAX_UTTERANCE_MS,
 ) -> AsyncIterator[tuple[AudioChunk, int]]:
     """Stream transform: chunks in -> (utterance_samples, start_ms) out. Verbatim from hearing,
@@ -501,8 +548,13 @@ from scribed.audio import to_mono_16k, STT_SAMPLE_RATE
 
 
 async def vad_segmented_stream(
-    engine: Transcriber, source: AudioSource, *, vad: Optional[VAD] = None,
-    target_rate: int = STT_SAMPLE_RATE, max_inflight: int = 1, **kwargs,
+    engine: Transcriber,
+    source: AudioSource,
+    *,
+    vad: Optional[VAD] = None,
+    target_rate: int = STT_SAMPLE_RATE,
+    max_inflight: int = 1,
+    **kwargs,
 ) -> AsyncIterator[Segment]:
     """Make a NON-streaming engine stream: VAD-segment audio into utterances, batch-transcribe
     each OFF the event loop, offset spans to absolute time, emit is_final=True.
@@ -519,20 +571,29 @@ async def vad_segmented_stream(
             result = await asyncio.to_thread(
                 engine.transcribe, utterance, sample_rate=target_rate, **kwargs
             )
-        return [seg.offset(start_ms) for seg in result]   # is_final already True for batch
+        return [
+            seg.offset(start_ms) for seg in result
+        ]  # is_final already True for batch
 
     frames = _resampled_frames(source, target_rate=target_rate)
-    async for utterance, start_ms in segment_utterances(frames, sample_rate=target_rate, vad=vad):
+    async for utterance, start_ms in segment_utterances(
+        frames, sample_rate=target_rate, vad=vad
+    ):
         for seg in await _decode(utterance, start_ms):
             yield seg
 
 
 def transcribe_live(
-    source: AudioSource, *, backend: Optional[str] = None, vad: Optional[VAD] = None, **kwargs
+    source: AudioSource,
+    *,
+    backend: Optional[str] = None,
+    vad: Optional[VAD] = None,
+    **kwargs,
 ) -> AsyncIterator[Segment]:
     """Tier-1 streaming facade. Resolve backend (prefer capability='stream'); route to the
     adapter's transcribe_live, which is native or VAD-synthesized transparently."""
     import scribed
+
     name = backend or scribed.get_default_backend(capability="stream")
     adapter = scribed.services[name].adapter
     return adapter.transcribe_live(source, vad=vad, **kwargs)
@@ -615,9 +676,13 @@ minimal — no thread, no queue — just step-wise `__anext__` advancement, so i
 import asyncio
 from typing import Iterator, Optional
 
+
 def iter_live(
-    source: "AudioSource", *, backend: Optional[str] = None,
-    vad: Optional["VAD"] = None, **kwargs,
+    source: "AudioSource",
+    *,
+    backend: Optional[str] = None,
+    vad: Optional["VAD"] = None,
+    **kwargs,
 ) -> Iterator[Segment]:
     """Synchronous driver over transcribe_live for non-async callers.
 
@@ -646,7 +711,7 @@ def iter_live(
             except StopAsyncIteration:
                 break
     finally:
-        loop.run_until_complete(agen.aclose())   # propagate cancellation downstream
+        loop.run_until_complete(agen.aclose())  # propagate cancellation downstream
         loop.close()
 ```
 
@@ -724,12 +789,12 @@ this is genuinely deleting copies, not porting logic.
 import scribed
 
 # (a) Transcribe a file — the one-liner, unchanged
-t = scribed.transcribe("meeting.wav")              # -> Transcript
-print(t.text)                                      # progressive disclosure: str sugar
-print(t.srt)                                       # subtitle export
-for seg in t:                                      # iterate Segments
+t = scribed.transcribe("meeting.wav")  # -> Transcript
+print(t.text)  # progressive disclosure: str sugar
+print(t.srt)  # subtitle export
+for seg in t:  # iterate Segments
     print(seg.span.start_ms, seg.speaker, seg.text)
-text = scribed.transcribe_text("https://x/clip.mp3")   # -> str
+text = scribed.transcribe_text("https://x/clip.mp3")  # -> str
 ```
 
 ```python
@@ -750,32 +815,44 @@ for seg in scribed.iter_live(scribed.from_mic()):
 
 ```python
 # (c) Swap engine — one keyword, batch OR stream
-t = scribed.transcribe("call.wav", backend="deepgram", diarize=True)        # batch
-async for seg in scribed.transcribe_live(src, backend="deepgram_live"):   # native WS streaming
+t = scribed.transcribe("call.wav", backend="deepgram", diarize=True)  # batch
+async for seg in scribed.transcribe_live(
+    src, backend="deepgram_live"
+):  # native WS streaming
     ...
-async for seg in scribed.transcribe_live(src, backend="whisper",          # batch-only engine,
-                                           vad=scribed.SileroVAD()):         #   auto VAD fallback
+async for seg in scribed.transcribe_live(
+    src,
+    backend="whisper",  # batch-only engine,
+    vad=scribed.SileroVAD(),
+):  #   auto VAD fallback
     ...
 
 # Which engines stream natively (true interim partials) vs finals-only?
-scribed.list_backends(capability="stream")     # registry, capability-aware
-scribed.find(streaming="yes", is_local=True)   # ledger filter
+scribed.list_backends(capability="stream")  # registry, capability-aware
+scribed.find(streaming="yes", is_local=True)  # ledger filter
 ```
 
 ```python
 # (d) Add a backend — unchanged two-file scaffold; streaming is optional and FREE if omitted
 from scribed.make_backend import scaffold_backend, validate_adapter, validate_stream
-scaffold_backend("assemblyai")                 # generates config.py + adapter.py from the ledger
+
+scaffold_backend("assemblyai")  # generates config.py + adapter.py from the ledger
+
 
 # adapter.py:
 class Adapter(BaseTranscriberAdapter):
-    def _transcribe(self, audio, **native_kwargs) -> Transcript: ...     # REQUIRED (batch)
+    def _transcribe(self, audio, **native_kwargs) -> Transcript: ...  # REQUIRED (batch)
+
     # OPTIONAL native streaming; omit it and the engine streams for free via VAD fallback:
     natively_streams = True
-    async def _stream_native(self, source, *, vad=None, **kw) -> AsyncIterator[Segment]: ...
 
-validate_adapter("assemblyai")                 # batch smoke test (tone or speech clip)
-validate_stream("assemblyai")                  # streaming smoke test via file_to_stream (no hardware)
+    async def _stream_native(
+        self, source, *, vad=None, **kw
+    ) -> AsyncIterator[Segment]: ...
+
+
+validate_adapter("assemblyai")  # batch smoke test (tone or speech clip)
+validate_stream("assemblyai")  # streaming smoke test via file_to_stream (no hardware)
 ```
 
 ---

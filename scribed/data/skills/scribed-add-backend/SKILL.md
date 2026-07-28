@@ -15,7 +15,10 @@ stays dependency-free.
 
 ```python
 from scribed.make_backend import scaffold_backend
-scaffold_backend("speechmatics")     # creates scribed/backends/speechmatics/, pre-filled from the ledger entry
+
+scaffold_backend(
+    "speechmatics"
+)  # creates scribed/backends/speechmatics/, pre-filled from the ledger entry
 ```
 
 (If the engine isn't in the ledger, add a record to `scribed/data/backends.json`
@@ -29,18 +32,18 @@ BACKEND_CONFIG = {
     "name": "Speechmatics",
     "display_name": "Speechmatics",
     "pip_install": "speechmatics-python",
-    "import_name": "speechmatics",     # used to probe availability
+    "import_name": "speechmatics",  # used to probe availability
     "license": "proprietary",
     "is_local": False,
     "is_remote": True,
-    "capabilities": ["diarize", "word_timestamps"],   # beyond the implied "transcribe"
+    "capabilities": ["diarize", "word_timestamps"],  # beyond the implied "transcribe"
     "default_for": [],
-    "api_env_var": "SPEECHMATICS_API_KEY",             # "" if local
+    "api_env_var": "SPEECHMATICS_API_KEY",  # "" if local
     "description": "...",
     # Map scribed's normalized options -> the engine's native names (None = unsupported):
     "param_map": {
         "language": {"native_name": "language"},
-        "diarize":  {"native_name": "diarization"},
+        "diarize": {"native_name": "diarization"},
         # "word_timestamps": None,   # explicitly unsupported -> clear warning
     },
 }
@@ -58,14 +61,15 @@ audio plus already-translated *native* kwargs):
 from scribed.base import Transcript
 from scribed.make_backend import BaseTranscriberAdapter, make_segment, make_word
 
+
 class Adapter(BaseTranscriberAdapter):
     def _transcribe(self, audio, **native_kwargs) -> Transcript:
-        import the_engine                                    # lazy!
+        import the_engine  # lazy!
         from scribed.util import ensure_file_path, cleanup_temp, load_audio_bytes
         # remote: from scribed.credentials import resolve_credential
         #         key = resolve_credential("speechmatics", env_var=self.config.get("api_env_var"))
 
-        path, is_temp = ensure_file_path(audio)              # or load_audio_bytes(audio) for REST
+        path, is_temp = ensure_file_path(audio)  # or load_audio_bytes(audio) for REST
         try:
             native = the_engine.transcribe(path, **native_kwargs)
         finally:
@@ -73,14 +77,25 @@ class Adapter(BaseTranscriberAdapter):
 
         segments = [
             make_segment(
-                u.text, start=u.start, end=u.end, confidence=u.conf,  # times in SECONDS
-                speaker=str(u.speaker) if u.speaker else None,        # set when diarized
-                words=[make_word(w.text, start=w.start, end=w.end, confidence=w.conf) for w in u.words],
+                u.text,
+                start=u.start,
+                end=u.end,
+                confidence=u.conf,  # times in SECONDS
+                speaker=str(u.speaker) if u.speaker else None,  # set when diarized
+                words=[
+                    make_word(w.text, start=w.start, end=w.end, confidence=w.conf)
+                    for w in u.words
+                ],
             )
             for u in native.utterances
         ]
-        return Transcript.from_segments(segments, backend=self.backend_id, raw=native,
-                                        language=native.language, duration=native.duration)
+        return Transcript.from_segments(
+            segments,
+            backend=self.backend_id,
+            raw=native,
+            language=native.language,
+            duration=native.duration,
+        )
 ```
 
 ### Normalization rules
@@ -94,7 +109,10 @@ class Adapter(BaseTranscriberAdapter):
 
 ```python
 from scribed.make_backend import validate_adapter
-validate_adapter("speechmatics")     # smoke-tests end to end; for remotes this makes a real (billed) call
+
+validate_adapter(
+    "speechmatics"
+)  # smoke-tests end to end; for remotes this makes a real (billed) call
 ```
 
 `validate_adapter` with no `audio=` uses a generated tone (a *wiring* test). Pass

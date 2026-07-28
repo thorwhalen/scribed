@@ -19,10 +19,10 @@ scribed.find(is_local=True, open_source=True)
 #      vosk (streaming/offline/edge)
 
 # Need speaker labels (who said what):
-scribed.find(diarization="yes")            # deepgram, assemblyai, elevenlabs, google, ...
+scribed.find(diarization="yes")  # deepgram, assemblyai, elevenlabs, google, ...
 
 # Need real-time / streaming:
-scribed.catalog.can("streaming")           # deepgram, assemblyai, vosk, google, azure, ...
+scribed.catalog.can("streaming")  # deepgram, assemblyai, vosk, google, azure, ...
 
 # Cheapest hosted Whisper, very fast:
 #   -> groq   (OpenAI-compatible, ~$0.02-0.11/hr)
@@ -44,7 +44,16 @@ scribed.catalog.can("streaming")           # deepgram, assemblyai, vosk, google,
 
 ```python
 scribed.catalog.compare(["faster-whisper", "deepgram", "assemblyai"])
-scribed.catalog.to_dataframe(columns=["name","is_local","pricing_model","diarization","streaming","languages_count"])
+scribed.catalog.to_dataframe(
+    columns=[
+        "name",
+        "is_local",
+        "pricing_model",
+        "diarization",
+        "streaming",
+        "languages_count",
+    ]
+)
 ```
 
 Pricing/coverage in the ledger are best-effort and change — verify against the

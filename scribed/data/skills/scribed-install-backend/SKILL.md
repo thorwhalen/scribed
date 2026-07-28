@@ -12,9 +12,10 @@ lazily. When a backend isn't ready, scribed gives structured, OS-aware guidance.
 
 ```python
 import scribed
-scribed.doctor()                 # {available: [...], missing: {id: hint}}
+
+scribed.doctor()  # {available: [...], missing: {id: hint}}
 scribed.check("faster-whisper")  # True/False — usable right now?
-scribed.status()                 # full readiness table (all ⊇ implemented ⊇ set_up ⊇ tested)
+scribed.status()  # full readiness table (all ⊇ implemented ⊇ set_up ⊇ tested)
 ```
 
 ## Get the exact plan
@@ -34,7 +35,7 @@ also exposes structured fields: `.pip_command`, `.system`, `.gpu`, `.weights`,
 ## Install
 
 ```python
-scribed.install("faster-whisper", yes=True)   # runs the pip install + verifies
+scribed.install("faster-whisper", yes=True)  # runs the pip install + verifies
 # system deps and GPU wheels are SURFACED, never run automatically (they need sudo/brew/CUDA choices)
 ```
 

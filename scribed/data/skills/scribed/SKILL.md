@@ -14,10 +14,10 @@ extra imported lazily.
 ```python
 import scribed
 
-text = scribed.transcribe_text("talk.mp3")   # just the text
-t = scribed.transcribe("talk.mp3")           # full Transcript
-print(t.srt)                                 # SRT subtitles
-for seg in t:                                # timed (optionally diarized) segments
+text = scribed.transcribe_text("talk.mp3")  # just the text
+t = scribed.transcribe("talk.mp3")  # full Transcript
+print(t.srt)  # SRT subtitles
+for seg in t:  # timed (optionally diarized) segments
     print(seg.start, seg.speaker, seg.text)
 ```
 
@@ -36,10 +36,10 @@ unsupported ones warn and are dropped.
 ## Pick / discover a backend
 
 ```python
-scribed.list_backends()                          # what's implemented
-scribed.find(is_local=True, open_source=True)    # filter the ledger
-scribed.find(diarization="yes")                  # speaker-labelling engines
-scribed.services.deepgram.transcribe(a, diarize=True)   # use a specific backend
+scribed.list_backends()  # what's implemented
+scribed.find(is_local=True, open_source=True)  # filter the ledger
+scribed.find(diarization="yes")  # speaker-labelling engines
+scribed.services.deepgram.transcribe(a, diarize=True)  # use a specific backend
 ```
 
 If a backend's dependency or key is missing you'll get a friendly install error.
