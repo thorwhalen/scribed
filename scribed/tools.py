@@ -1,6 +1,6 @@
-"""Command-line tools for scribed (dispatched via argh in ``__main__``).
+"""Command-line tools for scribed (dispatched via ``cw`` in ``__main__``).
 
-Each function here is a thin, CLI-friendly wrapper over the Python API; ``argh``
+Each function here is a thin, CLI-friendly wrapper over the Python API; ``cw``
 turns their signatures into subcommands and options. Run ``scribed <command>
 --help`` (after ``pip install 'scribed[cli]'``) or ``python -m scribed <command>``.
 """
