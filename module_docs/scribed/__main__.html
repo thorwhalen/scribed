@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed.__main__ &mdash; scribed 0.0.2 documentation</title>
+  <title>scribed.__main__ &mdash; scribed 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -129,7 +129,7 @@
   <section id="module-scribed.__main__">
 <span id="scribed-main"></span><h1>scribed.__main__<a class="headerlink" href="#module-scribed.__main__" title="Link to this heading"></a></h1>
 <p>scribed command-line interface.</p>
-<p>Exposes the tools in <a class="reference internal" href="tools.html#module-scribed.tools" title="scribed.tools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scribed.tools</span></code></a> as subcommands via <code class="docutils literal notranslate"><span class="pre">argh</span></code>:</p>
+<p>Exposes the tools in <a class="reference internal" href="tools.html#module-scribed.tools" title="scribed.tools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scribed.tools</span></code></a> as subcommands via <code class="docutils literal notranslate"><span class="pre">cw</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scribed</span> <span class="n">transcribe</span> <span class="n">talk</span><span class="o">.</span><span class="n">mp3</span> <span class="o">--</span><span class="n">backend</span> <span class="n">faster</span><span class="o">-</span><span class="n">whisper</span> <span class="o">--</span><span class="n">output</span> <span class="n">srt</span>
 <span class="n">scribed</span> <span class="n">backends</span> <span class="o">--</span><span class="n">capability</span> <span class="n">diarize</span>
 <span class="n">scribed</span> <span class="n">find</span> <span class="o">--</span><span class="n">local</span> <span class="o">--</span><span class="n">free</span> <span class="o">--</span><span class="n">diarization</span>
@@ -139,8 +139,11 @@
 <span class="n">scribed</span> <span class="n">status</span>
 </pre></div>
 </div>
-<p>The CLI dependency (<code class="docutils literal notranslate"><span class="pre">argh</span></code>) is optional — <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">scribed</span></code> stays dependency-free.
+<p>The CLI dependency (<code class="docutils literal notranslate"><span class="pre">cw</span></code>) is optional — <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">scribed</span></code> stays dependency-free.
 Install it with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">'scribed[cli]'</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">cw.mk_parser</span></code> returns a plain <code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code>, and <code class="docutils literal notranslate"><span class="pre">cw.run</span></code>
+offers it to <code class="docutils literal notranslate"><span class="pre">argcomplete</span></code> before parsing, so the <code class="docutils literal notranslate"><span class="pre">PYTHON_ARGCOMPLETE_OK</span></code> marker
+above keeps working with no adapter.</p>
 </section>
 
 

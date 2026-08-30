@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed.translation &mdash; scribed 0.0.2 documentation</title>
+  <title>scribed.translation &mdash; scribed 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -125,24 +125,24 @@
            <div itemprop="articleBody">
              
   <h1>Source code for scribed.translation</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Parameter translation between scribed&#39;s normalized kwargs and native engines.</span>
+<span></span><span class="sd">"""Parameter translation between scribed's normalized kwargs and native engines.</span>
 
 <span class="sd">Every backend exposes its own parameter names and scales (``language`` vs</span>
 <span class="sd">``lang`` vs ``language_code``; ``diarize`` vs ``speaker_labels``;</span>
-<span class="sd">``timestamps=&#39;word&#39;`` vs ``word_timestamps=True``). A backend declares a</span>
+<span class="sd">``timestamps='word'`` vs ``word_timestamps=True``). A backend declares a</span>
 <span class="sd">``param_map`` in its ``BACKEND_CONFIG`` mapping *normalized* names to native</span>
 <span class="sd">ones, and :func:`make_kwargs_translator` turns that declaration into a function</span>
 <span class="sd">that rewrites caller kwargs into the shape the engine wants. This keeps the</span>
-<span class="sd">facade&#39;s vocabulary stable while letting each adapter stay a thin shim.</span>
+<span class="sd">facade's vocabulary stable while letting each adapter stay a thin shim.</span>
 
 <span class="sd">This mirrors the translation layer used by the sibling ``ocracy`` facade so the</span>
 <span class="sd">two packages feel the same to read and extend.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;make_kwargs_translator&quot;</span><span class="p">,</span> <span class="s2">&quot;validate_param&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"make_kwargs_translator"</span><span class="p">,</span> <span class="s2">"validate_param"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="make_kwargs_translator">
@@ -150,27 +150,27 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">make_kwargs_translator</span><span class="p">(</span>
     <span class="n">param_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]],</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">on_unsupported</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;warn&quot;</span><span class="p">,</span>
+    <span class="n">on_unsupported</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"warn"</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a function that translates normalized kwargs to native kwargs.</span>
+<span class="w">    </span><span class="sd">"""Create a function that translates normalized kwargs to native kwargs.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        param_map: Mapping of ``normalized_name -&gt; native config dict`` where the</span>
 <span class="sd">            config dict may have:</span>
 
-<span class="sd">            - ``native_name`` (str): the backend&#39;s parameter name (defaults to</span>
+<span class="sd">            - ``native_name`` (str): the backend's parameter name (defaults to</span>
 <span class="sd">              the normalized name).</span>
 <span class="sd">            - ``coerce`` (callable): transform the value (e.g. a bool -&gt; the</span>
-<span class="sd">              string a vendor expects, ``[&quot;en&quot;] -&gt; &quot;en&quot;``).</span>
+<span class="sd">              string a vendor expects, ``["en"] -&gt; "en"``).</span>
 <span class="sd">            - ``default`` (Any): value to inject when the caller omits the param.</span>
 <span class="sd">            - ``None`` as the whole value: the parameter is explicitly *not*</span>
 <span class="sd">              supported by this backend.</span>
 <span class="sd">        on_unsupported: What to do with caller params absent from ``param_map``:</span>
-<span class="sd">            ``&quot;warn&quot;`` (default), ``&quot;raise&quot;``, or ``&quot;ignore&quot;``.</span>
+<span class="sd">            ``"warn"`` (default), ``"raise"``, or ``"ignore"``.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A ``translate(**kwargs) -&gt; dict`` function.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">supported_names</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">param_map</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">translate</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -178,30 +178,30 @@
 
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">param_map</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">on_unsupported</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">on_unsupported</span> <span class="o">==</span> <span class="s2">"raise"</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Unsupported parameter: </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">. &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;Supported: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">supported_names</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Unsupported parameter: </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">. "</span>
+                        <span class="sa">f</span><span class="s2">"Supported: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">supported_names</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">)</span>
-                <span class="k">if</span> <span class="n">on_unsupported</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">on_unsupported</span> <span class="o">==</span> <span class="s2">"warn"</span><span class="p">:</span>
                     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is not supported by this backend &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;and will be ignored.&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">"Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is not supported by this backend "</span>
+                        <span class="sa">f</span><span class="s2">"and will be ignored."</span><span class="p">,</span>
                         <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="k">continue</span>
 
             <span class="n">config</span> <span class="o">=</span> <span class="n">param_map</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">on_unsupported</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">on_unsupported</span> <span class="o">==</span> <span class="s2">"warn"</span><span class="p">:</span>
                     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is not supported by this backend.&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">"Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is not supported by this backend."</span><span class="p">,</span>
                         <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="k">continue</span>
 
-            <span class="n">native_name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;native_name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-            <span class="n">coerce</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+            <span class="n">native_name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"native_name"</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">coerce</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"coerce"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">coerce</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">coerce</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="n">native_kwargs</span><span class="p">[</span><span class="n">native_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
@@ -210,9 +210,9 @@
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">param_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">native_name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;native_name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">native_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">native_kwargs</span> <span class="ow">and</span> <span class="s2">&quot;default&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-                <span class="n">native_kwargs</span><span class="p">[</span><span class="n">native_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
+            <span class="n">native_name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"native_name"</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">native_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">native_kwargs</span> <span class="ow">and</span> <span class="s2">"default"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+                <span class="n">native_kwargs</span><span class="p">[</span><span class="n">native_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"default"</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">native_kwargs</span>
 
@@ -223,18 +223,18 @@
 <div class="viewcode-block" id="validate_param">
 <a class="viewcode-back" href="../../module_docs/scribed/translation.html#scribed.translation.validate_param">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_param</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate a single parameter against ``min``/``max``/``choices`` in config.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s2">&quot;min&quot;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Validate a single parameter against ``min``/``max``/``choices`` in config."""</span>
+    <span class="k">if</span> <span class="s2">"min"</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">config</span><span class="p">[</span><span class="s2">"min"</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> is below minimum </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> is below minimum </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">'min'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
-    <span class="k">if</span> <span class="s2">&quot;max&quot;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="s2">"max"</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">config</span><span class="p">[</span><span class="s2">"max"</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> is above maximum </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> is above maximum </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">'max'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
-    <span class="k">if</span> <span class="s2">&quot;choices&quot;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="s2">"choices"</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"choices"</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> value </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2"> not in </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;choices&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> value </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2"> not in </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">'choices'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">value</span></div>
 

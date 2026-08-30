@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed.backends.groq.adapter &mdash; scribed 0.0.2 documentation</title>
+  <title>scribed.backends.groq.adapter &mdash; scribed 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../../../_static/documentation_options.js?v=47de8214"></script>
       <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -125,15 +125,15 @@
            <div itemprop="articleBody">
              
   <h1>Source code for scribed.backends.groq.adapter</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Adapter for the Groq (hosted Whisper) transcription backend.</span>
+<span></span><span class="sd">"""Adapter for the Groq (hosted Whisper) transcription backend.</span>
 
-<span class="sd">Groq&#39;s audio-transcriptions API mirrors OpenAI&#39;s, so this adapter is a close</span>
-<span class="sd">sibling of :mod:`scribed.backends.openai.adapter`: it maps scribed&#39;s normalized</span>
+<span class="sd">Groq's audio-transcriptions API mirrors OpenAI's, so this adapter is a close</span>
+<span class="sd">sibling of :mod:`scribed.backends.openai.adapter`: it maps scribed's normalized</span>
 <span class="sd">request onto ``client.audio.transcriptions.create`` and the ``verbose_json``</span>
 <span class="sd">response onto a :class:`scribed.base.Transcript`. The Groq SDK and credential</span>
 <span class="sd">are resolved lazily so ``import scribed`` stays dependency-free, and the audio is</span>
 <span class="sd">sent as a ``(filename, bytes)`` tuple via :func:`scribed.util.load_audio_bytes`.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -144,14 +144,14 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read ``key`` from a pydantic-ish object or a plain dict.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Read ``key`` from a pydantic-ish object or a plain dict."""</span>
     <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Adapter">
 <a class="viewcode-back" href="../../../../module_docs/scribed/backends/groq/adapter.html#scribed.backends.groq.adapter.Adapter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseTranscriberAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Groq hosted-Whisper transcription adapter (client cached lazily).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Groq hosted-Whisper transcription adapter (client cached lazily)."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -164,43 +164,43 @@
             <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_credential</span>
 
             <span class="n">key</span> <span class="o">=</span> <span class="n">resolve_credential</span><span class="p">(</span>
-                <span class="s2">&quot;groq&quot;</span><span class="p">,</span> <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_env_var&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
+                <span class="s2">"groq"</span><span class="p">,</span> <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_env_var"</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">Groq</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;whisper-large-v3-turbo&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"whisper-large-v3-turbo"</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_audio_bytes</span>
 
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_client</span><span class="p">()</span>
         <span class="n">audio_bytes</span> <span class="o">=</span> <span class="n">load_audio_bytes</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">transcriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">file</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;audio.wav&quot;</span><span class="p">,</span> <span class="n">audio_bytes</span><span class="p">),</span>
+            <span class="n">file</span><span class="o">=</span><span class="p">(</span><span class="s2">"audio.wav"</span><span class="p">,</span> <span class="n">audio_bytes</span><span class="p">),</span>
             <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
-            <span class="n">response_format</span><span class="o">=</span><span class="s2">&quot;verbose_json&quot;</span><span class="p">,</span>
+            <span class="n">response_format</span><span class="o">=</span><span class="s2">"verbose_json"</span><span class="p">,</span>
             <span class="o">**</span><span class="n">native_kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">language</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">&quot;language&quot;</span><span class="p">)</span>
-        <span class="n">duration</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">&quot;duration&quot;</span><span class="p">)</span>
-        <span class="n">raw_segments</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">&quot;segments&quot;</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="n">language</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"language"</span><span class="p">)</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"duration"</span><span class="p">)</span>
+        <span class="n">raw_segments</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"segments"</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">raw_segments</span><span class="p">:</span>
             <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">raw_segments</span><span class="p">:</span>
-                <span class="n">alp</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;avg_logprob&quot;</span><span class="p">)</span>
+                <span class="n">alp</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"avg_logprob"</span><span class="p">)</span>
                 <span class="n">conf</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">alp</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alp</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">make_segment</span><span class="p">(</span>
-                        <span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                        <span class="n">start</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">),</span>
-                        <span class="n">end</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">),</span>
+                        <span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+                        <span class="n">start</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"start"</span><span class="p">),</span>
+                        <span class="n">end</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">),</span>
                         <span class="n">confidence</span><span class="o">=</span><span class="n">conf</span><span class="p">,</span>
                         <span class="n">avg_logprob</span><span class="o">=</span><span class="n">alp</span><span class="p">,</span>
-                        <span class="n">no_speech_prob</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">&quot;no_speech_prob&quot;</span><span class="p">),</span>
+                        <span class="n">no_speech_prob</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"no_speech_prob"</span><span class="p">),</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="n">Transcript</span><span class="o">.</span><span class="n">from_segments</span><span class="p">(</span>

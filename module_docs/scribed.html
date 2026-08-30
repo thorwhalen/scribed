@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed &mdash; scribed 0.0.2 documentation</title>
+  <title>scribed &mdash; scribed 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../_static/documentation_options.js?v=47de8214"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -232,9 +232,9 @@ diarization support, and quirks. scribed gives you:</p>
 <li><p><strong>A uniform facade.</strong> Call <a class="reference internal" href="#scribed.transcribe" title="scribed.transcribe"><code class="xref py py-func docutils literal notranslate"><span class="pre">transcribe()</span></code></a> and get the same
 <a class="reference internal" href="scribed/base.html#scribed.base.Transcript" title="scribed.base.Transcript"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transcript</span></code></a> back no matter which backend ran:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scribed</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">scribed</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="s2">&quot;talk.mp3&quot;</span><span class="p">)</span>          <span class="c1"># default (first installed) backend</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">scribed</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="s2">"talk.mp3"</span><span class="p">)</span>          <span class="c1"># default (first installed) backend</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>                                     <span class="c1"># -&gt; the transcript text</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">scribed</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="s2">&quot;talk.mp3&quot;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;deepgram&quot;</span><span class="p">,</span> <span class="n">diarize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">scribed</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="s2">"talk.mp3"</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">"deepgram"</span><span class="p">,</span> <span class="n">diarize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">srt</span><span class="p">)</span>                                 <span class="c1"># -&gt; SRT subtitles</span>
 <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">seg</span><span class="o">.</span><span class="n">speaker</span><span class="p">,</span> <span class="n">seg</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -246,7 +246,7 @@ diarization support, and quirks. scribed gives you:</p>
 with a working facade — so you can choose with eyes open:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scribed</span><span class="o">.</span><span class="n">catalog</span>                                  <span class="c1"># the whole ledger</span>
 <span class="n">scribed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>    <span class="c1"># filter it</span>
-<span class="n">scribed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">diarization</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">scribed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">diarization</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">,</span> <span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">scribed</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>                   <span class="c1"># browse as a table</span>
 </pre></div>
 </div>
@@ -256,8 +256,8 @@ with a working facade — so you can choose with eyes open:</p>
 for a curated subset and gives you the machinery (and a SKILL) to add any
 other one in minutes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scribed.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">scaffold_backend</span><span class="p">,</span> <span class="n">validate_adapter</span>
-<span class="n">scaffold_backend</span><span class="p">(</span><span class="s2">&quot;speechmatics&quot;</span><span class="p">)</span>   <span class="c1"># generate a backend package from the ledger</span>
-<span class="n">validate_adapter</span><span class="p">(</span><span class="s2">&quot;faster-whisper&quot;</span><span class="p">)</span> <span class="c1"># smoke-test an adapter end to end</span>
+<span class="n">scaffold_backend</span><span class="p">(</span><span class="s2">"speechmatics"</span><span class="p">)</span>   <span class="c1"># generate a backend package from the ledger</span>
+<span class="n">validate_adapter</span><span class="p">(</span><span class="s2">"faster-whisper"</span><span class="p">)</span> <span class="c1"># smoke-test an adapter end to end</span>
 </pre></div>
 </div>
 </li>
@@ -315,7 +315,7 @@ VAD-segmented batch fallback. <code class="docutils literal notranslate"><span c
 <p>Loaded lazily from <code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_LEDGER_PATH</span></code> (override via the <code class="docutils literal notranslate"><span class="pre">path</span></code>
 argument or the <code class="docutils literal notranslate"><span class="pre">SCRIBED_LEDGER</span></code> environment variable). <a class="reference internal" href="#scribed.Catalog.filter" title="scribed.Catalog.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a>
 returns a <em>new</em> <code class="docutils literal notranslate"><span class="pre">Catalog</span></code> over the matching subset, so filters compose:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pricing_model</span><span class="o">=</span><span class="s2">&quot;free_tier_then_paid&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pricing_model</span><span class="o">=</span><span class="s2">"free_tier_then_paid"</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -350,7 +350,7 @@ set/list/tuple meaning “one of”. Free-text fields
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">diarization</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">diarization</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -590,7 +590,7 @@ when the backend provides them. <code class="docutils literal notranslate"><span
 <p>Frozen: build via <a class="reference internal" href="#scribed.Transcript.from_text" title="scribed.Transcript.from_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_text()</span></code></a> / <a class="reference internal" href="#scribed.Transcript.from_segments" title="scribed.Transcript.from_segments"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_segments()</span></code></a> or the constructor;
 derive variants with <a class="reference internal" href="#scribed.Transcript.with_meta" title="scribed.Transcript.with_meta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_meta()</span></code></a> / <a class="reference internal" href="#scribed.Transcript.filter_confidence" title="scribed.Transcript.filter_confidence"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter_confidence()</span></code></a>.</p>
 <p>Progressive disclosure:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">scribed</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="s2">&quot;talk.mp3&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">scribed</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="s2">"talk.mp3"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>                 <span class="c1"># -&gt; the transcript text</span>
 <span class="n">t</span><span class="o">.</span><span class="n">text</span>                   <span class="c1"># -&gt; the same string</span>
 <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>            <span class="c1"># -&gt; iterate Segments</span>
@@ -803,7 +803,7 @@ is <code class="docutils literal notranslate"><span class="pre">None</span></cod
 <span class="sig-prename descclassname"><span class="pre">scribed.</span></span><span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">criteria</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scribed/catalog.html#scribed.catalog.Catalog" title="scribed.catalog.Catalog"><span class="pre">Catalog</span></a></span></span><a class="reference internal" href="../_modules/scribed.html#find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scribed.find" title="Link to this definition"></a></dt>
 <dd><p>Filter the ledger; shorthand for <a class="reference internal" href="scribed/catalog.html#scribed.catalog.Catalog.filter" title="scribed.catalog.Catalog.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scribed.catalog.Catalog.filter()</span></code></a>.</p>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scribed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">diarization</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scribed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">diarization</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">)</span>
 <span class="n">scribed</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">implemented</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>        <span class="c1"># only backends scribed can run now</span>
 </pre></div>
 </div>

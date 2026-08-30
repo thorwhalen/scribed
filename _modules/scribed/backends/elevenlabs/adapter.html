@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed.backends.elevenlabs.adapter &mdash; scribed 0.0.2 documentation</title>
+  <title>scribed.backends.elevenlabs.adapter &mdash; scribed 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../../../_static/documentation_options.js?v=47de8214"></script>
       <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -125,14 +125,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for scribed.backends.elevenlabs.adapter</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Adapter for the ElevenLabs Scribe transcription backend.</span>
+<span></span><span class="sd">"""Adapter for the ElevenLabs Scribe transcription backend.</span>
 
-<span class="sd">Maps scribed&#39;s normalized request onto ``client.speech_to_text.convert`` (model</span>
+<span class="sd">Maps scribed's normalized request onto ``client.speech_to_text.convert`` (model</span>
 <span class="sd">``scribe_v1``) and the response onto a :class:`scribed.base.Transcript`.</span>
 
-<span class="sd">Scribe&#39;s response has no segment structure: it returns the full ``text`` plus a</span>
+<span class="sd">Scribe's response has no segment structure: it returns the full ``text`` plus a</span>
 <span class="sd">flat ``words`` stream where each item carries ``text``, ``start``/``end`` (in</span>
-<span class="sd">seconds), a ``type`` (``&quot;word&quot;`` | ``&quot;spacing&quot;`` | ``&quot;audio_event&quot;``) and — when</span>
+<span class="sd">seconds), a ``type`` (``"word"`` | ``"spacing"`` | ``"audio_event"``) and — when</span>
 <span class="sd">``diarize=True`` — a ``speaker_id``. This adapter filters the stream down to</span>
 <span class="sd">actual words, then groups *consecutive* words by ``speaker_id`` into segments</span>
 <span class="sd">(starting a new segment whenever the speaker changes). When no speaker ids are</span>
@@ -141,7 +141,7 @@
 
 <span class="sd">The client and credential are resolved lazily so ``import scribed`` stays</span>
 <span class="sd">dependency-free.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -152,7 +152,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_logprob_to_conf</span><span class="p">(</span><span class="n">logprob</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map a per-word log-probability to a rough ``[0, 1]`` confidence.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Map a per-word log-probability to a rough ``[0, 1]`` confidence."""</span>
     <span class="k">if</span> <span class="n">logprob</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">try</span><span class="p">:</span>
@@ -162,15 +162,15 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_speaker_str</span><span class="p">(</span><span class="n">speaker</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize a speaker id to a non-empty ``str`` or ``None``.&quot;&quot;&quot;</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">speaker</span><span class="p">)</span> <span class="k">if</span> <span class="n">speaker</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Normalize a speaker id to a non-empty ``str`` or ``None``."""</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">speaker</span><span class="p">)</span> <span class="k">if</span> <span class="n">speaker</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">""</span>
     <span class="k">return</span> <span class="n">s</span> <span class="ow">or</span> <span class="kc">None</span>
 
 
 <div class="viewcode-block" id="Adapter">
 <a class="viewcode-back" href="../../../../module_docs/scribed/backends/elevenlabs/adapter.html#scribed.backends.elevenlabs.adapter.Adapter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseTranscriberAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;ElevenLabs Scribe transcription adapter (caches one client lazily).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""ElevenLabs Scribe transcription adapter (caches one client lazily)."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -183,15 +183,15 @@
             <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_credential</span>
 
             <span class="n">key</span> <span class="o">=</span> <span class="n">resolve_credential</span><span class="p">(</span>
-                <span class="s2">&quot;elevenlabs&quot;</span><span class="p">,</span>
-                <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_env_var&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">"elevenlabs"</span><span class="p">,</span>
+                <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_env_var"</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">ElevenLabs</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;scribe_v1&quot;</span><span class="p">,</span> <span class="n">diarize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">model_id</span><span class="o">=</span><span class="s2">"scribe_v1"</span><span class="p">,</span> <span class="n">diarize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_audio_bytes</span>
 
@@ -201,16 +201,16 @@
             <span class="n">file</span><span class="o">=</span><span class="n">audio_bytes</span><span class="p">,</span>
             <span class="n">model_id</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span>
             <span class="n">diarize</span><span class="o">=</span><span class="n">diarize</span><span class="p">,</span>
-            <span class="n">timestamps_granularity</span><span class="o">=</span><span class="s2">&quot;word&quot;</span><span class="p">,</span>
+            <span class="n">timestamps_granularity</span><span class="o">=</span><span class="s2">"word"</span><span class="p">,</span>
             <span class="o">**</span><span class="n">native_kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">language</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">&quot;language_code&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">duration</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">&quot;audio_duration_secs&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="n">language</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"language_code"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"audio_duration_secs"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">segments</span> <span class="o">=</span> <span class="n">_segments_from_words</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">&quot;words&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="n">_segments_from_words</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"words"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - any parsing hiccup falls back to text</span>
             <span class="n">segments</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -235,13 +235,13 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_segments_from_words</span><span class="p">(</span><span class="n">raw_words</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Group consecutive Scribe words by ``speaker_id`` into segments.</span>
+<span class="w">    </span><span class="sd">"""Group consecutive Scribe words by ``speaker_id`` into segments.</span>
 
 <span class="sd">    Skips ``spacing``/``audio_event`` items, building a normalized</span>
 <span class="sd">    :class:`~scribed.base.Word` per actual word and starting a new segment</span>
 <span class="sd">    whenever ``speaker_id`` changes. If no speaker ids are present, all words</span>
 <span class="sd">    end up in a single segment.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">cur_words</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">cur_speaker</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># sentinel-free: track via a flag</span>
@@ -254,7 +254,7 @@
         <span class="n">ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">end</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">cur_words</span> <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
         <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">make_segment</span><span class="p">(</span>
-                <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">cur_words</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">cur_words</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
                 <span class="n">start</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">starts</span><span class="p">)</span> <span class="k">if</span> <span class="n">starts</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">end</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span> <span class="k">if</span> <span class="n">ends</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">speaker</span><span class="o">=</span><span class="n">cur_speaker</span><span class="p">,</span>
@@ -263,14 +263,14 @@
         <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">raw_words</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;word&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;word&quot;</span><span class="p">:</span>
-            <span class="k">continue</span>  <span class="c1"># skip &quot;spacing&quot; / &quot;audio_event&quot;</span>
-        <span class="n">speaker</span> <span class="o">=</span> <span class="n">_speaker_str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;speaker_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"word"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"word"</span><span class="p">:</span>
+            <span class="k">continue</span>  <span class="c1"># skip "spacing" / "audio_event"</span>
+        <span class="n">speaker</span> <span class="o">=</span> <span class="n">_speaker_str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"speaker_id"</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
         <span class="n">word</span> <span class="o">=</span> <span class="n">make_word</span><span class="p">(</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">start</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="n">end</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="n">confidence</span><span class="o">=</span><span class="n">_logprob_to_conf</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">&quot;logprob&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+            <span class="n">start</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"start"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">end</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">confidence</span><span class="o">=</span><span class="n">_logprob_to_conf</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"logprob"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
             <span class="n">speaker</span><span class="o">=</span><span class="n">speaker</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">have_group</span> <span class="ow">and</span> <span class="n">speaker</span> <span class="o">!=</span> <span class="n">cur_speaker</span><span class="p">:</span>

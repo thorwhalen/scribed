@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed.catalog &mdash; scribed 0.0.2 documentation</title>
+  <title>scribed.catalog &mdash; scribed 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -150,11 +150,11 @@ touching Python.</p>
 <a class="reference internal" href="#scribed.catalog.Catalog" title="scribed.catalog.Catalog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Catalog</span></code></a> of <a class="reference internal" href="#scribed.catalog.BackendInfo" title="scribed.catalog.BackendInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendInfo</span></code></a> records:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span>
 
-<span class="n">catalog</span><span class="p">[</span><span class="s2">&quot;faster-whisper&quot;</span><span class="p">]</span>                       <span class="c1"># one backend&#39;s info</span>
+<span class="n">catalog</span><span class="p">[</span><span class="s2">"faster-whisper"</span><span class="p">]</span>                       <span class="c1"># one backend's info</span>
 <span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># only local OSS engines</span>
-<span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">diarization</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>               <span class="c1"># engines that label speakers</span>
+<span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">diarization</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">)</span>               <span class="c1"># engines that label speakers</span>
 <span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">implemented</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>                <span class="c1"># only what scribed can run today</span>
-<span class="n">catalog</span><span class="o">.</span><span class="n">supports_language</span><span class="p">(</span><span class="s2">&quot;French&quot;</span><span class="p">)</span>             <span class="c1"># engines that list French</span>
+<span class="n">catalog</span><span class="o">.</span><span class="n">supports_language</span><span class="p">(</span><span class="s2">"French"</span><span class="p">)</span>             <span class="c1"># engines that list French</span>
 <span class="n">catalog</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>                          <span class="c1"># pandas view (if installed)</span>
 </pre></div>
 </div>
@@ -178,7 +178,7 @@ commonly used fields get typed properties for convenience and discoverability.</
 <p>Loaded lazily from <code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_LEDGER_PATH</span></code> (override via the <code class="docutils literal notranslate"><span class="pre">path</span></code>
 argument or the <code class="docutils literal notranslate"><span class="pre">SCRIBED_LEDGER</span></code> environment variable). <a class="reference internal" href="#scribed.catalog.Catalog.filter" title="scribed.catalog.Catalog.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a>
 returns a <em>new</em> <code class="docutils literal notranslate"><span class="pre">Catalog</span></code> over the matching subset, so filters compose:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pricing_model</span><span class="o">=</span><span class="s2">&quot;free_tier_then_paid&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pricing_model</span><span class="o">=</span><span class="s2">"free_tier_then_paid"</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -213,7 +213,7 @@ set/list/tuple meaning “one of”. Free-text fields
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">diarization</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">diarization</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

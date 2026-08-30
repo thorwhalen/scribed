@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed.base &mdash; scribed 0.0.2 documentation</title>
+  <title>scribed.base &mdash; scribed 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -420,7 +420,7 @@ when the backend provides them. <code class="docutils literal notranslate"><span
 <p>Frozen: build via <a class="reference internal" href="#scribed.base.Transcript.from_text" title="scribed.base.Transcript.from_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_text()</span></code></a> / <a class="reference internal" href="#scribed.base.Transcript.from_segments" title="scribed.base.Transcript.from_segments"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_segments()</span></code></a> or the constructor;
 derive variants with <a class="reference internal" href="#scribed.base.Transcript.with_meta" title="scribed.base.Transcript.with_meta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_meta()</span></code></a> / <a class="reference internal" href="#scribed.base.Transcript.filter_confidence" title="scribed.base.Transcript.filter_confidence"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter_confidence()</span></code></a>.</p>
 <p>Progressive disclosure:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">scribed</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="s2">&quot;talk.mp3&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">scribed</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="s2">"talk.mp3"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>                 <span class="c1"># -&gt; the transcript text</span>
 <span class="n">t</span><span class="o">.</span><span class="n">text</span>                   <span class="c1"># -&gt; the same string</span>
 <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>            <span class="c1"># -&gt; iterate Segments</span>

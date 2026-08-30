@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed &mdash; scribed 0.0.2 documentation</title>
+  <title>scribed &mdash; scribed 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../_static/documentation_options.js?v=47de8214"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -124,9 +124,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for scribed</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;scribed — one facade over many speech-to-text engines, plus a ledger to choose.</span>
+<span></span><span class="sd">"""scribed — one facade over many speech-to-text engines, plus a ledger to choose.</span>
 
-<span class="sd">Transcription (&quot;turn this audio into text&quot;) is solved a dozen different ways:</span>
+<span class="sd">Transcription ("turn this audio into text") is solved a dozen different ways:</span>
 <span class="sd">local engines (Whisper, faster-whisper, whisper.cpp, Vosk), fast cheap cloud APIs</span>
 <span class="sd">(Groq, OpenAI), and feature-rich premium services (Deepgram, AssemblyAI, Google,</span>
 <span class="sd">ElevenLabs) — each with its own install, API, pricing, latency, language coverage,</span>
@@ -136,9 +136,9 @@
 <span class="sd">   :class:`~scribed.base.Transcript` back no matter which backend ran::</span>
 
 <span class="sd">       import scribed</span>
-<span class="sd">       t = scribed.transcribe(&quot;talk.mp3&quot;)          # default (first installed) backend</span>
+<span class="sd">       t = scribed.transcribe("talk.mp3")          # default (first installed) backend</span>
 <span class="sd">       print(t)                                     # -&gt; the transcript text</span>
-<span class="sd">       t = scribed.transcribe(&quot;talk.mp3&quot;, backend=&quot;deepgram&quot;, diarize=True)</span>
+<span class="sd">       t = scribed.transcribe("talk.mp3", backend="deepgram", diarize=True)</span>
 <span class="sd">       print(t.srt)                                 # -&gt; SRT subtitles</span>
 <span class="sd">       for seg in t:</span>
 <span class="sd">           print(seg.start, seg.speaker, seg.text)</span>
@@ -150,7 +150,7 @@
 
 <span class="sd">       scribed.catalog                                  # the whole ledger</span>
 <span class="sd">       scribed.find(is_local=True, open_source=True)    # filter it</span>
-<span class="sd">       scribed.find(diarization=&quot;yes&quot;, is_remote=True)</span>
+<span class="sd">       scribed.find(diarization="yes", is_remote=True)</span>
 <span class="sd">       scribed.catalog.to_dataframe()                   # browse as a table</span>
 
 <span class="sd">   The ledger lives in data (``scribed/data/backends.json``), not code.</span>
@@ -160,15 +160,15 @@
 <span class="sd">   other one in minutes::</span>
 
 <span class="sd">       from scribed.make_backend import scaffold_backend, validate_adapter</span>
-<span class="sd">       scaffold_backend(&quot;speechmatics&quot;)   # generate a backend package from the ledger</span>
-<span class="sd">       validate_adapter(&quot;faster-whisper&quot;) # smoke-test an adapter end to end</span>
+<span class="sd">       scaffold_backend("speechmatics")   # generate a backend package from the ledger</span>
+<span class="sd">       validate_adapter("faster-whisper") # smoke-test an adapter end to end</span>
 
 <span class="sd">Three tiers of access, from simplest to most powerful::</span>
 
 <span class="sd">    scribed.transcribe(audio)                              # facade, default backend</span>
 <span class="sd">    scribed.services.deepgram.transcribe(audio, diarize=True)  # pick a backend</span>
 <span class="sd">    scribed.services.deepgram.adapter                      # raw engine adapter</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.base</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AudioInput</span><span class="p">,</span>
@@ -211,53 +211,53 @@
 <span class="p">)</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;transcribe&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;transcribe_text&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;services&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;catalog&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;find&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;list_backends&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;register_backend&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_default_backend&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_config&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Transcript&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Segment&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Word&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;TimeSpan&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Channel&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;AudioInput&quot;</span><span class="p">,</span>
+    <span class="s2">"transcribe"</span><span class="p">,</span>
+    <span class="s2">"transcribe_text"</span><span class="p">,</span>
+    <span class="s2">"services"</span><span class="p">,</span>
+    <span class="s2">"catalog"</span><span class="p">,</span>
+    <span class="s2">"find"</span><span class="p">,</span>
+    <span class="s2">"list_backends"</span><span class="p">,</span>
+    <span class="s2">"register_backend"</span><span class="p">,</span>
+    <span class="s2">"get_default_backend"</span><span class="p">,</span>
+    <span class="s2">"get_config"</span><span class="p">,</span>
+    <span class="s2">"Transcript"</span><span class="p">,</span>
+    <span class="s2">"Segment"</span><span class="p">,</span>
+    <span class="s2">"Word"</span><span class="p">,</span>
+    <span class="s2">"TimeSpan"</span><span class="p">,</span>
+    <span class="s2">"Channel"</span><span class="p">,</span>
+    <span class="s2">"AudioInput"</span><span class="p">,</span>
     <span class="c1"># streaming surface (lazily imported; see module __getattr__)</span>
-    <span class="s2">&quot;transcribe_live&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;iter_live&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Transcriber&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;AudioSource&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;file_to_stream&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;from_mic&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;VAD&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;EnergyVAD&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SileroVAD&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;segment_utterances&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;BackendInfo&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Catalog&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ServiceCollection&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;BaseTranscriberAdapter&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;make_segment&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;make_word&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;scaffold_backend&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;validate_adapter&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;requirements&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;check&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;doctor&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;install&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;available_backends&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Requirements&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;backend_ids&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;backend_info&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;status_table&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;names_with_sites&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_set_up&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_tested&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;__version__&quot;</span><span class="p">,</span>
+    <span class="s2">"transcribe_live"</span><span class="p">,</span>
+    <span class="s2">"iter_live"</span><span class="p">,</span>
+    <span class="s2">"Transcriber"</span><span class="p">,</span>
+    <span class="s2">"AudioSource"</span><span class="p">,</span>
+    <span class="s2">"file_to_stream"</span><span class="p">,</span>
+    <span class="s2">"from_mic"</span><span class="p">,</span>
+    <span class="s2">"VAD"</span><span class="p">,</span>
+    <span class="s2">"EnergyVAD"</span><span class="p">,</span>
+    <span class="s2">"SileroVAD"</span><span class="p">,</span>
+    <span class="s2">"segment_utterances"</span><span class="p">,</span>
+    <span class="s2">"BackendInfo"</span><span class="p">,</span>
+    <span class="s2">"Catalog"</span><span class="p">,</span>
+    <span class="s2">"ServiceCollection"</span><span class="p">,</span>
+    <span class="s2">"BaseTranscriberAdapter"</span><span class="p">,</span>
+    <span class="s2">"make_segment"</span><span class="p">,</span>
+    <span class="s2">"make_word"</span><span class="p">,</span>
+    <span class="s2">"scaffold_backend"</span><span class="p">,</span>
+    <span class="s2">"validate_adapter"</span><span class="p">,</span>
+    <span class="s2">"requirements"</span><span class="p">,</span>
+    <span class="s2">"check"</span><span class="p">,</span>
+    <span class="s2">"doctor"</span><span class="p">,</span>
+    <span class="s2">"install"</span><span class="p">,</span>
+    <span class="s2">"available_backends"</span><span class="p">,</span>
+    <span class="s2">"Requirements"</span><span class="p">,</span>
+    <span class="s2">"backend_ids"</span><span class="p">,</span>
+    <span class="s2">"backend_info"</span><span class="p">,</span>
+    <span class="s2">"status_table"</span><span class="p">,</span>
+    <span class="s2">"names_with_sites"</span><span class="p">,</span>
+    <span class="s2">"is_set_up"</span><span class="p">,</span>
+    <span class="s2">"is_tested"</span><span class="p">,</span>
+    <span class="s2">"__version__"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="c1"># Derive the version from installed package metadata (the pyproject SSOT, which CI</span>
@@ -265,9 +265,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">importlib.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">PackageNotFoundError</span> <span class="k">as</span> <span class="n">_PNFE</span><span class="p">,</span> <span class="n">version</span> <span class="k">as</span> <span class="n">_version</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">__version__</span> <span class="o">=</span> <span class="n">_version</span><span class="p">(</span><span class="s2">&quot;scribed&quot;</span><span class="p">)</span>
+    <span class="n">__version__</span> <span class="o">=</span> <span class="n">_version</span><span class="p">(</span><span class="s2">"scribed"</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">_PNFE</span><span class="p">:</span>  <span class="c1"># running from a source tree without install metadata</span>
-    <span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.0.0+source&quot;</span>
+    <span class="n">__version__</span> <span class="o">=</span> <span class="s2">"0.0.0+source"</span>
 <span class="k">del</span> <span class="n">_version</span><span class="p">,</span> <span class="n">_PNFE</span>
 
 <span class="c1">#: Singleton service collection for per-backend access (``services.deepgram``).</span>
@@ -277,7 +277,7 @@
 <div class="viewcode-block" id="transcribe">
 <a class="viewcode-back" href="../module_docs/scribed.html#scribed.transcribe">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">:</span> <span class="n">AudioInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transcribe audio with any backend, returning a normalized result.</span>
+<span class="w">    </span><span class="sd">"""Transcribe audio with any backend, returning a normalized result.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        audio: A path, ``http(s)`` URL, ``bytes``, file-like object, or numpy</span>
@@ -291,7 +291,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        A :class:`~scribed.base.Transcript` (``str(t)`` is the text; ``t.srt`` /</span>
 <span class="sd">        ``t.vtt`` give subtitles; iterate it for segments).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">backend</span> <span class="o">=</span> <span class="n">backend</span> <span class="ow">or</span> <span class="n">get_default_backend</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">services</span><span class="p">[</span><span class="n">backend</span><span class="p">]</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -300,7 +300,7 @@
 <div class="viewcode-block" id="transcribe_text">
 <a class="viewcode-back" href="../module_docs/scribed.html#scribed.transcribe_text">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">transcribe_text</span><span class="p">(</span><span class="n">audio</span><span class="p">:</span> <span class="n">AudioInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Like :func:`transcribe` but returns just the transcript text string.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Like :func:`transcribe` but returns just the transcript text string."""</span>
     <span class="k">return</span> <span class="n">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">text</span></div>
 
 
@@ -308,13 +308,13 @@
 <div class="viewcode-block" id="find">
 <a class="viewcode-back" href="../module_docs/scribed.html#scribed.find">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Catalog</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filter the ledger; shorthand for :meth:`scribed.catalog.Catalog.filter`.</span>
+<span class="w">    </span><span class="sd">"""Filter the ledger; shorthand for :meth:`scribed.catalog.Catalog.filter`.</span>
 
 <span class="sd">    Example::</span>
 
-<span class="sd">        scribed.find(is_local=True, open_source=True, diarization=&quot;yes&quot;)</span>
+<span class="sd">        scribed.find(is_local=True, open_source=True, diarization="yes")</span>
 <span class="sd">        scribed.find(implemented=True)        # only backends scribed can run now</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span></div>
 
 
@@ -327,24 +327,24 @@
 <span class="c1"># (no numpy, no audio libs) for the batch-only and ledger-only use cases.</span>
 
 <span class="n">_LAZY_ATTRS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;transcribe_live&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;iter_live&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Transcriber&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;AudioSource&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;file_to_stream&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;from_mic&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.streaming&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;VAD&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.vad&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;EnergyVAD&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.vad&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SileroVAD&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.vad&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;segment_utterances&quot;</span><span class="p">:</span> <span class="s2">&quot;scribed.vad&quot;</span><span class="p">,</span>
+    <span class="s2">"transcribe_live"</span><span class="p">:</span> <span class="s2">"scribed.streaming"</span><span class="p">,</span>
+    <span class="s2">"iter_live"</span><span class="p">:</span> <span class="s2">"scribed.streaming"</span><span class="p">,</span>
+    <span class="s2">"Transcriber"</span><span class="p">:</span> <span class="s2">"scribed.streaming"</span><span class="p">,</span>
+    <span class="s2">"AudioSource"</span><span class="p">:</span> <span class="s2">"scribed.streaming"</span><span class="p">,</span>
+    <span class="s2">"file_to_stream"</span><span class="p">:</span> <span class="s2">"scribed.streaming"</span><span class="p">,</span>
+    <span class="s2">"from_mic"</span><span class="p">:</span> <span class="s2">"scribed.streaming"</span><span class="p">,</span>
+    <span class="s2">"VAD"</span><span class="p">:</span> <span class="s2">"scribed.vad"</span><span class="p">,</span>
+    <span class="s2">"EnergyVAD"</span><span class="p">:</span> <span class="s2">"scribed.vad"</span><span class="p">,</span>
+    <span class="s2">"SileroVAD"</span><span class="p">:</span> <span class="s2">"scribed.vad"</span><span class="p">,</span>
+    <span class="s2">"segment_utterances"</span><span class="p">:</span> <span class="s2">"scribed.vad"</span><span class="p">,</span>
 <span class="p">}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lazily resolve the streaming symbols (PEP 562 module-level hook).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Lazily resolve the streaming symbols (PEP 562 module-level hook)."""</span>
     <span class="n">module_path</span> <span class="o">=</span> <span class="n">_LAZY_ATTRS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">module_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
 
     <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_path</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span>

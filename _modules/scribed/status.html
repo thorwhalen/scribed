@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed.status &mdash; scribed 0.0.2 documentation</title>
+  <title>scribed.status &mdash; scribed 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/documentation_options.js?v=47de8214"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -125,7 +125,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for scribed.status</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Backend readiness status — four nested levels, info dicts, and a Markdown table.</span>
+<span></span><span class="sd">"""Backend readiness status — four nested levels, info dicts, and a Markdown table.</span>
 
 <span class="sd">scribed describes far more ASR engines than any one machine has ready to run, so</span>
 <span class="sd">it helps to know, at a glance, where each one stands. Four **nested** levels:</span>
@@ -144,28 +144,28 @@
 <span class="sd">- :func:`backend_ids` — the id list at a level.</span>
 <span class="sd">- :func:`backend_info` — ``{id: {...all ledger fields..., implemented, set_up, tested}}``.</span>
 <span class="sd">- :func:`status_table` — an aligned Markdown table (also readable as plain text).</span>
-<span class="sd">- :func:`names_with_sites` — ``&quot;Name (website), ...&quot;`` for a set of ids.</span>
+<span class="sd">- :func:`names_with_sites` — ``"Name (website), ..."`` for a set of ids.</span>
 
 <span class="sd">Note: computing **tested** runs real transcription — for *remote* backends that</span>
 <span class="sd">means a real (possibly billed) API call. Use the ``run_tests`` argument to</span>
 <span class="sd">control exactly which backends get called.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;LEVELS&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_set_up&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_tested&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;backend_ids&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;backend_info&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;status_table&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;names_with_sites&quot;</span><span class="p">,</span>
+    <span class="s2">"LEVELS"</span><span class="p">,</span>
+    <span class="s2">"is_set_up"</span><span class="p">,</span>
+    <span class="s2">"is_tested"</span><span class="p">,</span>
+    <span class="s2">"backend_ids"</span><span class="p">,</span>
+    <span class="s2">"backend_info"</span><span class="p">,</span>
+    <span class="s2">"status_table"</span><span class="p">,</span>
+    <span class="s2">"names_with_sites"</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">LEVELS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;implemented&quot;</span><span class="p">,</span> <span class="s2">&quot;set_up&quot;</span><span class="p">,</span> <span class="s2">&quot;tested&quot;</span><span class="p">)</span>
+<span class="n">LEVELS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"all"</span><span class="p">,</span> <span class="s2">"implemented"</span><span class="p">,</span> <span class="s2">"set_up"</span><span class="p">,</span> <span class="s2">"tested"</span><span class="p">)</span>
 
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
@@ -182,13 +182,13 @@
 <div class="viewcode-block" id="is_set_up">
 <a class="viewcode-back" href="../../module_docs/scribed/status.html#scribed.is_set_up">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_set_up</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ready to run here &amp; now.</span>
+<span class="w">    </span><span class="sd">"""Ready to run here &amp; now.</span>
 
 <span class="sd">    Requires the engine/client to be importable (local *and* remote), and — for a</span>
 <span class="sd">    remote backend — its (primary) credential env var to resolve. So a remote</span>
-<span class="sd">    whose key is set but whose client library isn&#39;t installed is *not* set up</span>
-<span class="sd">    (it couldn&#39;t actually run). Returns False for ledger-only backends.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    whose key is set but whose client library isn't installed is *not* set up</span>
+<span class="sd">    (it couldn't actually run). Returns False for ledger-only backends.</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.install</span><span class="w"> </span><span class="kn">import</span> <span class="n">check</span>
 
@@ -197,14 +197,14 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">check</span><span class="p">(</span><span class="n">backend_id</span><span class="p">):</span>  <span class="c1"># engine / client library importable?</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="n">cfg</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_remote&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_local&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_remote"</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_local"</span><span class="p">):</span>
         <span class="c1"># Remote also needs its credential present.</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_credential</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
                 <span class="n">resolve_credential</span><span class="p">(</span>
-                    <span class="n">backend_id</span><span class="p">,</span> <span class="n">env_var</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_env_var&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span>
+                    <span class="n">backend_id</span><span class="p">,</span> <span class="n">env_var</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_env_var"</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -216,11 +216,11 @@
 <div class="viewcode-block" id="is_tested">
 <a class="viewcode-back" href="../../module_docs/scribed/status.html#scribed.is_tested">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_tested</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">audio</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Actually run transcription on ``audio`` (a generated tone if None); True iff it worked.</span>
+<span class="w">    </span><span class="sd">"""Actually run transcription on ``audio`` (a generated tone if None); True iff it worked.</span>
 
 <span class="sd">    For remote backends this performs a real API call. Returns False if the</span>
-<span class="sd">    backend isn&#39;t set up or the run fails.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    backend isn't set up or the run fails.</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_set_up</span><span class="p">(</span><span class="n">backend_id</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_adapter</span>
@@ -229,7 +229,7 @@
         <span class="n">report</span> <span class="o">=</span> <span class="n">validate_adapter</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="n">audio</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ok&quot;</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ok"</span><span class="p">))</span></div>
 
 
 
@@ -239,7 +239,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_test_target_ids</span><span class="p">(</span><span class="n">run_tests</span><span class="p">,</span> <span class="n">set_up_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve which set-up backends to actually test, from the ``run_tests`` arg.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Resolve which set-up backends to actually test, from the ``run_tests`` arg."""</span>
     <span class="k">if</span> <span class="n">run_tests</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">set_up_ids</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">run_tests</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> <span class="n">run_tests</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -255,7 +255,7 @@
     <span class="n">run_tests</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">test_audio</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Per-backend status: every ledger field plus ``implemented``/``set_up``/``tested``.</span>
+<span class="w">    </span><span class="sd">"""Per-backend status: every ledger field plus ``implemented``/``set_up``/``tested``.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        ids: Which backends (default: every ledger id).</span>
@@ -265,9 +265,9 @@
 <span class="sd">        test_audio: Audio to test with (default: a generated tone, shared across all).</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        ``{id: {..., &quot;name&quot;, &quot;website&quot;, &quot;implemented&quot;, &quot;set_up&quot;, &quot;tested&quot;}}`` where</span>
+<span class="sd">        ``{id: {..., "name", "website", "implemented", "set_up", "tested"}}`` where</span>
 <span class="sd">        ``tested`` is ``True``/``False``/``None`` (None = not attempted).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span>
 
     <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -284,15 +284,15 @@
 
     <span class="n">out</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
-        <span class="n">rec</span> <span class="o">=</span> <span class="n">catalog</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">catalog</span> <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span>
+        <span class="n">rec</span> <span class="o">=</span> <span class="n">catalog</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">catalog</span> <span class="k">else</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span>
         <span class="n">info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;implemented&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">implemented</span>
-        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;set_up&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">set_up_ids</span>
-        <span class="n">info</span><span class="p">[</span><span class="s2">&quot;website&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;homepage&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"implemented"</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">implemented</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"set_up"</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">set_up_ids</span>
+        <span class="n">info</span><span class="p">[</span><span class="s2">"website"</span><span class="p">]</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"homepage"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">to_test</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;tested&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_tested</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="n">test_audio</span><span class="p">)</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"tested"</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_tested</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="n">test_audio</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s2">&quot;tested&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">info</span><span class="p">[</span><span class="s2">"tested"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span>
     <span class="k">return</span> <span class="n">out</span></div>
 
@@ -301,23 +301,23 @@
 <div class="viewcode-block" id="backend_ids">
 <a class="viewcode-back" href="../../module_docs/scribed/status.html#scribed.backend_ids">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">backend_ids</span><span class="p">(</span>
-    <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"all"</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">test_audio</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sorted backend ids at a readiness ``level`` (one of :data:`LEVELS`).</span>
+<span class="w">    </span><span class="sd">"""Sorted backend ids at a readiness ``level`` (one of :data:`LEVELS`).</span>
 
 <span class="sd">    Pass a precomputed ``info`` (from :func:`backend_info`) to avoid recomputation</span>
-<span class="sd">    — important for ``&quot;tested&quot;``, which otherwise re-runs transcription.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    — important for ``"tested"``, which otherwise re-runs transcription.</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">level</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">LEVELS</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown level </span><span class="si">{</span><span class="n">level</span><span class="si">!r}</span><span class="s2">; expected one of </span><span class="si">{</span><span class="n">LEVELS</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown level </span><span class="si">{</span><span class="n">level</span><span class="si">!r}</span><span class="s2">; expected one of </span><span class="si">{</span><span class="n">LEVELS</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">"all"</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;implemented&quot;</span><span class="p">:</span> <span class="s2">&quot;implemented&quot;</span><span class="p">,</span> <span class="s2">&quot;set_up&quot;</span><span class="p">:</span> <span class="s2">&quot;set_up&quot;</span><span class="p">,</span> <span class="s2">&quot;tested&quot;</span><span class="p">:</span> <span class="s2">&quot;tested&quot;</span><span class="p">}[</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"implemented"</span><span class="p">:</span> <span class="s2">"implemented"</span><span class="p">,</span> <span class="s2">"set_up"</span><span class="p">:</span> <span class="s2">"set_up"</span><span class="p">,</span> <span class="s2">"tested"</span><span class="p">:</span> <span class="s2">"tested"</span><span class="p">}[</span>
             <span class="n">level</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">)</span>
@@ -325,13 +325,13 @@
     <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span>
 
-    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">"all"</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">catalog</span><span class="o">.</span><span class="n">ids</span><span class="p">)</span>
     <span class="n">implemented</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">())</span>
-    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;implemented&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">"implemented"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">implemented</span>
     <span class="n">set_up</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">implemented</span> <span class="k">if</span> <span class="n">is_set_up</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
-    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;set_up&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">"set_up"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">set_up</span>
     <span class="c1"># tested</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_test_audio</span>
@@ -347,37 +347,37 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_where</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_local&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_remote&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;both&quot;</span>
-    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_local&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;local&quot;</span>
-    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_remote&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;remote&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;?&quot;</span>
+    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_local"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_remote"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"both"</span>
+    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_local"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"local"</span>
+    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_remote"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"remote"</span>
+    <span class="k">return</span> <span class="s2">"?"</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_flag</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="p">{</span><span class="kc">True</span><span class="p">:</span> <span class="s2">&quot;✓&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">:</span> <span class="s2">&quot;✗&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="kc">True</span><span class="p">:</span> <span class="s2">"✓"</span><span class="p">,</span> <span class="kc">False</span><span class="p">:</span> <span class="s2">"✗"</span><span class="p">,</span> <span class="kc">None</span><span class="p">:</span> <span class="s2">""</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_trunc</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">s</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="k">else</span> <span class="n">s</span><span class="p">[:</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;…&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s2">""</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"|"</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">s</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="k">else</span> <span class="n">s</span><span class="p">[:</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"…"</span>
 
 
 <span class="c1"># (header, value-fn) — the default table view. The full per-field data is in backend_info().</span>
 <span class="n">_COLUMNS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="mi">28</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;Impl&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_flag</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;implemented&quot;</span><span class="p">))),</span>
-    <span class="p">(</span><span class="s2">&quot;Set-up&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_flag</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;set_up&quot;</span><span class="p">))),</span>
-    <span class="p">(</span><span class="s2">&quot;Tested&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_flag</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tested&quot;</span><span class="p">))),</span>
-    <span class="p">(</span><span class="s2">&quot;Where&quot;</span><span class="p">,</span> <span class="n">_where</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Pricing&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pricing_model&quot;</span><span class="p">),</span> <span class="mi">20</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;Accuracy&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;accuracy_tier&quot;</span><span class="p">),</span> <span class="mi">10</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;Langs&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;languages_count&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;Diar&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;diarization&quot;</span><span class="p">),</span> <span class="mi">7</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;Stream&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;streaming&quot;</span><span class="p">),</span> <span class="mi">6</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;Best for&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;best_for&quot;</span><span class="p">),</span> <span class="mi">44</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Name"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"id"</span><span class="p">),</span> <span class="mi">28</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Impl"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_flag</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"implemented"</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s2">"Set-up"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_flag</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"set_up"</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s2">"Tested"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_flag</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tested"</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s2">"Where"</span><span class="p">,</span> <span class="n">_where</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Pricing"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pricing_model"</span><span class="p">),</span> <span class="mi">20</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Accuracy"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"accuracy_tier"</span><span class="p">),</span> <span class="mi">10</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Langs"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"languages_count"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Diar"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"diarization"</span><span class="p">),</span> <span class="mi">7</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Stream"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"streaming"</span><span class="p">),</span> <span class="mi">6</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"Best for"</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">_trunc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"best_for"</span><span class="p">),</span> <span class="mi">44</span><span class="p">)),</span>
 <span class="p">]</span>
 
 
@@ -385,10 +385,10 @@
     <span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="n">headers</span><span class="p">]</span> <span class="o">+</span> <span class="n">rows</span><span class="p">)))</span> <span class="k">if</span> <span class="n">rows</span> <span class="k">else</span> <span class="p">[(</span><span class="n">h</span><span class="p">,)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">]</span>
     <span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">]</span>
     <span class="n">line</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">cells</span><span class="p">:</span> <span class="p">(</span>  <span class="c1"># noqa: E731</span>
-        <span class="s2">&quot;| &quot;</span> <span class="o">+</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">widths</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; |&quot;</span>
+        <span class="s2">"| "</span> <span class="o">+</span> <span class="s2">" | "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">widths</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" |"</span>
     <span class="p">)</span>
-    <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;| &quot;</span> <span class="o">+</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">widths</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; |&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">line</span><span class="p">(</span><span class="n">headers</span><span class="p">),</span> <span class="n">sep</span><span class="p">,</span> <span class="o">*</span><span class="p">[</span><span class="n">line</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]])</span>
+    <span class="n">sep</span> <span class="o">=</span> <span class="s2">"| "</span> <span class="o">+</span> <span class="s2">" | "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">widths</span><span class="p">)</span> <span class="o">+</span> <span class="s2">" |"</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">line</span><span class="p">(</span><span class="n">headers</span><span class="p">),</span> <span class="n">sep</span><span class="p">,</span> <span class="o">*</span><span class="p">[</span><span class="n">line</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]])</span>
 
 
 <div class="viewcode-block" id="status_table">
@@ -401,12 +401,12 @@
     <span class="n">run_tests</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">test_audio</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render an aligned Markdown table of backend status (also plain-text readable).</span>
+<span class="w">    </span><span class="sd">"""Render an aligned Markdown table of backend status (also plain-text readable).</span>
 
 <span class="sd">    Rows are ordered tested → set-up → implemented → listed, then by name, so the</span>
-<span class="sd">    &quot;live&quot; backends float to the top. Pass a precomputed ``info`` to avoid re-running</span>
+<span class="sd">    "live" backends float to the top. Pass a precomputed ``info`` to avoid re-running</span>
 <span class="sd">    tests; otherwise ``run_tests`` controls which set-up backends get tested.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">info</span> <span class="o">=</span> <span class="n">backend_info</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">run_tests</span><span class="o">=</span><span class="n">run_tests</span><span class="p">,</span> <span class="n">test_audio</span><span class="o">=</span><span class="n">test_audio</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -416,10 +416,10 @@
     <span class="n">order</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
         <span class="n">info</span><span class="p">,</span>
         <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="p">(</span>
-            <span class="n">info</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tested&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="ow">not</span> <span class="n">info</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;set_up&quot;</span><span class="p">),</span>
-            <span class="ow">not</span> <span class="n">info</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;implemented&quot;</span><span class="p">),</span>
-            <span class="n">info</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">i</span><span class="p">,</span>
+            <span class="n">info</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tested"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="ow">not</span> <span class="n">info</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"set_up"</span><span class="p">),</span>
+            <span class="ow">not</span> <span class="n">info</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"implemented"</span><span class="p">),</span>
+            <span class="n">info</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">i</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="n">h</span> <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
@@ -433,18 +433,18 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">names_with_sites</span><span class="p">(</span>
     <span class="n">ids</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;``&quot;Name (website), Name2 (website2), ...&quot;`` for ``ids`` (name, not id).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""``"Name (website), Name2 (website2), ..."`` for ``ids`` (name, not id)."""</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span>
 
     <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">info</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">d</span> <span class="o">=</span> <span class="n">catalog</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">catalog</span> <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">i</span>
-        <span class="n">site</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;homepage&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;website&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">site</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">if</span> <span class="n">site</span> <span class="k">else</span> <span class="n">name</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">catalog</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">catalog</span> <span class="k">else</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">i</span>
+        <span class="n">site</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"homepage"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"website"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">site</span><span class="si">}</span><span class="s2">)"</span> <span class="k">if</span> <span class="n">site</span> <span class="k">else</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div>
 
 </pre></div>
 

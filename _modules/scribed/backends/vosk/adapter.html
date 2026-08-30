@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scribed.backends.vosk.adapter &mdash; scribed 0.0.2 documentation</title>
+  <title>scribed.backends.vosk.adapter &mdash; scribed 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../../../_static/documentation_options.js?v=47de8214"></script>
       <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -125,12 +125,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for scribed.backends.vosk.adapter</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Adapter for the Vosk (Kaldi) backend.</span>
+<span></span><span class="sd">"""Adapter for the Vosk (Kaldi) backend.</span>
 
 <span class="sd">Vosk is an offline Kaldi-based recognizer that decodes **16 kHz mono 16-bit PCM**</span>
 <span class="sd">fed in chunks. This adapter reads any supported audio input as a float32 mono</span>
 <span class="sd">waveform, resamples to 16 kHz when needed, converts to little-endian int16 PCM,</span>
-<span class="sd">streams it through a :class:`vosk.KaldiRecognizer`, and maps Vosk&#39;s per-result</span>
+<span class="sd">streams it through a :class:`vosk.KaldiRecognizer`, and maps Vosk's per-result</span>
 <span class="sd">JSON (with ``SetWords(True)`` word timings/confidences) onto a</span>
 <span class="sd">:class:`scribed.base.Transcript`.</span>
 
@@ -140,9 +140,9 @@
 <span class="sd">Model selection:</span>
 
 <span class="sd">- ``SCRIBED_VOSK_MODEL`` (a path to an unpacked model dir) is preferred when set.</span>
-<span class="sd">- Otherwise ``Model(lang=&lt;language&gt;)`` (default ``&quot;en-us&quot;``) auto-downloads a</span>
+<span class="sd">- Otherwise ``Model(lang=&lt;language&gt;)`` (default ``"en-us"``) auto-downloads a</span>
 <span class="sd">  small model for the requested language on first use.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -159,12 +159,12 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_resample</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">sr_in</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sr_out</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Linear-resample a 1-D float waveform from ``sr_in`` to ``sr_out`` Hz.</span>
+<span class="w">    </span><span class="sd">"""Linear-resample a 1-D float waveform from ``sr_in`` to ``sr_out`` Hz.</span>
 
 <span class="sd">    Uses ``numpy.interp`` over a new uniform time base. A no-op when the rates</span>
 <span class="sd">    already match. Good enough for ASR-grade 16 kHz conditioning (Vosk is robust</span>
 <span class="sd">    to the mild aliasing a linear interpolator introduces).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">sr_in</span> <span class="o">==</span> <span class="n">sr_out</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">wave</span>
 
@@ -184,35 +184,35 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_to_pcm16_bytes</span><span class="p">(</span><span class="n">wave</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a float32 waveform in ``[-1, 1]`` to little-endian int16 PCM bytes.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert a float32 waveform in ``[-1, 1]`` to little-endian int16 PCM bytes."""</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
     <span class="n">clipped</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">clipped</span> <span class="o">*</span> <span class="mf">32767.0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;&lt;i2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">clipped</span> <span class="o">*</span> <span class="mf">32767.0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"&lt;i2"</span><span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_segment_from_result</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a :class:`Segment` from one Vosk result JSON, or ``None`` if empty.</span>
+<span class="w">    </span><span class="sd">"""Build a :class:`Segment` from one Vosk result JSON, or ``None`` if empty.</span>
 
 <span class="sd">    Derives the segment time span from the first/last word when word timings are</span>
 <span class="sd">    present; carries word-level units with their per-word confidences.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="sd">    """</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">word_records</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">word_records</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"result"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
     <span class="n">words</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">make_word</span><span class="p">(</span>
-            <span class="n">w</span><span class="p">[</span><span class="s2">&quot;word&quot;</span><span class="p">],</span>
-            <span class="n">start</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">),</span>
-            <span class="n">end</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">),</span>
-            <span class="n">confidence</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;conf&quot;</span><span class="p">),</span>  <span class="c1"># already ~[0, 1]</span>
+            <span class="n">w</span><span class="p">[</span><span class="s2">"word"</span><span class="p">],</span>
+            <span class="n">start</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"start"</span><span class="p">),</span>
+            <span class="n">end</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"end"</span><span class="p">),</span>
+            <span class="n">confidence</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"conf"</span><span class="p">),</span>  <span class="c1"># already ~[0, 1]</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">word_records</span>
     <span class="p">]</span>
     <span class="k">if</span> <span class="n">word_records</span><span class="p">:</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="n">word_records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="n">word_records</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">word_records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">word_records</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"end"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">end</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">make_segment</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">words</span><span class="o">=</span><span class="n">words</span><span class="p">)</span>
@@ -221,7 +221,7 @@
 <div class="viewcode-block" id="Adapter">
 <a class="viewcode-back" href="../../../../module_docs/scribed/backends/vosk/adapter.html#scribed.backends.vosk.adapter.Adapter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseTranscriberAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Vosk adapter (caches one model per requested language / model path).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Vosk adapter (caches one model per requested language / model path)."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -232,13 +232,13 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">vosk</span><span class="w"> </span><span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">SetLogLevel</span>
 
-        <span class="n">SetLogLevel</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># silence Kaldi&#39;s verbose stderr logging</span>
+        <span class="n">SetLogLevel</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># silence Kaldi's verbose stderr logging</span>
 
-        <span class="n">model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;SCRIBED_VOSK_MODEL&quot;</span><span class="p">)</span>
+        <span class="n">model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"SCRIBED_VOSK_MODEL"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">model_path</span><span class="p">:</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="n">model_path</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"path"</span><span class="p">,</span> <span class="n">model_path</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;lang&quot;</span><span class="p">,</span> <span class="n">language</span> <span class="ow">or</span> <span class="s2">&quot;en-us&quot;</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"lang"</span><span class="p">,</span> <span class="n">language</span> <span class="ow">or</span> <span class="s2">"en-us"</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">model_path</span><span class="p">:</span>
@@ -254,7 +254,7 @@
 
         <span class="c1"># to_waveform does NOT resample, so condition to 16 kHz ourselves.</span>
         <span class="n">wave</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">to_waveform</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">_VOSK_SAMPLE_RATE</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="s2">&quot;ndim&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># defensive: ensure mono</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="s2">"ndim"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># defensive: ensure mono</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
             <span class="n">wave</span> <span class="o">=</span> <span class="n">wave</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
