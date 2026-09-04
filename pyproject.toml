@@ -49,7 +49,7 @@ assemblyai = ["assemblyai>=0.30"]
 google = ["google-cloud-speech>=2.21"]
 elevenlabs = ["elevenlabs>=1.0"]
 # --- feature extras ---
-cli = ["cw>=0.1.0", "argcomplete>=3"]  # the `scribed` command
+cli = ["cw>=0.1.1,<0.2", "argcomplete>=3"]  # the `scribed` command
 audio = ["soundfile>=0.12", "numpy>=1.23"]  # audio loading / normalization helpers
 streaming = ["soundfile>=0.12", "numpy>=1.23"]  # real-time transcribe_live (soxr optional, for fast resampling)
 mic = ["sounddevice>=0.4"]  # scribed.from_mic() live device capture
