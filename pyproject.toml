@@ -21,7 +21,7 @@ keywords = [
 authors = [
     { name = "Thor Whalen" },
 ]
-dependencies = []
+dependencies = ["ocracy>=0.1.17"]
 
 [project.license]
 text = "mit"
