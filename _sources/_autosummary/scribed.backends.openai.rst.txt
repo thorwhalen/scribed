@@ -1,0 +1,14 @@
+scribed.backends.openai
+=======================
+
+.. automodule:: scribed.backends.openai
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

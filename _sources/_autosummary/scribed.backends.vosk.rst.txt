@@ -1,0 +1,14 @@
+scribed.backends.vosk
+=====================
+
+.. automodule:: scribed.backends.vosk
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

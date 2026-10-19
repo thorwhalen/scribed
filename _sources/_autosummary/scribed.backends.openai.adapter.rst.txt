@@ -1,0 +1,12 @@
+scribed.backends.openai.adapter
+===============================
+
+.. automodule:: scribed.backends.openai.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

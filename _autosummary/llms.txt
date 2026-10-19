@@ -1,0 +1,52 @@
+# scribed
+
+> One facade over many speech-to-text (ASR) engines, plus a ledger to help you choose between them.
+
+
+## Pages in this subsection
+
+- [scribed](scribed.html.md): scribed — one facade over many speech-to-text engines, plus a ledger to choose.
+- [scribed.backends](scribed.backends.html.md): Implemented speech-to-text backends.
+- [scribed.backends.assemblyai](scribed.backends.assemblyai.html.md): AssemblyAI backend for scribed.
+- [scribed.backends.assemblyai.adapter](scribed.backends.assemblyai.adapter.html.md): Adapter for the AssemblyAI (Universal) transcription backend.
+- [scribed.backends.assemblyai.config](scribed.backends.assemblyai.config.html.md): Configuration for the AssemblyAI (Universal) transcription backend.
+- [scribed.backends.deepgram](scribed.backends.deepgram.html.md): Deepgram (Nova-3) backend for scribed.
+- [scribed.backends.deepgram.adapter](scribed.backends.deepgram.adapter.html.md): Adapter for the Deepgram (Nova-3) transcription backend.
+- [scribed.backends.deepgram.config](scribed.backends.deepgram.config.html.md): Configuration for the Deepgram (Nova-3) transcription backend.
+- [scribed.backends.elevenlabs](scribed.backends.elevenlabs.html.md): ElevenLabs Scribe backend for scribed.
+- [scribed.backends.elevenlabs.adapter](scribed.backends.elevenlabs.adapter.html.md): Adapter for the ElevenLabs Scribe transcription backend.
+- [scribed.backends.elevenlabs.config](scribed.backends.elevenlabs.config.html.md): Configuration for the ElevenLabs Scribe transcription backend.
+- [scribed.backends.faster_whisper](scribed.backends.faster_whisper.html.md): faster-whisper (CTranslate2) backend for scribed.
+- [scribed.backends.faster_whisper.adapter](scribed.backends.faster_whisper.adapter.html.md): Adapter for the faster-whisper backend.
+- [scribed.backends.faster_whisper.config](scribed.backends.faster_whisper.config.html.md): Configuration for the faster-whisper backend.
+- [scribed.backends.google_speech](scribed.backends.google_speech.html.md): Google Cloud Speech-to-Text backend for scribed.
+- [scribed.backends.google_speech.adapter](scribed.backends.google_speech.adapter.html.md): Adapter for the Google Cloud Speech-to-Text (v1) backend.
+- [scribed.backends.google_speech.config](scribed.backends.google_speech.config.html.md): Configuration for the Google Cloud Speech-to-Text (v1) backend.
+- [scribed.backends.groq](scribed.backends.groq.html.md): Groq (hosted Whisper) backend for scribed.
+- [scribed.backends.groq.adapter](scribed.backends.groq.adapter.html.md): Adapter for the Groq (hosted Whisper) transcription backend.
+- [scribed.backends.groq.config](scribed.backends.groq.config.html.md): Configuration for the Groq (hosted Whisper) transcription backend.
+- [scribed.backends.openai](scribed.backends.openai.html.md): OpenAI transcription backend for scribed.
+- [scribed.backends.openai.adapter](scribed.backends.openai.adapter.html.md): Adapter for the OpenAI transcription backend.
+- [scribed.backends.openai.config](scribed.backends.openai.config.html.md): Configuration for the OpenAI transcription backend.
+- [scribed.backends.vosk](scribed.backends.vosk.html.md): Vosk (Kaldi) backend for scribed.
+- [scribed.backends.vosk.adapter](scribed.backends.vosk.adapter.html.md): Adapter for the Vosk (Kaldi) backend.
+- [scribed.backends.vosk.config](scribed.backends.vosk.config.html.md): Configuration for the Vosk (Kaldi) backend.
+- [scribed.backends.whisper](scribed.backends.whisper.html.md): OpenAI Whisper (PyTorch) backend for scribed.
+- [scribed.backends.whisper.adapter](scribed.backends.whisper.adapter.html.md): Adapter for the OpenAI Whisper (PyTorch) backend.
+- [scribed.backends.whisper.config](scribed.backends.whisper.config.html.md): Configuration for the OpenAI Whisper (PyTorch) backend.
+- [scribed.backends.whispercpp](scribed.backends.whispercpp.html.md): whisper.cpp (pywhispercpp) backend for scribed.
+- [scribed.backends.whispercpp.adapter](scribed.backends.whispercpp.adapter.html.md): Adapter for the whisper.cpp backend (via the &#96;pywhispercpp&#96; binding).
+- [scribed.backends.whispercpp.config](scribed.backends.whispercpp.config.html.md): Configuration for the whisper.cpp (pywhispercpp) backend.
+- [scribed.base](scribed.base.html.md): Core types and normalized result objects for scribed.
+- [scribed.catalog](scribed.catalog.html.md): &#96;ocracy.kit.ledger.Catalog&#96; bound to scribed’s data.
+- [scribed.credentials](scribed.credentials.html.md): Credential resolution for remote transcription backends.
+- [scribed.make_backend](scribed.make_backend.html.md): Abstraction tools for &#42;building&#42; transcription facades.
+- [scribed.registry](scribed.registry.html.md): Backend discovery, registration, and lazy loading.
+- [scribed.status](scribed.status.html.md): Backend readiness status — four nested levels, info dicts, and a Markdown table.
+- [scribed.tools](scribed.tools.html.md): Command-line tools for scribed (dispatched via &#96;cw&#96; in &#96;&#95;&#95;main&#95;&#95;&#96;).
+- [scribed.translation](scribed.translation.html.md): Parameter translation between scribed’s normalized kwargs and native engines.
+- [scribed.util](scribed.util.html.md): Audio-input normalization and small shared helpers.
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

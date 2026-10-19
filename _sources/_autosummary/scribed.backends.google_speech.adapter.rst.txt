@@ -1,0 +1,19 @@
+scribed.backends.google\_speech.adapter
+=======================================
+
+.. automodule:: scribed.backends.google_speech.adapter
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DFLT_LANGUAGE_CODE
+      DFLT_OP_TIMEOUT
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

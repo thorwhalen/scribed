@@ -1,4 +1,0 @@
-scribed.backends.whispercpp.adapter
-===================================
-.. automodule:: scribed.backends.whispercpp.adapter
-   :members:

@@ -1,0 +1,12 @@
+scribed.backends.whispercpp.adapter
+===================================
+
+.. automodule:: scribed.backends.whispercpp.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

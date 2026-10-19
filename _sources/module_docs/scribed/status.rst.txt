@@ -1,4 +1,0 @@
-scribed.status
-==============
-.. automodule:: scribed.status
-   :members:

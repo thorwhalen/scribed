@@ -1,4 +1,0 @@
-scribed.vad
-===========
-.. automodule:: scribed.vad
-   :members:

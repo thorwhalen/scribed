@@ -1,0 +1,14 @@
+scribed.backends.google\_speech
+===============================
+
+.. automodule:: scribed.backends.google_speech
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

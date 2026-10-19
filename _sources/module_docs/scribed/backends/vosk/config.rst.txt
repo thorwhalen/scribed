@@ -1,4 +1,0 @@
-scribed.backends.vosk.config
-============================
-.. automodule:: scribed.backends.vosk.config
-   :members:

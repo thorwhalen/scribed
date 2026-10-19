@@ -1,0 +1,12 @@
+scribed.backends.vosk.adapter
+=============================
+
+.. automodule:: scribed.backends.vosk.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

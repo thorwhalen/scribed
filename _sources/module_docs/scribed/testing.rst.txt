@@ -1,4 +1,0 @@
-scribed.testing
-===============
-.. automodule:: scribed.testing
-   :members:

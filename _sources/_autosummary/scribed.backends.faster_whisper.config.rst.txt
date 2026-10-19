@@ -1,0 +1,6 @@
+scribed.backends.faster\_whisper.config
+=======================================
+
+.. automodule:: scribed.backends.faster_whisper.config
+
+   

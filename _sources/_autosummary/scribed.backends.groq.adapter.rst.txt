@@ -1,0 +1,12 @@
+scribed.backends.groq.adapter
+=============================
+
+.. automodule:: scribed.backends.groq.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

@@ -1,0 +1,22 @@
+scribed.backends
+================
+
+.. automodule:: scribed.backends
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   assemblyai
+   deepgram
+   elevenlabs
+   faster_whisper
+   google_speech
+   groq
+   openai
+   vosk
+   whisper
+   whispercpp

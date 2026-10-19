@@ -1,0 +1,74 @@
+﻿scribed
+=======
+
+.. automodule:: scribed
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      services
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      transcribe
+      transcribe_text
+      find
+      list_backends
+      register_backend
+      get_default_backend
+      get_config
+      make_segment
+      make_word
+      scaffold_backend
+      validate_adapter
+      requirements
+      check
+      doctor
+      install
+      available_backends
+      backend_ids
+      backend_info
+      status_table
+      names_with_sites
+      is_set_up
+      is_tested
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Transcript
+      Segment
+      Word
+      TimeSpan
+      Channel
+      BackendInfo
+      Catalog
+      ServiceCollection
+      BaseTranscriberAdapter
+      Requirements
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   audio
+   backends
+   base
+   catalog
+   credentials
+   make_backend
+   registry
+   status
+   streaming
+   testing
+   tools
+   translation
+   util
+   vad

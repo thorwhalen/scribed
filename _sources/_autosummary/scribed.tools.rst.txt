@@ -1,0 +1,21 @@
+scribed.tools
+=============
+
+.. automodule:: scribed.tools
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      transcribe
+      backends
+      info
+      find
+      scaffold
+      validate
+      requirements
+      doctor
+      install
+      status
+   

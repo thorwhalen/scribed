@@ -1,0 +1,17 @@
+scribed.status
+==============
+
+.. automodule:: scribed.status
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      is_set_up
+      is_tested
+      backend_ids
+      backend_info
+      status_table
+      names_with_sites
+   

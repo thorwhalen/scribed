@@ -1,0 +1,14 @@
+scribed.backends.faster\_whisper
+================================
+
+.. automodule:: scribed.backends.faster_whisper
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

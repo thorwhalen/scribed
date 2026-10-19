@@ -1,0 +1,23 @@
+scribed.registry
+================
+
+.. automodule:: scribed.registry
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      PRIMARY_CAPABILITY
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      clear_registry
+      get_backend
+      get_config
+      get_default_backend
+      list_backends
+      register_backend
+   

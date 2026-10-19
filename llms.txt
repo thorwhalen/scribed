@@ -1,0 +1,60 @@
+# scribed
+
+> One facade over many speech-to-text (ASR) engines, plus a ledger to help you choose between them.
+
+
+## Pages
+
+- [scribed](index.html.md): One façade over many speech-to-text (ASR) engines — plus a &#42;&#42;ledger&#42;&#42; to help you choose between the...
+- [API reference](api.html.md): | &#96;scribed&#96;   | scribed — one facade over many speech-to-text engines, plus a ledger to choose.   |
+- [scribed](_autosummary/scribed.html.md): scribed — one facade over many speech-to-text engines, plus a ledger to choose.
+- [scribed.backends](_autosummary/scribed.backends.html.md): Implemented speech-to-text backends.
+- [scribed.backends.assemblyai](_autosummary/scribed.backends.assemblyai.html.md): AssemblyAI backend for scribed.
+- [scribed.backends.assemblyai.adapter](_autosummary/scribed.backends.assemblyai.adapter.html.md): Adapter for the AssemblyAI (Universal) transcription backend.
+- [scribed.backends.assemblyai.config](_autosummary/scribed.backends.assemblyai.config.html.md): Configuration for the AssemblyAI (Universal) transcription backend.
+- [scribed.backends.deepgram](_autosummary/scribed.backends.deepgram.html.md): Deepgram (Nova-3) backend for scribed.
+- [scribed.backends.deepgram.adapter](_autosummary/scribed.backends.deepgram.adapter.html.md): Adapter for the Deepgram (Nova-3) transcription backend.
+- [scribed.backends.deepgram.config](_autosummary/scribed.backends.deepgram.config.html.md): Configuration for the Deepgram (Nova-3) transcription backend.
+- [scribed.backends.elevenlabs](_autosummary/scribed.backends.elevenlabs.html.md): ElevenLabs Scribe backend for scribed.
+- [scribed.backends.elevenlabs.adapter](_autosummary/scribed.backends.elevenlabs.adapter.html.md): Adapter for the ElevenLabs Scribe transcription backend.
+- [scribed.backends.elevenlabs.config](_autosummary/scribed.backends.elevenlabs.config.html.md): Configuration for the ElevenLabs Scribe transcription backend.
+- [scribed.backends.faster_whisper](_autosummary/scribed.backends.faster_whisper.html.md): faster-whisper (CTranslate2) backend for scribed.
+- [scribed.backends.faster_whisper.adapter](_autosummary/scribed.backends.faster_whisper.adapter.html.md): Adapter for the faster-whisper backend.
+- [scribed.backends.faster_whisper.config](_autosummary/scribed.backends.faster_whisper.config.html.md): Configuration for the faster-whisper backend.
+- [scribed.backends.google_speech](_autosummary/scribed.backends.google_speech.html.md): Google Cloud Speech-to-Text backend for scribed.
+- [scribed.backends.google_speech.adapter](_autosummary/scribed.backends.google_speech.adapter.html.md): Adapter for the Google Cloud Speech-to-Text (v1) backend.
+- [scribed.backends.google_speech.config](_autosummary/scribed.backends.google_speech.config.html.md): Configuration for the Google Cloud Speech-to-Text (v1) backend.
+- [scribed.backends.groq](_autosummary/scribed.backends.groq.html.md): Groq (hosted Whisper) backend for scribed.
+- [scribed.backends.groq.adapter](_autosummary/scribed.backends.groq.adapter.html.md): Adapter for the Groq (hosted Whisper) transcription backend.
+- [scribed.backends.groq.config](_autosummary/scribed.backends.groq.config.html.md): Configuration for the Groq (hosted Whisper) transcription backend.
+- [scribed.backends.openai](_autosummary/scribed.backends.openai.html.md): OpenAI transcription backend for scribed.
+- [scribed.backends.openai.adapter](_autosummary/scribed.backends.openai.adapter.html.md): Adapter for the OpenAI transcription backend.
+- [scribed.backends.openai.config](_autosummary/scribed.backends.openai.config.html.md): Configuration for the OpenAI transcription backend.
+- [scribed.backends.vosk](_autosummary/scribed.backends.vosk.html.md): Vosk (Kaldi) backend for scribed.
+- [scribed.backends.vosk.adapter](_autosummary/scribed.backends.vosk.adapter.html.md): Adapter for the Vosk (Kaldi) backend.
+- [scribed.backends.vosk.config](_autosummary/scribed.backends.vosk.config.html.md): Configuration for the Vosk (Kaldi) backend.
+- [scribed.backends.whisper](_autosummary/scribed.backends.whisper.html.md): OpenAI Whisper (PyTorch) backend for scribed.
+- [scribed.backends.whisper.adapter](_autosummary/scribed.backends.whisper.adapter.html.md): Adapter for the OpenAI Whisper (PyTorch) backend.
+- [scribed.backends.whisper.config](_autosummary/scribed.backends.whisper.config.html.md): Configuration for the OpenAI Whisper (PyTorch) backend.
+- [scribed.backends.whispercpp](_autosummary/scribed.backends.whispercpp.html.md): whisper.cpp (pywhispercpp) backend for scribed.
+- [scribed.backends.whispercpp.adapter](_autosummary/scribed.backends.whispercpp.adapter.html.md): Adapter for the whisper.cpp backend (via the &#96;pywhispercpp&#96; binding).
+- [scribed.backends.whispercpp.config](_autosummary/scribed.backends.whispercpp.config.html.md): Configuration for the whisper.cpp (pywhispercpp) backend.
+- [scribed.base](_autosummary/scribed.base.html.md): Core types and normalized result objects for scribed.
+- [scribed.catalog](_autosummary/scribed.catalog.html.md): &#96;ocracy.kit.ledger.Catalog&#96; bound to scribed’s data.
+- [scribed.credentials](_autosummary/scribed.credentials.html.md): Credential resolution for remote transcription backends.
+- [scribed.make_backend](_autosummary/scribed.make_backend.html.md): Abstraction tools for &#42;building&#42; transcription facades.
+- [scribed.registry](_autosummary/scribed.registry.html.md): Backend discovery, registration, and lazy loading.
+- [scribed.status](_autosummary/scribed.status.html.md): Backend readiness status — four nested levels, info dicts, and a Markdown table.
+- [scribed.tools](_autosummary/scribed.tools.html.md): Command-line tools for scribed (dispatched via &#96;cw&#96; in &#96;&#95;&#95;main&#95;&#95;&#96;).
+- [scribed.translation](_autosummary/scribed.translation.html.md): Parameter translation between scribed’s normalized kwargs and native engines.
+- [scribed.util](_autosummary/scribed.util.html.md): Audio-input normalization and small shared helpers.
+- [For AI agents](ai-agents.html.md): &#96;scribed&#96; ships artifacts for coding agents alongside its code. This page lists
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-19 12:36 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+
+## Optional
+
+- [scribed.md](scribed.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

@@ -1,0 +1,6 @@
+scribed.catalog
+===============
+
+.. currentmodule:: scribed
+
+.. autodata:: catalog

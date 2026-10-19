@@ -1,0 +1,16 @@
+scribed.base
+============
+
+.. automodule:: scribed.base
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Channel
+      Segment
+      TimeSpan
+      Transcript
+      Word
+   

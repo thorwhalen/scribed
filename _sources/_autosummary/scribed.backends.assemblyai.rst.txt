@@ -1,0 +1,14 @@
+scribed.backends.assemblyai
+===========================
+
+.. automodule:: scribed.backends.assemblyai
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

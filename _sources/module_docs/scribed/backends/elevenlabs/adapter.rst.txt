@@ -1,4 +1,0 @@
-scribed.backends.elevenlabs.adapter
-===================================
-.. automodule:: scribed.backends.elevenlabs.adapter
-   :members:

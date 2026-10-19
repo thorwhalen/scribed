@@ -1,0 +1,23 @@
+scribed.make\_backend
+=====================
+
+.. automodule:: scribed.make_backend
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      make_segment
+      make_word
+      normalize_confidence
+      scaffold_backend
+      make_test_audio
+      validate_adapter
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BaseTranscriberAdapter
+   

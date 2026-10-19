@@ -1,4 +1,0 @@
-scribed.backends.groq.config
-============================
-.. automodule:: scribed.backends.groq.config
-   :members:

@@ -1,4 +1,0 @@
-scribed.__main__
-================
-.. automodule:: scribed.__main__
-   :members:

@@ -1,0 +1,14 @@
+scribed.backends.groq
+=====================
+
+.. automodule:: scribed.backends.groq
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

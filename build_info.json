@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-10-19T12:36:08Z",
+  "package": {
+    "name": "scribed",
+    "version": "0.0.5",
+    "display_name": "scribed",
+    "source": "pyproject.toml"
+  },
+  "git": {
+    "available": true,
+    "commit": "06f795e23f142571083a9aca31641aff381e3c78",
+    "short_commit": "06f795e",
+    "branch": "main",
+    "tags": [],
+    "dirty": false,
+    "remote_url": "https://github.com/thorwhalen/scribed",
+    "commit_url": "https://github.com/thorwhalen/scribed/commit/06f795e23f142571083a9aca31641aff381e3c78",
+    "error": null
+  },
+  "ci": {
+    "provider": "github",
+    "repository": "thorwhalen/scribed",
+    "sha": "06f795e23f142571083a9aca31641aff381e3c78",
+    "sha_in_history": true,
+    "ref": "refs/heads/main",
+    "ref_name": "main",
+    "run_id": "39253136457",
+    "run_url": "https://github.com/thorwhalen/scribed/actions/runs/39253136457",
+    "server_url": "https://github.com"
+  },
+  "tools": {
+    "epythet": "0.2.18",
+    "sphinx": "9.1.0",
+    "docutils": "0.22.4",
+    "python": "3.12.15"
+  },
+  "config": {
+    "theme": "auto",
+    "html_theme": "sphinxawesome_theme",
+    "accent": "#00648f",
+    "mode": "auto",
+    "api_generator": "autosummary",
+    "ignore": [
+      "tests/",
+      "scrap/",
+      "examples/"
+    ],
+    "agent_outputs": true,
+    "aggregates": [
+      "md"
+    ],
+    "ai_artifacts": true,
+    "provenance": true,
+    "docs_dir": "docsrc"
+  },
+  "site": {
+    "modules_documented": 41,
+    "objects_documented": 179
+  },
+  "pypi": {
+    "checked": true,
+    "latest": "0.0.5",
+    "relation": "same",
+    "error": null
+  },
+  "reproduce": "git clone https://github.com/thorwhalen/scribed && cd scribed\ngit checkout 06f795e23f142571083a9aca31641aff381e3c78\npip install \"epythet==0.2.18\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "warnings": [],
+  "alignment": {
+    "aligned": true,
+    "notes": []
+  }
+}

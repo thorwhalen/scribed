@@ -1,4 +1,0 @@
-scribed.base
-============
-.. automodule:: scribed.base
-   :members:

@@ -1,0 +1,14 @@
+scribed.backends.whispercpp
+===========================
+
+.. automodule:: scribed.backends.whispercpp
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

@@ -1,4 +1,0 @@
-scribed.backends.faster_whisper.config
-======================================
-.. automodule:: scribed.backends.faster_whisper.config
-   :members:

@@ -1,0 +1,13 @@
+scribed.translation
+===================
+
+.. automodule:: scribed.translation
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      make_kwargs_translator
+      validate_param
+   

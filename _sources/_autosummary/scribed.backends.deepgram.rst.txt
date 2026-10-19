@@ -1,0 +1,14 @@
+scribed.backends.deepgram
+=========================
+
+.. automodule:: scribed.backends.deepgram
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

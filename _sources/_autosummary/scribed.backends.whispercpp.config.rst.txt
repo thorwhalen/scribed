@@ -1,0 +1,6 @@
+scribed.backends.whispercpp.config
+==================================
+
+.. automodule:: scribed.backends.whispercpp.config
+
+   

@@ -1,4 +1,0 @@
-scribed.audio
-=============
-.. automodule:: scribed.audio
-   :members:

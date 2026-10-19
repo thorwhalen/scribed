@@ -1,4 +1,0 @@
-scribed.tools
-=============
-.. automodule:: scribed.tools
-   :members:

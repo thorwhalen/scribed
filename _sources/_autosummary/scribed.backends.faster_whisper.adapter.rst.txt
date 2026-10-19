@@ -1,0 +1,12 @@
+scribed.backends.faster\_whisper.adapter
+========================================
+
+.. automodule:: scribed.backends.faster_whisper.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

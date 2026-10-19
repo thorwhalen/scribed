@@ -1,0 +1,6 @@
+scribed.backends.google\_speech.config
+======================================
+
+.. automodule:: scribed.backends.google_speech.config
+
+   

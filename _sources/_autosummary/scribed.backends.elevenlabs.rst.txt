@@ -1,0 +1,14 @@
+scribed.backends.elevenlabs
+===========================
+
+.. automodule:: scribed.backends.elevenlabs
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

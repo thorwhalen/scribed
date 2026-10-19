@@ -1,4 +1,0 @@
-scribed.backends.vosk.adapter
-=============================
-.. automodule:: scribed.backends.vosk.adapter
-   :members:

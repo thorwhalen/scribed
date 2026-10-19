@@ -1,0 +1,19 @@
+scribed.util
+============
+
+.. automodule:: scribed.util
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      classify_input
+      is_url
+      load_audio_bytes
+      ensure_file_path
+      cleanup_temp
+      audio_path
+      to_waveform
+      check_import
+   
