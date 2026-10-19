@@ -152,11 +152,11 @@ validate_adapter("speechmatics")  # smoke-test it end to end
 A backend is just a subpackage with a `config.py` (`BACKEND_CONFIG`) and an
 `adapter.py` (`Adapter(BaseTranscriberAdapter)` implementing `_transcribe`). The
 registry discovers it automatically; engine SDKs are imported lazily so
-`import scribed` stays dependency-free.
+`import scribed` needs no engine SDK.
 
 ## Design notes
 
-- **Dependency-free import.** The base package's only dependency is `ocracy`
+- **No engine SDK on import.** The base package's only dependency is `ocracy`
   (dependency-free itself), whose `ocracy.kit` is the fleet's shared facade kit;
   every engine SDK is an optional extra, imported lazily inside its adapter.
 - **Data-driven ledger.** Engine metadata is curated research in JSON, separate

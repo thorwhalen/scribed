@@ -5,7 +5,7 @@ description: Get a scribed speech-to-text backend actually running — resolve i
 
 # scribed — installing & setting up a backend
 
-`import scribed` is dependency-free; each engine ships as an extra and is imported
+`import scribed` needs no engine SDK; each engine ships as an extra and is imported
 lazily. When a backend isn't ready, scribed gives structured, OS-aware guidance.
 
 ## Diagnose

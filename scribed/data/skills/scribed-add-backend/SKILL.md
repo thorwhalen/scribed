@@ -9,7 +9,7 @@ A backend is a subpackage of `scribed.backends` with two files:
 `config.py` (a `BACKEND_CONFIG` dict) and `adapter.py` (`Adapter` with a
 `transcribe(audio, **kwargs) -> Transcript`). The registry discovers it
 automatically; the engine SDK must be imported **lazily** so `import scribed`
-stays dependency-free.
+needs no engine SDK.
 
 ## 1. Scaffold from the ledger
 
