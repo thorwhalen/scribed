@@ -26,7 +26,7 @@ The same call, the same `Transcript` back, no matter which engine ran.
 
 ## Install
 
-`import scribed` is dependency-free. Install only the backends you use, via extras:
+`import scribed` needs no engine SDK: its one dependency is [`ocracy`](https://github.com/thorwhalen/ocracy), itself dependency-free, for the shared facade kit. Install only the backends you use, via extras:
 
 ```bash
 pip install "scribed[faster-whisper]"   # local, free — recommended default
@@ -152,14 +152,15 @@ validate_adapter("speechmatics")  # smoke-test it end to end
 A backend is just a subpackage with a `config.py` (`BACKEND_CONFIG`) and an
 `adapter.py` (`Adapter(BaseTranscriberAdapter)` implementing `_transcribe`). The
 registry discovers it automatically; engine SDKs are imported lazily so
-`import scribed` stays dependency-free.
+`import scribed` needs no engine SDK.
 
 ## Design notes
 
-- **Dependency-free import.** The base package declares no dependencies; every
-  engine SDK is an optional extra, imported lazily inside its adapter.
+- **No engine SDK on import.** The base package's only dependency is `ocracy`
+  (dependency-free itself), whose `ocracy.kit` is the fleet's shared facade kit;
+  every engine SDK is an optional extra, imported lazily inside its adapter.
 - **Data-driven ledger.** Engine metadata is curated research in JSON, separate
-  from code.
+  from code, read by the shared loader `ocracy.kit.ledger`.
 - **Normalized everything.** One input type (path / URL / bytes / file / numpy
   waveform), one result type (`Transcript`), one vocabulary of options translated
   per-engine via each backend's `param_map`.

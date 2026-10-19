@@ -6,7 +6,7 @@ description: Transcribe audio to text through one façade over many speech-to-te
 # scribed — speech-to-text façade
 
 `scribed` gives one uniform call over many ASR engines plus a ledger to choose
-between them. `import scribed` is dependency-free; each engine is an optional
+between them. `import scribed` needs no engine SDK; each engine is an optional
 extra imported lazily.
 
 ## The one call
