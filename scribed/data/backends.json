@@ -897,6 +897,80 @@
       "best_for": "Top-of-leaderboard accuracy (~5.42% WER) from a closed Cohere API.",
       "pros": ["Tops Open ASR Leaderboard (~5.42% WER)", "Simple hosted API"],
       "cons": ["Closed / proprietary", "Pricing not yet documented here", "No diarization/timestamps documented"]
+    },
+    {
+      "id": "mlx-whisper",
+      "name": "mlx-whisper",
+      "display_name": "mlx-whisper (Apple Silicon)",
+      "homepage": "https://github.com/ml-explore/mlx-examples/tree/main/whisper",
+      "license": "MIT",
+      "python_install": "pip install 'scribed[mlx]'",
+      "word_timestamps": "yes",
+      "beyond_text": [],
+      "languages_count": 99,
+      "languages_note": "Whisper languages (~99).",
+      "speed_note": "Whisper on Apple-Silicon GPU via MLX; macOS arm64 only.",
+      "output_formats": [
+        "text",
+        "segments",
+        "words"
+      ],
+      "best_for": "Fast local Whisper on an M-series Mac.",
+      "pros": [
+        "Uses the Apple GPU",
+        "Word timestamps"
+      ],
+      "cons": [
+        "macOS arm64 only"
+      ],
+      "is_local": true,
+      "is_remote": false,
+      "open_source": true,
+      "pricing_model": "open_source",
+      "price_note": "free (your compute)",
+      "price_per_min": null,
+      "api_env_var": "",
+      "streaming": "no",
+      "diarization": "no",
+      "translation": "no",
+      "accuracy_tier": "high"
+    },
+    {
+      "id": "parakeet-mlx",
+      "name": "parakeet-mlx",
+      "display_name": "Parakeet-TDT (Apple Silicon, MLX)",
+      "homepage": "https://github.com/senstella/parakeet-mlx",
+      "license": "Apache-2.0",
+      "python_install": "pip install 'scribed[mlx]'",
+      "word_timestamps": "no",
+      "beyond_text": [],
+      "languages_count": 25,
+      "languages_note": "NVIDIA Parakeet-TDT v3 multilingual (European languages).",
+      "speed_note": "Very fast on Apple Silicon.",
+      "output_formats": [
+        "text",
+        "segments"
+      ],
+      "best_for": "Very fast local transcription on an M-series Mac.",
+      "pros": [
+        "Fast",
+        "Sentence timestamps"
+      ],
+      "cons": [
+        "macOS arm64 only",
+        "Needs ffmpeg to decode audio"
+      ],
+      "is_local": true,
+      "is_remote": false,
+      "open_source": true,
+      "pricing_model": "open_source",
+      "price_note": "free (your compute)",
+      "price_per_min": null,
+      "api_env_var": "",
+      "streaming": "no",
+      "diarization": "no",
+      "translation": "no",
+      "accuracy_tier": "high"
     }
   ]
 }
