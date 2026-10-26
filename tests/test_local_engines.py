@@ -224,9 +224,9 @@ def test_whisperx_passes_the_token_under_the_installed_spelling(
 
     Pipeline.__init__.__signature__ = inspect.Signature(
         [
-            inspect.Parameter("self", 1),
-            inspect.Parameter(token_arg, 3, default=None),
-            inspect.Parameter("device", 3, default=None),
+            inspect.Parameter("self", inspect.Parameter.POSITIONAL_OR_KEYWORD),
+            inspect.Parameter(token_arg, inspect.Parameter.KEYWORD_ONLY, default=None),
+            inspect.Parameter("device", inspect.Parameter.KEYWORD_ONLY, default=None),
         ]
     )
     sys.modules["whisperx"].DiarizationPipeline = Pipeline
@@ -238,6 +238,7 @@ def test_whisper_sized_model_is_a_registry_capability():
     assert set(registry.list_backends("whisper_sized_model")) == {
         "whisper",
         "faster-whisper",
+        "mlx-whisper",
         "whispercpp",
         "whisperx",
     }
