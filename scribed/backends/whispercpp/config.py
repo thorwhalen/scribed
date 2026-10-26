@@ -26,7 +26,7 @@ BACKEND_CONFIG = {
     "license": "MIT",
     "is_local": True,
     "is_remote": False,
-    "capabilities": ["translate"],
+    "capabilities": ["translate", "whisper_sized_model"],
     "default_for": [],
     "api_env_var": "",
     "description": "Local whisper.cpp via pywhispercpp (pure C/C++, great on Apple Silicon).",
