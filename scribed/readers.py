@@ -67,7 +67,9 @@ _TAG_RE = re.compile(r"<[^>]+>")
 # (text, start_s, end_s) — the intermediate word form every parser produces.
 _WordT = Tuple[str, float, float]
 # (text, start_s | None, end_s | None, speaker | None, words | None)
-_Row = Tuple[str, Optional[float], Optional[float], Optional[str], Optional[Tuple[_WordT, ...]]]
+_Row = Tuple[
+    str, Optional[float], Optional[float], Optional[str], Optional[Tuple[_WordT, ...]]
+]
 
 
 # --- public API -------------------------------------------------------------------
@@ -139,7 +141,9 @@ def read_transcript(
     try:
         parse = _PARSERS[fmt]
     except KeyError:
-        raise ValueError(f"unknown transcript format {fmt!r}; known: {FORMATS}") from None
+        raise ValueError(
+            f"unknown transcript format {fmt!r}; known: {FORMATS}"
+        ) from None
     segments = [_to_segment(row) for row in parse(text)]
     duration = max(
         (s.span.end_ms for s in segments if s.span is not None), default=None
@@ -181,9 +185,7 @@ def _to_segment(row: _Row) -> Segment:
         text=text,
         span=span,
         speaker=speaker,
-        words=tuple(
-            Word(t, TimeSpan.from_seconds(a, b)) for t, a, b in (words or ())
-        ),
+        words=tuple(Word(t, TimeSpan.from_seconds(a, b)) for t, a, b in (words or ())),
     )
 
 
@@ -289,7 +291,9 @@ def _parse_json(text: str) -> List[_Row]:
         if items is None:
             items = obj.get("words")
             if items is None:
-                raise ValueError("a transcript JSON needs a 'segments' (or 'words') list")
+                raise ValueError(
+                    "a transcript JSON needs a 'segments' (or 'words') list"
+                )
             items = [{"words": items}]
     else:
         items = list(obj)
@@ -337,7 +341,13 @@ _TG_SHORT_INTERVAL_RE = re.compile(
 )
 #: Tier names whose intervals are the LINES (one segment each), by preference.
 _TG_LINE_TIERS = (
-    "utterances", "utterance", "lines", "line", "sentences", "sentence", "segments",
+    "utterances",
+    "utterance",
+    "lines",
+    "line",
+    "sentences",
+    "sentence",
+    "segments",
 )
 #: Tier names whose intervals are the WORDS, by preference.
 _TG_WORD_TIERS = ("words", "word", "ortho", "orthography")
@@ -385,7 +395,13 @@ def _parse_textgrid(text: str) -> List[_Row]:
         if not words:
             return []
         return [
-            (" ".join(w[0] for w in words), words[0][1], words[-1][2], None, tuple(words))
+            (
+                " ".join(w[0] for w in words),
+                words[0][1],
+                words[-1][2],
+                None,
+                tuple(words),
+            )
         ]
     out: List[_Row] = []
     for a, b, t in tiers[line_tier]:
