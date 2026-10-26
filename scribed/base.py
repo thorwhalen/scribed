@@ -378,6 +378,17 @@ class Transcript:
 
     # -- constructors -------------------------------------------------------
     @classmethod
+    def parse(cls, source: Any, *, fmt: Optional[str] = None) -> "Transcript":
+        """Read an existing transcript (SRT, WebVTT, TextGrid, word JSON, plain).
+
+        ``source`` is a file path or the transcript text itself; ``fmt`` overrides
+        format detection. See :func:`scribed.readers.read_transcript`.
+        """
+        from scribed.readers import read_transcript  # lazy: base stays import-light
+
+        return read_transcript(source, fmt=fmt)
+
+    @classmethod
     def from_text(
         cls, text: str, *, backend: str = "", raw: Any = None, **meta: Any
     ) -> "Transcript":
