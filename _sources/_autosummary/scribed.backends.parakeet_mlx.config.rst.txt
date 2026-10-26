@@ -1,0 +1,12 @@
+scribed.backends.parakeet\_mlx.config
+=====================================
+
+.. automodule:: scribed.backends.parakeet_mlx.config
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DEFAULT_MODEL
+   

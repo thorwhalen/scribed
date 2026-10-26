@@ -1,6 +1,6 @@
 # scribed.catalog
 
-### scribed.catalog *= <Catalog 33 backends | 10 implemented | 17 local, 17 remote>*
+### scribed.catalog *= <Catalog 35 backends | 13 implemented | 19 local, 17 remote>*
 
 `ocracy.kit.ledger.Catalog` bound to scribed’s data.
 

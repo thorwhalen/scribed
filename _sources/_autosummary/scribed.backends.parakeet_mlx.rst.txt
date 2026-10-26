@@ -1,0 +1,14 @@
+scribed.backends.parakeet\_mlx
+==============================
+
+.. automodule:: scribed.backends.parakeet_mlx
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

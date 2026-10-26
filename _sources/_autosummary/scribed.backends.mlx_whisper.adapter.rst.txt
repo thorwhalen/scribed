@@ -1,0 +1,25 @@
+scribed.backends.mlx\_whisper.adapter
+=====================================
+
+.. automodule:: scribed.backends.mlx_whisper.adapter
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      MODEL_REPO_TEMPLATE
+      MODEL_REPO_OVERRIDES
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      resolve_model_repo
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

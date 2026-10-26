@@ -709,7 +709,7 @@ have to flesh out `param_map` and implement `adapter.py`’s
 * **Returns:**
   The path to the created backend package.
 
-### scribed.services *= <ServiceCollection backends=['assemblyai', 'deepgram', 'elevenlabs', 'faster-whisper', 'google-speech', 'groq', 'openai', 'vosk', 'whisper', 'whispercpp']>*
+### scribed.services *= <ServiceCollection backends=['assemblyai', 'deepgram', 'elevenlabs', 'faster-whisper', 'google-speech', 'groq', 'mlx-whisper', 'openai', 'parakeet-mlx', 'vosk', 'whisper', 'whispercpp', 'whisperx']>*
 
 Singleton service collection for per-backend access (`services.deepgram`).
 

@@ -1,4 +1,4 @@
-> built 2026-10-26 08:13 UTC from f77ed6e (main) · scribed 0.0.6. Details: build_info.json
+> built 2026-10-26 08:18 UTC from 7769dda (main) · scribed 0.0.7. Details: build_info.json
 
 # index.html.md
 
@@ -575,17 +575,122 @@ scaffold_backend("speechmatics")   # creates scribed/backends/speechmatics/ from
 
 ### Modules
 
-| [`assemblyai`](_autosummary/scribed.backends.assemblyai.html.md#module-scribed.backends.assemblyai)         | AssemblyAI backend for scribed.                   |
-|--------------------------------------------------------------------------------------------------------|---------------------------------------------------|
-| [`deepgram`](_autosummary/scribed.backends.deepgram.html.md#module-scribed.backends.deepgram)             | Deepgram (Nova-3) backend for scribed.            |
-| [`elevenlabs`](_autosummary/scribed.backends.elevenlabs.html.md#module-scribed.backends.elevenlabs)         | ElevenLabs Scribe backend for scribed.            |
-| [`faster_whisper`](_autosummary/scribed.backends.faster_whisper.html.md#module-scribed.backends.faster_whisper) | faster-whisper (CTranslate2) backend for scribed. |
-| [`google_speech`](_autosummary/scribed.backends.google_speech.html.md#module-scribed.backends.google_speech)   | Google Cloud Speech-to-Text backend for scribed.  |
-| [`groq`](_autosummary/scribed.backends.groq.html.md#module-scribed.backends.groq)                     | Groq (hosted Whisper) backend for scribed.        |
-| [`openai`](_autosummary/scribed.backends.openai.html.md#module-scribed.backends.openai)                 | OpenAI transcription backend for scribed.         |
-| [`vosk`](_autosummary/scribed.backends.vosk.html.md#module-scribed.backends.vosk)                     | Vosk (Kaldi) backend for scribed.                 |
-| [`whisper`](_autosummary/scribed.backends.whisper.html.md#module-scribed.backends.whisper)               | OpenAI Whisper (PyTorch) backend for scribed.     |
-| [`whispercpp`](_autosummary/scribed.backends.whispercpp.html.md#module-scribed.backends.whispercpp)         | whisper.cpp (pywhispercpp) backend for scribed.   |
+| [`assemblyai`](_autosummary/scribed.backends.assemblyai.html.md#module-scribed.backends.assemblyai)         | AssemblyAI backend for scribed.                                                    |
+|--------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| [`deepgram`](_autosummary/scribed.backends.deepgram.html.md#module-scribed.backends.deepgram)             | Deepgram (Nova-3) backend for scribed.                                             |
+| [`elevenlabs`](_autosummary/scribed.backends.elevenlabs.html.md#module-scribed.backends.elevenlabs)         | ElevenLabs Scribe backend for scribed.                                             |
+| [`faster_whisper`](_autosummary/scribed.backends.faster_whisper.html.md#module-scribed.backends.faster_whisper) | faster-whisper (CTranslate2) backend for scribed.                                  |
+| [`google_speech`](_autosummary/scribed.backends.google_speech.html.md#module-scribed.backends.google_speech)   | Google Cloud Speech-to-Text backend for scribed.                                   |
+| [`groq`](_autosummary/scribed.backends.groq.html.md#module-scribed.backends.groq)                     | Groq (hosted Whisper) backend for scribed.                                         |
+| [`mlx_whisper`](_autosummary/scribed.backends.mlx_whisper.html.md#module-scribed.backends.mlx_whisper)       | mlx-whisper (Whisper on Apple Silicon via MLX) backend for scribed.                |
+| [`openai`](_autosummary/scribed.backends.openai.html.md#module-scribed.backends.openai)                 | OpenAI transcription backend for scribed.                                          |
+| [`parakeet_mlx`](_autosummary/scribed.backends.parakeet_mlx.html.md#module-scribed.backends.parakeet_mlx)     | parakeet-mlx (NVIDIA Parakeet-TDT on Apple Silicon via MLX) backend for scribed.   |
+| [`vosk`](_autosummary/scribed.backends.vosk.html.md#module-scribed.backends.vosk)                     | Vosk (Kaldi) backend for scribed.                                                  |
+| [`whisper`](_autosummary/scribed.backends.whisper.html.md#module-scribed.backends.whisper)               | OpenAI Whisper (PyTorch) backend for scribed.                                      |
+| [`whispercpp`](_autosummary/scribed.backends.whispercpp.html.md#module-scribed.backends.whispercpp)         | whisper.cpp (pywhispercpp) backend for scribed.                                    |
+| [`whisperx`](_autosummary/scribed.backends.whisperx.html.md#module-scribed.backends.whisperx)             | WhisperX (batched Whisper + alignment + optional diarization) backend for scribed. |
+
+
+# _autosummary/scribed.backends.mlx_whisper.adapter.html.md
+
+# scribed.backends.mlx_whisper.adapter
+
+Adapter for the mlx-whisper backend (Whisper on Apple Silicon via MLX).
+
+Decodes the input to a float32 mono 16 kHz array (no ffmpeg needed), calls
+`mlx_whisper.transcribe(array, path_or_hf_repo=...)` and maps its
+openai-whisper-shaped result dict onto a [`scribed.base.Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript).
+`mlx_whisper` is imported on first use, after the Apple-Silicon check, so this
+module imports anywhere.
+
+### Module Attributes
+
+| [`MODEL_REPO_TEMPLATE`](_autosummary/scribed.backends.mlx_whisper.adapter.html.md#scribed.backends.mlx_whisper.adapter.MODEL_REPO_TEMPLATE)   | How a bare Whisper size maps to an `mlx-community` repo id.                                                          |
+|------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| [`MODEL_REPO_OVERRIDES`](_autosummary/scribed.backends.mlx_whisper.adapter.html.md#scribed.backends.mlx_whisper.adapter.MODEL_REPO_OVERRIDES)  | Sizes whose mlx-community repo does not follow [`MODEL_REPO_TEMPLATE`](_autosummary/scribed.backends.mlx_whisper.adapter.html.md#scribed.backends.mlx_whisper.adapter.MODEL_REPO_TEMPLATE). |
+
+### Functions
+
+| [`resolve_model_repo`](_autosummary/scribed.backends.mlx_whisper.adapter.html.md#scribed.backends.mlx_whisper.adapter.resolve_model_repo)(model)   | Resolve a model name to a Hugging Face repo id for `mlx_whisper`.   |
+|------------------------------------------------------------------------------|---------------------------------------------------------------------|
+
+### Classes
+
+| [`Adapter`](_autosummary/scribed.backends.mlx_whisper.adapter.html.md#scribed.backends.mlx_whisper.adapter.Adapter)(config)   | mlx-whisper adapter (Apple Silicon only).   |
+|--------------------------------------------------------------------|---------------------------------------------|
+
+### *class* scribed.backends.mlx_whisper.adapter.Adapter(config)
+
+Bases: [`BaseTranscriberAdapter`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
+
+mlx-whisper adapter (Apple Silicon only).
+
+#### module_name *= 'mlx_whisper'*
+
+Engine module name — the seam tests use to inject a fake backend.
+
+### scribed.backends.mlx_whisper.adapter.MODEL_REPO_OVERRIDES *= {'large-v3-turbo': 'mlx-community/whisper-large-v3-turbo', 'turbo': 'mlx-community/whisper-large-v3-turbo'}*
+
+Sizes whose mlx-community repo does not follow [`MODEL_REPO_TEMPLATE`](_autosummary/scribed.backends.mlx_whisper.adapter.html.md#scribed.backends.mlx_whisper.adapter.MODEL_REPO_TEMPLATE).
+
+### scribed.backends.mlx_whisper.adapter.MODEL_REPO_TEMPLATE *= 'mlx-community/whisper-{model}-mlx'*
+
+How a bare Whisper size maps to an `mlx-community` repo id.
+
+### scribed.backends.mlx_whisper.adapter.resolve_model_repo(model)
+
+Resolve a model name to a Hugging Face repo id for `mlx_whisper`.
+
+```pycon
+>>> resolve_model_repo("base")
+'mlx-community/whisper-base-mlx'
+>>> resolve_model_repo("turbo")
+'mlx-community/whisper-large-v3-turbo'
+>>> resolve_model_repo("someone/custom-whisper")
+'someone/custom-whisper'
+```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+
+# _autosummary/scribed.backends.mlx_whisper.config.html.md
+
+# scribed.backends.mlx_whisper.config
+
+Configuration for the mlx-whisper backend (Whisper on Apple Silicon via MLX).
+
+[mlx-whisper](https://pypi.org/project/mlx-whisper/) is Apple’s (ml-explore)
+port of OpenAI Whisper to MLX: it runs on the M-series GPU with unified memory, and
+returns openai-whisper-shaped results (segments, optional word timestamps).
+macOS on Apple Silicon only.
+
+`model` is either a Hugging Face repo id (`"mlx-community/whisper-large-v3-turbo"`,
+the default) or a bare Whisper size (`"tiny"`, `"base"`, `"small"`,
+`"medium"`, `"large-v3"`, `"turbo"`), resolved by
+[`scribed.backends.mlx_whisper.adapter.resolve_model_repo()`](_autosummary/scribed.backends.mlx_whisper.adapter.html.md#scribed.backends.mlx_whisper.adapter.resolve_model_repo).
+
+### Module Attributes
+
+| [`DEFAULT_MODEL`](_autosummary/scribed.backends.mlx_whisper.config.html.md#scribed.backends.mlx_whisper.config.DEFAULT_MODEL)   | Default MLX Whisper weights (fast and accurate on M2+).   |
+|------------------------------------------------------------------|-----------------------------------------------------------|
+
+### scribed.backends.mlx_whisper.config.DEFAULT_MODEL *= 'mlx-community/whisper-large-v3-turbo'*
+
+Default MLX Whisper weights (fast and accurate on M2+).
+
+
+# _autosummary/scribed.backends.mlx_whisper.html.md
+
+# scribed.backends.mlx_whisper
+
+mlx-whisper (Whisper on Apple Silicon via MLX) backend for scribed.
+
+### Modules
+
+| [`adapter`](_autosummary/scribed.backends.mlx_whisper.adapter.html.md#module-scribed.backends.mlx_whisper.adapter)   | Adapter for the mlx-whisper backend (Whisper on Apple Silicon via MLX).       |
+|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| [`config`](_autosummary/scribed.backends.mlx_whisper.config.html.md#module-scribed.backends.mlx_whisper.config)     | Configuration for the mlx-whisper backend (Whisper on Apple Silicon via MLX). |
 
 
 # _autosummary/scribed.backends.openai.adapter.html.md
@@ -632,6 +737,71 @@ OpenAI transcription backend for scribed.
 | [`adapter`](_autosummary/scribed.backends.openai.adapter.html.md#module-scribed.backends.openai.adapter)   | Adapter for the OpenAI transcription backend.       |
 |---------------------------------------------------------------------------------------------------|-----------------------------------------------------|
 | [`config`](_autosummary/scribed.backends.openai.config.html.md#module-scribed.backends.openai.config)     | Configuration for the OpenAI transcription backend. |
+
+
+# _autosummary/scribed.backends.parakeet_mlx.adapter.html.md
+
+# scribed.backends.parakeet_mlx.adapter
+
+Adapter for the parakeet-mlx backend (NVIDIA Parakeet-TDT on Apple Silicon).
+
+Loads a model with `parakeet_mlx.from_pretrained(repo)` (cached per repo),
+transcribes a temporary audio file, and maps the returned `AlignedResult`’s
+sentences (text + float-second `start`/`end`) onto scribed segments.
+Parakeet’s tokens are sub-word pieces, so no word list is emitted.
+`parakeet_mlx` is imported on first use, after the Apple-Silicon check.
+
+### Classes
+
+| [`Adapter`](_autosummary/scribed.backends.parakeet_mlx.adapter.html.md#scribed.backends.parakeet_mlx.adapter.Adapter)(config)   | parakeet-mlx adapter (Apple Silicon only; caches one model per repo).   |
+|--------------------------------------------------------------------|-------------------------------------------------------------------------|
+
+### *class* scribed.backends.parakeet_mlx.adapter.Adapter(config)
+
+Bases: [`BaseTranscriberAdapter`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
+
+parakeet-mlx adapter (Apple Silicon only; caches one model per repo).
+
+#### module_name *= 'parakeet_mlx'*
+
+Engine module name — the seam tests use to inject a fake backend.
+
+
+# _autosummary/scribed.backends.parakeet_mlx.config.html.md
+
+# scribed.backends.parakeet_mlx.config
+
+Configuration for the parakeet-mlx backend (NVIDIA Parakeet-TDT on Apple Silicon).
+
+[parakeet-mlx](https://pypi.org/project/parakeet-mlx/) runs NVIDIA’s
+Parakeet-TDT models on Apple Silicon via MLX: among the fastest accurate local
+English (v2) / 25-European-language (v3) engines. macOS on Apple Silicon only.
+The language is detected by the model itself (no `language` argument).
+
+### Module Attributes
+
+| [`DEFAULT_MODEL`](_autosummary/scribed.backends.parakeet_mlx.config.html.md#scribed.backends.parakeet_mlx.config.DEFAULT_MODEL)   | multilingual, 25 European languages).   |
+|------------------------------------------------------------------|-----------------------------------------|
+
+### scribed.backends.parakeet_mlx.config.DEFAULT_MODEL *= 'mlx-community/parakeet-tdt-0.6b-v3'*
+
+multilingual, 25 European languages).
+
+* **Type:**
+  Default Parakeet weights (v3
+
+
+# _autosummary/scribed.backends.parakeet_mlx.html.md
+
+# scribed.backends.parakeet_mlx
+
+parakeet-mlx (NVIDIA Parakeet-TDT on Apple Silicon via MLX) backend for scribed.
+
+### Modules
+
+| [`adapter`](_autosummary/scribed.backends.parakeet_mlx.adapter.html.md#module-scribed.backends.parakeet_mlx.adapter)   | Adapter for the parakeet-mlx backend (NVIDIA Parakeet-TDT on Apple Silicon).       |
+|---------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| [`config`](_autosummary/scribed.backends.parakeet_mlx.config.html.md#module-scribed.backends.parakeet_mlx.config)     | Configuration for the parakeet-mlx backend (NVIDIA Parakeet-TDT on Apple Silicon). |
 
 
 # _autosummary/scribed.backends.vosk.adapter.html.md
@@ -825,6 +995,94 @@ whisper.cpp (pywhispercpp) backend for scribed.
 | [`adapter`](_autosummary/scribed.backends.whispercpp.adapter.html.md#module-scribed.backends.whispercpp.adapter)   | Adapter for the whisper.cpp backend (via the `pywhispercpp` binding).   |
 |-------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
 | [`config`](_autosummary/scribed.backends.whispercpp.config.html.md#module-scribed.backends.whispercpp.config)     | Configuration for the whisper.cpp (pywhispercpp) backend.               |
+
+
+# _autosummary/scribed.backends.whisperx.adapter.html.md
+
+# scribed.backends.whisperx.adapter
+
+Adapter for the WhisperX backend (transcribe -> align -> optionally diarize).
+
+Pipeline, on a float32 mono 16 kHz array (no ffmpeg needed):
+
+1. `whisperx.load_model(model, device, compute_type=...)` (cached) then
+   `.transcribe(audio, batch_size=..., language=...)`;
+2. if `align`: `whisperx.load_align_model` + `whisperx.align` for accurate
+   word timestamps;
+3. if `diarize`: pyannote via WhisperX’s `DiarizationPipeline` +
+   `whisperx.assign_word_speakers` (needs a Hugging Face token, env `HF_TOKEN`).
+
+The result is openai-whisper-shaped, mapped by
+`scribed.backends._whisper_common.whisper_result_to_segments()`. `whisperx` (and `torch`,
+for device auto-detection) are imported on first use.
+
+### Module Attributes
+
+| [`DEFAULT_COMPUTE_TYPES`](_autosummary/scribed.backends.whisperx.adapter.html.md#scribed.backends.whisperx.adapter.DEFAULT_COMPUTE_TYPES)   | `compute_type` used when none is given, by device.   |
+|--------------------------------------------------------------------------|------------------------------------------------------|
+
+### Classes
+
+| [`Adapter`](_autosummary/scribed.backends.whisperx.adapter.html.md#scribed.backends.whisperx.adapter.Adapter)(config)   | WhisperX adapter (caches ASR, alignment and diarization models).   |
+|--------------------------------------------------------------------|--------------------------------------------------------------------|
+
+### *class* scribed.backends.whisperx.adapter.Adapter(config)
+
+Bases: [`BaseTranscriberAdapter`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
+
+WhisperX adapter (caches ASR, alignment and diarization models).
+
+#### module_name *= 'whisperx'*
+
+Engine module name — the seam tests use to inject a fake backend.
+
+### scribed.backends.whisperx.adapter.DEFAULT_COMPUTE_TYPES *= {'cpu': 'int8', 'cuda': 'float16'}*
+
+`compute_type` used when none is given, by device.
+
+
+# _autosummary/scribed.backends.whisperx.config.html.md
+
+# scribed.backends.whisperx.config
+
+Configuration for the WhisperX backend.
+
+[WhisperX](https://github.com/m-bain/whisperX) = batched faster-whisper +
+wav2vec2 forced alignment (accurate word timestamps) + optional pyannote speaker
+diarization, in one pass — the sweet spot for multi-speaker meetings.
+
+Diarization is off by default (speakers are a separate concern here —
+see a dedicated diarizer); pass `diarize=True` to have WhisperX label
+speakers. It needs a Hugging Face token (env `HF_TOKEN`) that has accepted the
+pyannote model terms. `device`/`compute_type` default to CUDA + float16 when a
+GPU is visible, else CPU + int8.
+
+### Module Attributes
+
+| [`DEFAULT_MODEL`](_autosummary/scribed.backends.whisperx.config.html.md#scribed.backends.whisperx.config.DEFAULT_MODEL)     | Default Whisper model size for WhisperX.                              |
+|--------------------------------------------------------------------|-----------------------------------------------------------------------|
+| [`HF_TOKEN_ENV_VARS`](_autosummary/scribed.backends.whisperx.config.html.md#scribed.backends.whisperx.config.HF_TOKEN_ENV_VARS) | Env var(s) holding the Hugging Face token pyannote diarization needs. |
+
+### scribed.backends.whisperx.config.DEFAULT_MODEL *= 'large-v3'*
+
+Default Whisper model size for WhisperX.
+
+### scribed.backends.whisperx.config.HF_TOKEN_ENV_VARS *= ('HF_TOKEN', 'HUGGING_FACE_HUB_TOKEN')*
+
+Env var(s) holding the Hugging Face token pyannote diarization needs.
+
+
+# _autosummary/scribed.backends.whisperx.html.md
+
+# scribed.backends.whisperx
+
+WhisperX (batched Whisper + alignment + optional diarization) backend for scribed.
+
+### Modules
+
+| [`adapter`](_autosummary/scribed.backends.whisperx.adapter.html.md#module-scribed.backends.whisperx.adapter)   | Adapter for the WhisperX backend (transcribe -> align -> optionally diarize).   |
+|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| [`config`](_autosummary/scribed.backends.whisperx.config.html.md#module-scribed.backends.whisperx.config)     | Configuration for the WhisperX backend.                                         |
 
 
 # _autosummary/scribed.base.html.md
@@ -1206,7 +1464,7 @@ Start time in **float seconds** (convenience), or `None` if untimed.
 
 # scribed.catalog
 
-### scribed.catalog *= <Catalog 33 backends | 10 implemented | 17 local, 17 remote>*
+### scribed.catalog *= <Catalog 35 backends | 13 implemented | 19 local, 17 remote>*
 
 `ocracy.kit.ledger.Catalog` bound to scribed’s data.
 
@@ -2016,7 +2274,7 @@ have to flesh out `param_map` and implement `adapter.py`’s
 * **Returns:**
   The path to the created backend package.
 
-### scribed.services *= <ServiceCollection backends=['assemblyai', 'deepgram', 'elevenlabs', 'faster-whisper', 'google-speech', 'groq', 'openai', 'vosk', 'whisper', 'whispercpp']>*
+### scribed.services *= <ServiceCollection backends=['assemblyai', 'deepgram', 'elevenlabs', 'faster-whisper', 'google-speech', 'groq', 'mlx-whisper', 'openai', 'parakeet-mlx', 'vosk', 'whisper', 'whispercpp', 'whisperx']>*
 
 Singleton service collection for per-backend access (`services.deepgram`).
 
@@ -2820,7 +3078,7 @@ sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-10-26 08:13 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/f77ed6e8cf5ab250d6de269213504594f3698ecd"><code>f77ed6e</code></a> on branch <code>main</code>, for **scribed 0.0.6** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-26 08:18 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/7769ddabf612a9beb7cd77ad6a65bb3f26a0e089"><code>7769dda</code></a> on branch <code>main</code>, for **scribed 0.0.7** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -2829,7 +3087,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/f77ed6e8cf5ab250d6de269213504594f3698ecd"><code>f77ed6e8cf5ab250d6de269213504594f3698ecd</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/7769ddabf612a9beb7cd77ad6a65bb3f26a0e089"><code>7769ddabf612a9beb7cd77ad6a65bb3f26a0e089</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -2840,9 +3098,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/40290623279">40290623279</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/40291162869">40291162869</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>f77ed6e8cf5ab250d6de269213504594f3698ecd</code> (in the history of the built commit) |
+| Event commit | <code>7769ddabf612a9beb7cd77ad6a65bb3f26a0e089</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2867,13 +3125,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.6/">0.0.6</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.7/">0.0.7</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout f77ed6e8cf5ab250d6de269213504594f3698ecd
+git checkout 7769ddabf612a9beb7cd77ad6a65bb3f26a0e089
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

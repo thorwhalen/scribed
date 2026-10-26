@@ -16,7 +16,10 @@ scribed.backends
    faster_whisper
    google_speech
    groq
+   mlx_whisper
    openai
+   parakeet_mlx
    vosk
    whisper
    whispercpp
+   whisperx

@@ -25,9 +25,15 @@
 - [scribed.backends.groq](scribed.backends.groq.html.md): Groq (hosted Whisper) backend for scribed.
 - [scribed.backends.groq.adapter](scribed.backends.groq.adapter.html.md): Adapter for the Groq (hosted Whisper) transcription backend.
 - [scribed.backends.groq.config](scribed.backends.groq.config.html.md): Configuration for the Groq (hosted Whisper) transcription backend.
+- [scribed.backends.mlx_whisper](scribed.backends.mlx_whisper.html.md): mlx-whisper (Whisper on Apple Silicon via MLX) backend for scribed.
+- [scribed.backends.mlx_whisper.adapter](scribed.backends.mlx_whisper.adapter.html.md): Adapter for the mlx-whisper backend (Whisper on Apple Silicon via MLX).
+- [scribed.backends.mlx_whisper.config](scribed.backends.mlx_whisper.config.html.md): Configuration for the mlx-whisper backend (Whisper on Apple Silicon via MLX).
 - [scribed.backends.openai](scribed.backends.openai.html.md): OpenAI transcription backend for scribed.
 - [scribed.backends.openai.adapter](scribed.backends.openai.adapter.html.md): Adapter for the OpenAI transcription backend.
 - [scribed.backends.openai.config](scribed.backends.openai.config.html.md): Configuration for the OpenAI transcription backend.
+- [scribed.backends.parakeet_mlx](scribed.backends.parakeet_mlx.html.md): parakeet-mlx (NVIDIA Parakeet-TDT on Apple Silicon via MLX) backend for scribed.
+- [scribed.backends.parakeet_mlx.adapter](scribed.backends.parakeet_mlx.adapter.html.md): Adapter for the parakeet-mlx backend (NVIDIA Parakeet-TDT on Apple Silicon).
+- [scribed.backends.parakeet_mlx.config](scribed.backends.parakeet_mlx.config.html.md): Configuration for the parakeet-mlx backend (NVIDIA Parakeet-TDT on Apple Silicon).
 - [scribed.backends.vosk](scribed.backends.vosk.html.md): Vosk (Kaldi) backend for scribed.
 - [scribed.backends.vosk.adapter](scribed.backends.vosk.adapter.html.md): Adapter for the Vosk (Kaldi) backend.
 - [scribed.backends.vosk.config](scribed.backends.vosk.config.html.md): Configuration for the Vosk (Kaldi) backend.
@@ -37,6 +43,9 @@
 - [scribed.backends.whispercpp](scribed.backends.whispercpp.html.md): whisper.cpp (pywhispercpp) backend for scribed.
 - [scribed.backends.whispercpp.adapter](scribed.backends.whispercpp.adapter.html.md): Adapter for the whisper.cpp backend (via the &#96;pywhispercpp&#96; binding).
 - [scribed.backends.whispercpp.config](scribed.backends.whispercpp.config.html.md): Configuration for the whisper.cpp (pywhispercpp) backend.
+- [scribed.backends.whisperx](scribed.backends.whisperx.html.md): WhisperX (batched Whisper + alignment + optional diarization) backend for scribed.
+- [scribed.backends.whisperx.adapter](scribed.backends.whisperx.adapter.html.md): Adapter for the WhisperX backend (transcribe -&gt; align -&gt; optionally diarize).
+- [scribed.backends.whisperx.config](scribed.backends.whisperx.config.html.md): Configuration for the WhisperX backend.
 - [scribed.base](scribed.base.html.md): Core types and normalized result objects for scribed.
 - [scribed.catalog](scribed.catalog.html.md): &#96;ocracy.kit.ledger.Catalog&#96; bound to scribed’s data.
 - [scribed.credentials](scribed.credentials.html.md): Credential resolution for remote transcription backends.

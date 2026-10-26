@@ -17,14 +17,17 @@ scaffold_backend("speechmatics")   # creates scribed/backends/speechmatics/ from
 
 ### Modules
 
-| [`assemblyai`](scribed.backends.assemblyai.html.md#module-scribed.backends.assemblyai)         | AssemblyAI backend for scribed.                   |
-|--------------------------------------------------------------------------------------------------------|---------------------------------------------------|
-| [`deepgram`](scribed.backends.deepgram.html.md#module-scribed.backends.deepgram)             | Deepgram (Nova-3) backend for scribed.            |
-| [`elevenlabs`](scribed.backends.elevenlabs.html.md#module-scribed.backends.elevenlabs)         | ElevenLabs Scribe backend for scribed.            |
-| [`faster_whisper`](scribed.backends.faster_whisper.html.md#module-scribed.backends.faster_whisper) | faster-whisper (CTranslate2) backend for scribed. |
-| [`google_speech`](scribed.backends.google_speech.html.md#module-scribed.backends.google_speech)   | Google Cloud Speech-to-Text backend for scribed.  |
-| [`groq`](scribed.backends.groq.html.md#module-scribed.backends.groq)                     | Groq (hosted Whisper) backend for scribed.        |
-| [`openai`](scribed.backends.openai.html.md#module-scribed.backends.openai)                 | OpenAI transcription backend for scribed.         |
-| [`vosk`](scribed.backends.vosk.html.md#module-scribed.backends.vosk)                     | Vosk (Kaldi) backend for scribed.                 |
-| [`whisper`](scribed.backends.whisper.html.md#module-scribed.backends.whisper)               | OpenAI Whisper (PyTorch) backend for scribed.     |
-| [`whispercpp`](scribed.backends.whispercpp.html.md#module-scribed.backends.whispercpp)         | whisper.cpp (pywhispercpp) backend for scribed.   |
+| [`assemblyai`](scribed.backends.assemblyai.html.md#module-scribed.backends.assemblyai)         | AssemblyAI backend for scribed.                                                    |
+|--------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| [`deepgram`](scribed.backends.deepgram.html.md#module-scribed.backends.deepgram)             | Deepgram (Nova-3) backend for scribed.                                             |
+| [`elevenlabs`](scribed.backends.elevenlabs.html.md#module-scribed.backends.elevenlabs)         | ElevenLabs Scribe backend for scribed.                                             |
+| [`faster_whisper`](scribed.backends.faster_whisper.html.md#module-scribed.backends.faster_whisper) | faster-whisper (CTranslate2) backend for scribed.                                  |
+| [`google_speech`](scribed.backends.google_speech.html.md#module-scribed.backends.google_speech)   | Google Cloud Speech-to-Text backend for scribed.                                   |
+| [`groq`](scribed.backends.groq.html.md#module-scribed.backends.groq)                     | Groq (hosted Whisper) backend for scribed.                                         |
+| [`mlx_whisper`](scribed.backends.mlx_whisper.html.md#module-scribed.backends.mlx_whisper)       | mlx-whisper (Whisper on Apple Silicon via MLX) backend for scribed.                |
+| [`openai`](scribed.backends.openai.html.md#module-scribed.backends.openai)                 | OpenAI transcription backend for scribed.                                          |
+| [`parakeet_mlx`](scribed.backends.parakeet_mlx.html.md#module-scribed.backends.parakeet_mlx)     | parakeet-mlx (NVIDIA Parakeet-TDT on Apple Silicon via MLX) backend for scribed.   |
+| [`vosk`](scribed.backends.vosk.html.md#module-scribed.backends.vosk)                     | Vosk (Kaldi) backend for scribed.                                                  |
+| [`whisper`](scribed.backends.whisper.html.md#module-scribed.backends.whisper)               | OpenAI Whisper (PyTorch) backend for scribed.                                      |
+| [`whispercpp`](scribed.backends.whispercpp.html.md#module-scribed.backends.whispercpp)         | whisper.cpp (pywhispercpp) backend for scribed.                                    |
+| [`whisperx`](scribed.backends.whisperx.html.md#module-scribed.backends.whisperx)             | WhisperX (batched Whisper + alignment + optional diarization) backend for scribed. |

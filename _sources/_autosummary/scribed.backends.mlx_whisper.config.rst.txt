@@ -1,0 +1,12 @@
+scribed.backends.mlx\_whisper.config
+====================================
+
+.. automodule:: scribed.backends.mlx_whisper.config
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DEFAULT_MODEL
+   

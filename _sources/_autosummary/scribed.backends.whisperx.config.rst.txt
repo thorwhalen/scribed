@@ -1,0 +1,13 @@
+scribed.backends.whisperx.config
+================================
+
+.. automodule:: scribed.backends.whisperx.config
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DEFAULT_MODEL
+      HF_TOKEN_ENV_VARS
+   

@@ -1,0 +1,18 @@
+scribed.backends.whisperx.adapter
+=================================
+
+.. automodule:: scribed.backends.whisperx.adapter
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DEFAULT_COMPUTE_TYPES
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

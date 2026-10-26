@@ -1,0 +1,14 @@
+scribed.backends.mlx\_whisper
+=============================
+
+.. automodule:: scribed.backends.mlx_whisper
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config
