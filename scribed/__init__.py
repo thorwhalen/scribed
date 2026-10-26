@@ -52,6 +52,7 @@ from scribed.base import (
     Transcript,
     Word,
 )
+from scribed.readers import read_transcript
 from scribed.catalog import BackendInfo, Catalog, catalog
 from scribed.registry import (
     get_config,
@@ -85,6 +86,7 @@ from scribed.status import (
 )
 
 __all__ = [
+    "read_transcript",
     "transcribe",
     "transcribe_text",
     "services",
