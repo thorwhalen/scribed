@@ -55,8 +55,9 @@ scribed.services.deepgram.adapter                      # raw engine adapter
 
 ### Functions
 
-| [`transcribe`](#scribed.transcribe)(audio, \*[, backend])                   | Transcribe audio with any backend, returning a normalized result.                                               |
+| [`read_transcript`](#scribed.read_transcript)(source, \*[, fmt])                 | Read `source` (a path to a transcript file, or the transcript text itself).                                     |
 |-----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| [`transcribe`](#scribed.transcribe)(audio, \*[, backend])                   | Transcribe audio with any backend, returning a normalized result.                                               |
 | [`transcribe_text`](#scribed.transcribe_text)(audio, \*[, backend])              | Like [`transcribe()`](#scribed.transcribe) but returns just the transcript text string. |
 | [`find`](#scribed.find)(\*\*criteria)                                 | Filter the ledger; shorthand for `scribed.catalog.Catalog.filter()`.                                            |
 | [`list_backends`](#scribed.list_backends)([capability])                        | Sorted ids of implemented backends, optionally filtered by capability.                                          |
@@ -410,6 +411,16 @@ Build a minimal result from just a text string (no timing/segments).
 
 Mean confidence over segments that report one, or `None`.
 
+#### *classmethod* parse(source, , fmt=None)
+
+Read an existing transcript (SRT, WebVTT, TextGrid, word JSON, plain).
+
+`source` is a file path or the transcript text itself; `fmt` overrides
+format detection. See [`scribed.readers.read_transcript()`](scribed.readers.html.md#scribed.readers.read_transcript).
+
+* **Return type:**
+  [`Transcript`](scribed.base.html.md#scribed.base.Transcript)
+
 #### *property* speakers *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Sorted distinct speaker labels across segments (empty if undiarized).
@@ -637,6 +648,22 @@ Build a normalized [`Word`](scribed.base.html.md#scribed.base.Word).
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
+### scribed.read_transcript(source, , fmt=None)
+
+Read `source` (a path to a transcript file, or the transcript text itself).
+
+`fmt` (one of `FORMATS`) overrides detection. The result’s `backend`
+is `"file:<fmt>"`.
+
+```pycon
+>>> t = read_transcript("carl: Hello.\nned: Hi.")
+>>> t.speakers, t.backend, t.segments[0].span
+(['carl', 'ned'], 'file:plain', None)
+```
+
+* **Return type:**
+  [`Transcript`](scribed.base.html.md#scribed.base.Transcript)
+
 ### scribed.register_backend(backend_id, config, adapter=None)
 
 Register a backend at runtime (for third-party plugins).
@@ -739,14 +766,15 @@ With `expect_text`, `ok` additionally requires the substring to appear.
 
 ### Modules
 
-| [`backends`](scribed.backends.html.md#module-scribed.backends)         | Implemented speech-to-text backends.                                             |
-|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| [`base`](scribed.base.html.md#module-scribed.base)                 | Core types and normalized result objects for scribed.                            |
-| [`catalog`](scribed.catalog.html.md#scribed.catalog)                  | `ocracy.kit.ledger.Catalog` bound to scribed's data.                             |
-| [`credentials`](scribed.credentials.html.md#module-scribed.credentials)   | Credential resolution for remote transcription backends.                         |
-| [`make_backend`](scribed.make_backend.html.md#module-scribed.make_backend) | Abstraction tools for *building* transcription facades.                          |
-| [`registry`](scribed.registry.html.md#module-scribed.registry)         | Backend discovery, registration, and lazy loading.                               |
-| [`status`](scribed.status.html.md#module-scribed.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table. |
-| [`tools`](scribed.tools.html.md#module-scribed.tools)               | Command-line tools for scribed (dispatched via `cw` in `__main__`).              |
-| [`translation`](scribed.translation.html.md#module-scribed.translation)   | Parameter translation between scribed's normalized kwargs and native engines.    |
-| [`util`](scribed.util.html.md#module-scribed.util)                 | Audio-input normalization and small shared helpers.                              |
+| [`backends`](scribed.backends.html.md#module-scribed.backends)         | Implemented speech-to-text backends.                                                                               |
+|-------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| [`base`](scribed.base.html.md#module-scribed.base)                 | Core types and normalized result objects for scribed.                                                              |
+| [`catalog`](scribed.catalog.html.md#scribed.catalog)                  | `ocracy.kit.ledger.Catalog` bound to scribed's data.                                                               |
+| [`credentials`](scribed.credentials.html.md#module-scribed.credentials)   | Credential resolution for remote transcription backends.                                                           |
+| [`make_backend`](scribed.make_backend.html.md#module-scribed.make_backend) | Abstraction tools for *building* transcription facades.                                                            |
+| [`readers`](scribed.readers.html.md#module-scribed.readers)           | Read a transcript back into a [`Transcript`](scribed.base.html.md#scribed.base.Transcript). |
+| [`registry`](scribed.registry.html.md#module-scribed.registry)         | Backend discovery, registration, and lazy loading.                                                                 |
+| [`status`](scribed.status.html.md#module-scribed.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                   |
+| [`tools`](scribed.tools.html.md#module-scribed.tools)               | Command-line tools for scribed (dispatched via `cw` in `__main__`).                                                |
+| [`translation`](scribed.translation.html.md#module-scribed.translation)   | Parameter translation between scribed's normalized kwargs and native engines.                                      |
+| [`util`](scribed.util.html.md#module-scribed.util)                 | Audio-input normalization and small shared helpers.                                                                |

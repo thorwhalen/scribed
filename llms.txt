@@ -43,13 +43,14 @@
 - [scribed.catalog](_autosummary/scribed.catalog.html.md): &#96;ocracy.kit.ledger.Catalog&#96; bound to scribed’s data.
 - [scribed.credentials](_autosummary/scribed.credentials.html.md): Credential resolution for remote transcription backends.
 - [scribed.make_backend](_autosummary/scribed.make_backend.html.md): Abstraction tools for &#42;building&#42; transcription facades.
+- [scribed.readers](_autosummary/scribed.readers.html.md): Read a transcript back into a &#96;Transcript&#96;.
 - [scribed.registry](_autosummary/scribed.registry.html.md): Backend discovery, registration, and lazy loading.
 - [scribed.status](_autosummary/scribed.status.html.md): Backend readiness status — four nested levels, info dicts, and a Markdown table.
 - [scribed.tools](_autosummary/scribed.tools.html.md): Command-line tools for scribed (dispatched via &#96;cw&#96; in &#96;&#95;&#95;main&#95;&#95;&#96;).
 - [scribed.translation](_autosummary/scribed.translation.html.md): Parameter translation between scribed’s normalized kwargs and native engines.
 - [scribed.util](_autosummary/scribed.util.html.md): Audio-input normalization and small shared helpers.
 - [For AI agents](ai-agents.html.md): &#96;scribed&#96; ships artifacts for coding agents alongside its code. This page lists
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-19 12:36 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-26 08:13 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
 
 ## Optional
 

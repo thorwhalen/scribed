@@ -1,4 +1,4 @@
-> built 2026-10-19 12:36 UTC from 06f795e (main) · scribed 0.0.5. Details: build_info.json
+> built 2026-10-26 08:13 UTC from f77ed6e (main) · scribed 0.0.6. Details: build_info.json
 
 # index.html.md
 
@@ -1125,6 +1125,16 @@ Build a minimal result from just a text string (no timing/segments).
 
 Mean confidence over segments that report one, or `None`.
 
+#### *classmethod* parse(source, , fmt=None)
+
+Read an existing transcript (SRT, WebVTT, TextGrid, word JSON, plain).
+
+`source` is a file path or the transcript text itself; `fmt` overrides
+format detection. See [`scribed.readers.read_transcript()`](_autosummary/scribed.readers.html.md#scribed.readers.read_transcript).
+
+* **Return type:**
+  [`Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript)
+
 #### *property* speakers *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Sorted distinct speaker labels across segments (empty if undiarized).
@@ -1352,8 +1362,9 @@ scribed.services.deepgram.adapter                      # raw engine adapter
 
 ### Functions
 
-| [`transcribe`](_autosummary/scribed.html.md#scribed.transcribe)(audio, \*[, backend])                   | Transcribe audio with any backend, returning a normalized result.                                               |
+| [`read_transcript`](_autosummary/scribed.html.md#scribed.read_transcript)(source, \*[, fmt])                 | Read `source` (a path to a transcript file, or the transcript text itself).                                     |
 |-----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| [`transcribe`](_autosummary/scribed.html.md#scribed.transcribe)(audio, \*[, backend])                   | Transcribe audio with any backend, returning a normalized result.                                               |
 | [`transcribe_text`](_autosummary/scribed.html.md#scribed.transcribe_text)(audio, \*[, backend])              | Like [`transcribe()`](_autosummary/scribed.html.md#scribed.transcribe) but returns just the transcript text string. |
 | [`find`](_autosummary/scribed.html.md#scribed.find)(\*\*criteria)                                 | Filter the ledger; shorthand for `scribed.catalog.Catalog.filter()`.                                            |
 | [`list_backends`](_autosummary/scribed.html.md#scribed.list_backends)([capability])                        | Sorted ids of implemented backends, optionally filtered by capability.                                          |
@@ -1707,6 +1718,16 @@ Build a minimal result from just a text string (no timing/segments).
 
 Mean confidence over segments that report one, or `None`.
 
+#### *classmethod* parse(source, , fmt=None)
+
+Read an existing transcript (SRT, WebVTT, TextGrid, word JSON, plain).
+
+`source` is a file path or the transcript text itself; `fmt` overrides
+format detection. See [`scribed.readers.read_transcript()`](_autosummary/scribed.readers.html.md#scribed.readers.read_transcript).
+
+* **Return type:**
+  [`Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript)
+
 #### *property* speakers *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Sorted distinct speaker labels across segments (empty if undiarized).
@@ -1934,6 +1955,22 @@ Build a normalized [`Word`](_autosummary/scribed.base.html.md#scribed.base.Word)
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
+### scribed.read_transcript(source, , fmt=None)
+
+Read `source` (a path to a transcript file, or the transcript text itself).
+
+`fmt` (one of `FORMATS`) overrides detection. The result’s `backend`
+is `"file:<fmt>"`.
+
+```pycon
+>>> t = read_transcript("carl: Hello.\nned: Hi.")
+>>> t.speakers, t.backend, t.segments[0].span
+(['carl', 'ned'], 'file:plain', None)
+```
+
+* **Return type:**
+  [`Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript)
+
 ### scribed.register_backend(backend_id, config, adapter=None)
 
 Register a backend at runtime (for third-party plugins).
@@ -2036,17 +2073,18 @@ With `expect_text`, `ok` additionally requires the substring to appear.
 
 ### Modules
 
-| [`backends`](_autosummary/scribed.backends.html.md#module-scribed.backends)         | Implemented speech-to-text backends.                                             |
-|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| [`base`](_autosummary/scribed.base.html.md#module-scribed.base)                 | Core types and normalized result objects for scribed.                            |
-| [`catalog`](_autosummary/scribed.catalog.html.md#scribed.catalog)                  | `ocracy.kit.ledger.Catalog` bound to scribed's data.                             |
-| [`credentials`](_autosummary/scribed.credentials.html.md#module-scribed.credentials)   | Credential resolution for remote transcription backends.                         |
-| [`make_backend`](_autosummary/scribed.make_backend.html.md#module-scribed.make_backend) | Abstraction tools for *building* transcription facades.                          |
-| [`registry`](_autosummary/scribed.registry.html.md#module-scribed.registry)         | Backend discovery, registration, and lazy loading.                               |
-| [`status`](_autosummary/scribed.status.html.md#module-scribed.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table. |
-| [`tools`](_autosummary/scribed.tools.html.md#module-scribed.tools)               | Command-line tools for scribed (dispatched via `cw` in `__main__`).              |
-| [`translation`](_autosummary/scribed.translation.html.md#module-scribed.translation)   | Parameter translation between scribed's normalized kwargs and native engines.    |
-| [`util`](_autosummary/scribed.util.html.md#module-scribed.util)                 | Audio-input normalization and small shared helpers.                              |
+| [`backends`](_autosummary/scribed.backends.html.md#module-scribed.backends)         | Implemented speech-to-text backends.                                                                               |
+|-------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| [`base`](_autosummary/scribed.base.html.md#module-scribed.base)                 | Core types and normalized result objects for scribed.                                                              |
+| [`catalog`](_autosummary/scribed.catalog.html.md#scribed.catalog)                  | `ocracy.kit.ledger.Catalog` bound to scribed's data.                                                               |
+| [`credentials`](_autosummary/scribed.credentials.html.md#module-scribed.credentials)   | Credential resolution for remote transcription backends.                                                           |
+| [`make_backend`](_autosummary/scribed.make_backend.html.md#module-scribed.make_backend) | Abstraction tools for *building* transcription facades.                                                            |
+| [`readers`](_autosummary/scribed.readers.html.md#module-scribed.readers)           | Read a transcript back into a [`Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript). |
+| [`registry`](_autosummary/scribed.registry.html.md#module-scribed.registry)         | Backend discovery, registration, and lazy loading.                                                                 |
+| [`status`](_autosummary/scribed.status.html.md#module-scribed.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                   |
+| [`tools`](_autosummary/scribed.tools.html.md#module-scribed.tools)               | Command-line tools for scribed (dispatched via `cw` in `__main__`).                                                |
+| [`translation`](_autosummary/scribed.translation.html.md#module-scribed.translation)   | Parameter translation between scribed's normalized kwargs and native engines.                                      |
+| [`util`](_autosummary/scribed.util.html.md#module-scribed.util)                 | Audio-input normalization and small shared helpers.                                                                |
 
 
 # _autosummary/scribed.make_backend.html.md
@@ -2200,6 +2238,94 @@ With `expect_text`, `ok` additionally requires the substring to appear.
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+
+# _autosummary/scribed.readers.html.md
+
+# scribed.readers
+
+Read a transcript back into a [`Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript).
+
+scribed writes subtitles (`Transcript.srt` / `.vtt`); this module is the
+reading direction, for a transcript that already exists: an SRT or WebVTT from a
+recording session, a Praat TextGrid from an aligner, a word-timed JSON from an
+earlier ASR run, or plain `speaker: text` lines (untimed):
+
+```default
+t = scribed.read_transcript("take1.srt")      # or Transcript.parse(...)
+for seg in t:
+    print(seg.speaker, seg.start, seg.end, seg.words)
+```
+
+The format is detected by file suffix, then by content; pass `fmt` to force one
+of [`FORMATS`](_autosummary/scribed.readers.html.md#scribed.readers.FORMATS). A parsed transcript carries `backend="file:<fmt>"` so
+downstream code can tell it from an ASR result. No dependencies.
+
+```pycon
+>>> t = read_transcript("1\n00:00:01,000 --> 00:00:02,500\n[carl] Hello there.\n")
+>>> [(s.speaker, s.text, s.start, s.end) for s in t], t.backend
+([('carl', 'Hello there.', 1.0, 2.5)], 'file:srt')
+```
+
+### Module Attributes
+
+| [`FORMATS`](_autosummary/scribed.readers.html.md#scribed.readers.FORMATS)   | The transcript formats read here, in detection order.   |
+|------------------------------------------------------------|---------------------------------------------------------|
+
+### Functions
+
+| [`detect_format`](_autosummary/scribed.readers.html.md#scribed.readers.detect_format)(text, \*[, suffix])   | Which of [`FORMATS`](_autosummary/scribed.readers.html.md#scribed.readers.FORMATS) `text` is: by file suffix first, then by content.   |
+|--------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| [`parse_timestamp`](_autosummary/scribed.readers.html.md#scribed.readers.parse_timestamp)(value)              | `HH:MM:SS,mmm` / `MM:SS.mmm` / plain seconds -> seconds.                                                              |
+| [`read_transcript`](_autosummary/scribed.readers.html.md#scribed.readers.read_transcript)(source, \*[, fmt])  | Read `source` (a path to a transcript file, or the transcript text itself).                                           |
+
+### scribed.readers.FORMATS *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), ...]* *= ('vtt', 'textgrid', 'json', 'srt', 'plain')*
+
+The transcript formats read here, in detection order.
+
+### scribed.readers.detect_format(text, , suffix='')
+
+Which of [`FORMATS`](_autosummary/scribed.readers.html.md#scribed.readers.FORMATS) `text` is: by file suffix first, then by content.
+
+```pycon
+>>> detect_format("WEBVTT\n\n00:01.000 --> 00:02.000\nhi")
+'vtt'
+>>> detect_format("1\n00:00:01,000 --> 00:00:02,000\nhi"), detect_format("hi there")
+('srt', 'plain')
+>>> detect_format('{"segments": []}'), detect_format("", suffix=".TextGrid")
+('json', 'textgrid')
+```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### scribed.readers.parse_timestamp(value)
+
+`HH:MM:SS,mmm` / `MM:SS.mmm` / plain seconds -> seconds.
+
+```pycon
+>>> parse_timestamp("00:01:02,500"), parse_timestamp("01:02.5"), parse_timestamp("7.25")
+(62.5, 62.5, 7.25)
+```
+
+* **Return type:**
+  [`float`](https://docs.python.org/3/builtins/functions.html#float)
+
+### scribed.readers.read_transcript(source, , fmt=None)
+
+Read `source` (a path to a transcript file, or the transcript text itself).
+
+`fmt` (one of [`FORMATS`](_autosummary/scribed.readers.html.md#scribed.readers.FORMATS)) overrides detection. The result’s `backend`
+is `"file:<fmt>"`.
+
+```pycon
+>>> t = read_transcript("carl: Hello.\nned: Hi.")
+>>> t.speakers, t.backend, t.segments[0].span
+(['carl', 'ned'], 'file:plain', None)
+```
+
+* **Return type:**
+  [`Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript)
 
 
 # _autosummary/scribed.registry.html.md
@@ -2694,7 +2820,7 @@ sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-10-19 12:36 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/06f795e23f142571083a9aca31641aff381e3c78"><code>06f795e</code></a> on branch <code>main</code>, for **scribed 0.0.5** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-26 08:13 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/f77ed6e8cf5ab250d6de269213504594f3698ecd"><code>f77ed6e</code></a> on branch <code>main</code>, for **scribed 0.0.6** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -2703,7 +2829,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/06f795e23f142571083a9aca31641aff381e3c78"><code>06f795e23f142571083a9aca31641aff381e3c78</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/f77ed6e8cf5ab250d6de269213504594f3698ecd"><code>f77ed6e8cf5ab250d6de269213504594f3698ecd</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -2714,16 +2840,16 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/39253136457">39253136457</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/40290623279">40290623279</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>06f795e23f142571083a9aca31641aff381e3c78</code> (in the history of the built commit) |
+| Event commit | <code>f77ed6e8cf5ab250d6de269213504594f3698ecd</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.18  |
-| Sphinx   | 9.1.0   |
+| epythet  | 0.2.22  |
+| Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.15 |
 
@@ -2741,14 +2867,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.5/">0.0.5</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.6/">0.0.6</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 06f795e23f142571083a9aca31641aff381e3c78
-pip install "epythet==0.2.18"
+git checkout f77ed6e8cf5ab250d6de269213504594f3698ecd
+pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

@@ -29,7 +29,7 @@
   <meta property="og:title" content="scribed.base | scribed" />
   <meta name="twitter:title" content="scribed.base | scribed" />
   <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
-  <link rel="stylesheet" type="text/css" href="../../_static/theme.css?v=d6d7c91b" />
+  <link rel="stylesheet" type="text/css" href="../../_static/theme.css?v=009055c6" />
   <link rel="stylesheet" type="text/css" href="../../_static/sphinx_autodoc_typehints.css?v=057ac668" />
   <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
   <link rel="stylesheet" type="text/css" href="../../_static/epythet.css?v=1e39d63c" />
@@ -119,6 +119,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/scribed.catalog.html">scribed.catalog</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/scribed.credentials.html">scribed.credentials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/scribed.make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/scribed.readers.html">scribed.readers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/scribed.registry.html">scribed.registry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/scribed.status.html">scribed.status</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/scribed.tools.html">scribed.tools</a></li>
@@ -597,76 +598,90 @@
 
 </span><span id="line-378">
 </span><span id="line-379">    <span class="c1"># -- constructors -------------------------------------------------------</span>
+<div class="viewcode-block" id="Transcript.parse">
+<a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.parse">[docs]</a>
+</span><span id="line-380">    <span class="nd">@classmethod</span>
+</span><span id="line-381">    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
+</span><span id="line-382"><span class="w">        </span><span class="sd">"""Read an existing transcript (SRT, WebVTT, TextGrid, word JSON, plain).</span>
+</span><span id="line-383">
+</span><span id="line-384"><span class="sd">        ``source`` is a file path or the transcript text itself; ``fmt`` overrides</span>
+</span><span id="line-385"><span class="sd">        format detection. See :func:`scribed.readers.read_transcript`.</span>
+</span><span id="line-386"><span class="sd">        """</span>
+</span><span id="line-387">        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_transcript</span>  <span class="c1"># lazy: base stays import-light</span>
+</span><span id="line-388">
+</span><span id="line-389">        <span class="k">return</span> <span class="n">read_transcript</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span></div>
+
+</span><span id="line-390">
 <div class="viewcode-block" id="Transcript.from_text">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.from_text">[docs]</a>
-</span><span id="line-380">    <span class="nd">@classmethod</span>
-</span><span id="line-381">    <span class="k">def</span><span class="w"> </span><span class="nf">from_text</span><span class="p">(</span>
-</span><span id="line-382">        <span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span>
-</span><span id="line-383">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
-</span><span id="line-384"><span class="w">        </span><span class="sd">"""Build a minimal result from just a text string (no timing/segments)."""</span>
-</span><span id="line-385">        <span class="n">language</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"language"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-386">        <span class="n">duration</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"duration"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-387">        <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"sample_rate"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-388">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-</span><span id="line-389">            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-</span><span id="line-390">            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
-</span><span id="line-391">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
-</span><span id="line-392">            <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
-</span><span id="line-393">            <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
-</span><span id="line-394">            <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
-</span><span id="line-395">            <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
-</span><span id="line-396">        <span class="p">)</span></div>
+</span><span id="line-391">    <span class="nd">@classmethod</span>
+</span><span id="line-392">    <span class="k">def</span><span class="w"> </span><span class="nf">from_text</span><span class="p">(</span>
+</span><span id="line-393">        <span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span>
+</span><span id="line-394">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
+</span><span id="line-395"><span class="w">        </span><span class="sd">"""Build a minimal result from just a text string (no timing/segments)."""</span>
+</span><span id="line-396">        <span class="n">language</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"language"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-397">        <span class="n">duration</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"duration"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-398">        <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"sample_rate"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-399">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+</span><span id="line-400">            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+</span><span id="line-401">            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
+</span><span id="line-402">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+</span><span id="line-403">            <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
+</span><span id="line-404">            <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
+</span><span id="line-405">            <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
+</span><span id="line-406">            <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
+</span><span id="line-407">        <span class="p">)</span></div>
 
-</span><span id="line-397">
+</span><span id="line-408">
 <div class="viewcode-block" id="Transcript.from_segments">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.from_segments">[docs]</a>
-</span><span id="line-398">    <span class="nd">@classmethod</span>
-</span><span id="line-399">    <span class="k">def</span><span class="w"> </span><span class="nf">from_segments</span><span class="p">(</span>
-</span><span id="line-400">        <span class="bp">cls</span><span class="p">,</span>
-</span><span id="line-401">        <span class="n">segments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Segment</span><span class="p">],</span>
-</span><span id="line-402">        <span class="o">*</span><span class="p">,</span>
-</span><span id="line-403">        <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
-</span><span id="line-404">        <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-405">        <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-406">        <span class="n">joiner</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">" "</span><span class="p">,</span>
-</span><span id="line-407">        <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-408">        <span class="n">duration</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-409">        <span class="n">sample_rate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-410">        <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-</span><span id="line-411">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
-</span><span id="line-412"><span class="w">        </span><span class="sd">"""Build a result from structured segments.</span>
-</span><span id="line-413">
-</span><span id="line-414"><span class="sd">        If ``text`` is not given it is synthesized by joining the segments' text</span>
-</span><span id="line-415"><span class="sd">        in their given order with ``joiner`` (callers should pass segments</span>
-</span><span id="line-416"><span class="sd">        already in time order, or pre-join and pass ``text`` explicitly).</span>
-</span><span id="line-417"><span class="sd">        """</span>
-</span><span id="line-418">        <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
-</span><span id="line-419">        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-420">            <span class="n">text</span> <span class="o">=</span> <span class="n">joiner</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</span><span id="line-421">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-</span><span id="line-422">            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-</span><span id="line-423">            <span class="n">segments</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">segments</span><span class="p">),</span>
-</span><span id="line-424">            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
-</span><span id="line-425">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
-</span><span id="line-426">            <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
-</span><span id="line-427">            <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
-</span><span id="line-428">            <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
-</span><span id="line-429">            <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
-</span><span id="line-430">        <span class="p">)</span></div>
+</span><span id="line-409">    <span class="nd">@classmethod</span>
+</span><span id="line-410">    <span class="k">def</span><span class="w"> </span><span class="nf">from_segments</span><span class="p">(</span>
+</span><span id="line-411">        <span class="bp">cls</span><span class="p">,</span>
+</span><span id="line-412">        <span class="n">segments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Segment</span><span class="p">],</span>
+</span><span id="line-413">        <span class="o">*</span><span class="p">,</span>
+</span><span id="line-414">        <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+</span><span id="line-415">        <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-416">        <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-417">        <span class="n">joiner</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">" "</span><span class="p">,</span>
+</span><span id="line-418">        <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-419">        <span class="n">duration</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-420">        <span class="n">sample_rate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-421">        <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+</span><span id="line-422">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
+</span><span id="line-423"><span class="w">        </span><span class="sd">"""Build a result from structured segments.</span>
+</span><span id="line-424">
+</span><span id="line-425"><span class="sd">        If ``text`` is not given it is synthesized by joining the segments' text</span>
+</span><span id="line-426"><span class="sd">        in their given order with ``joiner`` (callers should pass segments</span>
+</span><span id="line-427"><span class="sd">        already in time order, or pre-join and pass ``text`` explicitly).</span>
+</span><span id="line-428"><span class="sd">        """</span>
+</span><span id="line-429">        <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+</span><span id="line-430">        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-431">            <span class="n">text</span> <span class="o">=</span> <span class="n">joiner</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span id="line-432">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+</span><span id="line-433">            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+</span><span id="line-434">            <span class="n">segments</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">segments</span><span class="p">),</span>
+</span><span id="line-435">            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
+</span><span id="line-436">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+</span><span id="line-437">            <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
+</span><span id="line-438">            <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
+</span><span id="line-439">            <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
+</span><span id="line-440">            <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
+</span><span id="line-441">        <span class="p">)</span></div>
 </div>
 
-</span><span id="line-431">
-</span><span id="line-432">
-</span><span id="line-433"><span class="k">def</span><span class="w"> </span><span class="nf">_format_timestamp</span><span class="p">(</span><span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">comma</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-434"><span class="w">    </span><span class="sd">"""Format ``seconds`` as ``HH:MM:SS,mmm`` (SRT) or ``HH:MM:SS.mmm`` (VTT)."""</span>
-</span><span id="line-435">    <span class="k">if</span> <span class="n">seconds</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-</span><span id="line-436">        <span class="n">seconds</span> <span class="o">=</span> <span class="mf">0.0</span>
-</span><span id="line-437">    <span class="n">millis</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">seconds</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">))</span>
-</span><span id="line-438">    <span class="n">hours</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">3_600_000</span><span class="p">)</span>
-</span><span id="line-439">    <span class="n">minutes</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">60_000</span><span class="p">)</span>
-</span><span id="line-440">    <span class="n">secs</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-</span><span id="line-441">    <span class="n">sep</span> <span class="o">=</span> <span class="s2">","</span> <span class="k">if</span> <span class="n">comma</span> <span class="k">else</span> <span class="s2">"."</span>
-</span><span id="line-442">    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hours</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">secs</span><span class="si">:</span><span class="s2">02d</span><span class="si">}{</span><span class="n">sep</span><span class="si">}{</span><span class="n">millis</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-442">
+</span><span id="line-443">
+</span><span id="line-444"><span class="k">def</span><span class="w"> </span><span class="nf">_format_timestamp</span><span class="p">(</span><span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">comma</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-445"><span class="w">    </span><span class="sd">"""Format ``seconds`` as ``HH:MM:SS,mmm`` (SRT) or ``HH:MM:SS.mmm`` (VTT)."""</span>
+</span><span id="line-446">    <span class="k">if</span> <span class="n">seconds</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="line-447">        <span class="n">seconds</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span><span id="line-448">    <span class="n">millis</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">seconds</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">))</span>
+</span><span id="line-449">    <span class="n">hours</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">3_600_000</span><span class="p">)</span>
+</span><span id="line-450">    <span class="n">minutes</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">60_000</span><span class="p">)</span>
+</span><span id="line-451">    <span class="n">secs</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+</span><span id="line-452">    <span class="n">sep</span> <span class="o">=</span> <span class="s2">","</span> <span class="k">if</span> <span class="n">comma</span> <span class="k">else</span> <span class="s2">"."</span>
+</span><span id="line-453">    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hours</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">secs</span><span class="si">:</span><span class="s2">02d</span><span class="si">}{</span><span class="n">sep</span><span class="si">}{</span><span class="n">millis</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">"</span>
 </span></code></pre></div>
     </div></div>
           </main>
@@ -680,12 +695,12 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=282f96c0"></script>
+    <script src="../../_static/documentation_options.js?v=1fd71caa"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=fd10adb8"></script>
-    <script defer="defer" src="../../_static/theme.js?v=5db23cf8"></script>
+    <script defer="defer" src="../../_static/theme.js?v=49cc6205"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
 
 

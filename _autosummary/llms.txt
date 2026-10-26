@@ -41,6 +41,7 @@
 - [scribed.catalog](scribed.catalog.html.md): &#96;ocracy.kit.ledger.Catalog&#96; bound to scribed’s data.
 - [scribed.credentials](scribed.credentials.html.md): Credential resolution for remote transcription backends.
 - [scribed.make_backend](scribed.make_backend.html.md): Abstraction tools for &#42;building&#42; transcription facades.
+- [scribed.readers](scribed.readers.html.md): Read a transcript back into a &#96;Transcript&#96;.
 - [scribed.registry](scribed.registry.html.md): Backend discovery, registration, and lazy loading.
 - [scribed.status](scribed.status.html.md): Backend readiness status — four nested levels, info dicts, and a Markdown table.
 - [scribed.tools](scribed.tools.html.md): Command-line tools for scribed (dispatched via &#96;cw&#96; in &#96;&#95;&#95;main&#95;&#95;&#96;).

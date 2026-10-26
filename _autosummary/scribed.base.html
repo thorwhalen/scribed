@@ -29,7 +29,7 @@
 <meta content="scribed.base | scribed" property="og:title"/>
 <meta content="scribed.base | scribed" name="twitter:title"/>
 <link href="../_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
-<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=009055c6" rel="stylesheet" type="text/css"/>
 <link href="../_static/sphinx_autodoc_typehints.css?v=057ac668" rel="stylesheet" type="text/css"/>
 <link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../_static/epythet.css?v=1e39d63c" rel="stylesheet" type="text/css"/>
@@ -89,6 +89,7 @@
 <li class="toctree-l3"><a class="reference internal" href="scribed.catalog.html">scribed.catalog</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.credentials.html">scribed.credentials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scribed.readers.html">scribed.readers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.registry.html">scribed.registry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.status.html">scribed.status</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.tools.html">scribed.tools</a></li>
@@ -486,6 +487,18 @@ already in time order, or pre-join and pass <code class="docutils literal notran
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">mean_confidence</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">Optional</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">float</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a><span class="p"><span class="pre">]</span></span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.base.Transcript.mean_confidence" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.base.Transcript.mean_confidence'">¶</a></dt>
 <dd><p>Mean confidence over segments that report one, or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="scribed.base.Transcript.parse">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/base.html#Transcript.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.base.Transcript.parse" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.base.Transcript.parse'">¶</a></dt>
+<dd><p>Read an existing transcript (SRT, WebVTT, TextGrid, word JSON, plain).</p>
+<p><code class="docutils literal notranslate"><span class="pre">source</span></code> is a file path or the transcript text itself; <code class="docutils literal notranslate"><span class="pre">fmt</span></code> overrides
+format detection. See <a class="reference internal" href="scribed.readers.html#scribed.readers.read_transcript" title="scribed.readers.read_transcript"><code class="xref py py-func docutils literal notranslate"><span class="pre">scribed.readers.read_transcript()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#scribed.base.Transcript" title="scribed.base.Transcript"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transcript</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="scribed.base.Transcript.speakers">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">speakers</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">List</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">str</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a><span class="p"><span class="pre">]</span></span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.base.Transcript.speakers" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.base.Transcript.speakers'">¶</a></dt>
@@ -614,6 +627,7 @@ from whatever scale the backend used), if available.</p>
 <li><a :data-current="activeSection === '#scribed.base.Transcript.from_segments'" class="reference internal" href="#scribed.base.Transcript.from_segments"><code class="docutils literal notranslate"><span class="pre">Transcript.from_segments()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.base.Transcript.from_text'" class="reference internal" href="#scribed.base.Transcript.from_text"><code class="docutils literal notranslate"><span class="pre">Transcript.from_text()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.base.Transcript.mean_confidence'" class="reference internal" href="#scribed.base.Transcript.mean_confidence"><code class="docutils literal notranslate"><span class="pre">Transcript.mean_confidence</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.base.Transcript.parse'" class="reference internal" href="#scribed.base.Transcript.parse"><code class="docutils literal notranslate"><span class="pre">Transcript.parse()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.base.Transcript.speakers'" class="reference internal" href="#scribed.base.Transcript.speakers"><code class="docutils literal notranslate"><span class="pre">Transcript.speakers</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.base.Transcript.srt'" class="reference internal" href="#scribed.base.Transcript.srt"><code class="docutils literal notranslate"><span class="pre">Transcript.srt</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.base.Transcript.vtt'" class="reference internal" href="#scribed.base.Transcript.vtt"><code class="docutils literal notranslate"><span class="pre">Transcript.vtt</span></code></a></li>
@@ -643,11 +657,11 @@ from whatever scale the backend used), if available.</p>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=282f96c0"></script>
+<script src="../_static/documentation_options.js?v=1fd71caa"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../_static/copybutton.js?v=fd10adb8"></script>
-<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+<script defer="defer" src="../_static/theme.js?v=49cc6205"></script>
 </body>
 </html>

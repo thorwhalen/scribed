@@ -294,6 +294,16 @@ Build a minimal result from just a text string (no timing/segments).
 
 Mean confidence over segments that report one, or `None`.
 
+#### *classmethod* parse(source, , fmt=None)
+
+Read an existing transcript (SRT, WebVTT, TextGrid, word JSON, plain).
+
+`source` is a file path or the transcript text itself; `fmt` overrides
+format detection. See [`scribed.readers.read_transcript()`](scribed.readers.html.md#scribed.readers.read_transcript).
+
+* **Return type:**
+  [`Transcript`](#scribed.base.Transcript)
+
 #### *property* speakers *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Sorted distinct speaker labels across segments (empty if undiarized).

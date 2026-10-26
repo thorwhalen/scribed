@@ -29,7 +29,7 @@
 <meta content="scribed" property="og:title"/>
 <meta content="scribed" name="twitter:title"/>
 <link href="../_static/pygments.css?v=d75fae25" rel="stylesheet" type="text/css"/>
-<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=009055c6" rel="stylesheet" type="text/css"/>
 <link href="../_static/sphinx_autodoc_typehints.css?v=057ac668" rel="stylesheet" type="text/css"/>
 <link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
 <link href="../_static/epythet.css?v=1e39d63c" rel="stylesheet" type="text/css"/>
@@ -89,6 +89,7 @@
 <li class="toctree-l3"><a class="reference internal" href="scribed.catalog.html">scribed.catalog</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.credentials.html">scribed.credentials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.make_backend.html">scribed.make_backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scribed.readers.html">scribed.readers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.registry.html">scribed.registry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.status.html">scribed.status</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.tools.html">scribed.tools</a></li>
@@ -181,70 +182,73 @@ other one in minutes:</p>
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.transcribe" title="scribed.transcribe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcribe</span></code></a>(audio, *[, backend])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.read_transcript" title="scribed.read_transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_transcript</span></code></a>(source, *[, fmt])</p></td>
+<td><p>Read <code class="docutils literal notranslate"><span class="pre">source</span></code> (a path to a transcript file, or the transcript text itself).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.transcribe" title="scribed.transcribe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcribe</span></code></a>(audio, *[, backend])</p></td>
 <td><p>Transcribe audio with any backend, returning a normalized result.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.transcribe_text" title="scribed.transcribe_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcribe_text</span></code></a>(audio, *[, backend])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.transcribe_text" title="scribed.transcribe_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transcribe_text</span></code></a>(audio, *[, backend])</p></td>
 <td><p>Like <a class="reference internal" href="#scribed.transcribe" title="scribed.transcribe"><code class="xref py py-func docutils literal notranslate"><span class="pre">transcribe()</span></code></a> but returns just the transcript text string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.find" title="scribed.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(**criteria)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.find" title="scribed.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(**criteria)</p></td>
 <td><p>Filter the ledger; shorthand for <code class="xref py py-meth docutils literal notranslate"><span class="pre">scribed.catalog.Catalog.filter()</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.list_backends" title="scribed.list_backends"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_backends</span></code></a>([capability])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.list_backends" title="scribed.list_backends"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_backends</span></code></a>([capability])</p></td>
 <td><p>Sorted ids of implemented backends, optionally filtered by capability.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.register_backend" title="scribed.register_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_backend</span></code></a>(backend_id, config[, adapter])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.register_backend" title="scribed.register_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_backend</span></code></a>(backend_id, config[, adapter])</p></td>
 <td><p>Register a backend at runtime (for third-party plugins).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.get_default_backend" title="scribed.get_default_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_backend</span></code></a>([capability, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.get_default_backend" title="scribed.get_default_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_backend</span></code></a>([capability, ...])</p></td>
 <td><p>Pick a sensible default backend id for a capability.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.get_config" title="scribed.get_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_config</span></code></a>(backend_id)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.get_config" title="scribed.get_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_config</span></code></a>(backend_id)</p></td>
 <td><p>A backend's <code class="docutils literal notranslate"><span class="pre">BACKEND_CONFIG</span></code> without loading its adapter.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.make_segment" title="scribed.make_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_segment</span></code></a>(text, *[, start, end, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.make_segment" title="scribed.make_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_segment</span></code></a>(text, *[, start, end, ...])</p></td>
 <td><p>Build a normalized <a class="reference internal" href="scribed.base.html#scribed.base.Segment" title="scribed.base.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.make_word" title="scribed.make_word"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_word</span></code></a>(text, *[, start, end, confidence, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.make_word" title="scribed.make_word"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_word</span></code></a>(text, *[, start, end, confidence, ...])</p></td>
 <td><p>Build a normalized <a class="reference internal" href="scribed.base.html#scribed.base.Word" title="scribed.base.Word"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.scaffold_backend" title="scribed.scaffold_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaffold_backend</span></code></a>(backend_id, *[, dest, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.scaffold_backend" title="scribed.scaffold_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scaffold_backend</span></code></a>(backend_id, *[, dest, ...])</p></td>
 <td><p>Create a new <code class="docutils literal notranslate"><span class="pre">scribed/backends/&lt;id&gt;/</span></code> package from the template.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.validate_adapter" title="scribed.validate_adapter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_adapter</span></code></a>(backend_id, *[, audio, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.validate_adapter" title="scribed.validate_adapter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_adapter</span></code></a>(backend_id, *[, audio, ...])</p></td>
 <td><p>Smoke-test a backend adapter end to end, returning a report dict.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.requirements" title="scribed.requirements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">requirements</span></code></a>(backend_id, *[, gpu])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.requirements" title="scribed.requirements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">requirements</span></code></a>(backend_id, *[, gpu])</p></td>
 <td><p>Return structured install <a class="reference internal" href="#scribed.Requirements" title="scribed.Requirements"><code class="xref py py-class docutils literal notranslate"><span class="pre">Requirements</span></code></a> for <code class="docutils literal notranslate"><span class="pre">backend_id</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.check" title="scribed.check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check</span></code></a>(backend_id)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.check" title="scribed.check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check</span></code></a>(backend_id)</p></td>
 <td><p>Is <code class="docutils literal notranslate"><span class="pre">backend_id</span></code> importable / usable right now? (no install, no network).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.doctor" title="scribed.doctor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">doctor</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.doctor" title="scribed.doctor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">doctor</span></code></a>()</p></td>
 <td><p>Report which implemented backends are usable now and what the rest need.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.install" title="scribed.install"><code class="xref py py-obj docutils literal notranslate"><span class="pre">install</span></code></a>(backend_id, *[, yes, gpu, verify, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.install" title="scribed.install"><code class="xref py py-obj docutils literal notranslate"><span class="pre">install</span></code></a>(backend_id, *[, yes, gpu, verify, ...])</p></td>
 <td><p>Plan (and optionally run) the pip install for a backend.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.available_backends" title="scribed.available_backends"><code class="xref py py-obj docutils literal notranslate"><span class="pre">available_backends</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.available_backends" title="scribed.available_backends"><code class="xref py py-obj docutils literal notranslate"><span class="pre">available_backends</span></code></a>()</p></td>
 <td><p>Implemented backends whose dependency is importable right now.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.backend_ids" title="scribed.backend_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend_ids</span></code></a>([level, info, test_audio])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.backend_ids" title="scribed.backend_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend_ids</span></code></a>([level, info, test_audio])</p></td>
 <td><p>Sorted backend ids at a readiness <code class="docutils literal notranslate"><span class="pre">level</span></code> (one of <code class="xref py py-data docutils literal notranslate"><span class="pre">LEVELS</span></code>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.backend_info" title="scribed.backend_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend_info</span></code></a>([ids, run_tests, test_audio])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.backend_info" title="scribed.backend_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend_info</span></code></a>([ids, run_tests, test_audio])</p></td>
 <td><p>Per-backend status: every ledger field plus <code class="docutils literal notranslate"><span class="pre">implemented</span></code>/<code class="docutils literal notranslate"><span class="pre">set_up</span></code>/<code class="docutils literal notranslate"><span class="pre">tested</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.status_table" title="scribed.status_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status_table</span></code></a>([ids, info, columns, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.status_table" title="scribed.status_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status_table</span></code></a>([ids, info, columns, ...])</p></td>
 <td><p>Render an aligned Markdown table of backend status (also plain-text readable).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.names_with_sites" title="scribed.names_with_sites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">names_with_sites</span></code></a>(ids, *[, info])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.names_with_sites" title="scribed.names_with_sites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">names_with_sites</span></code></a>(ids, *[, info])</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">"Name</span> <span class="pre">(website),</span> <span class="pre">Name2</span> <span class="pre">(website2),</span> <span class="pre">..."</span></code> for <code class="docutils literal notranslate"><span class="pre">ids</span></code> (name, not id).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.is_set_up" title="scribed.is_set_up"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_set_up</span></code></a>(backend_id)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.is_set_up" title="scribed.is_set_up"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_set_up</span></code></a>(backend_id)</p></td>
 <td><p>Ready to run here &amp; now.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.is_tested" title="scribed.is_tested"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_tested</span></code></a>(backend_id, *[, audio])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.is_tested" title="scribed.is_tested"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_tested</span></code></a>(backend_id, *[, audio])</p></td>
 <td><p>Actually run transcription on <code class="docutils literal notranslate"><span class="pre">audio</span></code> (a generated tone if None); True iff it worked.</p></td>
 </tr>
 </tbody>
@@ -668,6 +672,18 @@ already in time order, or pre-join and pass <code class="docutils literal notran
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">mean_confidence</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">Optional</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">float</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a><span class="p"><span class="pre">]</span></span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.Transcript.mean_confidence" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.Transcript.mean_confidence'">¶</a></dt>
 <dd><p>Mean confidence over segments that report one, or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="scribed.Transcript.parse">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/base.html#Transcript.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.Transcript.parse" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.Transcript.parse'">¶</a></dt>
+<dd><p>Read an existing transcript (SRT, WebVTT, TextGrid, word JSON, plain).</p>
+<p><code class="docutils literal notranslate"><span class="pre">source</span></code> is a file path or the transcript text itself; <code class="docutils literal notranslate"><span class="pre">fmt</span></code> overrides
+format detection. See <a class="reference internal" href="scribed.readers.html#scribed.readers.read_transcript" title="scribed.readers.read_transcript"><code class="xref py py-func docutils literal notranslate"><span class="pre">scribed.readers.read_transcript()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="scribed.base.html#scribed.base.Transcript" title="scribed.base.Transcript"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transcript</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="scribed.Transcript.speakers">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">speakers</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">List</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">str</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a><span class="p"><span class="pre">]</span></span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.Transcript.speakers" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.Transcript.speakers'">¶</a></dt>
@@ -957,6 +973,23 @@ engines).</p>
 </dl>
 </dd></dl>
 <dl class="py function">
+<dt class="sig sig-object py" id="scribed.read_transcript">
+<span class="sig-prename descclassname"><span class="pre">scribed.</span></span><span class="sig-name descname"><span class="pre">read_transcript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/readers.html#read_transcript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.read_transcript" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.read_transcript'">¶</a></dt>
+<dd><p>Read <code class="docutils literal notranslate"><span class="pre">source</span></code> (a path to a transcript file, or the transcript text itself).</p>
+<p><code class="docutils literal notranslate"><span class="pre">fmt</span></code> (one of <code class="xref py py-data docutils literal notranslate"><span class="pre">FORMATS</span></code>) overrides detection. The result’s <code class="docutils literal notranslate"><span class="pre">backend</span></code>
+is <code class="docutils literal notranslate"><span class="pre">"file:&lt;fmt&gt;"</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">read_transcript</span><span class="p">(</span><span class="s2">"carl: Hello.</span><span class="se">\n</span><span class="s2">ned: Hi."</span><span class="p">)</span>
+</span><span id="line-2"><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">speakers</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">backend</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">span</span>
+</span><span id="line-3"><span class="go">(['carl', 'ned'], 'file:plain', None)</span>
+</span></code></pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="scribed.base.html#scribed.base.Transcript" title="scribed.base.Transcript"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transcript</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
 <dt class="sig sig-object py" id="scribed.register_backend">
 <span class="sig-prename descclassname"><span class="pre">scribed.</span></span><span class="sig-name descname"><span class="pre">register_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/registry.html#register_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.register_backend" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.register_backend'">¶</a></dt>
 <dd><p>Register a backend at runtime (for third-party plugins).</p>
@@ -1102,19 +1135,22 @@ With <code class="docutils literal notranslate"><span class="pre">expect_text</s
 <tr class="row-odd"><td><p><a class="reference internal" href="scribed.make_backend.html#module-scribed.make_backend" title="scribed.make_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_backend</span></code></a></p></td>
 <td><p>Abstraction tools for <em>building</em> transcription facades.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="scribed.registry.html#module-scribed.registry" title="scribed.registry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registry</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="scribed.readers.html#module-scribed.readers" title="scribed.readers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readers</span></code></a></p></td>
+<td><p>Read a transcript back into a <a class="reference internal" href="scribed.base.html#scribed.base.Transcript" title="scribed.base.Transcript"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transcript</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="scribed.registry.html#module-scribed.registry" title="scribed.registry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registry</span></code></a></p></td>
 <td><p>Backend discovery, registration, and lazy loading.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="scribed.status.html#module-scribed.status" title="scribed.status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="scribed.status.html#module-scribed.status" title="scribed.status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status</span></code></a></p></td>
 <td><p>Backend readiness status — four nested levels, info dicts, and a Markdown table.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="scribed.tools.html#module-scribed.tools" title="scribed.tools"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tools</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="scribed.tools.html#module-scribed.tools" title="scribed.tools"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tools</span></code></a></p></td>
 <td><p>Command-line tools for scribed (dispatched via <code class="docutils literal notranslate"><span class="pre">cw</span></code> in <code class="docutils literal notranslate"><span class="pre">__main__</span></code>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="scribed.translation.html#module-scribed.translation" title="scribed.translation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translation</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="scribed.translation.html#module-scribed.translation" title="scribed.translation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translation</span></code></a></p></td>
 <td><p>Parameter translation between scribed's normalized kwargs and native engines.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="scribed.util.html#module-scribed.util" title="scribed.util"><code class="xref py py-obj docutils literal notranslate"><span class="pre">util</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="scribed.util.html#module-scribed.util" title="scribed.util"><code class="xref py py-obj docutils literal notranslate"><span class="pre">util</span></code></a></p></td>
 <td><p>Audio-input normalization and small shared helpers.</p></td>
 </tr>
 </tbody>
@@ -1169,6 +1205,7 @@ With <code class="docutils literal notranslate"><span class="pre">expect_text</s
 <li><a :data-current="activeSection === '#scribed.Transcript.from_segments'" class="reference internal" href="#scribed.Transcript.from_segments"><code class="docutils literal notranslate"><span class="pre">Transcript.from_segments()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.Transcript.from_text'" class="reference internal" href="#scribed.Transcript.from_text"><code class="docutils literal notranslate"><span class="pre">Transcript.from_text()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.Transcript.mean_confidence'" class="reference internal" href="#scribed.Transcript.mean_confidence"><code class="docutils literal notranslate"><span class="pre">Transcript.mean_confidence</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.Transcript.parse'" class="reference internal" href="#scribed.Transcript.parse"><code class="docutils literal notranslate"><span class="pre">Transcript.parse()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.Transcript.speakers'" class="reference internal" href="#scribed.Transcript.speakers"><code class="docutils literal notranslate"><span class="pre">Transcript.speakers</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.Transcript.srt'" class="reference internal" href="#scribed.Transcript.srt"><code class="docutils literal notranslate"><span class="pre">Transcript.srt</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.Transcript.vtt'" class="reference internal" href="#scribed.Transcript.vtt"><code class="docutils literal notranslate"><span class="pre">Transcript.vtt</span></code></a></li>
@@ -1200,6 +1237,7 @@ With <code class="docutils literal notranslate"><span class="pre">expect_text</s
 <li><a :data-current="activeSection === '#scribed.make_segment'" class="reference internal" href="#scribed.make_segment"><code class="docutils literal notranslate"><span class="pre">make_segment()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.make_word'" class="reference internal" href="#scribed.make_word"><code class="docutils literal notranslate"><span class="pre">make_word()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.names_with_sites'" class="reference internal" href="#scribed.names_with_sites"><code class="docutils literal notranslate"><span class="pre">names_with_sites()</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.read_transcript'" class="reference internal" href="#scribed.read_transcript"><code class="docutils literal notranslate"><span class="pre">read_transcript()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.register_backend'" class="reference internal" href="#scribed.register_backend"><code class="docutils literal notranslate"><span class="pre">register_backend()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.requirements'" class="reference internal" href="#scribed.requirements"><code class="docutils literal notranslate"><span class="pre">requirements()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.scaffold_backend'" class="reference internal" href="#scribed.scaffold_backend"><code class="docutils literal notranslate"><span class="pre">scaffold_backend()</span></code></a></li>
@@ -1221,11 +1259,11 @@ With <code class="docutils literal notranslate"><span class="pre">expect_text</s
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=282f96c0"></script>
+<script src="../_static/documentation_options.js?v=1fd71caa"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../_static/copybutton.js?v=fd10adb8"></script>
-<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+<script defer="defer" src="../_static/theme.js?v=49cc6205"></script>
 </body>
 </html>
