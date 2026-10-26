@@ -142,7 +142,9 @@ register their own backends at runtime via <a class="reference internal" href="#
 <p>The design mirrors the sibling <code class="docutils literal notranslate"><span class="pre">ocracy</span></code> facade, adapted for ASR: the primary
 capability is <code class="docutils literal notranslate"><span class="pre">"transcribe"</span></code> (audio -&gt; text+timing), with optional extra
 capabilities (<code class="docutils literal notranslate"><span class="pre">"diarize"</span></code>, <code class="docutils literal notranslate"><span class="pre">"stream"</span></code>, <code class="docutils literal notranslate"><span class="pre">"translate"</span></code>, …) declared per
-backend.</p>
+backend. <code class="docutils literal notranslate"><span class="pre">"whisper_sized_model"</span></code> marks backends whose
+<code class="docutils literal notranslate"><span class="pre">model</span></code> accepts a bare Whisper size (<code class="docutils literal notranslate"><span class="pre">small</span></code>, <code class="docutils literal notranslate"><span class="pre">large-v3</span></code>), so consumers can
+derive that set with <code class="docutils literal notranslate"><span class="pre">list_backends("whisper_sized_model")</span></code> rather than hardcode it.</p>
 <p class="rubric">Module Attributes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -278,7 +280,7 @@ install error).</p>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=bbaf98b3"></script>
+<script src="../_static/documentation_options.js?v=53b53b71"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

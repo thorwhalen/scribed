@@ -2,7 +2,7 @@
 
 # About this build
 
-This documentation was built on **2026-10-26 08:18 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/7769ddabf612a9beb7cd77ad6a65bb3f26a0e089"><code>7769dda</code></a> on branch <code>main</code>, for **scribed 0.0.7** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-26 18:29 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/fd7483836b12d674ec4c2a6e7ceeef8ba7b51009"><code>fd74838</code></a> on branch <code>main</code>, for **scribed 0.0.8** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -11,7 +11,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/7769ddabf612a9beb7cd77ad6a65bb3f26a0e089"><code>7769ddabf612a9beb7cd77ad6a65bb3f26a0e089</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/fd7483836b12d674ec4c2a6e7ceeef8ba7b51009"><code>fd7483836b12d674ec4c2a6e7ceeef8ba7b51009</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -22,9 +22,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/40291162869">40291162869</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/40377924663">40377924663</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>7769ddabf612a9beb7cd77ad6a65bb3f26a0e089</code> (in the history of the built commit) |
+| Event commit | <code>fd7483836b12d674ec4c2a6e7ceeef8ba7b51009</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -49,13 +49,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.7/">0.0.7</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.8/">0.0.8</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 7769ddabf612a9beb7cd77ad6a65bb3f26a0e089
+git checkout fd7483836b12d674ec4c2a6e7ceeef8ba7b51009
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

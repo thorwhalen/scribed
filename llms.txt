@@ -59,7 +59,7 @@
 - [scribed.translation](_autosummary/scribed.translation.html.md): Parameter translation between scribed’s normalized kwargs and native engines.
 - [scribed.util](_autosummary/scribed.util.html.md): Audio-input normalization and small shared helpers.
 - [For AI agents](ai-agents.html.md): &#96;scribed&#96; ships artifacts for coding agents alongside its code. This page lists
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-26 08:18 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-26 18:29 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
 
 ## Optional
 
