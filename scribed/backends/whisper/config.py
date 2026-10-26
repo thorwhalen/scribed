@@ -23,7 +23,7 @@ BACKEND_CONFIG = {
     "license": "MIT",
     "is_local": True,
     "is_remote": False,
-    "capabilities": ["word_timestamps", "translate"],
+    "capabilities": ["word_timestamps", "translate", "whisper_sized_model"],
     "default_for": [],
     "api_env_var": "",
     "description": "Original PyTorch reference Whisper, run locally (needs system ffmpeg).",

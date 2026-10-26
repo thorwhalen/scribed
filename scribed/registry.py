@@ -16,7 +16,9 @@ register their own backends at runtime via :func:`register_backend`.
 The design mirrors the sibling ``ocracy`` facade, adapted for ASR: the primary
 capability is ``"transcribe"`` (audio -> text+timing), with optional extra
 capabilities (``"diarize"``, ``"stream"``, ``"translate"``, ...) declared per
-backend.
+backend. ``"whisper_sized_model"`` marks backends whose
+``model`` accepts a bare Whisper size (``small``, ``large-v3``), so consumers can
+derive that set with ``list_backends("whisper_sized_model")`` rather than hardcode it.
 """
 
 from __future__ import annotations

@@ -5,6 +5,7 @@ no network, no model downloads, no MLX/torch. The fakes record how they were
 called, so the tests pin what the adapter sends and how the result lands.
 """
 
+import inspect
 import sys
 import types
 
@@ -204,6 +205,43 @@ def test_whisperx_diarizes_with_a_token(monkeypatch, fake_whisperx):
     t = _adapter("whisperx").transcribe(ONE_SECOND, diarize=True)
     assert t.segments[0].speaker == "SPEAKER_00"
     assert fake_whisperx["diarize"] == ["hf-test"]
+
+
+@pytest.mark.parametrize("token_arg", ["token", "use_auth_token"])
+def test_whisperx_passes_the_token_under_the_installed_spelling(
+    monkeypatch, fake_whisperx, token_arg
+):
+    """whisperx renamed ``use_auth_token`` -> ``token``; the adapter follows the signature."""
+    monkeypatch.setenv("HF_TOKEN", "hf-test")
+    seen = {}
+
+    class Pipeline:
+        def __init__(self, *, device, **kw):
+            seen.update(kw)
+
+        def __call__(self, audio, *, min_speakers, max_speakers):
+            return "turns"
+
+    Pipeline.__init__.__signature__ = inspect.Signature(
+        [
+            inspect.Parameter("self", inspect.Parameter.POSITIONAL_OR_KEYWORD),
+            inspect.Parameter(token_arg, inspect.Parameter.KEYWORD_ONLY, default=None),
+            inspect.Parameter("device", inspect.Parameter.KEYWORD_ONLY, default=None),
+        ]
+    )
+    sys.modules["whisperx"].DiarizationPipeline = Pipeline
+    _adapter("whisperx").transcribe(ONE_SECOND, diarize=True)
+    assert seen == {token_arg: "hf-test"}
+
+
+def test_whisper_sized_model_is_a_registry_capability():
+    assert set(registry.list_backends("whisper_sized_model")) == {
+        "whisper",
+        "faster-whisper",
+        "mlx-whisper",
+        "whispercpp",
+        "whisperx",
+    }
 
 
 def test_whisperx_diarize_without_token_is_informative(monkeypatch, fake_whisperx):

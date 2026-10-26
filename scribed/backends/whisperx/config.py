@@ -26,7 +26,7 @@ BACKEND_CONFIG = {
     "license": "BSD-2-Clause",
     "is_local": True,
     "is_remote": False,
-    "capabilities": ["word_timestamps", "diarize"],
+    "capabilities": ["word_timestamps", "diarize", "whisper_sized_model"],
     "default_for": [],
     "api_env_var": "",
     "description": "WhisperX: batched Whisper + word alignment + optional pyannote diarization.",
