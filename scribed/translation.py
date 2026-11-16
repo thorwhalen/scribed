@@ -15,7 +15,12 @@ two packages feel the same to read and extend.
 import warnings
 from typing import Any, Callable, Dict, Optional
 
-__all__ = ["make_kwargs_translator", "validate_param"]
+__all__ = ["make_kwargs_translator", "validate_param", "word_granularities"]
+
+
+def word_granularities(on: Any) -> Optional[list]:
+    """``coerce`` for OpenAI-style ``timestamp_granularities``: word times *and* segments."""
+    return ["word", "segment"] if on else None
 
 
 def make_kwargs_translator(
@@ -34,6 +39,8 @@ def make_kwargs_translator(
             - ``coerce`` (callable): transform the value (e.g. a bool -> the
               string a vendor expects, ``["en"] -> "en"``).
             - ``default`` (Any): value to inject when the caller omits the param.
+            - ``always_on`` (bool): the backend already does this (e.g. word
+              timestamps); the parameter is accepted and nothing is passed on.
             - ``None`` as the whole value: the parameter is explicitly *not*
               supported by this backend.
         on_unsupported: What to do with caller params absent from ``param_map``:
@@ -71,6 +78,8 @@ def make_kwargs_translator(
                     )
                 continue
 
+            if config.get("always_on"):
+                continue
             native_name = config.get("native_name", name)
             coerce = config.get("coerce")
             if coerce is not None:

@@ -18,7 +18,7 @@ BACKEND_CONFIG = {
     "is_local": False,
     "is_remote": True,
     # Capabilities BEYOND the implied primary "transcribe" (audio -> text):
-    "capabilities": ["diarize", "word_timestamps"],
+    "capabilities": ["diarize", "word_timestamps", "remote_fetch"],
     # Capabilities this backend should be the *default* for.
     "default_for": [],
     # For remote backends: the env var(s) holding the credential.
@@ -32,5 +32,6 @@ BACKEND_CONFIG = {
         "language": {"native_name": "language_code"},
         "diarize": {"native_name": "diarize", "default": False},
         "model": {"native_name": "model_id", "default": "scribe_v1"},
+        "word_timestamps": {"always_on": True},  # the words build the segments
     },
 }

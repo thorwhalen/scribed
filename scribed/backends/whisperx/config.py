@@ -31,6 +31,7 @@ BACKEND_CONFIG = {
     "api_env_var": "",
     "description": "WhisperX: batched Whisper + word alignment + optional pyannote diarization.",
     "param_map": {
+        "word_timestamps": {"always_on": True},  # word times are always returned
         "language": {"native_name": "language"},  # None => auto-detect
         "model": {"native_name": "model", "default": DEFAULT_MODEL},
         "diarize": {"native_name": "diarize", "default": False},

@@ -30,6 +30,7 @@ from scribed.base import AudioInput
 __all__ = [
     "classify_input",
     "is_url",
+    "is_public_url",
     "load_audio_bytes",
     "ensure_file_path",
     "cleanup_temp",
@@ -86,6 +87,36 @@ def classify_input(audio: AudioInput) -> str:
         f"Unsupported audio input of type {type(audio).__name__}. Expected a path, "
         "URL, bytes, file-like object, or numpy waveform."
     )
+
+
+def is_public_url(url: str) -> bool:
+    """Could a third party's server plausibly fetch ``url``? (no DNS lookup)
+
+    False for a URL with credentials, ``localhost``, single-label and ``.local`` /
+    ``.internal`` hosts, and loopback / private / link-local IP literals: those
+    are reachable only from here, and handing them over would leak the name (or
+    the credentials) for nothing.
+    """
+    import ipaddress
+    from urllib.parse import urlsplit
+
+    try:
+        parts = urlsplit(url.strip())
+        host = (parts.hostname or "").lower().rstrip(".")
+    except ValueError:
+        return False
+    if (
+        parts.scheme not in ("http", "https")
+        or not host
+        or parts.username
+        or parts.password
+    ):
+        return False
+    try:
+        ip = ipaddress.ip_address(host)
+    except ValueError:
+        return "." in host and not host.endswith((".local", ".internal", ".localhost"))
+    return ip.is_global
 
 
 def _fetch_url(url: str, *, timeout: float = 60.0) -> bytes:

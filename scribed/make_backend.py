@@ -29,6 +29,7 @@ from typing import Any, List, Optional, Union
 
 from scribed.base import Segment, TimeSpan, Transcript, Word
 from scribed.translation import make_kwargs_translator
+from scribed.util import is_public_url, is_url
 
 __all__ = [
     "BaseTranscriberAdapter",
@@ -72,9 +73,48 @@ class BaseTranscriberAdapter:
     #: (the default), live transcription is synthesized from batch ``transcribe``.
     natively_streams: bool = False
 
-    def transcribe(self, audio, **kwargs) -> Transcript:
+    def transcribe(self, audio, *, remote_fetch: bool = True, **kwargs) -> Transcript:
+        """Transcribe ``audio``; kwargs are translated to the engine's own.
+
+        An ``http(s)`` address given to a backend that can fetch it itself (capability
+        ``remote_fetch``) is handed to the service as is: nothing is downloaded here.
+        Pass ``remote_fetch=False`` to download it first (an address the service
+        cannot reach, such as a private one); backends without the capability
+        always download first.
+        """
         native = self._translate(**kwargs) if self._translate else dict(kwargs)
+        if (
+            remote_fetch
+            and isinstance(audio, str)
+            and is_url(audio)
+            and self.can_fetch_url(audio)
+        ):
+            try:
+                return self._transcribe_url(audio, **native)
+            except Exception as e:
+                if hasattr(e, "add_note"):  # Python 3.11+
+                    e.add_note(
+                        f"{self.backend_id} was handed the address to fetch itself; "
+                        "pass remote_fetch=False to download it here instead "
+                        "(or upgrade the service's SDK)."
+                    )
+                raise
         return self._transcribe(audio, **native)
+
+    def can_fetch_url(self, url: str) -> bool:
+        """Can the service fetch ``url`` itself? (capability ``remote_fetch``, and a
+        public address: one only this machine can reach is downloaded here instead)."""
+        return "remote_fetch" in self.config.get("capabilities", ()) and is_public_url(
+            url
+        )
+
+    def _transcribe_url(
+        self, url: str, **native_kwargs
+    ) -> Transcript:  # pragma: no cover
+        raise NotImplementedError(
+            f"{type(self).__name__} declares remote_fetch but does not implement "
+            "_transcribe_url."
+        )
 
     #: ``True`` in a backend that resolves its key through :meth:`credential`, so
     #: it can be handed one (see ``ServiceHandle.with_api_key``).

@@ -112,6 +112,20 @@ t.vtt  # WebVTT subtitles
 t.raw  # the untouched backend response
 ```
 
+## Transcribe from an address, and find who can do what
+
+Some hosted services fetch the audio themselves, so nothing is downloaded or uploaded
+by you (handy on a small server, or for a recording over the upload limit):
+
+```python
+t = scribed.transcribe("https://example.org/episode.mp3", backend="groq", word_timestamps=True)
+scribed.list_backends("remote_fetch")  # backends that take an address: ['elevenlabs', 'groq']
+scribed.list_backends("word_timestamps")  # backends that return word times
+```
+
+Any other backend downloads the address first. The address is handed to the third party,
+so for one it cannot reach (a private network) pass `remote_fetch=False` to download it here.
+
 ## Three tiers of access
 
 ```python

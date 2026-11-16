@@ -57,19 +57,19 @@ class Adapter(BaseTranscriberAdapter):
             self._client = ElevenLabs(api_key=key)
         return self._client
 
-    def _transcribe(
-        self, audio, *, model_id="scribe_v1", diarize=False, **native_kwargs
+    def _convert(
+        self,
+        *,
+        model_id="scribe_v1",
+        diarize=False,
+        **source_and_native,
     ) -> Transcript:
-        from scribed.util import load_audio_bytes
-
-        client = self._get_client()
-        audio_bytes = load_audio_bytes(audio)
-        resp = client.speech_to_text.convert(
-            file=audio_bytes,
+        """One ``speech_to_text.convert`` call; the source is ``file=`` or ``cloud_storage_url=``."""
+        resp = self._get_client().speech_to_text.convert(
             model_id=model_id,
             diarize=diarize,
-            timestamps_granularity="word",
-            **native_kwargs,
+            timestamps_granularity="word",  # the words build the segments
+            **source_and_native,
         )
 
         text = getattr(resp, "text", None) or ""
@@ -98,6 +98,22 @@ class Adapter(BaseTranscriberAdapter):
             language=language,
             duration=duration,
         )
+
+    def _transcribe(self, audio, **native_kwargs) -> Transcript:
+        from scribed.util import load_audio_bytes
+
+        return self._convert(file=load_audio_bytes(audio), **native_kwargs)
+
+    def can_fetch_url(self, url: str) -> bool:
+        """Scribe fetches only HTTPS addresses (``cloud_storage_url``)."""
+        return super().can_fetch_url(url) and url.lower().startswith("https://")
+
+    def _transcribe_url(self, url: str, **native_kwargs) -> Transcript:
+        """Scribe fetches ``url`` itself (up to 2 GB; pre-signed URLs work).
+
+        Direct file addresses only: page URLs (YouTube, ...) are the SDK's ``source_url``.
+        """
+        return self._convert(cloud_storage_url=url, **native_kwargs)
 
 
 def _segments_from_words(raw_words):

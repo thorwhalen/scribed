@@ -27,6 +27,7 @@ BACKEND_CONFIG = {
     # Map normalized kwarg -> native kwarg config. These native names are popped
     # in the adapter's ``_transcribe`` and passed to ``PrerecordedOptions``.
     "param_map": {
+        "word_timestamps": {"always_on": True},  # word times are always returned
         "language": {"native_name": "language"},  # None => auto-detect
         "diarize": {"native_name": "diarize"},
         "model": {"native_name": "model", "default": "nova-3"},
