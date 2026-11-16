@@ -1,4 +1,4 @@
-> built 2026-11-16 22:56 UTC from 7b3d10e (main) · scribed 0.0.14. Details: build_info.json
+> built 2026-11-16 23:03 UTC from 4ac1c54 (main) · scribed 0.0.15. Details: build_info.json
 
 # index.html.md
 
@@ -223,6 +223,11 @@ lazily so `import scribed` stays dependency-free.
 Bases: [`BaseTranscriberAdapter`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
 
 AssemblyAI (Universal) transcription adapter.
+
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= True*
+
+`True` in a backend that resolves its key through `credential()`, so
+it can be handed one (see `ServiceHandle.with_api_key`).
 
 
 # _autosummary/scribed.backends.assemblyai.config.html.md
@@ -3283,7 +3288,7 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-16 22:56 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b"><code>7b3d10e</code></a> on branch <code>main</code>, for **scribed 0.0.14** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-16 23:03 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/4ac1c540aaa335294610515b0d05215b3cebbb0b"><code>4ac1c54</code></a> on branch <code>main</code>, for **scribed 0.0.15** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3292,7 +3297,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b"><code>7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/4ac1c540aaa335294610515b0d05215b3cebbb0b"><code>4ac1c540aaa335294610515b0d05215b3cebbb0b</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3303,9 +3308,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43974489491">43974489491</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43975664661">43975664661</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b</code> (in the history of the built commit) |
+| Event commit | <code>4ac1c540aaa335294610515b0d05215b3cebbb0b</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3330,13 +3335,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.14/">0.0.14</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.15/">0.0.15</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b
+git checkout 4ac1c540aaa335294610515b0d05215b3cebbb0b
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

@@ -208,86 +208,89 @@
 </span><span id="line-29"><span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseTranscriberAdapter</span><span class="p">):</span>
 </span><span id="line-30"><span class="w">    </span><span class="sd">"""AssemblyAI (Universal) transcription adapter."""</span>
 </span><span id="line-31">
-</span><span id="line-32">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-</span><span id="line-33">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-</span><span id="line-34">        <span class="bp">self</span><span class="o">.</span><span class="n">_configured</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="line-35">
-</span><span id="line-36">    <span class="k">def</span><span class="w"> </span><span class="nf">_ensure_configured</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="line-37"><span class="w">        </span><span class="sd">"""Set the SDK's global API key once (lazy import + lazy credential)."""</span>
-</span><span id="line-38">        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configured</span><span class="p">:</span>
-</span><span id="line-39">            <span class="kn">import</span><span class="w"> </span><span class="nn">assemblyai</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">aai</span>
+</span><span id="line-32">    <span class="n">accepts_api_key</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="line-33">
+</span><span id="line-34">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="line-35">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span><span id="line-36">        <span class="bp">self</span><span class="o">.</span><span class="n">_transcriber</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-37">
+</span><span id="line-38">    <span class="k">def</span><span class="w"> </span><span class="nf">_get_transcriber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aai</span><span class="p">):</span>
+</span><span id="line-39"><span class="w">        </span><span class="sd">"""A transcriber authenticating as this adapter's key (cached).</span>
 </span><span id="line-40">
-</span><span id="line-41">            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">credential</span><span class="p">()</span>
-</span><span id="line-42">            <span class="n">aai</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">key</span>
-</span><span id="line-43">            <span class="bp">self</span><span class="o">.</span><span class="n">_configured</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="line-44">
-</span><span id="line-45">    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
-</span><span id="line-46">        <span class="kn">import</span><span class="w"> </span><span class="nn">assemblyai</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">aai</span>
-</span><span id="line-47">
-</span><span id="line-48">        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">cleanup_temp</span><span class="p">,</span> <span class="n">ensure_file_path</span>
-</span><span id="line-49">
-</span><span id="line-50">        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_configured</span><span class="p">()</span>
+</span><span id="line-41"><span class="sd">        ``aai.Transcriber(api_key=...)`` (SDK &gt;= 1.10.1) keeps the key on the</span>
+</span><span id="line-42"><span class="sd">        transcriber's own client, so it never touches the SDK's process-wide</span>
+</span><span id="line-43"><span class="sd">        ``aai.settings`` (which a host may have set for another account).</span>
+</span><span id="line-44"><span class="sd">        """</span>
+</span><span id="line-45">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transcriber</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-46">            <span class="bp">self</span><span class="o">.</span><span class="n">_transcriber</span> <span class="o">=</span> <span class="n">aai</span><span class="o">.</span><span class="n">Transcriber</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credential</span><span class="p">())</span>
+</span><span id="line-47">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transcriber</span>
+</span><span id="line-48">
+</span><span id="line-49">    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
+</span><span id="line-50">        <span class="kn">import</span><span class="w"> </span><span class="nn">assemblyai</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">aai</span>
 </span><span id="line-51">
-</span><span id="line-52">        <span class="n">config</span> <span class="o">=</span> <span class="n">aai</span><span class="o">.</span><span class="n">TranscriptionConfig</span><span class="p">(</span><span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span>
-</span><span id="line-53">        <span class="n">transcriber</span> <span class="o">=</span> <span class="n">aai</span><span class="o">.</span><span class="n">Transcriber</span><span class="p">()</span>
-</span><span id="line-54">
-</span><span id="line-55">        <span class="c1"># The SDK accepts a local path (it uploads) or a URL; give it a path.</span>
-</span><span id="line-56">        <span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span> <span class="o">=</span> <span class="n">ensure_file_path</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
-</span><span id="line-57">        <span class="k">try</span><span class="p">:</span>
-</span><span id="line-58">            <span class="n">t</span> <span class="o">=</span> <span class="n">transcriber</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
-</span><span id="line-59">        <span class="k">finally</span><span class="p">:</span>
-</span><span id="line-60">            <span class="n">cleanup_temp</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span><span class="p">)</span>
-</span><span id="line-61">
-</span><span id="line-62">        <span class="c1"># Surface a failed transcription as an exception (validate_adapter catches it).</span>
-</span><span id="line-63">        <span class="n">status</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"status"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-64">        <span class="n">error</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-65">        <span class="k">if</span> <span class="n">error</span> <span class="ow">or</span> <span class="p">(</span><span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"error"</span><span class="p">)):</span>
-</span><span id="line-66">            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"AssemblyAI transcription failed: </span><span class="si">{</span><span class="n">error</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">status</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-67">
-</span><span id="line-68">        <span class="n">language</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"language_code"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-69">        <span class="n">utterances</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"utterances"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-52">        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">cleanup_temp</span><span class="p">,</span> <span class="n">ensure_file_path</span>
+</span><span id="line-53">
+</span><span id="line-54">        <span class="n">transcriber</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transcriber</span><span class="p">(</span><span class="n">aai</span><span class="p">)</span>
+</span><span id="line-55">
+</span><span id="line-56">        <span class="n">config</span> <span class="o">=</span> <span class="n">aai</span><span class="o">.</span><span class="n">TranscriptionConfig</span><span class="p">(</span><span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span>
+</span><span id="line-57">
+</span><span id="line-58">        <span class="c1"># The SDK accepts a local path (it uploads) or a URL; give it a path.</span>
+</span><span id="line-59">        <span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span> <span class="o">=</span> <span class="n">ensure_file_path</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+</span><span id="line-60">        <span class="k">try</span><span class="p">:</span>
+</span><span id="line-61">            <span class="n">t</span> <span class="o">=</span> <span class="n">transcriber</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+</span><span id="line-62">        <span class="k">finally</span><span class="p">:</span>
+</span><span id="line-63">            <span class="n">cleanup_temp</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span><span class="p">)</span>
+</span><span id="line-64">
+</span><span id="line-65">        <span class="c1"># Surface a failed transcription as an exception (validate_adapter catches it).</span>
+</span><span id="line-66">        <span class="n">status</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"status"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-67">        <span class="n">error</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-68">        <span class="k">if</span> <span class="n">error</span> <span class="ow">or</span> <span class="p">(</span><span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"error"</span><span class="p">)):</span>
+</span><span id="line-69">            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"AssemblyAI transcription failed: </span><span class="si">{</span><span class="n">error</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">status</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span><span id="line-70">
-</span><span id="line-71">        <span class="k">if</span> <span class="n">utterances</span><span class="p">:</span>
-</span><span id="line-72">            <span class="n">segments</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="line-73">                <span class="n">make_segment</span><span class="p">(</span>
-</span><span id="line-74">                    <span class="n">u</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
-</span><span id="line-75">                    <span class="n">start</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">start</span><span class="p">),</span>
-</span><span id="line-76">                    <span class="n">end</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
-</span><span id="line-77">                    <span class="n">confidence</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span>
-</span><span id="line-78">                    <span class="n">speaker</span><span class="o">=</span><span class="n">_speaker_str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span>
-</span><span id="line-79">                    <span class="n">words</span><span class="o">=</span><span class="p">[</span>
-</span><span id="line-80">                        <span class="n">make_word</span><span class="p">(</span>
-</span><span id="line-81">                            <span class="n">w</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
-</span><span id="line-82">                            <span class="n">start</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">start</span><span class="p">),</span>
-</span><span id="line-83">                            <span class="n">end</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
-</span><span id="line-84">                            <span class="n">confidence</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span>
-</span><span id="line-85">                            <span class="n">speaker</span><span class="o">=</span><span class="n">_speaker_str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"speaker"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
-</span><span id="line-86">                        <span class="p">)</span>
-</span><span id="line-87">                        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s2">"words"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
-</span><span id="line-88">                    <span class="p">],</span>
-</span><span id="line-89">                <span class="p">)</span>
-</span><span id="line-90">                <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">utterances</span>
-</span><span id="line-91">            <span class="p">]</span>
-</span><span id="line-92">        <span class="k">else</span><span class="p">:</span>
-</span><span id="line-93">            <span class="n">words</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="line-94">                <span class="n">make_word</span><span class="p">(</span>
-</span><span id="line-95">                    <span class="n">w</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
-</span><span id="line-96">                    <span class="n">start</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">start</span><span class="p">),</span>
-</span><span id="line-97">                    <span class="n">end</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
-</span><span id="line-98">                    <span class="n">confidence</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span>
-</span><span id="line-99">                    <span class="n">speaker</span><span class="o">=</span><span class="n">_speaker_str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"speaker"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
-</span><span id="line-100">                <span class="p">)</span>
-</span><span id="line-101">                <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"words"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
-</span><span id="line-102">            <span class="p">]</span>
-</span><span id="line-103">            <span class="n">segments</span> <span class="o">=</span> <span class="p">[</span><span class="n">make_segment</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span> <span class="n">words</span><span class="o">=</span><span class="n">words</span><span class="p">)]</span>
-</span><span id="line-104">
-</span><span id="line-105">        <span class="k">return</span> <span class="n">Transcript</span><span class="o">.</span><span class="n">from_segments</span><span class="p">(</span>
-</span><span id="line-106">            <span class="n">segments</span><span class="p">,</span>
-</span><span id="line-107">            <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span>
-</span><span id="line-108">            <span class="n">raw</span><span class="o">=</span><span class="n">t</span><span class="p">,</span>
-</span><span id="line-109">            <span class="n">text</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-</span><span id="line-110">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
-</span><span id="line-111">        <span class="p">)</span></div>
+</span><span id="line-71">        <span class="n">language</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"language_code"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-72">        <span class="n">utterances</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"utterances"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-73">
+</span><span id="line-74">        <span class="k">if</span> <span class="n">utterances</span><span class="p">:</span>
+</span><span id="line-75">            <span class="n">segments</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="line-76">                <span class="n">make_segment</span><span class="p">(</span>
+</span><span id="line-77">                    <span class="n">u</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+</span><span id="line-78">                    <span class="n">start</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">start</span><span class="p">),</span>
+</span><span id="line-79">                    <span class="n">end</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
+</span><span id="line-80">                    <span class="n">confidence</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span>
+</span><span id="line-81">                    <span class="n">speaker</span><span class="o">=</span><span class="n">_speaker_str</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">speaker</span><span class="p">),</span>
+</span><span id="line-82">                    <span class="n">words</span><span class="o">=</span><span class="p">[</span>
+</span><span id="line-83">                        <span class="n">make_word</span><span class="p">(</span>
+</span><span id="line-84">                            <span class="n">w</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+</span><span id="line-85">                            <span class="n">start</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">start</span><span class="p">),</span>
+</span><span id="line-86">                            <span class="n">end</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
+</span><span id="line-87">                            <span class="n">confidence</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span>
+</span><span id="line-88">                            <span class="n">speaker</span><span class="o">=</span><span class="n">_speaker_str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"speaker"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+</span><span id="line-89">                        <span class="p">)</span>
+</span><span id="line-90">                        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s2">"words"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+</span><span id="line-91">                    <span class="p">],</span>
+</span><span id="line-92">                <span class="p">)</span>
+</span><span id="line-93">                <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">utterances</span>
+</span><span id="line-94">            <span class="p">]</span>
+</span><span id="line-95">        <span class="k">else</span><span class="p">:</span>
+</span><span id="line-96">            <span class="n">words</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="line-97">                <span class="n">make_word</span><span class="p">(</span>
+</span><span id="line-98">                    <span class="n">w</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+</span><span id="line-99">                    <span class="n">start</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">start</span><span class="p">),</span>
+</span><span id="line-100">                    <span class="n">end</span><span class="o">=</span><span class="n">_ms_to_s</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
+</span><span id="line-101">                    <span class="n">confidence</span><span class="o">=</span><span class="n">w</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span>
+</span><span id="line-102">                    <span class="n">speaker</span><span class="o">=</span><span class="n">_speaker_str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"speaker"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+</span><span id="line-103">                <span class="p">)</span>
+</span><span id="line-104">                <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"words"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+</span><span id="line-105">            <span class="p">]</span>
+</span><span id="line-106">            <span class="n">segments</span> <span class="o">=</span> <span class="p">[</span><span class="n">make_segment</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span> <span class="n">words</span><span class="o">=</span><span class="n">words</span><span class="p">)]</span>
+</span><span id="line-107">
+</span><span id="line-108">        <span class="k">return</span> <span class="n">Transcript</span><span class="o">.</span><span class="n">from_segments</span><span class="p">(</span>
+</span><span id="line-109">            <span class="n">segments</span><span class="p">,</span>
+</span><span id="line-110">            <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span>
+</span><span id="line-111">            <span class="n">raw</span><span class="o">=</span><span class="n">t</span><span class="p">,</span>
+</span><span id="line-112">            <span class="n">text</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+</span><span id="line-113">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+</span><span id="line-114">        <span class="p">)</span></div>
 
 </span></code></pre></div>
     </div></div>
@@ -302,7 +305,7 @@
 </footer>
     </div>
     
-    <script src="../../../../_static/documentation_options.js?v=544df88d"></script>
+    <script src="../../../../_static/documentation_options.js?v=f0357c94"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
