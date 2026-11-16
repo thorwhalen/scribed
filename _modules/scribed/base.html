@@ -222,466 +222,507 @@
 </span><span id="line-45">
 </span><span id="line-46"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="line-47">
-</span><span id="line-48"><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">replace</span>
-</span><span id="line-49"><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
-</span><span id="line-50"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-</span><span id="line-51">
-</span><span id="line-52"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-53"><span class="c1"># Input type</span>
-</span><span id="line-54"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-55">
-</span><span id="line-56"><span class="c1"># Audio input accepted by all batch facade functions. The string forms cover both</span>
-</span><span id="line-57"><span class="c1"># a filesystem path and an ``http(s)://`` URL; ``bytes`` is raw encoded audio</span>
-</span><span id="line-58"><span class="c1"># data; the file-like and numpy forms are quoted because they are decoded lazily</span>
-</span><span id="line-59"><span class="c1"># in ``scribed.util`` and must never be imported at module load time.</span>
-</span><span id="line-60"><span class="n">AudioInput</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">"Path"</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="s2">"BinaryIO"</span><span class="p">,</span> <span class="s2">"NDArray"</span><span class="p">]</span>  <span class="c1"># noqa: F821</span>
-</span><span id="line-61">
-</span><span id="line-62"><span class="c1"># A single block of real-time audio: a 1-D float32 mono waveform (decoded). Used</span>
-</span><span id="line-63"><span class="c1"># by the streaming surface; quoted for the same lazy-import reason as above.</span>
-</span><span id="line-64"><span class="n">AudioChunk</span> <span class="o">=</span> <span class="s2">"NDArray"</span>  <span class="c1"># noqa: F821</span>
-</span><span id="line-65">
+</span><span id="line-48"><span class="kn">import</span><span class="w"> </span><span class="nn">html</span>
+</span><span id="line-49"><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">replace</span>
+</span><span id="line-50"><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+</span><span id="line-51"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+</span><span id="line-52">
+</span><span id="line-53"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-54"><span class="c1"># Input type</span>
+</span><span id="line-55"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-56">
+</span><span id="line-57"><span class="c1"># Audio input accepted by all batch facade functions. The string forms cover both</span>
+</span><span id="line-58"><span class="c1"># a filesystem path and an ``http(s)://`` URL; ``bytes`` is raw encoded audio</span>
+</span><span id="line-59"><span class="c1"># data; the file-like and numpy forms are quoted because they are decoded lazily</span>
+</span><span id="line-60"><span class="c1"># in ``scribed.util`` and must never be imported at module load time.</span>
+</span><span id="line-61"><span class="n">AudioInput</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">"Path"</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="s2">"BinaryIO"</span><span class="p">,</span> <span class="s2">"NDArray"</span><span class="p">]</span>  <span class="c1"># noqa: F821</span>
+</span><span id="line-62">
+</span><span id="line-63"><span class="c1"># A single block of real-time audio: a 1-D float32 mono waveform (decoded). Used</span>
+</span><span id="line-64"><span class="c1"># by the streaming surface; quoted for the same lazy-import reason as above.</span>
+</span><span id="line-65"><span class="n">AudioChunk</span> <span class="o">=</span> <span class="s2">"NDArray"</span>  <span class="c1"># noqa: F821</span>
 </span><span id="line-66">
-</span><span id="line-67"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-68"><span class="c1"># Capture provenance (optional; meaningful to multi-source consumers)</span>
-</span><span id="line-69"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-70">
+</span><span id="line-67">
+</span><span id="line-68"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-69"><span class="c1"># Capture provenance (optional; meaningful to multi-source consumers)</span>
+</span><span id="line-70"><span class="c1"># ---------------------------------------------------------------------------</span>
 </span><span id="line-71">
+</span><span id="line-72">
 <div class="viewcode-block" id="Channel">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Channel">[docs]</a>
-</span><span id="line-72"><span class="k">class</span><span class="w"> </span><span class="nc">Channel</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-</span><span id="line-73"><span class="w">    </span><span class="sd">"""Which capture channel a segment came from (optional, ``None`` for generic STT).</span>
-</span><span id="line-74">
-</span><span id="line-75"><span class="sd">    Generic single-source transcription leaves :attr:`Segment.channel` as ``None``.</span>
-</span><span id="line-76"><span class="sd">    Multi-source consumers (e.g. a meeting recorder capturing the microphone and</span>
-</span><span id="line-77"><span class="sd">    the system output separately) stamp the channel so "who spoke" survives all the</span>
-</span><span id="line-78"><span class="sd">    way down: :attr:`MIC` is the local user, :attr:`SYSTEM` is everyone else,</span>
-</span><span id="line-79"><span class="sd">    :attr:`MIXED` is a single/unknown source.</span>
-</span><span id="line-80"><span class="sd">    """</span>
-</span><span id="line-81">
-</span><span id="line-82">    <span class="n">MIC</span> <span class="o">=</span> <span class="s2">"mic"</span>
-</span><span id="line-83">    <span class="n">SYSTEM</span> <span class="o">=</span> <span class="s2">"system"</span>
-</span><span id="line-84">    <span class="n">MIXED</span> <span class="o">=</span> <span class="s2">"mixed"</span></div>
+</span><span id="line-73"><span class="k">class</span><span class="w"> </span><span class="nc">Channel</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+</span><span id="line-74"><span class="w">    </span><span class="sd">"""Which capture channel a segment came from (optional, ``None`` for generic STT).</span>
+</span><span id="line-75">
+</span><span id="line-76"><span class="sd">    Generic single-source transcription leaves :attr:`Segment.channel` as ``None``.</span>
+</span><span id="line-77"><span class="sd">    Multi-source consumers (e.g. a meeting recorder capturing the microphone and</span>
+</span><span id="line-78"><span class="sd">    the system output separately) stamp the channel so "who spoke" survives all the</span>
+</span><span id="line-79"><span class="sd">    way down: :attr:`MIC` is the local user, :attr:`SYSTEM` is everyone else,</span>
+</span><span id="line-80"><span class="sd">    :attr:`MIXED` is a single/unknown source.</span>
+</span><span id="line-81"><span class="sd">    """</span>
+</span><span id="line-82">
+</span><span id="line-83">    <span class="n">MIC</span> <span class="o">=</span> <span class="s2">"mic"</span>
+</span><span id="line-84">    <span class="n">SYSTEM</span> <span class="o">=</span> <span class="s2">"system"</span>
+</span><span id="line-85">    <span class="n">MIXED</span> <span class="o">=</span> <span class="s2">"mixed"</span></div>
 
-</span><span id="line-85">
 </span><span id="line-86">
-</span><span id="line-87"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-88"><span class="c1"># Time geometry</span>
-</span><span id="line-89"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-90">
+</span><span id="line-87">
+</span><span id="line-88"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-89"><span class="c1"># Time geometry</span>
+</span><span id="line-90"><span class="c1"># ---------------------------------------------------------------------------</span>
 </span><span id="line-91">
+</span><span id="line-92">
 <div class="viewcode-block" id="TimeSpan">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.TimeSpan">[docs]</a>
-</span><span id="line-92"><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="line-93"><span class="k">class</span><span class="w"> </span><span class="nc">TimeSpan</span><span class="p">:</span>
-</span><span id="line-94"><span class="w">    </span><span class="sd">"""A half-open ``[start_ms, end_ms)`` interval in **integer milliseconds**.</span>
-</span><span id="line-95">
-</span><span id="line-96"><span class="sd">    Integer time — never bare float seconds — so it is accumulation-safe (offsetting</span>
-</span><span id="line-97"><span class="sd">    a live stream's spans never accrues float drift), hashable, and round-trippable.</span>
-</span><span id="line-98"><span class="sd">    The temporal analog of a bounding box.</span>
-</span><span id="line-99">
-</span><span id="line-100"><span class="sd">    &gt;&gt;&gt; TimeSpan(0, 1500).duration_ms</span>
-</span><span id="line-101"><span class="sd">    1500</span>
-</span><span id="line-102"><span class="sd">    &gt;&gt;&gt; TimeSpan.from_seconds(1.0, 3.5).as_seconds</span>
-</span><span id="line-103"><span class="sd">    (1.0, 3.5)</span>
-</span><span id="line-104"><span class="sd">    """</span>
-</span><span id="line-105">
-</span><span id="line-106">    <span class="n">start_ms</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="line-107">    <span class="n">end_ms</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="line-108">
-</span><span id="line-109">    <span class="nd">@property</span>
-</span><span id="line-110">    <span class="k">def</span><span class="w"> </span><span class="nf">duration_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="line-111"><span class="w">        </span><span class="sd">"""Length of the interval in milliseconds (clamped at 0)."""</span>
-</span><span id="line-112">        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_ms</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_ms</span><span class="p">)</span>
-</span><span id="line-113">
-</span><span id="line-114">    <span class="nd">@property</span>
-</span><span id="line-115">    <span class="k">def</span><span class="w"> </span><span class="nf">as_seconds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-</span><span id="line-116"><span class="w">        </span><span class="sd">"""``(start, end)`` in float seconds (the format/subtitle boundary)."""</span>
-</span><span id="line-117">        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
-</span><span id="line-118">
+</span><span id="line-93"><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="line-94"><span class="k">class</span><span class="w"> </span><span class="nc">TimeSpan</span><span class="p">:</span>
+</span><span id="line-95"><span class="w">    </span><span class="sd">"""A half-open ``[start_ms, end_ms)`` interval in **integer milliseconds**.</span>
+</span><span id="line-96">
+</span><span id="line-97"><span class="sd">    Integer time — never bare float seconds — so it is accumulation-safe (offsetting</span>
+</span><span id="line-98"><span class="sd">    a live stream's spans never accrues float drift), hashable, and round-trippable.</span>
+</span><span id="line-99"><span class="sd">    The temporal analog of a bounding box.</span>
+</span><span id="line-100">
+</span><span id="line-101"><span class="sd">    &gt;&gt;&gt; TimeSpan(0, 1500).duration_ms</span>
+</span><span id="line-102"><span class="sd">    1500</span>
+</span><span id="line-103"><span class="sd">    &gt;&gt;&gt; TimeSpan.from_seconds(1.0, 3.5).as_seconds</span>
+</span><span id="line-104"><span class="sd">    (1.0, 3.5)</span>
+</span><span id="line-105"><span class="sd">    """</span>
+</span><span id="line-106">
+</span><span id="line-107">    <span class="n">start_ms</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="line-108">    <span class="n">end_ms</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="line-109">
+</span><span id="line-110">    <span class="nd">@property</span>
+</span><span id="line-111">    <span class="k">def</span><span class="w"> </span><span class="nf">duration_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="line-112"><span class="w">        </span><span class="sd">"""Length of the interval in milliseconds (clamped at 0)."""</span>
+</span><span id="line-113">        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_ms</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_ms</span><span class="p">)</span>
+</span><span id="line-114">
+</span><span id="line-115">    <span class="nd">@property</span>
+</span><span id="line-116">    <span class="k">def</span><span class="w"> </span><span class="nf">as_seconds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+</span><span id="line-117"><span class="w">        </span><span class="sd">"""``(start, end)`` in float seconds (the format/subtitle boundary)."""</span>
+</span><span id="line-118">        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+</span><span id="line-119">
 <div class="viewcode-block" id="TimeSpan.from_seconds">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.TimeSpan.from_seconds">[docs]</a>
-</span><span id="line-119">    <span class="nd">@classmethod</span>
-</span><span id="line-120">    <span class="k">def</span><span class="w"> </span><span class="nf">from_seconds</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"TimeSpan"</span><span class="p">:</span>
-</span><span id="line-121"><span class="w">        </span><span class="sd">"""Build a span from float seconds (e.g. from an STT engine's output)."""</span>
-</span><span id="line-122">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">start</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">end</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)))</span></div>
+</span><span id="line-120">    <span class="nd">@classmethod</span>
+</span><span id="line-121">    <span class="k">def</span><span class="w"> </span><span class="nf">from_seconds</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"TimeSpan"</span><span class="p">:</span>
+</span><span id="line-122"><span class="w">        </span><span class="sd">"""Build a span from float seconds (e.g. from an STT engine's output)."""</span>
+</span><span id="line-123">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">start</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">end</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)))</span></div>
 
-</span><span id="line-123">
+</span><span id="line-124">
 <div class="viewcode-block" id="TimeSpan.offset">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.TimeSpan.offset">[docs]</a>
-</span><span id="line-124">    <span class="k">def</span><span class="w"> </span><span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by_ms</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"TimeSpan"</span><span class="p">:</span>
-</span><span id="line-125"><span class="w">        </span><span class="sd">"""Return a copy shifted later by ``by_ms`` (e.g. to absolute stream time)."""</span>
-</span><span id="line-126">        <span class="k">return</span> <span class="n">TimeSpan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_ms</span> <span class="o">+</span> <span class="n">by_ms</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_ms</span> <span class="o">+</span> <span class="n">by_ms</span><span class="p">)</span></div>
+</span><span id="line-125">    <span class="k">def</span><span class="w"> </span><span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by_ms</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"TimeSpan"</span><span class="p">:</span>
+</span><span id="line-126"><span class="w">        </span><span class="sd">"""Return a copy shifted later by ``by_ms`` (e.g. to absolute stream time)."""</span>
+</span><span id="line-127">        <span class="k">return</span> <span class="n">TimeSpan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_ms</span> <span class="o">+</span> <span class="n">by_ms</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_ms</span> <span class="o">+</span> <span class="n">by_ms</span><span class="p">)</span></div>
 </div>
 
-</span><span id="line-127">
 </span><span id="line-128">
-</span><span id="line-129"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-130"><span class="c1"># Text units</span>
-</span><span id="line-131"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-132">
+</span><span id="line-129">
+</span><span id="line-130"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-131"><span class="c1"># Text units</span>
+</span><span id="line-132"><span class="c1"># ---------------------------------------------------------------------------</span>
 </span><span id="line-133">
+</span><span id="line-134">
 <div class="viewcode-block" id="Word">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Word">[docs]</a>
-</span><span id="line-134"><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="line-135"><span class="k">class</span><span class="w"> </span><span class="nc">Word</span><span class="p">:</span>
-</span><span id="line-136"><span class="w">    </span><span class="sd">"""A single recognized word, with its own :class:`TimeSpan` when available.</span>
-</span><span id="line-137">
-</span><span id="line-138"><span class="sd">    Attributes:</span>
-</span><span id="line-139"><span class="sd">        text: The recognized word.</span>
-</span><span id="line-140"><span class="sd">        span: The word's time span (ms), if the backend reports word timestamps.</span>
-</span><span id="line-141"><span class="sd">        confidence: Recognition confidence in ``[0, 1]`` (normalized by scribed</span>
-</span><span id="line-142"><span class="sd">            from whatever scale the backend used), if available.</span>
-</span><span id="line-143"><span class="sd">        speaker: Speaker label for this word, if diarized at word level.</span>
-</span><span id="line-144"><span class="sd">    """</span>
-</span><span id="line-145">
-</span><span id="line-146">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="line-147">    <span class="n">span</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TimeSpan</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-148">    <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-149">    <span class="n">speaker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-150">
-</span><span id="line-151">    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-152">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
-</span><span id="line-153">
-</span><span id="line-154">    <span class="nd">@property</span>
-</span><span id="line-155">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-</span><span id="line-156"><span class="w">        </span><span class="sd">"""Start time in **float seconds** (convenience), or ``None`` if untimed."""</span>
-</span><span id="line-157">        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">start_ms</span> <span class="o">/</span> <span class="mf">1000.0</span>
-</span><span id="line-158">
-</span><span id="line-159">    <span class="nd">@property</span>
-</span><span id="line-160">    <span class="k">def</span><span class="w"> </span><span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-</span><span id="line-161"><span class="w">        </span><span class="sd">"""End time in **float seconds** (convenience), or ``None`` if untimed."""</span>
-</span><span id="line-162">        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">end_ms</span> <span class="o">/</span> <span class="mf">1000.0</span></div>
+</span><span id="line-135"><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="line-136"><span class="k">class</span><span class="w"> </span><span class="nc">Word</span><span class="p">:</span>
+</span><span id="line-137"><span class="w">    </span><span class="sd">"""A single recognized word, with its own :class:`TimeSpan` when available.</span>
+</span><span id="line-138">
+</span><span id="line-139"><span class="sd">    Attributes:</span>
+</span><span id="line-140"><span class="sd">        text: The recognized word.</span>
+</span><span id="line-141"><span class="sd">        span: The word's time span (ms), if the backend reports word timestamps.</span>
+</span><span id="line-142"><span class="sd">        confidence: Recognition confidence in ``[0, 1]`` (normalized by scribed</span>
+</span><span id="line-143"><span class="sd">            from whatever scale the backend used), if available.</span>
+</span><span id="line-144"><span class="sd">        speaker: Speaker label for this word, if diarized at word level.</span>
+</span><span id="line-145"><span class="sd">    """</span>
+</span><span id="line-146">
+</span><span id="line-147">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="line-148">    <span class="n">span</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TimeSpan</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-149">    <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-150">    <span class="n">speaker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-151">
+</span><span id="line-152">    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-153">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+</span><span id="line-154">
+</span><span id="line-155">    <span class="nd">@property</span>
+</span><span id="line-156">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+</span><span id="line-157"><span class="w">        </span><span class="sd">"""Start time in **float seconds** (convenience), or ``None`` if untimed."""</span>
+</span><span id="line-158">        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">start_ms</span> <span class="o">/</span> <span class="mf">1000.0</span>
+</span><span id="line-159">
+</span><span id="line-160">    <span class="nd">@property</span>
+</span><span id="line-161">    <span class="k">def</span><span class="w"> </span><span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+</span><span id="line-162"><span class="w">        </span><span class="sd">"""End time in **float seconds** (convenience), or ``None`` if untimed."""</span>
+</span><span id="line-163">        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">end_ms</span> <span class="o">/</span> <span class="mf">1000.0</span></div>
 
-</span><span id="line-163">
 </span><span id="line-164">
+</span><span id="line-165">
 <div class="viewcode-block" id="Segment">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Segment">[docs]</a>
-</span><span id="line-165"><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="line-166"><span class="k">class</span><span class="w"> </span><span class="nc">Segment</span><span class="p">:</span>
-</span><span id="line-167"><span class="w">    </span><span class="sd">"""One recognized span of speech (an utterance / chunk).</span>
-</span><span id="line-168">
-</span><span id="line-169"><span class="sd">    The main structured unit. A diarized speaker turn is just a segment whose</span>
-</span><span id="line-170"><span class="sd">    ``speaker`` is set. Frozen — enrich by copying (``with_speaker`` /</span>
-</span><span id="line-171"><span class="sd">    ``with_channel`` / :func:`dataclasses.replace`), never mutate.</span>
-</span><span id="line-172">
-</span><span id="line-173"><span class="sd">    Attributes:</span>
-</span><span id="line-174"><span class="sd">        text: The recognized text for this span.</span>
-</span><span id="line-175"><span class="sd">        span: The segment's time span (ms), if the backend reports timestamps.</span>
-</span><span id="line-176"><span class="sd">        confidence: Recognition confidence in ``[0, 1]`` (normalized), if any.</span>
-</span><span id="line-177"><span class="sd">        speaker: Speaker label (e.g. ``"A"``, ``"speaker_0"``) when diarized.</span>
-</span><span id="line-178"><span class="sd">        language: Detected/declared language code for this span, if any.</span>
-</span><span id="line-179"><span class="sd">        channel: Capture provenance (mic/system/...) for multi-source consumers;</span>
-</span><span id="line-180"><span class="sd">            ``None`` for generic single-source transcription.</span>
-</span><span id="line-181"><span class="sd">        is_final: ``True`` for a finalized segment (always so for batch); a live</span>
-</span><span id="line-182"><span class="sd">            streaming engine sets ``False`` on interim (partial) hypotheses.</span>
-</span><span id="line-183"><span class="sd">        words: Word-level units when the backend reports word timestamps.</span>
-</span><span id="line-184"><span class="sd">        meta: Backend-specific extras (avg_logprob, no_speech_prob, engine, ...).</span>
-</span><span id="line-185"><span class="sd">    """</span>
-</span><span id="line-186">
-</span><span id="line-187">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="line-188">    <span class="n">span</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TimeSpan</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-189">    <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-190">    <span class="n">speaker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-191">    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-192">    <span class="n">channel</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Channel</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-193">    <span class="n">is_final</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="line-194">    <span class="n">words</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Word</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
-</span><span id="line-195">    <span class="n">meta</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
-</span><span id="line-196">
-</span><span id="line-197">    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-198">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
-</span><span id="line-199">
-</span><span id="line-200">    <span class="nd">@property</span>
-</span><span id="line-201">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-</span><span id="line-202"><span class="w">        </span><span class="sd">"""Start time in **float seconds** (convenience), or ``None`` if untimed."""</span>
-</span><span id="line-203">        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">start_ms</span> <span class="o">/</span> <span class="mf">1000.0</span>
-</span><span id="line-204">
-</span><span id="line-205">    <span class="nd">@property</span>
-</span><span id="line-206">    <span class="k">def</span><span class="w"> </span><span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-</span><span id="line-207"><span class="w">        </span><span class="sd">"""End time in **float seconds** (convenience), or ``None`` if untimed."""</span>
-</span><span id="line-208">        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">end_ms</span> <span class="o">/</span> <span class="mf">1000.0</span>
-</span><span id="line-209">
+</span><span id="line-166"><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="line-167"><span class="k">class</span><span class="w"> </span><span class="nc">Segment</span><span class="p">:</span>
+</span><span id="line-168"><span class="w">    </span><span class="sd">"""One recognized span of speech (an utterance / chunk).</span>
+</span><span id="line-169">
+</span><span id="line-170"><span class="sd">    The main structured unit. A diarized speaker turn is just a segment whose</span>
+</span><span id="line-171"><span class="sd">    ``speaker`` is set. Frozen — enrich by copying (``with_speaker`` /</span>
+</span><span id="line-172"><span class="sd">    ``with_channel`` / :func:`dataclasses.replace`), never mutate.</span>
+</span><span id="line-173">
+</span><span id="line-174"><span class="sd">    Attributes:</span>
+</span><span id="line-175"><span class="sd">        text: The recognized text for this span.</span>
+</span><span id="line-176"><span class="sd">        span: The segment's time span (ms), if the backend reports timestamps.</span>
+</span><span id="line-177"><span class="sd">        confidence: Recognition confidence in ``[0, 1]`` (normalized), if any.</span>
+</span><span id="line-178"><span class="sd">        speaker: Speaker label (e.g. ``"A"``, ``"speaker_0"``) when diarized.</span>
+</span><span id="line-179"><span class="sd">        language: Detected/declared language code for this span, if any.</span>
+</span><span id="line-180"><span class="sd">        channel: Capture provenance (mic/system/...) for multi-source consumers;</span>
+</span><span id="line-181"><span class="sd">            ``None`` for generic single-source transcription.</span>
+</span><span id="line-182"><span class="sd">        is_final: ``True`` for a finalized segment (always so for batch); a live</span>
+</span><span id="line-183"><span class="sd">            streaming engine sets ``False`` on interim (partial) hypotheses.</span>
+</span><span id="line-184"><span class="sd">        words: Word-level units when the backend reports word timestamps.</span>
+</span><span id="line-185"><span class="sd">        meta: Backend-specific extras (avg_logprob, no_speech_prob, engine, ...).</span>
+</span><span id="line-186"><span class="sd">    """</span>
+</span><span id="line-187">
+</span><span id="line-188">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="line-189">    <span class="n">span</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TimeSpan</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-190">    <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-191">    <span class="n">speaker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-192">    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-193">    <span class="n">channel</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Channel</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-194">    <span class="n">is_final</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="line-195">    <span class="n">words</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Word</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+</span><span id="line-196">    <span class="n">meta</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+</span><span id="line-197">
+</span><span id="line-198">    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-199">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+</span><span id="line-200">
+</span><span id="line-201">    <span class="nd">@property</span>
+</span><span id="line-202">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+</span><span id="line-203"><span class="w">        </span><span class="sd">"""Start time in **float seconds** (convenience), or ``None`` if untimed."""</span>
+</span><span id="line-204">        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">start_ms</span> <span class="o">/</span> <span class="mf">1000.0</span>
+</span><span id="line-205">
+</span><span id="line-206">    <span class="nd">@property</span>
+</span><span id="line-207">    <span class="k">def</span><span class="w"> </span><span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+</span><span id="line-208"><span class="w">        </span><span class="sd">"""End time in **float seconds** (convenience), or ``None`` if untimed."""</span>
+</span><span id="line-209">        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">end_ms</span> <span class="o">/</span> <span class="mf">1000.0</span>
+</span><span id="line-210">
 <div class="viewcode-block" id="Segment.with_speaker">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Segment.with_speaker">[docs]</a>
-</span><span id="line-210">    <span class="k">def</span><span class="w"> </span><span class="nf">with_speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speaker</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Segment"</span><span class="p">:</span>
-</span><span id="line-211"><span class="w">        </span><span class="sd">"""Return a copy carrying a speaker label (frozen -&gt; copy, don't mutate)."""</span>
-</span><span id="line-212">        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speaker</span><span class="o">=</span><span class="n">speaker</span><span class="p">)</span></div>
+</span><span id="line-211">    <span class="k">def</span><span class="w"> </span><span class="nf">with_speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speaker</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Segment"</span><span class="p">:</span>
+</span><span id="line-212"><span class="w">        </span><span class="sd">"""Return a copy carrying a speaker label (frozen -&gt; copy, don't mutate)."""</span>
+</span><span id="line-213">        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speaker</span><span class="o">=</span><span class="n">speaker</span><span class="p">)</span></div>
 
-</span><span id="line-213">
+</span><span id="line-214">
 <div class="viewcode-block" id="Segment.with_channel">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Segment.with_channel">[docs]</a>
-</span><span id="line-214">    <span class="k">def</span><span class="w"> </span><span class="nf">with_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="n">Channel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Segment"</span><span class="p">:</span>
-</span><span id="line-215"><span class="w">        </span><span class="sd">"""Return a copy carrying a capture-channel label (frozen -&gt; copy)."""</span>
-</span><span id="line-216">        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">)</span></div>
+</span><span id="line-215">    <span class="k">def</span><span class="w"> </span><span class="nf">with_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="n">Channel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Segment"</span><span class="p">:</span>
+</span><span id="line-216"><span class="w">        </span><span class="sd">"""Return a copy carrying a capture-channel label (frozen -&gt; copy)."""</span>
+</span><span id="line-217">        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">)</span></div>
 
-</span><span id="line-217">
+</span><span id="line-218">
 <div class="viewcode-block" id="Segment.offset">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Segment.offset">[docs]</a>
-</span><span id="line-218">    <span class="k">def</span><span class="w"> </span><span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by_ms</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Segment"</span><span class="p">:</span>
-</span><span id="line-219"><span class="w">        </span><span class="sd">"""Return a copy with ``span`` shifted later by ``by_ms`` (absolute time)."""</span>
-</span><span id="line-220">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-221">            <span class="k">return</span> <span class="bp">self</span>
-</span><span id="line-222">        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="n">by_ms</span><span class="p">))</span></div>
+</span><span id="line-219">    <span class="k">def</span><span class="w"> </span><span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by_ms</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Segment"</span><span class="p">:</span>
+</span><span id="line-220"><span class="w">        </span><span class="sd">"""Return a copy with ``span`` shifted later by ``by_ms`` (absolute time)."""</span>
+</span><span id="line-221">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-222">            <span class="k">return</span> <span class="bp">self</span>
+</span><span id="line-223">        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="n">by_ms</span><span class="p">))</span></div>
 </div>
 
-</span><span id="line-223">
 </span><span id="line-224">
-</span><span id="line-225"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-226"><span class="c1"># The normalized result</span>
-</span><span id="line-227"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-228">
+</span><span id="line-225">
+</span><span id="line-226"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-227"><span class="c1"># The normalized result</span>
+</span><span id="line-228"><span class="c1"># ---------------------------------------------------------------------------</span>
 </span><span id="line-229">
+</span><span id="line-230">
 <div class="viewcode-block" id="Transcript">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript">[docs]</a>
-</span><span id="line-230"><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="line-231"><span class="k">class</span><span class="w"> </span><span class="nc">Transcript</span><span class="p">:</span>
-</span><span id="line-232"><span class="w">    </span><span class="sd">"""The normalized result of transcribing audio with any backend.</span>
-</span><span id="line-233">
-</span><span id="line-234"><span class="sd">    ``text`` is the headline payload: the full transcript in time order.</span>
-</span><span id="line-235"><span class="sd">    ``segments`` carries the structured spans (with times/speakers/confidences)</span>
-</span><span id="line-236"><span class="sd">    when the backend provides them. ``raw`` is the untouched backend output.</span>
-</span><span id="line-237"><span class="sd">    ``meta`` holds cross-cutting extras (model, timing, ...).</span>
-</span><span id="line-238">
-</span><span id="line-239"><span class="sd">    Frozen: build via :meth:`from_text` / :meth:`from_segments` or the constructor;</span>
-</span><span id="line-240"><span class="sd">    derive variants with :meth:`with_meta` / :meth:`filter_confidence`.</span>
-</span><span id="line-241">
-</span><span id="line-242"><span class="sd">    Progressive disclosure::</span>
-</span><span id="line-243">
-</span><span id="line-244"><span class="sd">        t = scribed.transcribe("talk.mp3")</span>
-</span><span id="line-245"><span class="sd">        print(t)                 # -&gt; the transcript text</span>
-</span><span id="line-246"><span class="sd">        t.text                   # -&gt; the same string</span>
-</span><span id="line-247"><span class="sd">        for seg in t:            # -&gt; iterate Segments</span>
-</span><span id="line-248"><span class="sd">            print(seg.start, seg.speaker, seg.text)   # seg.start in seconds</span>
-</span><span id="line-249"><span class="sd">        t.words                  # -&gt; flattened word-level units</span>
-</span><span id="line-250"><span class="sd">        t.speakers               # -&gt; sorted speaker labels (if diarized)</span>
-</span><span id="line-251"><span class="sd">        t.srt                    # -&gt; SRT subtitles</span>
-</span><span id="line-252"><span class="sd">        t.vtt                    # -&gt; WebVTT subtitles</span>
-</span><span id="line-253"><span class="sd">        t.raw                    # -&gt; engine-specific structure</span>
-</span><span id="line-254"><span class="sd">    """</span>
-</span><span id="line-255">
-</span><span id="line-256">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="line-257">    <span class="n">segments</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Segment</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
-</span><span id="line-258">    <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
-</span><span id="line-259">    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-260">    <span class="n">duration</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># total audio duration, in seconds</span>
-</span><span id="line-261">    <span class="n">sample_rate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-262">    <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-263">    <span class="n">meta</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
-</span><span id="line-264">
-</span><span id="line-265">    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-266">        <span class="c1"># Accept any sequence of segments; normalize to a tuple (frozen -&gt; setattr).</span>
-</span><span id="line-267">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-</span><span id="line-268">            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"segments"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">))</span>
-</span><span id="line-269">
-</span><span id="line-270">    <span class="c1"># -- string / iteration sugar ------------------------------------------</span>
-</span><span id="line-271">    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-272">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
-</span><span id="line-273">
-</span><span id="line-274">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="line-275">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-</span><span id="line-276">
-</span><span id="line-277">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
-</span><span id="line-278">        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
-</span><span id="line-279">
-</span><span id="line-280">    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="line-281">        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="ow">or</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
-</span><span id="line-282">
-</span><span id="line-283">    <span class="c1"># -- structured views ---------------------------------------------------</span>
-</span><span id="line-284">    <span class="nd">@property</span>
-</span><span id="line-285">    <span class="k">def</span><span class="w"> </span><span class="nf">duration_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-</span><span id="line-286"><span class="w">        </span><span class="sd">"""Total duration in milliseconds (convenience), or ``None`` if unknown."""</span>
-</span><span id="line-287">        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
-</span><span id="line-288">
-</span><span id="line-289">    <span class="nd">@property</span>
-</span><span id="line-290">    <span class="k">def</span><span class="w"> </span><span class="nf">words</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Word</span><span class="p">]:</span>
-</span><span id="line-291"><span class="w">        </span><span class="sd">"""All word-level units, flattened across segments (may be empty)."""</span>
-</span><span id="line-292">        <span class="k">return</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">seg</span><span class="o">.</span><span class="n">words</span><span class="p">]</span>
-</span><span id="line-293">
-</span><span id="line-294">    <span class="nd">@property</span>
-</span><span id="line-295">    <span class="k">def</span><span class="w"> </span><span class="nf">speakers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="line-296"><span class="w">        </span><span class="sd">"""Sorted distinct speaker labels across segments (empty if undiarized)."""</span>
-</span><span id="line-297">        <span class="k">return</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">seg</span><span class="o">.</span><span class="n">speaker</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">speaker</span><span class="p">})</span>
-</span><span id="line-298">
+</span><span id="line-231"><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="line-232"><span class="k">class</span><span class="w"> </span><span class="nc">Transcript</span><span class="p">:</span>
+</span><span id="line-233"><span class="w">    </span><span class="sd">"""The normalized result of transcribing audio with any backend.</span>
+</span><span id="line-234">
+</span><span id="line-235"><span class="sd">    ``text`` is the headline payload: the full transcript in time order.</span>
+</span><span id="line-236"><span class="sd">    ``segments`` carries the structured spans (with times/speakers/confidences)</span>
+</span><span id="line-237"><span class="sd">    when the backend provides them. ``raw`` is the untouched backend output.</span>
+</span><span id="line-238"><span class="sd">    ``meta`` holds cross-cutting extras (model, timing, ...).</span>
+</span><span id="line-239">
+</span><span id="line-240"><span class="sd">    Frozen: build via :meth:`from_text` / :meth:`from_segments` or the constructor;</span>
+</span><span id="line-241"><span class="sd">    derive variants with :meth:`with_meta` / :meth:`filter_confidence`.</span>
+</span><span id="line-242">
+</span><span id="line-243"><span class="sd">    Progressive disclosure::</span>
+</span><span id="line-244">
+</span><span id="line-245"><span class="sd">        t = scribed.transcribe("talk.mp3")</span>
+</span><span id="line-246"><span class="sd">        print(t)                 # -&gt; the transcript text</span>
+</span><span id="line-247"><span class="sd">        t.text                   # -&gt; the same string</span>
+</span><span id="line-248"><span class="sd">        for seg in t:            # -&gt; iterate Segments</span>
+</span><span id="line-249"><span class="sd">            print(seg.start, seg.speaker, seg.text)   # seg.start in seconds</span>
+</span><span id="line-250"><span class="sd">        t.words                  # -&gt; flattened word-level units</span>
+</span><span id="line-251"><span class="sd">        t.speakers               # -&gt; sorted speaker labels (if diarized)</span>
+</span><span id="line-252"><span class="sd">        t.srt                    # -&gt; SRT subtitles</span>
+</span><span id="line-253"><span class="sd">        t.vtt                    # -&gt; WebVTT subtitles</span>
+</span><span id="line-254"><span class="sd">        t.raw                    # -&gt; engine-specific structure</span>
+</span><span id="line-255"><span class="sd">    """</span>
+</span><span id="line-256">
+</span><span id="line-257">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="line-258">    <span class="n">segments</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Segment</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+</span><span id="line-259">    <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+</span><span id="line-260">    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-261">    <span class="n">duration</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># total audio duration, in seconds</span>
+</span><span id="line-262">    <span class="n">sample_rate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-263">    <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-264">    <span class="n">meta</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+</span><span id="line-265">
+</span><span id="line-266">    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-267">        <span class="c1"># Accept any sequence of segments; normalize to a tuple (frozen -&gt; setattr).</span>
+</span><span id="line-268">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+</span><span id="line-269">            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"segments"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">))</span>
+</span><span id="line-270">
+</span><span id="line-271">    <span class="c1"># -- string / iteration sugar ------------------------------------------</span>
+</span><span id="line-272">    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-273">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+</span><span id="line-274">
+</span><span id="line-275">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="line-276">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span><span id="line-277">
+</span><span id="line-278">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+</span><span id="line-279">        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
+</span><span id="line-280">
+</span><span id="line-281">    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="line-282">        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="ow">or</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
+</span><span id="line-283">
+</span><span id="line-284">    <span class="c1"># -- structured views ---------------------------------------------------</span>
+</span><span id="line-285">    <span class="nd">@property</span>
+</span><span id="line-286">    <span class="k">def</span><span class="w"> </span><span class="nf">duration_ms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+</span><span id="line-287"><span class="w">        </span><span class="sd">"""Total duration in milliseconds (convenience), or ``None`` if unknown."""</span>
+</span><span id="line-288">        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
+</span><span id="line-289">
+</span><span id="line-290">    <span class="nd">@property</span>
+</span><span id="line-291">    <span class="k">def</span><span class="w"> </span><span class="nf">words</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Word</span><span class="p">]:</span>
+</span><span id="line-292"><span class="w">        </span><span class="sd">"""All word-level units, flattened across segments (may be empty)."""</span>
+</span><span id="line-293">        <span class="k">return</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">seg</span><span class="o">.</span><span class="n">words</span><span class="p">]</span>
+</span><span id="line-294">
+</span><span id="line-295">    <span class="nd">@property</span>
+</span><span id="line-296">    <span class="k">def</span><span class="w"> </span><span class="nf">speakers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="line-297"><span class="w">        </span><span class="sd">"""Sorted distinct speaker labels across segments (empty if undiarized)."""</span>
+</span><span id="line-298">        <span class="k">return</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">seg</span><span class="o">.</span><span class="n">speaker</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">speaker</span><span class="p">})</span>
+</span><span id="line-299">
 <div class="viewcode-block" id="Transcript.at_speaker">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.at_speaker">[docs]</a>
-</span><span id="line-299">    <span class="k">def</span><span class="w"> </span><span class="nf">at_speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speaker</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
-</span><span id="line-300"><span class="w">        </span><span class="sd">"""Segments attributed to a given speaker."""</span>
-</span><span id="line-301">        <span class="k">return</span> <span class="p">[</span><span class="n">seg</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">speaker</span> <span class="o">==</span> <span class="n">speaker</span><span class="p">]</span></div>
+</span><span id="line-300">    <span class="k">def</span><span class="w"> </span><span class="nf">at_speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speaker</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Segment</span><span class="p">]:</span>
+</span><span id="line-301"><span class="w">        </span><span class="sd">"""Segments attributed to a given speaker."""</span>
+</span><span id="line-302">        <span class="k">return</span> <span class="p">[</span><span class="n">seg</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">speaker</span> <span class="o">==</span> <span class="n">speaker</span><span class="p">]</span></div>
 
-</span><span id="line-302">
-</span><span id="line-303">    <span class="nd">@property</span>
-</span><span id="line-304">    <span class="k">def</span><span class="w"> </span><span class="nf">mean_confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-</span><span id="line-305"><span class="w">        </span><span class="sd">"""Mean confidence over segments that report one, or ``None``."""</span>
-</span><span id="line-306">        <span class="n">confs</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">confidence</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">confidence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
-</span><span id="line-307">        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">confs</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">confs</span><span class="p">)</span> <span class="k">if</span> <span class="n">confs</span> <span class="k">else</span> <span class="kc">None</span>
-</span><span id="line-308">
+</span><span id="line-303">
+</span><span id="line-304">    <span class="nd">@property</span>
+</span><span id="line-305">    <span class="k">def</span><span class="w"> </span><span class="nf">mean_confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+</span><span id="line-306"><span class="w">        </span><span class="sd">"""Mean confidence over segments that report one, or ``None``."""</span>
+</span><span id="line-307">        <span class="n">confs</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">confidence</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">confidence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+</span><span id="line-308">        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">confs</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">confs</span><span class="p">)</span> <span class="k">if</span> <span class="n">confs</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span id="line-309">
 <div class="viewcode-block" id="Transcript.with_meta">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.with_meta">[docs]</a>
-</span><span id="line-309">    <span class="k">def</span><span class="w"> </span><span class="nf">with_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
-</span><span id="line-310"><span class="w">        </span><span class="sd">"""Return a copy with extra metadata merged in (frozen -&gt; copy)."""</span>
-</span><span id="line-311">        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">})</span></div>
+</span><span id="line-310">    <span class="k">def</span><span class="w"> </span><span class="nf">with_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
+</span><span id="line-311"><span class="w">        </span><span class="sd">"""Return a copy with extra metadata merged in (frozen -&gt; copy)."""</span>
+</span><span id="line-312">        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">})</span></div>
 
-</span><span id="line-312">
-</span><span id="line-313">    <span class="c1"># -- subtitle export ----------------------------------------------------</span>
-</span><span id="line-314">    <span class="nd">@property</span>
-</span><span id="line-315">    <span class="k">def</span><span class="w"> </span><span class="nf">srt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-316"><span class="w">        </span><span class="sd">"""SRT subtitles built from timed segments (empty string if untimed)."""</span>
-</span><span id="line-317">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_srt</span><span class="p">()</span>
-</span><span id="line-318">
-</span><span id="line-319">    <span class="nd">@property</span>
-</span><span id="line-320">    <span class="k">def</span><span class="w"> </span><span class="nf">vtt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-321"><span class="w">        </span><span class="sd">"""WebVTT subtitles built from timed segments (empty string if untimed)."""</span>
-</span><span id="line-322">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_vtt</span><span class="p">()</span>
-</span><span id="line-323">
+</span><span id="line-313">
+</span><span id="line-314">    <span class="c1"># -- subtitle export ----------------------------------------------------</span>
+</span><span id="line-315">    <span class="nd">@property</span>
+</span><span id="line-316">    <span class="k">def</span><span class="w"> </span><span class="nf">srt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-317"><span class="w">        </span><span class="sd">"""SRT subtitles built from timed segments (empty string if untimed)."""</span>
+</span><span id="line-318">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_srt</span><span class="p">()</span>
+</span><span id="line-319">
+</span><span id="line-320">    <span class="nd">@property</span>
+</span><span id="line-321">    <span class="k">def</span><span class="w"> </span><span class="nf">vtt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-322"><span class="w">        </span><span class="sd">"""WebVTT subtitles built from timed segments (empty string if untimed)."""</span>
+</span><span id="line-323">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_vtt</span><span class="p">()</span>
+</span><span id="line-324">
 <div class="viewcode-block" id="Transcript.as_srt">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.as_srt">[docs]</a>
-</span><span id="line-324">    <span class="k">def</span><span class="w"> </span><span class="nf">as_srt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-325"><span class="w">        </span><span class="sd">"""Render timed segments as SubRip (.srt). Segments without times are skipped."""</span>
-</span><span id="line-326">        <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="line-327">        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="line-328">        <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
-</span><span id="line-329">            <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">seg</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-330">                <span class="k">continue</span>
-</span><span id="line-331">            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="line-332">            <span class="n">speaker</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">seg</span><span class="o">.</span><span class="n">speaker</span><span class="si">}</span><span class="s2">] "</span> <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">speaker</span> <span class="k">else</span> <span class="s2">""</span>
-</span><span id="line-333">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-</span><span id="line-334">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="line-335">                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_format_timestamp</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">comma</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2"> --&gt; "</span>
-</span><span id="line-336">                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_format_timestamp</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="n">comma</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-337">            <span class="p">)</span>
-</span><span id="line-338">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">speaker</span><span class="si">}{</span><span class="n">seg</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-339">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
-</span><span id="line-340">        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+</span><span id="line-325">    <span class="k">def</span><span class="w"> </span><span class="nf">as_srt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-326"><span class="w">        </span><span class="sd">"""Render timed segments as SubRip (.srt). Segments without times are skipped."""</span>
+</span><span id="line-327">        <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="line-328">        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="line-329">        <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+</span><span id="line-330">            <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">seg</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-331">                <span class="k">continue</span>
+</span><span id="line-332">            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="line-333">            <span class="n">speaker</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">seg</span><span class="o">.</span><span class="n">speaker</span><span class="si">}</span><span class="s2">] "</span> <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">speaker</span> <span class="k">else</span> <span class="s2">""</span>
+</span><span id="line-334">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+</span><span id="line-335">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="line-336">                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_format_timestamp</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">comma</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2"> --&gt; "</span>
+</span><span id="line-337">                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_format_timestamp</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="n">comma</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-338">            <span class="p">)</span>
+</span><span id="line-339">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">speaker</span><span class="si">}{</span><span class="n">seg</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-340">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+</span><span id="line-341">        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 
-</span><span id="line-341">
+</span><span id="line-342">
 <div class="viewcode-block" id="Transcript.as_vtt">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.as_vtt">[docs]</a>
-</span><span id="line-342">    <span class="k">def</span><span class="w"> </span><span class="nf">as_vtt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-343"><span class="w">        </span><span class="sd">"""Render timed segments as WebVTT (.vtt). Segments without times are skipped."""</span>
-</span><span id="line-344">        <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"WEBVTT"</span><span class="p">,</span> <span class="s2">""</span><span class="p">]</span>
-</span><span id="line-345">        <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
-</span><span id="line-346">            <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">seg</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-347">                <span class="k">continue</span>
-</span><span id="line-348">            <span class="n">speaker</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"&lt;v </span><span class="si">{</span><span class="n">seg</span><span class="o">.</span><span class="n">speaker</span><span class="si">}</span><span class="s2">&gt;"</span> <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">speaker</span> <span class="k">else</span> <span class="s2">""</span>
-</span><span id="line-349">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="line-350">                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_format_timestamp</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">comma</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2"> --&gt; "</span>
-</span><span id="line-351">                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_format_timestamp</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="n">comma</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-352">            <span class="p">)</span>
-</span><span id="line-353">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">speaker</span><span class="si">}{</span><span class="n">seg</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-354">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
-</span><span id="line-355">        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+</span><span id="line-343">    <span class="k">def</span><span class="w"> </span><span class="nf">as_vtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">words</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-344"><span class="w">        </span><span class="sd">"""Render timed segments as WebVTT (.vtt). Segments without times are skipped.</span>
+</span><span id="line-345">
+</span><span id="line-346"><span class="sd">        With ``words=True``, a segment whose words are all timed carries an inline</span>
+</span><span id="line-347"><span class="sd">        timestamp before every word after the first (``Step &lt;00:00:01.500&gt;left``),</span>
+</span><span id="line-348"><span class="sd">        the form YouTube's automatic captions take. Segments without timed words</span>
+</span><span id="line-349"><span class="sd">        keep their plain text. Cue text and speaker names are escaped (``&amp;``,</span>
+</span><span id="line-350"><span class="sd">        ``&lt;``, ``&gt;``) so they cannot be mistaken for cue markup.</span>
+</span><span id="line-351"><span class="sd">        """</span>
+</span><span id="line-352">        <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"WEBVTT"</span><span class="p">,</span> <span class="s2">""</span><span class="p">]</span>
+</span><span id="line-353">        <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+</span><span id="line-354">            <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">seg</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-355">                <span class="k">continue</span>
+</span><span id="line-356">            <span class="n">speaker</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"&lt;v </span><span class="si">{</span><span class="n">_cue_text</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">speaker</span><span class="p">)</span><span class="si">}</span><span class="s2">&gt;"</span> <span class="k">if</span> <span class="n">seg</span><span class="o">.</span><span class="n">speaker</span> <span class="k">else</span> <span class="s2">""</span>
+</span><span id="line-357">            <span class="n">text</span> <span class="o">=</span> <span class="n">_word_timed_text</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span> <span class="k">if</span> <span class="n">words</span> <span class="k">else</span> <span class="n">_cue_text</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span><span id="line-358">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="line-359">                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_format_timestamp</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">comma</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2"> --&gt; "</span>
+</span><span id="line-360">                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">_format_timestamp</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="n">comma</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-361">            <span class="p">)</span>
+</span><span id="line-362">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">speaker</span><span class="si">}{</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-363">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+</span><span id="line-364">        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 
-</span><span id="line-356">
+</span><span id="line-365">
 <div class="viewcode-block" id="Transcript.filter_confidence">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.filter_confidence">[docs]</a>
-</span><span id="line-357">    <span class="k">def</span><span class="w"> </span><span class="nf">filter_confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_confidence</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
-</span><span id="line-358"><span class="w">        </span><span class="sd">"""Return a copy keeping only segments at or above ``min_confidence``.</span>
-</span><span id="line-359">
-</span><span id="line-360"><span class="sd">        Segments without a confidence are dropped. ``text`` is rebuilt from the</span>
-</span><span id="line-361"><span class="sd">        surviving segments.</span>
-</span><span id="line-362"><span class="sd">        """</span>
-</span><span id="line-363">        <span class="n">kept</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="line-364">            <span class="n">s</span>
-</span><span id="line-365">            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span>
-</span><span id="line-366">            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">confidence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;=</span> <span class="n">min_confidence</span>
-</span><span id="line-367">        <span class="p">]</span>
-</span><span id="line-368">        <span class="k">return</span> <span class="n">Transcript</span><span class="p">(</span>
-</span><span id="line-369">            <span class="n">text</span><span class="o">=</span><span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kept</span><span class="p">),</span>
-</span><span id="line-370">            <span class="n">segments</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">kept</span><span class="p">),</span>
-</span><span id="line-371">            <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">,</span>
-</span><span id="line-372">            <span class="n">language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">,</span>
-</span><span id="line-373">            <span class="n">duration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span>
-</span><span id="line-374">            <span class="n">sample_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span>
-</span><span id="line-375">            <span class="n">raw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span>
-</span><span id="line-376">            <span class="n">meta</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">),</span>
-</span><span id="line-377">        <span class="p">)</span></div>
+</span><span id="line-366">    <span class="k">def</span><span class="w"> </span><span class="nf">filter_confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_confidence</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
+</span><span id="line-367"><span class="w">        </span><span class="sd">"""Return a copy keeping only segments at or above ``min_confidence``.</span>
+</span><span id="line-368">
+</span><span id="line-369"><span class="sd">        Segments without a confidence are dropped. ``text`` is rebuilt from the</span>
+</span><span id="line-370"><span class="sd">        surviving segments.</span>
+</span><span id="line-371"><span class="sd">        """</span>
+</span><span id="line-372">        <span class="n">kept</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="line-373">            <span class="n">s</span>
+</span><span id="line-374">            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span>
+</span><span id="line-375">            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">confidence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;=</span> <span class="n">min_confidence</span>
+</span><span id="line-376">        <span class="p">]</span>
+</span><span id="line-377">        <span class="k">return</span> <span class="n">Transcript</span><span class="p">(</span>
+</span><span id="line-378">            <span class="n">text</span><span class="o">=</span><span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">kept</span><span class="p">),</span>
+</span><span id="line-379">            <span class="n">segments</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">kept</span><span class="p">),</span>
+</span><span id="line-380">            <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">,</span>
+</span><span id="line-381">            <span class="n">language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">,</span>
+</span><span id="line-382">            <span class="n">duration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span>
+</span><span id="line-383">            <span class="n">sample_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">,</span>
+</span><span id="line-384">            <span class="n">raw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span>
+</span><span id="line-385">            <span class="n">meta</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">),</span>
+</span><span id="line-386">        <span class="p">)</span></div>
 
-</span><span id="line-378">
-</span><span id="line-379">    <span class="c1"># -- constructors -------------------------------------------------------</span>
+</span><span id="line-387">
+</span><span id="line-388">    <span class="c1"># -- constructors -------------------------------------------------------</span>
 <div class="viewcode-block" id="Transcript.parse">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.parse">[docs]</a>
-</span><span id="line-380">    <span class="nd">@classmethod</span>
-</span><span id="line-381">    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
-</span><span id="line-382"><span class="w">        </span><span class="sd">"""Read an existing transcript (SRT, WebVTT, TextGrid, word JSON, plain).</span>
-</span><span id="line-383">
-</span><span id="line-384"><span class="sd">        ``source`` is a file path or the transcript text itself; ``fmt`` overrides</span>
-</span><span id="line-385"><span class="sd">        format detection. See :func:`scribed.readers.read_transcript`.</span>
-</span><span id="line-386"><span class="sd">        """</span>
-</span><span id="line-387">        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_transcript</span>  <span class="c1"># lazy: base stays import-light</span>
-</span><span id="line-388">
-</span><span id="line-389">        <span class="k">return</span> <span class="n">read_transcript</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span></div>
+</span><span id="line-389">    <span class="nd">@classmethod</span>
+</span><span id="line-390">    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
+</span><span id="line-391"><span class="w">        </span><span class="sd">"""Read an existing transcript (SRT, WebVTT, TextGrid, word JSON, plain).</span>
+</span><span id="line-392">
+</span><span id="line-393"><span class="sd">        ``source`` is a file path or the transcript text itself; ``fmt`` overrides</span>
+</span><span id="line-394"><span class="sd">        format detection. See :func:`scribed.readers.read_transcript`.</span>
+</span><span id="line-395"><span class="sd">        """</span>
+</span><span id="line-396">        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_transcript</span>  <span class="c1"># lazy: base stays import-light</span>
+</span><span id="line-397">
+</span><span id="line-398">        <span class="k">return</span> <span class="n">read_transcript</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span></div>
 
-</span><span id="line-390">
+</span><span id="line-399">
 <div class="viewcode-block" id="Transcript.from_text">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.from_text">[docs]</a>
-</span><span id="line-391">    <span class="nd">@classmethod</span>
-</span><span id="line-392">    <span class="k">def</span><span class="w"> </span><span class="nf">from_text</span><span class="p">(</span>
-</span><span id="line-393">        <span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span>
-</span><span id="line-394">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
-</span><span id="line-395"><span class="w">        </span><span class="sd">"""Build a minimal result from just a text string (no timing/segments)."""</span>
-</span><span id="line-396">        <span class="n">language</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"language"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-397">        <span class="n">duration</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"duration"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-398">        <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"sample_rate"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-399">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-</span><span id="line-400">            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-</span><span id="line-401">            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
-</span><span id="line-402">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
-</span><span id="line-403">            <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
-</span><span id="line-404">            <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
-</span><span id="line-405">            <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
-</span><span id="line-406">            <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
-</span><span id="line-407">        <span class="p">)</span></div>
+</span><span id="line-400">    <span class="nd">@classmethod</span>
+</span><span id="line-401">    <span class="k">def</span><span class="w"> </span><span class="nf">from_text</span><span class="p">(</span>
+</span><span id="line-402">        <span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span>
+</span><span id="line-403">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
+</span><span id="line-404"><span class="w">        </span><span class="sd">"""Build a minimal result from just a text string (no timing/segments)."""</span>
+</span><span id="line-405">        <span class="n">language</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"language"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-406">        <span class="n">duration</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"duration"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-407">        <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"sample_rate"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-408">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+</span><span id="line-409">            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+</span><span id="line-410">            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
+</span><span id="line-411">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+</span><span id="line-412">            <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
+</span><span id="line-413">            <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
+</span><span id="line-414">            <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
+</span><span id="line-415">            <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
+</span><span id="line-416">        <span class="p">)</span></div>
 
-</span><span id="line-408">
+</span><span id="line-417">
 <div class="viewcode-block" id="Transcript.from_segments">
 <a class="viewcode-back" href="../../_autosummary/scribed.base.html#scribed.Transcript.from_segments">[docs]</a>
-</span><span id="line-409">    <span class="nd">@classmethod</span>
-</span><span id="line-410">    <span class="k">def</span><span class="w"> </span><span class="nf">from_segments</span><span class="p">(</span>
-</span><span id="line-411">        <span class="bp">cls</span><span class="p">,</span>
-</span><span id="line-412">        <span class="n">segments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Segment</span><span class="p">],</span>
-</span><span id="line-413">        <span class="o">*</span><span class="p">,</span>
-</span><span id="line-414">        <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
-</span><span id="line-415">        <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-416">        <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-417">        <span class="n">joiner</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">" "</span><span class="p">,</span>
-</span><span id="line-418">        <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-419">        <span class="n">duration</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-420">        <span class="n">sample_rate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-421">        <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-</span><span id="line-422">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
-</span><span id="line-423"><span class="w">        </span><span class="sd">"""Build a result from structured segments.</span>
-</span><span id="line-424">
-</span><span id="line-425"><span class="sd">        If ``text`` is not given it is synthesized by joining the segments' text</span>
-</span><span id="line-426"><span class="sd">        in their given order with ``joiner`` (callers should pass segments</span>
-</span><span id="line-427"><span class="sd">        already in time order, or pre-join and pass ``text`` explicitly).</span>
-</span><span id="line-428"><span class="sd">        """</span>
-</span><span id="line-429">        <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
-</span><span id="line-430">        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-431">            <span class="n">text</span> <span class="o">=</span> <span class="n">joiner</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</span><span id="line-432">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-</span><span id="line-433">            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-</span><span id="line-434">            <span class="n">segments</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">segments</span><span class="p">),</span>
-</span><span id="line-435">            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
-</span><span id="line-436">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
-</span><span id="line-437">            <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
-</span><span id="line-438">            <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
-</span><span id="line-439">            <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
-</span><span id="line-440">            <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
-</span><span id="line-441">        <span class="p">)</span></div>
+</span><span id="line-418">    <span class="nd">@classmethod</span>
+</span><span id="line-419">    <span class="k">def</span><span class="w"> </span><span class="nf">from_segments</span><span class="p">(</span>
+</span><span id="line-420">        <span class="bp">cls</span><span class="p">,</span>
+</span><span id="line-421">        <span class="n">segments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Segment</span><span class="p">],</span>
+</span><span id="line-422">        <span class="o">*</span><span class="p">,</span>
+</span><span id="line-423">        <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+</span><span id="line-424">        <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-425">        <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-426">        <span class="n">joiner</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">" "</span><span class="p">,</span>
+</span><span id="line-427">        <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-428">        <span class="n">duration</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-429">        <span class="n">sample_rate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-430">        <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+</span><span id="line-431">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Transcript"</span><span class="p">:</span>
+</span><span id="line-432"><span class="w">        </span><span class="sd">"""Build a result from structured segments.</span>
+</span><span id="line-433">
+</span><span id="line-434"><span class="sd">        If ``text`` is not given it is synthesized by joining the segments' text</span>
+</span><span id="line-435"><span class="sd">        in their given order with ``joiner`` (callers should pass segments</span>
+</span><span id="line-436"><span class="sd">        already in time order, or pre-join and pass ``text`` explicitly).</span>
+</span><span id="line-437"><span class="sd">        """</span>
+</span><span id="line-438">        <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+</span><span id="line-439">        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-440">            <span class="n">text</span> <span class="o">=</span> <span class="n">joiner</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span id="line-441">        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+</span><span id="line-442">            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+</span><span id="line-443">            <span class="n">segments</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">segments</span><span class="p">),</span>
+</span><span id="line-444">            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span>
+</span><span id="line-445">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+</span><span id="line-446">            <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
+</span><span id="line-447">            <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
+</span><span id="line-448">            <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
+</span><span id="line-449">            <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
+</span><span id="line-450">        <span class="p">)</span></div>
 </div>
 
-</span><span id="line-442">
-</span><span id="line-443">
-</span><span id="line-444"><span class="k">def</span><span class="w"> </span><span class="nf">_format_timestamp</span><span class="p">(</span><span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">comma</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-445"><span class="w">    </span><span class="sd">"""Format ``seconds`` as ``HH:MM:SS,mmm`` (SRT) or ``HH:MM:SS.mmm`` (VTT)."""</span>
-</span><span id="line-446">    <span class="k">if</span> <span class="n">seconds</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-</span><span id="line-447">        <span class="n">seconds</span> <span class="o">=</span> <span class="mf">0.0</span>
-</span><span id="line-448">    <span class="n">millis</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">seconds</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">))</span>
-</span><span id="line-449">    <span class="n">hours</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">3_600_000</span><span class="p">)</span>
-</span><span id="line-450">    <span class="n">minutes</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">60_000</span><span class="p">)</span>
-</span><span id="line-451">    <span class="n">secs</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-</span><span id="line-452">    <span class="n">sep</span> <span class="o">=</span> <span class="s2">","</span> <span class="k">if</span> <span class="n">comma</span> <span class="k">else</span> <span class="s2">"."</span>
-</span><span id="line-453">    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hours</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">secs</span><span class="si">:</span><span class="s2">02d</span><span class="si">}{</span><span class="n">sep</span><span class="si">}{</span><span class="n">millis</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-451">
+</span><span id="line-452">
+</span><span id="line-453"><span class="k">def</span><span class="w"> </span><span class="nf">_cue_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-454"><span class="w">    </span><span class="sd">"""Plain cue text: whitespace collapsed (a blank line would end the cue), escaped."""</span>
+</span><span id="line-455">    <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span> <span class="n">quote</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="line-456">
+</span><span id="line-457">
+</span><span id="line-458"><span class="k">def</span><span class="w"> </span><span class="nf">_word_timed_text</span><span class="p">(</span><span class="n">seg</span><span class="p">:</span> <span class="n">Segment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-459"><span class="w">    </span><span class="sd">"""Cue text with an inline ``&lt;hh:mm:ss.mmm&gt;`` before each word after the first.</span>
+</span><span id="line-460">
+</span><span id="line-461"><span class="sd">    Word tokens are spaced by the backend's own convention: if any later token</span>
+</span><span id="line-462"><span class="sd">    starts with a space (Whisper-style), a token without one continues the</span>
+</span><span id="line-463"><span class="sd">    previous word (Whisper splits some words), so it is glued on; otherwise every</span>
+</span><span id="line-464"><span class="sd">    token is a whole word and they are joined by spaces. Inline stamps are</span>
+</span><span id="line-465"><span class="sd">    clamped to be strictly increasing inside the cue's span: a word whose start</span>
+</span><span id="line-466"><span class="sd">    does not fit gets no stamp. Falls back to the plain text unless every word</span>
+</span><span id="line-467"><span class="sd">    is timed.</span>
+</span><span id="line-468"><span class="sd">    """</span>
+</span><span id="line-469">    <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">seg</span><span class="o">.</span><span class="n">words</span> <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+</span><span id="line-470">    <span class="k">if</span> <span class="ow">not</span> <span class="n">words</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">span</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">):</span>
+</span><span id="line-471">        <span class="k">return</span> <span class="n">_cue_text</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span><span id="line-472">    <span class="n">leading_space</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isspace</span><span class="p">()</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</span><span id="line-473">    <span class="n">prev_ms</span><span class="p">,</span> <span class="n">end_ms</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">start_ms</span><span class="p">,</span> <span class="n">seg</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">end_ms</span>
+</span><span id="line-474">    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">_cue_text</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)]</span>
+</span><span id="line-475">    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+</span><span id="line-476">        <span class="n">glued</span> <span class="o">=</span> <span class="n">leading_space</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">w</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isspace</span><span class="p">()</span>
+</span><span id="line-477">        <span class="n">stamp</span> <span class="o">=</span> <span class="s2">""</span>
+</span><span id="line-478">        <span class="k">if</span> <span class="n">prev_ms</span> <span class="o">&lt;</span> <span class="n">w</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">start_ms</span> <span class="o">&lt;</span> <span class="n">end_ms</span><span class="p">:</span>
+</span><span id="line-479">            <span class="n">prev_ms</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">start_ms</span>
+</span><span id="line-480">            <span class="n">stamp</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"&lt;</span><span class="si">{</span><span class="n">_format_timestamp</span><span class="p">(</span><span class="n">prev_ms</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1000.0</span><span class="p">,</span><span class="w"> </span><span class="n">comma</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2">&gt;"</span>
+</span><span id="line-481">        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">''</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">glued</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">' '</span><span class="si">}{</span><span class="n">stamp</span><span class="si">}{</span><span class="n">_cue_text</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-482">    <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+</span><span id="line-483">
+</span><span id="line-484">
+</span><span id="line-485"><span class="k">def</span><span class="w"> </span><span class="nf">_format_timestamp</span><span class="p">(</span><span class="n">seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">comma</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-486"><span class="w">    </span><span class="sd">"""Format ``seconds`` as ``HH:MM:SS,mmm`` (SRT) or ``HH:MM:SS.mmm`` (VTT)."""</span>
+</span><span id="line-487">    <span class="k">if</span> <span class="n">seconds</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="line-488">        <span class="n">seconds</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span><span id="line-489">    <span class="n">millis</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">seconds</span> <span class="o">*</span> <span class="mf">1000.0</span><span class="p">))</span>
+</span><span id="line-490">    <span class="n">hours</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">3_600_000</span><span class="p">)</span>
+</span><span id="line-491">    <span class="n">minutes</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">60_000</span><span class="p">)</span>
+</span><span id="line-492">    <span class="n">secs</span><span class="p">,</span> <span class="n">millis</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">millis</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+</span><span id="line-493">    <span class="n">sep</span> <span class="o">=</span> <span class="s2">","</span> <span class="k">if</span> <span class="n">comma</span> <span class="k">else</span> <span class="s2">"."</span>
+</span><span id="line-494">    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hours</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">minutes</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">secs</span><span class="si">:</span><span class="s2">02d</span><span class="si">}{</span><span class="n">sep</span><span class="si">}{</span><span class="n">millis</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">"</span>
 </span></code></pre></div>
     </div></div>
           </main>
@@ -695,7 +736,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=a83ce22a"></script>
+    <script src="../../_static/documentation_options.js?v=0c446633"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

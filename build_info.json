@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-16T21:42:57Z",
+  "built_at": "2026-11-16T21:48:22Z",
   "package": {
     "name": "scribed",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "display_name": "scribed",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "0b25364ebc062c09ac8eaac47bbf2f0ef23e672f",
-    "short_commit": "0b25364",
+    "commit": "363618b2a2a0a6ced497cfb09189c66fc90c41a6",
+    "short_commit": "363618b",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/scribed",
-    "commit_url": "https://github.com/thorwhalen/scribed/commit/0b25364ebc062c09ac8eaac47bbf2f0ef23e672f",
+    "commit_url": "https://github.com/thorwhalen/scribed/commit/363618b2a2a0a6ced497cfb09189c66fc90c41a6",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/scribed",
-    "sha": "0b25364ebc062c09ac8eaac47bbf2f0ef23e672f",
+    "sha": "363618b2a2a0a6ced497cfb09189c66fc90c41a6",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "43962595795",
-    "run_url": "https://github.com/thorwhalen/scribed/actions/runs/43962595795",
+    "run_id": "43963541105",
+    "run_url": "https://github.com/thorwhalen/scribed/actions/runs/43963541105",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -60,11 +60,11 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "0.0.10",
+    "latest": "0.0.11",
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/scribed && cd scribed\ngit checkout 0b25364ebc062c09ac8eaac47bbf2f0ef23e672f\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/scribed && cd scribed\ngit checkout 363618b2a2a0a6ced497cfb09189c66fc90c41a6\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,

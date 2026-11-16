@@ -1,4 +1,4 @@
-> built 2026-11-16 21:42 UTC from 0b25364 (main) · scribed 0.0.10. Details: build_info.json
+> built 2026-11-16 21:48 UTC from 363618b (main) · scribed 0.0.11. Details: build_info.json
 
 # index.html.md
 
@@ -1333,9 +1333,15 @@ Render timed segments as SubRip (.srt). Segments without times are skipped.
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
-#### as_vtt()
+#### as_vtt(, words=False)
 
 Render timed segments as WebVTT (.vtt). Segments without times are skipped.
+
+With `words=True`, a segment whose words are all timed carries an inline
+timestamp before every word after the first (`Step <00:00:01.500>left`),
+the form YouTube’s automatic captions take. Segments without timed words
+keep their plain text. Cue text and speaker names are escaped (`&`,
+`<`, `>`) so they cannot be mistaken for cue markup.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
@@ -1926,9 +1932,15 @@ Render timed segments as SubRip (.srt). Segments without times are skipped.
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
-#### as_vtt()
+#### as_vtt(, words=False)
 
 Render timed segments as WebVTT (.vtt). Segments without times are skipped.
+
+With `words=True`, a segment whose words are all timed carries an inline
+timestamp before every word after the first (`Step <00:00:01.500>left`),
+the form YouTube’s automatic captions take. Segments without timed words
+keep their plain text. Cue text and speaker names are escaped (`&`,
+`<`, `>`) so they cannot be mistaken for cue markup.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
@@ -3105,7 +3117,7 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-16 21:42 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/0b25364ebc062c09ac8eaac47bbf2f0ef23e672f"><code>0b25364</code></a> on branch <code>main</code>, for **scribed 0.0.10** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-16 21:48 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/363618b2a2a0a6ced497cfb09189c66fc90c41a6"><code>363618b</code></a> on branch <code>main</code>, for **scribed 0.0.11** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3114,7 +3126,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/0b25364ebc062c09ac8eaac47bbf2f0ef23e672f"><code>0b25364ebc062c09ac8eaac47bbf2f0ef23e672f</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/363618b2a2a0a6ced497cfb09189c66fc90c41a6"><code>363618b2a2a0a6ced497cfb09189c66fc90c41a6</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3125,9 +3137,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43962595795">43962595795</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43963541105">43963541105</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>0b25364ebc062c09ac8eaac47bbf2f0ef23e672f</code> (in the history of the built commit) |
+| Event commit | <code>363618b2a2a0a6ced497cfb09189c66fc90c41a6</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3152,13 +3164,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.10/">0.0.10</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.11/">0.0.11</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 0b25364ebc062c09ac8eaac47bbf2f0ef23e672f
+git checkout 363618b2a2a0a6ced497cfb09189c66fc90c41a6
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

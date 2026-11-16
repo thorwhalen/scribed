@@ -361,9 +361,15 @@ Render timed segments as SubRip (.srt). Segments without times are skipped.
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
-#### as_vtt()
+#### as_vtt(, words=False)
 
 Render timed segments as WebVTT (.vtt). Segments without times are skipped.
+
+With `words=True`, a segment whose words are all timed carries an inline
+timestamp before every word after the first (`Step <00:00:01.500>left`),
+the form YouTube’s automatic captions take. Segments without timed words
+keep their plain text. Cue text and speaker names are escaped (`&`,
+`<`, `>`) so they cannot be mistaken for cue markup.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
