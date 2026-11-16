@@ -62,14 +62,13 @@ class Adapter(BaseTranscriberAdapter):
         *,
         model_id="scribe_v1",
         diarize=False,
-        timestamps_granularity="word",
         **source_and_native,
     ) -> Transcript:
         """One ``speech_to_text.convert`` call; the source is ``file=`` or ``cloud_storage_url=``."""
         resp = self._get_client().speech_to_text.convert(
             model_id=model_id,
             diarize=diarize,
-            timestamps_granularity=timestamps_granularity,
+            timestamps_granularity="word",  # the words build the segments
             **source_and_native,
         )
 
@@ -110,7 +109,10 @@ class Adapter(BaseTranscriberAdapter):
         return super().can_fetch_url(url) and url.lower().startswith("https://")
 
     def _transcribe_url(self, url: str, **native_kwargs) -> Transcript:
-        """Scribe fetches ``url`` itself (up to 2 GB; pre-signed URLs work)."""
+        """Scribe fetches ``url`` itself (up to 2 GB; pre-signed URLs work).
+
+        Direct file addresses only: page URLs (YouTube, ...) are the SDK's ``source_url``.
+        """
         return self._convert(cloud_storage_url=url, **native_kwargs)
 
 

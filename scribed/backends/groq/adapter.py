@@ -35,13 +35,11 @@ class Adapter(BaseTranscriberAdapter):
     def _create(
         self, *, model="whisper-large-v3-turbo", timestamp_granularities=None, **source
     ) -> Transcript:
-        """One ``audio.transcriptions.create`` call; ``source`` is ``file=`` or ``url=``."""
-        extra = {"timestamp_granularities": timestamp_granularities}
+        """One ``audio.transcriptions.create`` call; ``source`` is ``file=``/``url=`` plus options."""
+        if timestamp_granularities:
+            source["timestamp_granularities"] = timestamp_granularities
         resp = self._get_client().audio.transcriptions.create(
-            model=model,
-            response_format="verbose_json",
-            **{k: v for k, v in extra.items() if v},
-            **source,
+            model=model, response_format="verbose_json", **source
         )
         return verbose_json_to_transcript(resp, backend_id=self.backend_id)
 

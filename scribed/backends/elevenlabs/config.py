@@ -32,10 +32,6 @@ BACKEND_CONFIG = {
         "language": {"native_name": "language_code"},
         "diarize": {"native_name": "diarize", "default": False},
         "model": {"native_name": "model_id", "default": "scribe_v1"},
-        "word_timestamps": {
-            "native_name": "timestamps_granularity",
-            "coerce": lambda on: "word" if on else "none",
-            "default": "word",  # words are what builds the segments
-        },
+        "word_timestamps": {"always_on": True},  # the words build the segments
     },
 }

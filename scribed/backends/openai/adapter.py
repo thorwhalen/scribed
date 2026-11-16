@@ -7,6 +7,8 @@ are resolved lazily so ``import scribed`` stays dependency-free.
 
 from __future__ import annotations
 
+import warnings
+
 from scribed.backends._verbose_json import verbose_json_to_transcript
 from scribed.base import Transcript
 from scribed.make_backend import BaseTranscriberAdapter
@@ -47,6 +49,11 @@ class Adapter(BaseTranscriberAdapter):
                         create_kwargs["timestamp_granularities"] = (
                             timestamp_granularities
                         )
+                elif timestamp_granularities:
+                    warnings.warn(
+                        f"{model!r} returns no word timestamps; use model='whisper-1'.",
+                        stacklevel=2,
+                    )
                 resp = client.audio.transcriptions.create(**create_kwargs)
         finally:
             cleanup_temp(path, is_temp)

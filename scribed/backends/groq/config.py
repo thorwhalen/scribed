@@ -9,7 +9,7 @@ timestamp granularities. ``turbo`` is the default for its speed/cost; switch to
 ``whisper-large-v3`` for maximum accuracy.
 """
 
-from scribed.backends._verbose_json import granularities_for
+from scribed.translation import word_granularities
 
 BACKEND_CONFIG = {
     "id": "groq",
@@ -34,7 +34,7 @@ BACKEND_CONFIG = {
         "temperature": {"native_name": "temperature"},
         "word_timestamps": {
             "native_name": "timestamp_granularities",
-            "coerce": granularities_for,
+            "coerce": word_granularities,
         },
         "diarize": None,  # Groq's Whisper endpoint does not diarize
     },

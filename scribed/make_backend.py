@@ -29,7 +29,7 @@ from typing import Any, List, Optional, Union
 
 from scribed.base import Segment, TimeSpan, Transcript, Word
 from scribed.translation import make_kwargs_translator
-from scribed.util import is_url
+from scribed.util import is_public_url, is_url
 
 __all__ = [
     "BaseTranscriberAdapter",
@@ -89,12 +89,24 @@ class BaseTranscriberAdapter:
             and is_url(audio)
             and self.can_fetch_url(audio)
         ):
-            return self._transcribe_url(audio, **native)
+            try:
+                return self._transcribe_url(audio, **native)
+            except Exception as e:
+                if hasattr(e, "add_note"):  # Python 3.11+
+                    e.add_note(
+                        f"{self.backend_id} was handed the address to fetch itself; "
+                        "pass remote_fetch=False to download it here instead "
+                        "(or upgrade the service's SDK)."
+                    )
+                raise
         return self._transcribe(audio, **native)
 
     def can_fetch_url(self, url: str) -> bool:
-        """Can the service fetch ``url`` itself? (capability ``remote_fetch``)"""
-        return "remote_fetch" in self.config.get("capabilities", ())
+        """Can the service fetch ``url`` itself? (capability ``remote_fetch``, and a
+        public address: one only this machine can reach is downloaded here instead)."""
+        return "remote_fetch" in self.config.get("capabilities", ()) and is_public_url(
+            url
+        )
 
     def _transcribe_url(
         self, url: str, **native_kwargs

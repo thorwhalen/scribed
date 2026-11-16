@@ -5,7 +5,7 @@ Uses OpenAI's hosted audio-transcriptions endpoint. ``whisper-1`` returns rich
 ``gpt-4o-mini-transcribe`` models return text/json only (no segment timing).
 """
 
-from scribed.backends._verbose_json import granularities_for
+from scribed.translation import word_granularities
 
 BACKEND_CONFIG = {
     "id": "openai",
@@ -27,7 +27,7 @@ BACKEND_CONFIG = {
         "temperature": {"native_name": "temperature"},
         "word_timestamps": {
             "native_name": "timestamp_granularities",
-            "coerce": granularities_for,
+            "coerce": word_granularities,
         },
         "diarize": None,  # OpenAI does not diarize
     },

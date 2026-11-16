@@ -187,3 +187,67 @@ def test_verbose_json_without_words_is_as_before():
     resp = {k: v for k, v in VERBOSE.items() if k != "words"}
     t = verbose_json_to_transcript(resp, backend_id="x")
     assert [s.text for s in t] == ["Rates rise.", "Maybe not."] and t.words == []
+
+
+@pytest.mark.parametrize(
+    "url,public",
+    [
+        ("https://example.org/a.mp3", True),
+        ("http://example.org/a.mp3", True),
+        ("https://8.8.8.8/a.mp3", True),
+        ("https://localhost/a.mp3", False),
+        ("http://127.0.0.1:8000/a.mp3", False),
+        ("https://192.168.1.4/a.mp3", False),
+        ("https://[::1]/a.mp3", False),
+        ("https://intranet/a.mp3", False),
+        ("https://nas.local/a.mp3", False),
+        ("https://user:pw@example.org/a.mp3", False),
+    ],
+)
+def test_only_public_addresses_are_handed_to_a_third_party(url, public):
+    from scribed.util import is_public_url
+
+    assert is_public_url(url) is public
+
+
+def test_private_address_is_downloaded_first_even_for_a_fetching_backend(monkeypatch):
+    calls = _fake_groq(monkeypatch)
+    monkeypatch.setattr("scribed.util._fetch_url", lambda url, **k: b"RIFFbytes")
+    scribed.transcribe("http://192.168.1.4/a.mp3", backend="groq")
+    assert "file" in calls[0] and "url" not in calls[0]
+
+
+def test_every_remote_fetch_backend_implements_the_hook():
+    from scribed.make_backend import BaseTranscriberAdapter
+
+    for backend_id in scribed.list_backends("remote_fetch"):
+        adapter_cls = type(scribed.services[backend_id].adapter)
+        assert adapter_cls._transcribe_url is not BaseTranscriberAdapter._transcribe_url
+
+
+def test_elevenlabs_without_word_times_flag_still_builds_segments(monkeypatch):
+    calls = _fake_elevenlabs(monkeypatch)
+    t = scribed.transcribe(URL, backend="elevenlabs", word_timestamps=False)
+    assert calls[0]["timestamps_granularity"] == "word" and len(t.words) == 2
+
+
+def test_openai_gpt4o_warns_that_it_has_no_word_times(monkeypatch):
+    seen = []
+
+    class OpenAI:
+        def __init__(self, api_key=None):
+            create = lambda **kw: seen.append(kw) or {"text": "hi"}  # noqa: E731
+            self.audio = types.SimpleNamespace(
+                transcriptions=types.SimpleNamespace(create=create)
+            )
+
+    monkeypatch.setitem(sys.modules, "openai", types.SimpleNamespace(OpenAI=OpenAI))
+    _fresh_client(monkeypatch, "openai")
+    with pytest.warns(UserWarning, match="word timestamps"):
+        scribed.transcribe(
+            b"RIFFbytes",
+            backend="openai",
+            model="gpt-4o-transcribe",
+            word_timestamps=True,
+        )
+    assert "timestamp_granularities" not in seen[0]

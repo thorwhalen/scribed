@@ -11,19 +11,11 @@ This module owns that mapping, including attaching each word to its segment.
 from __future__ import annotations
 
 import math
-from typing import Any, List, Optional
+import bisect
+from typing import Any, List
 
 from scribed.base import Transcript
 from scribed.make_backend import make_segment, make_word
-
-#: What to ask the service for to get word times *and* segments (the normalized
-#: ``word_timestamps=True`` coerces to this for the backends that use this module).
-WORD_GRANULARITIES = ["word", "segment"]
-
-
-def granularities_for(word_timestamps: Any) -> Optional[List[str]]:
-    """``timestamp_granularities`` for a normalized ``word_timestamps`` value."""
-    return list(WORD_GRANULARITIES) if word_timestamps else None
 
 
 def _get(obj: Any, key: str) -> Any:
@@ -42,14 +34,14 @@ def _word(raw: Any):
 def _words_by_segment(raw_words, spans) -> List[list]:
     """Give each word to the segment whose span holds its start (else the nearest earlier one)."""
     buckets: List[list] = [[] for _ in spans]
+    starts = [s if s is not None else float("inf") for s, _ in spans]  # ascending
     for raw in raw_words:
         word = _word(raw)
         if not word.text or word.span is None or not buckets:
             continue
-        index = 0
-        for i, (start, _end) in enumerate(spans):
-            if start is not None and start <= word.span.start_ms / 1000.0 + 1e-9:
-                index = i
+        index = max(
+            0, bisect.bisect_right(starts, word.span.start_ms / 1000.0 + 1e-9) - 1
+        )
         buckets[index].append(word)
     return buckets
 
