@@ -29,28 +29,38 @@ def _speaker_str(speaker):
 class Adapter(BaseTranscriberAdapter):
     """AssemblyAI (Universal) transcription adapter."""
 
+    accepts_api_key = True
+
     def __init__(self, config: dict):
         super().__init__(config)
         self._configured = False
+        self._transcriber = None
 
-    def _ensure_configured(self):
-        """Set the SDK's global API key once (lazy import + lazy credential)."""
+    def _get_transcriber(self, aai):
+        """A transcriber that authenticates as this adapter's key.
+
+        A key handed to the adapter (``config['api_key']``) goes to a transcriber of
+        its own (``aai.Transcriber(api_key=...)``, SDK >= 1.10), so it never touches
+        the SDK's process-wide ``aai.settings``. A key from the environment keeps
+        the SDK's global setting (any SDK version).
+        """
+        if self.config.get("api_key"):
+            if self._transcriber is None:
+                self._transcriber = aai.Transcriber(api_key=self.credential())
+            return self._transcriber
         if not self._configured:
-            import assemblyai as aai
-
-            key = self.credential()
-            aai.settings.api_key = key
+            aai.settings.api_key = self.credential()
             self._configured = True
+        return aai.Transcriber()
 
     def _transcribe(self, audio, **native_kwargs) -> Transcript:
         import assemblyai as aai
 
         from scribed.util import cleanup_temp, ensure_file_path
 
-        self._ensure_configured()
+        transcriber = self._get_transcriber(aai)
 
         config = aai.TranscriptionConfig(**native_kwargs)
-        transcriber = aai.Transcriber()
 
         # The SDK accepts a local path (it uploads) or a URL; give it a path.
         path, is_temp = ensure_file_path(audio)
