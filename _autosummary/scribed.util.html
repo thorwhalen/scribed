@@ -257,9 +257,10 @@ encodes numpy waveforms as WAV (at <code class="docutils literal notranslate"><s
 <dt class="sig sig-object py" id="scribed.util.to_waveform">
 <span class="sig-prename descclassname"><span class="pre">scribed.util.</span></span><span class="sig-name descname"><span class="pre">to_waveform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/util.html#to_waveform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.util.to_waveform" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.util.to_waveform'">¶</a></dt>
 <dd><p>Convert any supported input into <code class="docutils literal notranslate"><span class="pre">(numpy</span> <span class="pre">float32</span> <span class="pre">mono,</span> <span class="pre">sample_rate)</span></code>.</p>
-<p>Numpy input is returned as-is (paired with <code class="docutils literal notranslate"><span class="pre">sample_rate</span></code>). Everything else
-is decoded with soundfile and resampled is <em>not</em> performed — the returned
-sample rate is whatever the source had (numpy inputs excepted).</p>
+<p>Numpy input is down-mixed and paired with <code class="docutils literal notranslate"><span class="pre">sample_rate</span></code>. Everything else
+is decoded by <code class="xref py py-func docutils literal notranslate"><span class="pre">scribed.audio.load_audio()</span></code> (libsndfile, falling back to
+<code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> for mp3/m4a/webm/opus) and down-mixed; <em>no</em> resampling is done, so
+the returned sample rate is whatever the source had (numpy inputs excepted).</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -288,7 +289,7 @@ sample rate is whatever the source had (numpy inputs excepted).</p>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=53b53b71"></script>
+<script src="../_static/documentation_options.js?v=f7cdbf68"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

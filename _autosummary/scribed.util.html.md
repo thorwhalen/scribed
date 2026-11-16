@@ -101,6 +101,7 @@ encodes numpy waveforms as WAV (at `sample_rate`).
 
 Convert any supported input into `(numpy float32 mono, sample_rate)`.
 
-Numpy input is returned as-is (paired with `sample_rate`). Everything else
-is decoded with soundfile and resampled is *not* performed — the returned
-sample rate is whatever the source had (numpy inputs excepted).
+Numpy input is down-mixed and paired with `sample_rate`. Everything else
+is decoded by `scribed.audio.load_audio()` (libsndfile, falling back to
+`ffmpeg` for mp3/m4a/webm/opus) and down-mixed; *no* resampling is done, so
+the returned sample rate is whatever the source had (numpy inputs excepted).

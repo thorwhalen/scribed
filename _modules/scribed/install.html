@@ -231,313 +231,327 @@
 </span><span id="line-54"><span class="c1"># entry. ``extra`` is the pyproject extra name when it differs from the backend id.</span>
 </span><span id="line-55"><span class="c1"># ``system`` maps platform -&gt; shell commands. ``gpu`` is an alternative/extra pip</span>
 </span><span id="line-56"><span class="c1"># line for GPU. ``weights`` notes first-run model downloads. ``alt`` suggests a</span>
-</span><span id="line-57"><span class="c1"># lighter/faster backend with comparable results.</span>
-</span><span id="line-58"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-59"><span class="n">_RECIPES</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="line-60">    <span class="s2">"whisper"</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># openai-whisper, the original PyTorch reference implementation</span>
-</span><span id="line-61">        <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"whisper"</span><span class="p">,</span>
-</span><span id="line-62">        <span class="s2">"heavy"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-</span><span id="line-63">        <span class="s2">"system"</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="line-64">            <span class="s2">"darwin"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"brew install ffmpeg"</span><span class="p">],</span>
-</span><span id="line-65">            <span class="s2">"linux"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"sudo apt-get update &amp;&amp; sudo apt-get install -y ffmpeg"</span><span class="p">],</span>
-</span><span id="line-66">            <span class="s2">"windows"</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="line-67">                <span class="s2">"Install ffmpeg: choco install ffmpeg "</span>
-</span><span id="line-68">                <span class="s2">"(or download from https://ffmpeg.org/download.html and add it to PATH)"</span>
-</span><span id="line-69">            <span class="p">],</span>
-</span><span id="line-70">        <span class="p">},</span>
-</span><span id="line-71">        <span class="s2">"system_note"</span><span class="p">:</span> <span class="s2">"openai-whisper shells out to the system 'ffmpeg' binary to decode audio."</span><span class="p">,</span>
-</span><span id="line-72">        <span class="s2">"gpu"</span><span class="p">:</span> <span class="s2">"For GPU, install a CUDA build of torch first (https://pytorch.org/get-started/locally/)."</span><span class="p">,</span>
-</span><span id="line-73">        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Downloads the Whisper checkpoint on first use (~140 MB base … ~3 GB large-v3), cached under ~/.cache/whisper."</span><span class="p">,</span>
-</span><span id="line-74">        <span class="s2">"alt"</span><span class="p">:</span> <span class="s2">"faster-whisper — same models, ~4x faster and lower memory (CTranslate2), no system ffmpeg needed"</span><span class="p">,</span>
-</span><span id="line-75">    <span class="p">},</span>
-</span><span id="line-76">    <span class="s2">"faster-whisper"</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="line-77">        <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"faster-whisper"</span><span class="p">,</span>
-</span><span id="line-78">        <span class="s2">"heavy"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-</span><span id="line-79">        <span class="s2">"gpu"</span><span class="p">:</span> <span class="s2">"For GPU, install CUDA 12 + cuDNN 9 libraries; CTranslate2 picks them up automatically (see the faster-whisper README)."</span><span class="p">,</span>
-</span><span id="line-80">        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Downloads the CTranslate2 model from Hugging Face on first use (cached under ~/.cache/huggingface)."</span><span class="p">,</span>
-</span><span id="line-81">        <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="line-82">            <span class="s2">"Decodes audio via bundled PyAV — no system ffmpeg required."</span><span class="p">,</span>
-</span><span id="line-83">            <span class="s2">"Recommended default local engine: fast, accurate, runs on CPU or GPU."</span><span class="p">,</span>
-</span><span id="line-84">        <span class="p">],</span>
-</span><span id="line-85">    <span class="p">},</span>
-</span><span id="line-86">    <span class="s2">"whispercpp"</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="line-87">        <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"whispercpp"</span><span class="p">,</span>
-</span><span id="line-88">        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Downloads a ggml model on first use (tiny … large)."</span><span class="p">,</span>
-</span><span id="line-89">        <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="line-90">            <span class="s2">"Pure C/C++ inference via pywhispercpp — light, CPU-friendly, excellent on Apple Silicon."</span>
-</span><span id="line-91">        <span class="p">],</span>
-</span><span id="line-92">    <span class="p">},</span>
-</span><span id="line-93">    <span class="s2">"vosk"</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="line-94">        <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"vosk"</span><span class="p">,</span>
-</span><span id="line-95">        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Download a model from https://alphacephei.com/vosk/models and point the backend at it (small models ~50 MB)."</span><span class="p">,</span>
-</span><span id="line-96">        <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>
-</span><span id="line-97">            <span class="s2">"Light, fully offline, supports streaming; lower accuracy than Whisper-class models."</span>
-</span><span id="line-98">        <span class="p">],</span>
-</span><span id="line-99">    <span class="p">},</span>
-</span><span id="line-100">    <span class="c1"># Remote backends — the 'install' is mostly a small client + a credential.</span>
-</span><span id="line-101">    <span class="s2">"openai"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"openai"</span><span class="p">},</span>
-</span><span id="line-102">    <span class="s2">"groq"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"groq"</span><span class="p">},</span>
-</span><span id="line-103">    <span class="s2">"deepgram"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"deepgram"</span><span class="p">},</span>
-</span><span id="line-104">    <span class="s2">"assemblyai"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"assemblyai"</span><span class="p">},</span>
-</span><span id="line-105">    <span class="s2">"google-speech"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"google"</span><span class="p">},</span>
-</span><span id="line-106">    <span class="s2">"elevenlabs"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"elevenlabs"</span><span class="p">},</span>
-</span><span id="line-107"><span class="p">}</span>
-</span><span id="line-108">
-</span><span id="line-109">
+</span><span id="line-57"><span class="c1"># lighter/faster backend with comparable results. ``decodes_waveform`` marks backends</span>
+</span><span id="line-58"><span class="c1"># that decode through ``scribed.util.to_waveform`` (so ffmpeg extends their formats).</span>
+</span><span id="line-59"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-60"><span class="n">_RECIPES</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="line-61">    <span class="s2">"whisper"</span><span class="p">:</span> <span class="p">{</span>  <span class="c1"># openai-whisper, the original PyTorch reference implementation</span>
+</span><span id="line-62">        <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"whisper"</span><span class="p">,</span>
+</span><span id="line-63">        <span class="s2">"heavy"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="line-64">        <span class="s2">"system"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="line-65">            <span class="s2">"darwin"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"brew install ffmpeg"</span><span class="p">],</span>
+</span><span id="line-66">            <span class="s2">"linux"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"sudo apt-get update &amp;&amp; sudo apt-get install -y ffmpeg"</span><span class="p">],</span>
+</span><span id="line-67">            <span class="s2">"windows"</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="line-68">                <span class="s2">"Install ffmpeg: choco install ffmpeg "</span>
+</span><span id="line-69">                <span class="s2">"(or download from https://ffmpeg.org/download.html and add it to PATH)"</span>
+</span><span id="line-70">            <span class="p">],</span>
+</span><span id="line-71">        <span class="p">},</span>
+</span><span id="line-72">        <span class="s2">"system_note"</span><span class="p">:</span> <span class="s2">"openai-whisper shells out to the system 'ffmpeg' binary to decode audio."</span><span class="p">,</span>
+</span><span id="line-73">        <span class="s2">"gpu"</span><span class="p">:</span> <span class="s2">"For GPU, install a CUDA build of torch first (https://pytorch.org/get-started/locally/)."</span><span class="p">,</span>
+</span><span id="line-74">        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Downloads the Whisper checkpoint on first use (~140 MB base … ~3 GB large-v3), cached under ~/.cache/whisper."</span><span class="p">,</span>
+</span><span id="line-75">        <span class="s2">"alt"</span><span class="p">:</span> <span class="s2">"faster-whisper — same models, ~4x faster and lower memory (CTranslate2), no system ffmpeg needed"</span><span class="p">,</span>
+</span><span id="line-76">    <span class="p">},</span>
+</span><span id="line-77">    <span class="s2">"faster-whisper"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="line-78">        <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"faster-whisper"</span><span class="p">,</span>
+</span><span id="line-79">        <span class="s2">"heavy"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="line-80">        <span class="s2">"gpu"</span><span class="p">:</span> <span class="s2">"For GPU, install CUDA 12 + cuDNN 9 libraries; CTranslate2 picks them up automatically (see the faster-whisper README)."</span><span class="p">,</span>
+</span><span id="line-81">        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Downloads the CTranslate2 model from Hugging Face on first use (cached under ~/.cache/huggingface)."</span><span class="p">,</span>
+</span><span id="line-82">        <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="line-83">            <span class="s2">"Decodes audio via bundled PyAV — no system ffmpeg required."</span><span class="p">,</span>
+</span><span id="line-84">            <span class="s2">"Recommended default local engine: fast, accurate, runs on CPU or GPU."</span><span class="p">,</span>
+</span><span id="line-85">        <span class="p">],</span>
+</span><span id="line-86">    <span class="p">},</span>
+</span><span id="line-87">    <span class="s2">"whispercpp"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="line-88">        <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"whispercpp"</span><span class="p">,</span>
+</span><span id="line-89">        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Downloads a ggml model on first use (tiny … large)."</span><span class="p">,</span>
+</span><span id="line-90">        <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="line-91">            <span class="s2">"Pure C/C++ inference via pywhispercpp — light, CPU-friendly, excellent on Apple Silicon."</span>
+</span><span id="line-92">        <span class="p">],</span>
+</span><span id="line-93">    <span class="p">},</span>
+</span><span id="line-94">    <span class="s2">"mlx-whisper"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"decodes_waveform"</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+</span><span id="line-95">    <span class="s2">"whisperx"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"decodes_waveform"</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+</span><span id="line-96">    <span class="s2">"vosk"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="line-97">        <span class="s2">"decodes_waveform"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="line-98">        <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"vosk"</span><span class="p">,</span>
+</span><span id="line-99">        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Download a model from https://alphacephei.com/vosk/models and point the backend at it (small models ~50 MB)."</span><span class="p">,</span>
+</span><span id="line-100">        <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="line-101">            <span class="s2">"Light, fully offline, supports streaming; lower accuracy than Whisper-class models."</span>
+</span><span id="line-102">        <span class="p">],</span>
+</span><span id="line-103">    <span class="p">},</span>
+</span><span id="line-104">    <span class="c1"># Remote backends — the 'install' is mostly a small client + a credential.</span>
+</span><span id="line-105">    <span class="s2">"openai"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"openai"</span><span class="p">},</span>
+</span><span id="line-106">    <span class="s2">"groq"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"groq"</span><span class="p">},</span>
+</span><span id="line-107">    <span class="s2">"deepgram"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"deepgram"</span><span class="p">},</span>
+</span><span id="line-108">    <span class="s2">"assemblyai"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"assemblyai"</span><span class="p">},</span>
+</span><span id="line-109">    <span class="s2">"google-speech"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"google"</span><span class="p">,</span> <span class="s2">"decodes_waveform"</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+</span><span id="line-110">    <span class="s2">"elevenlabs"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"elevenlabs"</span><span class="p">},</span>
+</span><span id="line-111"><span class="p">}</span>
+</span><span id="line-112">
+</span><span id="line-113">
+</span><span id="line-114"><span class="c1">#: Compressed inputs (m4a/aac/mp3/opus/webm) that libsndfile cannot read are decoded</span>
+</span><span id="line-115"><span class="c1">#: by ``scribed.audio.load_audio`` through the system ``ffmpeg``.</span>
+</span><span id="line-116"><span class="n">_FFMPEG_NOTE</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="line-117">    <span class="s2">"Optional: install ffmpeg (https://ffmpeg.org/download.html) to transcribe "</span>
+</span><span id="line-118">    <span class="s2">"compressed inputs such as .m4a/.aac/.opus/.webm, which libsndfile cannot decode."</span>
+</span><span id="line-119"><span class="p">)</span>
+</span><span id="line-120">
+</span><span id="line-121">
 <div class="viewcode-block" id="Requirements">
 <a class="viewcode-back" href="../../_autosummary/scribed.html#scribed.Requirements">[docs]</a>
-</span><span id="line-110"><span class="nd">@dataclass</span>
-</span><span id="line-111"><span class="k">class</span><span class="w"> </span><span class="nc">Requirements</span><span class="p">:</span>
-</span><span id="line-112"><span class="w">    </span><span class="sd">"""What a backend needs to run — structured for an agent to act on."""</span>
-</span><span id="line-113">
-</span><span id="line-114">    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="line-115">    <span class="n">implemented</span><span class="p">:</span> <span class="nb">bool</span>
-</span><span id="line-116">    <span class="n">available</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1"># importable / usable right now</span>
-</span><span id="line-117">    <span class="n">is_local</span><span class="p">:</span> <span class="nb">bool</span>
-</span><span id="line-118">    <span class="n">is_remote</span><span class="p">:</span> <span class="nb">bool</span>
-</span><span id="line-119">    <span class="n">pip_command</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># the line to run</span>
-</span><span id="line-120">    <span class="n">extra</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-121">    <span class="n">system</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>  <span class="c1"># OS-specific shell commands</span>
-</span><span id="line-122">    <span class="n">system_note</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-123">    <span class="n">gpu</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-124">    <span class="n">weights</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-125">    <span class="n">heavy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="line-126">    <span class="n">alternative</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-127">    <span class="n">credentials</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>  <span class="c1"># "ENV_VAR — where to get it"</span>
-</span><span id="line-128">    <span class="n">notes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
-</span><span id="line-129">
+</span><span id="line-122"><span class="nd">@dataclass</span>
+</span><span id="line-123"><span class="k">class</span><span class="w"> </span><span class="nc">Requirements</span><span class="p">:</span>
+</span><span id="line-124"><span class="w">    </span><span class="sd">"""What a backend needs to run — structured for an agent to act on."""</span>
+</span><span id="line-125">
+</span><span id="line-126">    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="line-127">    <span class="n">implemented</span><span class="p">:</span> <span class="nb">bool</span>
+</span><span id="line-128">    <span class="n">available</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1"># importable / usable right now</span>
+</span><span id="line-129">    <span class="n">is_local</span><span class="p">:</span> <span class="nb">bool</span>
+</span><span id="line-130">    <span class="n">is_remote</span><span class="p">:</span> <span class="nb">bool</span>
+</span><span id="line-131">    <span class="n">pip_command</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># the line to run</span>
+</span><span id="line-132">    <span class="n">extra</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-133">    <span class="n">system</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>  <span class="c1"># OS-specific shell commands</span>
+</span><span id="line-134">    <span class="n">system_note</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-135">    <span class="n">gpu</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-136">    <span class="n">weights</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-137">    <span class="n">heavy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="line-138">    <span class="n">alternative</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-139">    <span class="n">credentials</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>  <span class="c1"># "ENV_VAR — where to get it"</span>
+</span><span id="line-140">    <span class="n">notes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+</span><span id="line-141">
 <div class="viewcode-block" id="Requirements.instructions">
 <a class="viewcode-back" href="../../_autosummary/scribed.html#scribed.Requirements.instructions">[docs]</a>
-</span><span id="line-130">    <span class="k">def</span><span class="w"> </span><span class="nf">instructions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-131"><span class="w">        </span><span class="sd">"""An agent-/human-readable, copy-pasteable install plan."""</span>
-</span><span id="line-132">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">available</span><span class="p">:</span>
-</span><span id="line-133">            <span class="k">return</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">' is already installed and usable. ✓"</span>
-</span><span id="line-134">        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"To use the '</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">' backend:"</span><span class="p">]</span>
-</span><span id="line-135">        <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
-</span><span id="line-136">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
-</span><span id="line-137">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">. System dependency:"</span><span class="p">)</span>
-</span><span id="line-138">            <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
-</span><span id="line-139">                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"       </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-140">            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system_note</span><span class="p">:</span>
-</span><span id="line-141">                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"     (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system_note</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
-</span><span id="line-142">            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="line-143">        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pip_command</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-144">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpu</span><span class="p">:</span>
-</span><span id="line-145">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"       GPU: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gpu</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-146">        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="line-147">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">:</span>
-</span><span id="line-148">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">. Set credential(s):"</span><span class="p">)</span>
-</span><span id="line-149">            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">:</span>
-</span><span id="line-150">                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"       </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-151">            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="line-152">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">:</span>
-</span><span id="line-153">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  • </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-154">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">heavy</span><span class="p">:</span>
-</span><span id="line-155">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="line-156">                <span class="s2">"  • Note: large download (deep-learning framework + weights)."</span>
-</span><span id="line-157">            <span class="p">)</span>
-</span><span id="line-158">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alternative</span><span class="p">:</span>
-</span><span id="line-159">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  • Faster/lighter alternative: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
-</span><span id="line-160">        <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes</span><span class="p">:</span>
-</span><span id="line-161">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  • </span><span class="si">{</span><span class="n">note</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span id="line-162">        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="line-163">            <span class="sa">f</span><span class="s2">"Verify:   python -c </span><span class="se">\"</span><span class="s2">import scribed; print(scribed.check('</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">'))</span><span class="se">\"</span><span class="s2">"</span>
-</span><span id="line-164">        <span class="p">)</span>
-</span><span id="line-165">        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+</span><span id="line-142">    <span class="k">def</span><span class="w"> </span><span class="nf">instructions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-143"><span class="w">        </span><span class="sd">"""An agent-/human-readable, copy-pasteable install plan."""</span>
+</span><span id="line-144">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">available</span><span class="p">:</span>
+</span><span id="line-145">            <span class="k">return</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">' is already installed and usable. ✓"</span>
+</span><span id="line-146">        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"To use the '</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">' backend:"</span><span class="p">]</span>
+</span><span id="line-147">        <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="line-148">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
+</span><span id="line-149">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">. System dependency:"</span><span class="p">)</span>
+</span><span id="line-150">            <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
+</span><span id="line-151">                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"       </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-152">            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system_note</span><span class="p">:</span>
+</span><span id="line-153">                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"     (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system_note</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+</span><span id="line-154">            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="line-155">        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pip_command</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-156">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpu</span><span class="p">:</span>
+</span><span id="line-157">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"       GPU: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gpu</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-158">        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="line-159">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">:</span>
+</span><span id="line-160">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">. Set credential(s):"</span><span class="p">)</span>
+</span><span id="line-161">            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">:</span>
+</span><span id="line-162">                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"       </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-163">            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="line-164">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">:</span>
+</span><span id="line-165">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  • </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-166">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">heavy</span><span class="p">:</span>
+</span><span id="line-167">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="line-168">                <span class="s2">"  • Note: large download (deep-learning framework + weights)."</span>
+</span><span id="line-169">            <span class="p">)</span>
+</span><span id="line-170">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alternative</span><span class="p">:</span>
+</span><span id="line-171">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  • Faster/lighter alternative: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+</span><span id="line-172">        <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes</span><span class="p">:</span>
+</span><span id="line-173">            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  • </span><span class="si">{</span><span class="n">note</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span id="line-174">        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="line-175">            <span class="sa">f</span><span class="s2">"Verify:   python -c </span><span class="se">\"</span><span class="s2">import scribed; print(scribed.check('</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">'))</span><span class="se">\"</span><span class="s2">"</span>
+</span><span id="line-176">        <span class="p">)</span>
+</span><span id="line-177">        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 
-</span><span id="line-166">
-</span><span id="line-167">    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-168">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span></div>
+</span><span id="line-178">
+</span><span id="line-179">    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-180">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span></div>
 
-</span><span id="line-169">
-</span><span id="line-170">
-</span><span id="line-171"><span class="k">def</span><span class="w"> </span><span class="nf">_credential_lines</span><span class="p">(</span><span class="n">env_var_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="line-172">    <span class="k">if</span> <span class="ow">not</span> <span class="n">env_var_field</span><span class="p">:</span>
-</span><span id="line-173">        <span class="k">return</span> <span class="p">[]</span>
-</span><span id="line-174">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">CREDENTIAL_GUIDANCE</span>
-</span><span id="line-175">
-</span><span id="line-176">    <span class="n">g</span> <span class="o">=</span> <span class="n">CREDENTIAL_GUIDANCE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
-</span><span id="line-177">    <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"  (get a key: </span><span class="si">{</span><span class="n">g</span><span class="p">[</span><span class="s1">'get_key_url'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span> <span class="k">if</span> <span class="n">g</span> <span class="k">else</span> <span class="s2">""</span>
-</span><span id="line-178">    <span class="n">names</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="line-179">        <span class="n">env_var_field</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">env_var_field</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="s2">" / "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">env_var_field</span><span class="p">)</span>
-</span><span id="line-180">    <span class="p">)</span>
-</span><span id="line-181">    <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"export </span><span class="si">{</span><span class="n">names</span><span class="si">}{</span><span class="n">link</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+</span><span id="line-181">
 </span><span id="line-182">
-</span><span id="line-183">
+</span><span id="line-183"><span class="k">def</span><span class="w"> </span><span class="nf">_credential_lines</span><span class="p">(</span><span class="n">env_var_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="line-184">    <span class="k">if</span> <span class="ow">not</span> <span class="n">env_var_field</span><span class="p">:</span>
+</span><span id="line-185">        <span class="k">return</span> <span class="p">[]</span>
+</span><span id="line-186">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">CREDENTIAL_GUIDANCE</span>
+</span><span id="line-187">
+</span><span id="line-188">    <span class="n">g</span> <span class="o">=</span> <span class="n">CREDENTIAL_GUIDANCE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
+</span><span id="line-189">    <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"  (get a key: </span><span class="si">{</span><span class="n">g</span><span class="p">[</span><span class="s1">'get_key_url'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span> <span class="k">if</span> <span class="n">g</span> <span class="k">else</span> <span class="s2">""</span>
+</span><span id="line-190">    <span class="n">names</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="line-191">        <span class="n">env_var_field</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">env_var_field</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="s2">" / "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">env_var_field</span><span class="p">)</span>
+</span><span id="line-192">    <span class="p">)</span>
+</span><span id="line-193">    <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"export </span><span class="si">{</span><span class="n">names</span><span class="si">}{</span><span class="n">link</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+</span><span id="line-194">
+</span><span id="line-195">
 <div class="viewcode-block" id="requirements">
 <a class="viewcode-back" href="../../_autosummary/scribed.html#scribed.requirements">[docs]</a>
-</span><span id="line-184"><span class="k">def</span><span class="w"> </span><span class="nf">requirements</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Requirements</span><span class="p">:</span>
-</span><span id="line-185"><span class="w">    </span><span class="sd">"""Return structured install :class:`Requirements` for ``backend_id``.</span>
-</span><span id="line-186">
-</span><span id="line-187"><span class="sd">    Works for both implemented backends (uses the ``scribed[extra]`` install and</span>
-</span><span id="line-188"><span class="sd">    the recipe) and ledger-only backends (falls back to the ledger's</span>
-</span><span id="line-189"><span class="sd">    ``python_install`` string). Pass ``gpu=True`` to surface GPU wheel guidance.</span>
-</span><span id="line-190"><span class="sd">    """</span>
-</span><span id="line-191">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
-</span><span id="line-192">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span>
-</span><span id="line-193">
-</span><span id="line-194">    <span class="n">implemented</span> <span class="o">=</span> <span class="n">backend_id</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">())</span>
-</span><span id="line-195">    <span class="n">recipe</span> <span class="o">=</span> <span class="n">_RECIPES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="p">{})</span>
-</span><span id="line-196">    <span class="n">record</span> <span class="o">=</span> <span class="n">catalog</span><span class="p">[</span><span class="n">backend_id</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">backend_id</span> <span class="ow">in</span> <span class="n">catalog</span> <span class="k">else</span> <span class="p">{}</span>
-</span><span id="line-197">    <span class="n">cfg</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">implemented</span> <span class="k">else</span> <span class="p">{}</span>
+</span><span id="line-196"><span class="k">def</span><span class="w"> </span><span class="nf">requirements</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Requirements</span><span class="p">:</span>
+</span><span id="line-197"><span class="w">    </span><span class="sd">"""Return structured install :class:`Requirements` for ``backend_id``.</span>
 </span><span id="line-198">
-</span><span id="line-199">    <span class="n">is_local</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_local"</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_local"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)))</span>
-</span><span id="line-200">    <span class="n">is_remote</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_remote"</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_remote"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)))</span>
-</span><span id="line-201">    <span class="n">available</span> <span class="o">=</span> <span class="n">check</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">implemented</span> <span class="k">else</span> <span class="kc">False</span>
-</span><span id="line-202">
-</span><span id="line-203">    <span class="c1"># pip command: prefer the scribed extra for implemented backends, else the</span>
-</span><span id="line-204">    <span class="c1"># ledger's python_install string.</span>
-</span><span id="line-205">    <span class="n">extra</span> <span class="o">=</span> <span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"extra"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">backend_id</span> <span class="k">if</span> <span class="n">implemented</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-206">    <span class="k">if</span> <span class="n">implemented</span> <span class="ow">and</span> <span class="n">extra</span><span class="p">:</span>
-</span><span id="line-207">        <span class="n">pip_command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'pip install "scribed[</span><span class="si">{</span><span class="n">extra</span><span class="si">}</span><span class="s1">]"'</span>
-</span><span id="line-208">    <span class="k">else</span><span class="p">:</span>
-</span><span id="line-209">        <span class="n">ledger_pip</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"python_install"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</span><span id="line-210">        <span class="n">pip_command</span> <span class="o">=</span> <span class="n">ledger_pip</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">'pip install "scribed[</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s1">]"'</span>
-</span><span id="line-211">
-</span><span id="line-212">    <span class="n">system</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"system"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_platform</span><span class="p">(),</span> <span class="p">[]))</span>
-</span><span id="line-213">    <span class="n">api_env</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_env_var"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_env_var"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
-</span><span id="line-214">    <span class="n">credentials</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="line-215">        <span class="n">_credential_lines</span><span class="p">(</span><span class="n">api_env</span><span class="p">,</span> <span class="n">backend_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_remote</span> <span class="ow">and</span> <span class="n">api_env</span> <span class="k">else</span> <span class="p">[]</span>
-</span><span id="line-216">    <span class="p">)</span>
-</span><span id="line-217">
-</span><span id="line-218">    <span class="n">notes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"notes"</span><span class="p">,</span> <span class="p">[]))</span>
-</span><span id="line-219">    <span class="k">if</span> <span class="ow">not</span> <span class="n">implemented</span><span class="p">:</span>
-</span><span id="line-220">        <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="line-221">            <span class="sa">f</span><span class="s2">"scribed does not yet ship a facade for '</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">' — it's in the ledger "</span>
-</span><span id="line-222">            <span class="s2">"only. See the scribed-add-backend skill to wrap it."</span>
-</span><span id="line-223">        <span class="p">)</span>
-</span><span id="line-224">
-</span><span id="line-225">    <span class="k">return</span> <span class="n">Requirements</span><span class="p">(</span>
-</span><span id="line-226">        <span class="n">backend_id</span><span class="o">=</span><span class="n">backend_id</span><span class="p">,</span>
-</span><span id="line-227">        <span class="n">implemented</span><span class="o">=</span><span class="n">implemented</span><span class="p">,</span>
-</span><span id="line-228">        <span class="n">available</span><span class="o">=</span><span class="n">available</span><span class="p">,</span>
-</span><span id="line-229">        <span class="n">is_local</span><span class="o">=</span><span class="n">is_local</span><span class="p">,</span>
-</span><span id="line-230">        <span class="n">is_remote</span><span class="o">=</span><span class="n">is_remote</span><span class="p">,</span>
-</span><span id="line-231">        <span class="n">pip_command</span><span class="o">=</span><span class="n">pip_command</span><span class="p">,</span>
-</span><span id="line-232">        <span class="n">extra</span><span class="o">=</span><span class="n">extra</span><span class="p">,</span>
-</span><span id="line-233">        <span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">,</span>
-</span><span id="line-234">        <span class="n">system_note</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"system_note"</span><span class="p">),</span>
-</span><span id="line-235">        <span class="n">gpu</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"gpu"</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">gpu</span> <span class="ow">or</span> <span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"gpu"</span><span class="p">))</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-236">        <span class="n">weights</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"weights"</span><span class="p">),</span>
-</span><span id="line-237">        <span class="n">heavy</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"heavy"</span><span class="p">)),</span>
-</span><span id="line-238">        <span class="n">alternative</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"alt"</span><span class="p">),</span>
-</span><span id="line-239">        <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-</span><span id="line-240">        <span class="n">notes</span><span class="o">=</span><span class="n">notes</span><span class="p">,</span>
-</span><span id="line-241">    <span class="p">)</span></div>
-
-</span><span id="line-242">
-</span><span id="line-243">
-<div class="viewcode-block" id="check">
-<a class="viewcode-back" href="../../_autosummary/scribed.html#scribed.check">[docs]</a>
-</span><span id="line-244"><span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span id="line-245"><span class="w">    </span><span class="sd">"""Is ``backend_id`` importable / usable right now? (no install, no network)."""</span>
-</span><span id="line-246">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
-</span><span id="line-247">
-</span><span id="line-248">    <span class="k">return</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span></div>
-
-</span><span id="line-249">
-</span><span id="line-250">
-<div class="viewcode-block" id="available_backends">
-<a class="viewcode-back" href="../../_autosummary/scribed.html#scribed.available_backends">[docs]</a>
-</span><span id="line-251"><span class="k">def</span><span class="w"> </span><span class="nf">available_backends</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="line-252"><span class="w">    </span><span class="sd">"""Implemented backends whose dependency is importable right now."""</span>
-</span><span id="line-253">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
-</span><span id="line-254">
-</span><span id="line-255">    <span class="k">return</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">()</span> <span class="k">if</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">b</span><span class="p">)]</span></div>
+</span><span id="line-199"><span class="sd">    Works for both implemented backends (uses the ``scribed[extra]`` install and</span>
+</span><span id="line-200"><span class="sd">    the recipe) and ledger-only backends (falls back to the ledger's</span>
+</span><span id="line-201"><span class="sd">    ``python_install`` string). Pass ``gpu=True`` to surface GPU wheel guidance.</span>
+</span><span id="line-202"><span class="sd">    """</span>
+</span><span id="line-203">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+</span><span id="line-204">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span>
+</span><span id="line-205">
+</span><span id="line-206">    <span class="n">implemented</span> <span class="o">=</span> <span class="n">backend_id</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">())</span>
+</span><span id="line-207">    <span class="n">recipe</span> <span class="o">=</span> <span class="n">_RECIPES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="p">{})</span>
+</span><span id="line-208">    <span class="n">record</span> <span class="o">=</span> <span class="n">catalog</span><span class="p">[</span><span class="n">backend_id</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">backend_id</span> <span class="ow">in</span> <span class="n">catalog</span> <span class="k">else</span> <span class="p">{}</span>
+</span><span id="line-209">    <span class="n">cfg</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">implemented</span> <span class="k">else</span> <span class="p">{}</span>
+</span><span id="line-210">
+</span><span id="line-211">    <span class="n">is_local</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_local"</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_local"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)))</span>
+</span><span id="line-212">    <span class="n">is_remote</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_remote"</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_remote"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)))</span>
+</span><span id="line-213">    <span class="n">available</span> <span class="o">=</span> <span class="n">check</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">implemented</span> <span class="k">else</span> <span class="kc">False</span>
+</span><span id="line-214">
+</span><span id="line-215">    <span class="c1"># pip command: prefer the scribed extra for implemented backends, else the</span>
+</span><span id="line-216">    <span class="c1"># ledger's python_install string.</span>
+</span><span id="line-217">    <span class="n">extra</span> <span class="o">=</span> <span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"extra"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">backend_id</span> <span class="k">if</span> <span class="n">implemented</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-218">    <span class="k">if</span> <span class="n">implemented</span> <span class="ow">and</span> <span class="n">extra</span><span class="p">:</span>
+</span><span id="line-219">        <span class="n">pip_command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'pip install "scribed[</span><span class="si">{</span><span class="n">extra</span><span class="si">}</span><span class="s1">]"'</span>
+</span><span id="line-220">    <span class="k">else</span><span class="p">:</span>
+</span><span id="line-221">        <span class="n">ledger_pip</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"python_install"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span id="line-222">        <span class="n">pip_command</span> <span class="o">=</span> <span class="n">ledger_pip</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">'pip install "scribed[</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s1">]"'</span>
+</span><span id="line-223">
+</span><span id="line-224">    <span class="n">system</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"system"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_platform</span><span class="p">(),</span> <span class="p">[]))</span>
+</span><span id="line-225">    <span class="n">api_env</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_env_var"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_env_var"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+</span><span id="line-226">    <span class="n">credentials</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="line-227">        <span class="n">_credential_lines</span><span class="p">(</span><span class="n">api_env</span><span class="p">,</span> <span class="n">backend_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_remote</span> <span class="ow">and</span> <span class="n">api_env</span> <span class="k">else</span> <span class="p">[]</span>
+</span><span id="line-228">    <span class="p">)</span>
+</span><span id="line-229">
+</span><span id="line-230">    <span class="n">notes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"notes"</span><span class="p">,</span> <span class="p">[]))</span>
+</span><span id="line-231">    <span class="k">if</span> <span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"decodes_waveform"</span><span class="p">):</span>
+</span><span id="line-232">        <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_FFMPEG_NOTE</span><span class="p">)</span>
+</span><span id="line-233">    <span class="k">if</span> <span class="ow">not</span> <span class="n">implemented</span><span class="p">:</span>
+</span><span id="line-234">        <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="line-235">            <span class="sa">f</span><span class="s2">"scribed does not yet ship a facade for '</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">' — it's in the ledger "</span>
+</span><span id="line-236">            <span class="s2">"only. See the scribed-add-backend skill to wrap it."</span>
+</span><span id="line-237">        <span class="p">)</span>
+</span><span id="line-238">
+</span><span id="line-239">    <span class="k">return</span> <span class="n">Requirements</span><span class="p">(</span>
+</span><span id="line-240">        <span class="n">backend_id</span><span class="o">=</span><span class="n">backend_id</span><span class="p">,</span>
+</span><span id="line-241">        <span class="n">implemented</span><span class="o">=</span><span class="n">implemented</span><span class="p">,</span>
+</span><span id="line-242">        <span class="n">available</span><span class="o">=</span><span class="n">available</span><span class="p">,</span>
+</span><span id="line-243">        <span class="n">is_local</span><span class="o">=</span><span class="n">is_local</span><span class="p">,</span>
+</span><span id="line-244">        <span class="n">is_remote</span><span class="o">=</span><span class="n">is_remote</span><span class="p">,</span>
+</span><span id="line-245">        <span class="n">pip_command</span><span class="o">=</span><span class="n">pip_command</span><span class="p">,</span>
+</span><span id="line-246">        <span class="n">extra</span><span class="o">=</span><span class="n">extra</span><span class="p">,</span>
+</span><span id="line-247">        <span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">,</span>
+</span><span id="line-248">        <span class="n">system_note</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"system_note"</span><span class="p">),</span>
+</span><span id="line-249">        <span class="n">gpu</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"gpu"</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">gpu</span> <span class="ow">or</span> <span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"gpu"</span><span class="p">))</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-250">        <span class="n">weights</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"weights"</span><span class="p">),</span>
+</span><span id="line-251">        <span class="n">heavy</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"heavy"</span><span class="p">)),</span>
+</span><span id="line-252">        <span class="n">alternative</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"alt"</span><span class="p">),</span>
+</span><span id="line-253">        <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+</span><span id="line-254">        <span class="n">notes</span><span class="o">=</span><span class="n">notes</span><span class="p">,</span>
+</span><span id="line-255">    <span class="p">)</span></div>
 
 </span><span id="line-256">
 </span><span id="line-257">
+<div class="viewcode-block" id="check">
+<a class="viewcode-back" href="../../_autosummary/scribed.html#scribed.check">[docs]</a>
+</span><span id="line-258"><span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="line-259"><span class="w">    </span><span class="sd">"""Is ``backend_id`` importable / usable right now? (no install, no network)."""</span>
+</span><span id="line-260">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+</span><span id="line-261">
+</span><span id="line-262">    <span class="k">return</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span></div>
+
+</span><span id="line-263">
+</span><span id="line-264">
+<div class="viewcode-block" id="available_backends">
+<a class="viewcode-back" href="../../_autosummary/scribed.html#scribed.available_backends">[docs]</a>
+</span><span id="line-265"><span class="k">def</span><span class="w"> </span><span class="nf">available_backends</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="line-266"><span class="w">    </span><span class="sd">"""Implemented backends whose dependency is importable right now."""</span>
+</span><span id="line-267">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+</span><span id="line-268">
+</span><span id="line-269">    <span class="k">return</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">()</span> <span class="k">if</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">b</span><span class="p">)]</span></div>
+
+</span><span id="line-270">
+</span><span id="line-271">
 <div class="viewcode-block" id="doctor">
 <a class="viewcode-back" href="../../_autosummary/scribed.html#scribed.doctor">[docs]</a>
-</span><span id="line-258"><span class="k">def</span><span class="w"> </span><span class="nf">doctor</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="line-259"><span class="w">    </span><span class="sd">"""Report which implemented backends are usable now and what the rest need.</span>
-</span><span id="line-260">
-</span><span id="line-261"><span class="sd">    Returns ``{"available": [...], "missing": {id: one-line install hint}}``.</span>
-</span><span id="line-262"><span class="sd">    """</span>
-</span><span id="line-263">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
-</span><span id="line-264">
-</span><span id="line-265">    <span class="n">available</span><span class="p">,</span> <span class="n">missing</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">{}</span>
-</span><span id="line-266">    <span class="k">for</span> <span class="n">bid</span> <span class="ow">in</span> <span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">():</span>
-</span><span id="line-267">        <span class="k">if</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">bid</span><span class="p">):</span>
-</span><span id="line-268">            <span class="n">available</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span>
-</span><span id="line-269">        <span class="k">else</span><span class="p">:</span>
-</span><span id="line-270">            <span class="n">req</span> <span class="o">=</span> <span class="n">requirements</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span>
-</span><span id="line-271">            <span class="n">hint</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">pip_command</span>
-</span><span id="line-272">            <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
-</span><span id="line-273">                <span class="n">hint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> ; </span><span class="si">{</span><span class="n">hint</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-274">            <span class="n">missing</span><span class="p">[</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">hint</span>
-</span><span id="line-275">    <span class="k">return</span> <span class="p">{</span><span class="s2">"available"</span><span class="p">:</span> <span class="n">available</span><span class="p">,</span> <span class="s2">"missing"</span><span class="p">:</span> <span class="n">missing</span><span class="p">}</span></div>
+</span><span id="line-272"><span class="k">def</span><span class="w"> </span><span class="nf">doctor</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="line-273"><span class="w">    </span><span class="sd">"""Report which implemented backends are usable now and what the rest need.</span>
+</span><span id="line-274">
+</span><span id="line-275"><span class="sd">    Returns ``{"available": [...], "missing": {id: one-line install hint}}``.</span>
+</span><span id="line-276"><span class="sd">    """</span>
+</span><span id="line-277">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+</span><span id="line-278">
+</span><span id="line-279">    <span class="n">available</span><span class="p">,</span> <span class="n">missing</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">{}</span>
+</span><span id="line-280">    <span class="k">for</span> <span class="n">bid</span> <span class="ow">in</span> <span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">():</span>
+</span><span id="line-281">        <span class="k">if</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">bid</span><span class="p">):</span>
+</span><span id="line-282">            <span class="n">available</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span>
+</span><span id="line-283">        <span class="k">else</span><span class="p">:</span>
+</span><span id="line-284">            <span class="n">req</span> <span class="o">=</span> <span class="n">requirements</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span>
+</span><span id="line-285">            <span class="n">hint</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">pip_command</span>
+</span><span id="line-286">            <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
+</span><span id="line-287">                <span class="n">hint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> ; </span><span class="si">{</span><span class="n">hint</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-288">            <span class="n">missing</span><span class="p">[</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">hint</span>
+</span><span id="line-289">    <span class="k">return</span> <span class="p">{</span><span class="s2">"available"</span><span class="p">:</span> <span class="n">available</span><span class="p">,</span> <span class="s2">"missing"</span><span class="p">:</span> <span class="n">missing</span><span class="p">}</span></div>
 
-</span><span id="line-276">
-</span><span id="line-277">
+</span><span id="line-290">
+</span><span id="line-291">
 <div class="viewcode-block" id="install">
 <a class="viewcode-back" href="../../_autosummary/scribed.html#scribed.install">[docs]</a>
-</span><span id="line-278"><span class="k">def</span><span class="w"> </span><span class="nf">install</span><span class="p">(</span>
-</span><span id="line-279">    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="line-280">    <span class="o">*</span><span class="p">,</span>
-</span><span id="line-281">    <span class="n">yes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-282">    <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-283">    <span class="n">verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-</span><span id="line-284">    <span class="n">upgrade</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-285"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="line-286"><span class="w">    </span><span class="sd">"""Plan (and optionally run) the pip install for a backend.</span>
-</span><span id="line-287">
-</span><span id="line-288"><span class="sd">    With ``yes=False`` (default) this is a **dry run**: it returns the plan</span>
-</span><span id="line-289"><span class="sd">    without changing anything — call ``result['requirements'].instructions()`` to</span>
-</span><span id="line-290"><span class="sd">    show it. With ``yes=True`` it runs ``pip install`` for the backend's extra in</span>
-</span><span id="line-291"><span class="sd">    the current interpreter, then (if ``verify``) checks importability.</span>
-</span><span id="line-292">
-</span><span id="line-293"><span class="sd">    System dependencies and GPU wheels are *surfaced*, never run automatically</span>
-</span><span id="line-294"><span class="sd">    (they need sudo/brew or an environment-specific CUDA choice) — run those</span>
-</span><span id="line-295"><span class="sd">    yourself from ``result['requirements'].system`` / ``.gpu``.</span>
-</span><span id="line-296"><span class="sd">    """</span>
-</span><span id="line-297">    <span class="n">req</span> <span class="o">=</span> <span class="n">requirements</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="n">gpu</span><span class="p">)</span>
-</span><span id="line-298">    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="line-299">        <span class="s2">"backend"</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
-</span><span id="line-300">        <span class="s2">"requirements"</span><span class="p">:</span> <span class="n">req</span><span class="p">,</span>
-</span><span id="line-301">        <span class="s2">"ran"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-302">        <span class="s2">"available_before"</span><span class="p">:</span> <span class="n">req</span><span class="o">.</span><span class="n">available</span><span class="p">,</span>
-</span><span id="line-303">    <span class="p">}</span>
-</span><span id="line-304">    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">available</span><span class="p">:</span>
-</span><span id="line-305">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">' is already available — nothing to do."</span>
-</span><span id="line-306">        <span class="k">return</span> <span class="n">result</span>
-</span><span id="line-307">    <span class="k">if</span> <span class="ow">not</span> <span class="n">req</span><span class="o">.</span><span class="n">implemented</span><span class="p">:</span>
-</span><span id="line-308">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
-</span><span id="line-309">        <span class="k">return</span> <span class="n">result</span>
-</span><span id="line-310">    <span class="k">if</span> <span class="ow">not</span> <span class="n">yes</span><span class="p">:</span>
-</span><span id="line-311">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="line-312">            <span class="s2">"Dry run — pass yes=True to run the pip install.</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">req</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
-</span><span id="line-313">        <span class="p">)</span>
-</span><span id="line-314">        <span class="k">return</span> <span class="n">result</span>
-</span><span id="line-315">
-</span><span id="line-316">    <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
-</span><span id="line-317">
-</span><span id="line-318">    <span class="n">target</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"scribed[</span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">extra</span><span class="si">}</span><span class="s2">]"</span> <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">extra</span> <span class="k">else</span> <span class="n">backend_id</span>
-</span><span id="line-319">    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">"-m"</span><span class="p">,</span> <span class="s2">"pip"</span><span class="p">,</span> <span class="s2">"install"</span><span class="p">]</span>
-</span><span id="line-320">    <span class="k">if</span> <span class="n">upgrade</span><span class="p">:</span>
-</span><span id="line-321">        <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"--upgrade"</span><span class="p">)</span>
-</span><span id="line-322">    <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
-</span><span id="line-323">    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="line-324">    <span class="n">result</span><span class="p">[</span><span class="s2">"ran"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="line-325">    <span class="n">result</span><span class="p">[</span><span class="s2">"pip_argv"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmd</span>
-</span><span id="line-326">    <span class="n">result</span><span class="p">[</span><span class="s2">"returncode"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span>
-</span><span id="line-327">    <span class="n">result</span><span class="p">[</span><span class="s2">"stdout_tail"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span>
-</span><span id="line-328">    <span class="n">result</span><span class="p">[</span><span class="s2">"stderr_tail"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span>
-</span><span id="line-329">    <span class="k">if</span> <span class="n">verify</span> <span class="ow">and</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-</span><span id="line-330">        <span class="c1"># Importability is module-cached; probe in a fresh interpreter.</span>
-</span><span id="line-331">        <span class="n">probe</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-</span><span id="line-332">            <span class="p">[</span>
-</span><span id="line-333">                <span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
-</span><span id="line-334">                <span class="s2">"-c"</span><span class="p">,</span>
-</span><span id="line-335">                <span class="sa">f</span><span class="s2">"import scribed; print(scribed.check('</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">'))"</span><span class="p">,</span>
-</span><span id="line-336">            <span class="p">],</span>
-</span><span id="line-337">            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="line-338">            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="line-339">        <span class="p">)</span>
-</span><span id="line-340">        <span class="n">result</span><span class="p">[</span><span class="s2">"available_after"</span><span class="p">]</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"True"</span>
-</span><span id="line-341">    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
-</span><span id="line-342">        <span class="n">result</span><span class="p">[</span><span class="s2">"system_todo"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span>
-</span><span id="line-343">    <span class="k">return</span> <span class="n">result</span></div>
+</span><span id="line-292"><span class="k">def</span><span class="w"> </span><span class="nf">install</span><span class="p">(</span>
+</span><span id="line-293">    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="line-294">    <span class="o">*</span><span class="p">,</span>
+</span><span id="line-295">    <span class="n">yes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-296">    <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-297">    <span class="n">verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="line-298">    <span class="n">upgrade</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-299"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="line-300"><span class="w">    </span><span class="sd">"""Plan (and optionally run) the pip install for a backend.</span>
+</span><span id="line-301">
+</span><span id="line-302"><span class="sd">    With ``yes=False`` (default) this is a **dry run**: it returns the plan</span>
+</span><span id="line-303"><span class="sd">    without changing anything — call ``result['requirements'].instructions()`` to</span>
+</span><span id="line-304"><span class="sd">    show it. With ``yes=True`` it runs ``pip install`` for the backend's extra in</span>
+</span><span id="line-305"><span class="sd">    the current interpreter, then (if ``verify``) checks importability.</span>
+</span><span id="line-306">
+</span><span id="line-307"><span class="sd">    System dependencies and GPU wheels are *surfaced*, never run automatically</span>
+</span><span id="line-308"><span class="sd">    (they need sudo/brew or an environment-specific CUDA choice) — run those</span>
+</span><span id="line-309"><span class="sd">    yourself from ``result['requirements'].system`` / ``.gpu``.</span>
+</span><span id="line-310"><span class="sd">    """</span>
+</span><span id="line-311">    <span class="n">req</span> <span class="o">=</span> <span class="n">requirements</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="n">gpu</span><span class="p">)</span>
+</span><span id="line-312">    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="line-313">        <span class="s2">"backend"</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
+</span><span id="line-314">        <span class="s2">"requirements"</span><span class="p">:</span> <span class="n">req</span><span class="p">,</span>
+</span><span id="line-315">        <span class="s2">"ran"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-316">        <span class="s2">"available_before"</span><span class="p">:</span> <span class="n">req</span><span class="o">.</span><span class="n">available</span><span class="p">,</span>
+</span><span id="line-317">    <span class="p">}</span>
+</span><span id="line-318">    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">available</span><span class="p">:</span>
+</span><span id="line-319">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">' is already available — nothing to do."</span>
+</span><span id="line-320">        <span class="k">return</span> <span class="n">result</span>
+</span><span id="line-321">    <span class="k">if</span> <span class="ow">not</span> <span class="n">req</span><span class="o">.</span><span class="n">implemented</span><span class="p">:</span>
+</span><span id="line-322">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
+</span><span id="line-323">        <span class="k">return</span> <span class="n">result</span>
+</span><span id="line-324">    <span class="k">if</span> <span class="ow">not</span> <span class="n">yes</span><span class="p">:</span>
+</span><span id="line-325">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="line-326">            <span class="s2">"Dry run — pass yes=True to run the pip install.</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">req</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
+</span><span id="line-327">        <span class="p">)</span>
+</span><span id="line-328">        <span class="k">return</span> <span class="n">result</span>
+</span><span id="line-329">
+</span><span id="line-330">    <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+</span><span id="line-331">
+</span><span id="line-332">    <span class="n">target</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"scribed[</span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">extra</span><span class="si">}</span><span class="s2">]"</span> <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">extra</span> <span class="k">else</span> <span class="n">backend_id</span>
+</span><span id="line-333">    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">"-m"</span><span class="p">,</span> <span class="s2">"pip"</span><span class="p">,</span> <span class="s2">"install"</span><span class="p">]</span>
+</span><span id="line-334">    <span class="k">if</span> <span class="n">upgrade</span><span class="p">:</span>
+</span><span id="line-335">        <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"--upgrade"</span><span class="p">)</span>
+</span><span id="line-336">    <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+</span><span id="line-337">    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="line-338">    <span class="n">result</span><span class="p">[</span><span class="s2">"ran"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="line-339">    <span class="n">result</span><span class="p">[</span><span class="s2">"pip_argv"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmd</span>
+</span><span id="line-340">    <span class="n">result</span><span class="p">[</span><span class="s2">"returncode"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span>
+</span><span id="line-341">    <span class="n">result</span><span class="p">[</span><span class="s2">"stdout_tail"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span>
+</span><span id="line-342">    <span class="n">result</span><span class="p">[</span><span class="s2">"stderr_tail"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span>
+</span><span id="line-343">    <span class="k">if</span> <span class="n">verify</span> <span class="ow">and</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="line-344">        <span class="c1"># Importability is module-cached; probe in a fresh interpreter.</span>
+</span><span id="line-345">        <span class="n">probe</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+</span><span id="line-346">            <span class="p">[</span>
+</span><span id="line-347">                <span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
+</span><span id="line-348">                <span class="s2">"-c"</span><span class="p">,</span>
+</span><span id="line-349">                <span class="sa">f</span><span class="s2">"import scribed; print(scribed.check('</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">'))"</span><span class="p">,</span>
+</span><span id="line-350">            <span class="p">],</span>
+</span><span id="line-351">            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="line-352">            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="line-353">        <span class="p">)</span>
+</span><span id="line-354">        <span class="n">result</span><span class="p">[</span><span class="s2">"available_after"</span><span class="p">]</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"True"</span>
+</span><span id="line-355">    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
+</span><span id="line-356">        <span class="n">result</span><span class="p">[</span><span class="s2">"system_todo"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span>
+</span><span id="line-357">    <span class="k">return</span> <span class="n">result</span></div>
 
 </span></code></pre></div>
     </div></div>
@@ -552,7 +566,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=53b53b71"></script>
+    <script src="../../_static/documentation_options.js?v=f7cdbf68"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

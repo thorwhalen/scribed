@@ -374,19 +374,21 @@
 </span><span id="line-174"><span class="k">def</span><span class="w"> </span><span class="nf">to_waveform</span><span class="p">(</span><span class="n">audio</span><span class="p">:</span> <span class="n">AudioInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DFLT_SAMPLE_RATE</span><span class="p">):</span>
 </span><span id="line-175"><span class="w">    </span><span class="sd">"""Convert any supported input into ``(numpy float32 mono, sample_rate)``.</span>
 </span><span id="line-176">
-</span><span id="line-177"><span class="sd">    Numpy input is returned as-is (paired with ``sample_rate``). Everything else</span>
-</span><span id="line-178"><span class="sd">    is decoded with soundfile and resampled is *not* performed — the returned</span>
-</span><span id="line-179"><span class="sd">    sample rate is whatever the source had (numpy inputs excepted).</span>
-</span><span id="line-180"><span class="sd">    """</span>
-</span><span id="line-181">    <span class="n">np</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">"waveform conversion"</span><span class="p">)</span>
-</span><span id="line-182">    <span class="k">if</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"numpy"</span><span class="p">:</span>
-</span><span id="line-183">        <span class="k">return</span> <span class="n">audio</span><span class="p">,</span> <span class="n">sample_rate</span>
-</span><span id="line-184">    <span class="n">sf</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">"soundfile"</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">"soundfile"</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">"audio decoding"</span><span class="p">)</span>
-</span><span id="line-185">    <span class="k">with</span> <span class="n">audio_path</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
-</span><span id="line-186">        <span class="n">data</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"float32"</span><span class="p">)</span>
-</span><span id="line-187">    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">"ndim"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># downmix to mono</span>
-</span><span id="line-188">        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-</span><span id="line-189">    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">sr</span></div>
+</span><span id="line-177"><span class="sd">    Numpy input is down-mixed and paired with ``sample_rate``. Everything else</span>
+</span><span id="line-178"><span class="sd">    is decoded by :func:`scribed.audio.load_audio` (libsndfile, falling back to</span>
+</span><span id="line-179"><span class="sd">    ``ffmpeg`` for mp3/m4a/webm/opus) and down-mixed; *no* resampling is done, so</span>
+</span><span id="line-180"><span class="sd">    the returned sample rate is whatever the source had (numpy inputs excepted).</span>
+</span><span id="line-181"><span class="sd">    """</span>
+</span><span id="line-182">    <span class="c1"># check_import gives the friendly install hint before scribed.audio imports numpy.</span>
+</span><span id="line-183">    <span class="n">check_import</span><span class="p">(</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">"waveform conversion"</span><span class="p">)</span>
+</span><span id="line-184">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.audio</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_audio</span><span class="p">,</span> <span class="n">to_mono</span>
+</span><span id="line-185">
+</span><span id="line-186">    <span class="k">if</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"numpy"</span><span class="p">:</span>
+</span><span id="line-187">        <span class="k">return</span> <span class="n">to_mono</span><span class="p">(</span><span class="n">audio</span><span class="p">),</span> <span class="n">sample_rate</span>
+</span><span id="line-188">
+</span><span id="line-189">    <span class="k">with</span> <span class="n">audio_path</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+</span><span id="line-190">        <span class="n">data</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">load_audio</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">always_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="line-191">    <span class="k">return</span> <span class="n">to_mono</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">sr</span></div>
 
 </span></code></pre></div>
     </div></div>
@@ -401,7 +403,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=53b53b71"></script>
+    <script src="../../_static/documentation_options.js?v=f7cdbf68"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
