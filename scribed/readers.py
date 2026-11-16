@@ -291,10 +291,13 @@ def _parse_json(text: str) -> List[_Row]:
     """Accepted: ``{"segments": [...]}`` or a list of segments, each ``{"text",
     "start", "end", "speaker", "words": [{"text"|"word", "start", "end"}, ...]}``
     (``start_ms``/``end_ms`` too; a word may be ``[text, start, end]``); or a bare
-    list of words, read as one segment."""
+    list of words, read as one segment. A *top-level list* of ``{"text", "start",
+    "end"}`` without any ``words`` is ambiguous and is read as words; wrap segments
+    in ``{"segments": [...]}`` to keep them apart."""
     obj = json.loads(text)
+    maybe_words = False  # could ``items`` be a bare list of words (one line)?
     if isinstance(obj, Mapping):
-        items = obj.get("segments")
+        items = obj.get("segments")  # entries here are segments, never words
         if items is None:
             items = obj.get("words")
             if items is None:
@@ -304,8 +307,11 @@ def _parse_json(text: str) -> List[_Row]:
             items = [{"words": items}]
     else:
         items = list(obj)
-    if items and all(_word_from(it) is not None for it in items):
-        items = [{"words": items}]  # a bare list of words: one line
+        # An entry with its own "words" is a segment; text/start/end alone is ambiguous
+        # (a word or an untimed-words segment), and reads as a word.
+        maybe_words = not any(isinstance(it, Mapping) and "words" in it for it in items)
+    if maybe_words and items and all(_word_from(it) is not None for it in items):
+        items = [{"words": items}]
     out: List[_Row] = []
     for item in items:
         if not isinstance(item, Mapping):
@@ -313,6 +319,10 @@ def _parse_json(text: str) -> List[_Row]:
         raw_words = item.get("words") or ()
         words = tuple(w for w in (_word_from(x) for x in raw_words) if w)
         body = item.get("text")
+        if not body:  # absent or empty: rebuild it from the words (a word entry too)
+            if not words and _word_from(item):
+                words = (_word_from(item),)
+            body = None
         if body is None:
             body = " ".join(w[0] for w in words)
         start, end = _number(item, "start", "start_ms"), _number(item, "end", "end_ms")
