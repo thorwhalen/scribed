@@ -38,13 +38,7 @@ class Adapter(BaseTranscriberAdapter):
         if not self._configured:
             import assemblyai as aai
 
-            from scribed.credentials import resolve_credential
-
-            key = resolve_credential(
-                "assemblyai",
-                env_var=self.config.get("api_env_var") or None,
-                required=True,
-            )
+            key = self.credential()
             aai.settings.api_key = key
             self._configured = True
 

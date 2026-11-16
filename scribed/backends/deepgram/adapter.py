@@ -78,13 +78,7 @@ class Adapter(BaseTranscriberAdapter):
         if self._client is None:
             from deepgram import DeepgramClient
 
-            from scribed.credentials import resolve_credential
-
-            key = resolve_credential(
-                "deepgram",
-                env_var=self.config.get("api_env_var") or None,
-                required=True,
-            )
+            key = self.credential()
             self._client = DeepgramClient(key)
         return self._client
 

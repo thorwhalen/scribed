@@ -51,13 +51,7 @@ class Adapter(BaseTranscriberAdapter):
         if self._client is None:
             from elevenlabs.client import ElevenLabs
 
-            from scribed.credentials import resolve_credential
-
-            key = resolve_credential(
-                "elevenlabs",
-                env_var=self.config.get("api_env_var") or None,
-                required=True,
-            )
+            key = self.credential()
             self._client = ElevenLabs(api_key=key)
         return self._client
 

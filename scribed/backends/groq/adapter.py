@@ -32,11 +32,7 @@ class Adapter(BaseTranscriberAdapter):
         if self._client is None:
             from groq import Groq
 
-            from scribed.credentials import resolve_credential
-
-            key = resolve_credential(
-                "groq", env_var=self.config.get("api_env_var") or None, required=True
-            )
+            key = self.credential()
             self._client = Groq(api_key=key)
         return self._client
 

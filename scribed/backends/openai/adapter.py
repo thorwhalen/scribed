@@ -29,11 +29,7 @@ class Adapter(BaseTranscriberAdapter):
         if self._client is None:
             from openai import OpenAI
 
-            from scribed.credentials import resolve_credential
-
-            key = resolve_credential(
-                "openai", env_var=self.config.get("api_env_var") or None, required=True
-            )
+            key = self.credential()
             self._client = OpenAI(api_key=key)
         return self._client
 

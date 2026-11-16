@@ -73,8 +73,36 @@ class BaseTranscriberAdapter:
     natively_streams: bool = False
 
     def transcribe(self, audio, **kwargs) -> Transcript:
+        api_key = kwargs.pop("api_key", None) if self._takes_api_key else None
+        if api_key:
+            # A key handed for this call only: serve it from a private copy of the
+            # adapter, so the shared one (and its cached client) never holds it.
+            private = type(self)({**self.config, "api_key": api_key})
+            return private.transcribe(audio, **kwargs)
         native = self._translate(**kwargs) if self._translate else dict(kwargs)
         return self._transcribe(audio, **native)
+
+    @property
+    def _takes_api_key(self) -> bool:
+        """Only remote backends (which resolve a credential) accept ``api_key=``."""
+        return bool(self.config.get("is_remote"))
+
+    def credential(self) -> str:
+        """This backend's API key: ``config['api_key']``, else the environment.
+
+        ``config['api_key']`` (set by ``transcribe(..., api_key=...)`` or by a host
+        registering the backend with a key) wins, so a host that keeps keys out of
+        its environment can still use the backend. See
+        :func:`scribed.credentials.resolve_credential` for the rest of the chain.
+        """
+        from scribed.credentials import resolve_credential
+
+        return resolve_credential(
+            self.backend_id,
+            api_key=self.config.get("api_key"),
+            env_var=self.config.get("api_env_var") or None,
+            required=True,
+        )
 
     def _transcribe(self, audio, **native_kwargs) -> Transcript:  # pragma: no cover
         raise NotImplementedError(
