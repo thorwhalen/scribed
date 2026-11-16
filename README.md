@@ -118,8 +118,12 @@ Some hosted services fetch the audio themselves, so nothing is downloaded or upl
 by you (handy on a small server, or for a recording over the upload limit):
 
 ```python
-t = scribed.transcribe("https://example.org/episode.mp3", backend="groq", word_timestamps=True)
-scribed.list_backends("remote_fetch")  # backends that take an address: ['elevenlabs', 'groq']
+t = scribed.transcribe(
+    "https://example.org/episode.mp3", backend="groq", word_timestamps=True
+)
+scribed.list_backends(
+    "remote_fetch"
+)  # backends that take an address: ['elevenlabs', 'groq']
 scribed.list_backends("word_timestamps")  # backends that return word times
 ```
 
