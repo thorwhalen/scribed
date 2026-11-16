@@ -413,3 +413,42 @@ def test_services_access():
     assert scribed.services.deepgram.name == "deepgram"
     with pytest.raises(AttributeError):
         scribed.services.nonexistent_backend  # noqa: B018
+
+
+def _only_importable(monkeypatch, *backend_ids):
+    from scribed import registry
+
+    monkeypatch.setattr(registry, "_is_available", lambda b: b in backend_ids)
+
+
+def test_default_backend_never_picks_remote_implicitly(monkeypatch):
+    # The flagged local default is missing; remote services are importable.
+    _only_importable(monkeypatch, "elevenlabs", "openai")
+    with pytest.warns(UserWarning, match="allow_remote"):
+        chosen = scribed.get_default_backend()
+    assert scribed.get_config(chosen)["is_local"] is True
+    assert chosen == "faster-whisper"  # falls through to the flagged install error
+
+
+def test_default_backend_allow_remote_is_explicit(monkeypatch):
+    _only_importable(monkeypatch, "elevenlabs", "openai")
+    chosen = scribed.get_default_backend(allow_remote=True)
+    assert scribed.get_config(chosen)["is_remote"] is True
+
+
+def test_default_backend_prefers_other_local_over_remote(monkeypatch):
+    _only_importable(monkeypatch, "elevenlabs", "vosk")
+    assert scribed.get_default_backend() == "vosk"
+    assert scribed.get_default_backend(allow_remote=True) == "vosk"
+
+
+def test_transcribe_without_backend_never_reaches_a_remote_adapter(monkeypatch):
+    from scribed import registry
+
+    _only_importable(monkeypatch, "openai")
+    built = []
+    monkeypatch.setattr(registry, "get_backend", lambda b: built.append(b))
+    with pytest.warns(UserWarning, match="allow_remote"):
+        chosen = scribed.get_default_backend()
+    assert chosen == "faster-whisper"
+    assert built == []  # nothing was instantiated, nothing uploaded

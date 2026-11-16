@@ -10,7 +10,7 @@ diarization support, and quirks. scribed gives you:
    :class:`~scribed.base.Transcript` back no matter which backend ran::
 
        import scribed
-       t = scribed.transcribe("talk.mp3")          # default (first installed) backend
+       t = scribed.transcribe("talk.mp3")          # default (first installed local) backend
        print(t)                                     # -> the transcript text
        t = scribed.transcribe("talk.mp3", backend="deepgram", diarize=True)
        print(t.srt)                                 # -> SRT subtitles
@@ -157,7 +157,8 @@ def transcribe(audio: AudioInput, *, backend: str = None, **kwargs) -> Transcrip
         audio: A path, ``http(s)`` URL, ``bytes``, file-like object, or numpy
             waveform.
         backend: Backend id (see :func:`list_backends`). Defaults to the first
-            *installed* implemented backend (see :func:`get_default_backend`).
+            *installed* **local** backend (see :func:`get_default_backend`); a
+            remote service is never picked implicitly, name it here.
         **kwargs: Normalized, backend-translated options (e.g. ``language``,
             ``diarize``, ``word_timestamps``). Unknown options for the chosen
             backend are warned about and dropped.
