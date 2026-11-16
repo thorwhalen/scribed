@@ -21,4 +21,5 @@ scribed.registry
       is_local
       list_backends
       register_backend
+      sdk_problem
    

@@ -29,14 +29,15 @@ derive that set with `list_backends("whisper_sized_model")` rather than hardcode
 
 ### Functions
 
-| [`clear_registry`](#scribed.registry.clear_registry)()                                | Clear all registered backends (useful for tests).                      |
-|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| [`get_backend`](#scribed.registry.get_backend)(backend_id)                         | Config + lazily-loaded adapter for a backend (raises on missing deps). |
-| [`get_config`](#scribed.registry.get_config)(backend_id)                          | A backend's `BACKEND_CONFIG` without loading its adapter.              |
-| [`get_default_backend`](#scribed.registry.get_default_backend)([capability, ...])          | Pick a sensible default backend id for a capability.                   |
-| [`is_local`](#scribed.registry.is_local)(backend_id)                            | Does `backend_id` run entirely on this machine (never uploads audio)?  |
-| [`list_backends`](#scribed.registry.list_backends)([capability])                     | Sorted ids of implemented backends, optionally filtered by capability. |
-| [`register_backend`](#scribed.registry.register_backend)(backend_id, config[, adapter]) | Register a backend at runtime (for third-party plugins).               |
+| [`clear_registry`](#scribed.registry.clear_registry)()                                | Clear all registered backends (useful for tests).                         |
+|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| [`get_backend`](#scribed.registry.get_backend)(backend_id)                         | Config + lazily-loaded adapter for a backend (raises on missing deps).    |
+| [`get_config`](#scribed.registry.get_config)(backend_id)                          | A backend's `BACKEND_CONFIG` without loading its adapter.                 |
+| [`get_default_backend`](#scribed.registry.get_default_backend)([capability, ...])          | Pick a sensible default backend id for a capability.                      |
+| [`is_local`](#scribed.registry.is_local)(backend_id)                            | Does `backend_id` run entirely on this machine (never uploads audio)?     |
+| [`list_backends`](#scribed.registry.list_backends)([capability])                     | Sorted ids of implemented backends, optionally filtered by capability.    |
+| [`register_backend`](#scribed.registry.register_backend)(backend_id, config[, adapter]) | Register a backend at runtime (for third-party plugins).                  |
+| [`sdk_problem`](#scribed.registry.sdk_problem)(backend_id)                         | Why the installed SDK does not suit `backend_id`, or `None` when it does. |
 
 ### scribed.registry.PRIMARY_CAPABILITY *= 'transcribe'*
 
@@ -113,3 +114,17 @@ Register a backend at runtime (for third-party plugins).
     `config['module_path']` when first used.
 * **Return type:**
   [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
+### scribed.registry.sdk_problem(backend_id)
+
+Why the installed SDK does not suit `backend_id`, or `None` when it does.
+
+A backend whose config states `sdk_requirement` (a requirement string such as
+`groq>=0.20.0`) needs an installed distribution in that range: an older SDK
+lacks parameters the adapter sends, and would otherwise be reported as ready
+and fail on a missing keyword. (A test keeps these equal to the extras in
+`pyproject.toml`.) A distribution that cannot be read counts as fine. Cached:
+reading metadata is slow.
+
+* **Return type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]

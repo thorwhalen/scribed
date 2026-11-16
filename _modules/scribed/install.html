@@ -470,88 +470,95 @@
 </span><span id="line-276"><span class="sd">    """</span>
 </span><span id="line-277">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
 </span><span id="line-278">
-</span><span id="line-279">    <span class="n">available</span><span class="p">,</span> <span class="n">missing</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">{}</span>
-</span><span id="line-280">    <span class="k">for</span> <span class="n">bid</span> <span class="ow">in</span> <span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">():</span>
-</span><span id="line-281">        <span class="k">if</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">bid</span><span class="p">):</span>
-</span><span id="line-282">            <span class="n">available</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span>
-</span><span id="line-283">        <span class="k">else</span><span class="p">:</span>
-</span><span id="line-284">            <span class="n">req</span> <span class="o">=</span> <span class="n">requirements</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span>
-</span><span id="line-285">            <span class="n">hint</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">pip_command</span>
-</span><span id="line-286">            <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
-</span><span id="line-287">                <span class="n">hint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> ; </span><span class="si">{</span><span class="n">hint</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-288">            <span class="n">missing</span><span class="p">[</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">hint</span>
-</span><span id="line-289">    <span class="k">return</span> <span class="p">{</span><span class="s2">"available"</span><span class="p">:</span> <span class="n">available</span><span class="p">,</span> <span class="s2">"missing"</span><span class="p">:</span> <span class="n">missing</span><span class="p">}</span></div>
+</span><span id="line-279">    <span class="n">registry</span><span class="o">.</span><span class="n">sdk_problem</span><span class="o">.</span><span class="n">cache_clear</span><span class="p">()</span>  <span class="c1"># an SDK may have been upgraded since</span>
+</span><span id="line-280">    <span class="n">available</span><span class="p">,</span> <span class="n">missing</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">{}</span>
+</span><span id="line-281">    <span class="k">for</span> <span class="n">bid</span> <span class="ow">in</span> <span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">():</span>
+</span><span id="line-282">        <span class="k">if</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">bid</span><span class="p">):</span>
+</span><span id="line-283">            <span class="n">available</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span>
+</span><span id="line-284">        <span class="k">else</span><span class="p">:</span>
+</span><span id="line-285">            <span class="n">req</span> <span class="o">=</span> <span class="n">requirements</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span>
+</span><span id="line-286">            <span class="n">hint</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">sdk_problem</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span> <span class="ow">or</span> <span class="n">req</span><span class="o">.</span><span class="n">pip_command</span>
+</span><span id="line-287">            <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
+</span><span id="line-288">                <span class="n">hint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> ; </span><span class="si">{</span><span class="n">hint</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-289">            <span class="n">missing</span><span class="p">[</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">hint</span>
+</span><span id="line-290">    <span class="k">return</span> <span class="p">{</span><span class="s2">"available"</span><span class="p">:</span> <span class="n">available</span><span class="p">,</span> <span class="s2">"missing"</span><span class="p">:</span> <span class="n">missing</span><span class="p">}</span></div>
 
-</span><span id="line-290">
 </span><span id="line-291">
+</span><span id="line-292">
 <div class="viewcode-block" id="install">
 <a class="viewcode-back" href="../../_autosummary/scribed.html#scribed.install">[docs]</a>
-</span><span id="line-292"><span class="k">def</span><span class="w"> </span><span class="nf">install</span><span class="p">(</span>
-</span><span id="line-293">    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="line-294">    <span class="o">*</span><span class="p">,</span>
-</span><span id="line-295">    <span class="n">yes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-296">    <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-297">    <span class="n">verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-</span><span id="line-298">    <span class="n">upgrade</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-299"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="line-300"><span class="w">    </span><span class="sd">"""Plan (and optionally run) the pip install for a backend.</span>
-</span><span id="line-301">
-</span><span id="line-302"><span class="sd">    With ``yes=False`` (default) this is a **dry run**: it returns the plan</span>
-</span><span id="line-303"><span class="sd">    without changing anything — call ``result['requirements'].instructions()`` to</span>
-</span><span id="line-304"><span class="sd">    show it. With ``yes=True`` it runs ``pip install`` for the backend's extra in</span>
-</span><span id="line-305"><span class="sd">    the current interpreter, then (if ``verify``) checks importability.</span>
-</span><span id="line-306">
-</span><span id="line-307"><span class="sd">    System dependencies and GPU wheels are *surfaced*, never run automatically</span>
-</span><span id="line-308"><span class="sd">    (they need sudo/brew or an environment-specific CUDA choice) — run those</span>
-</span><span id="line-309"><span class="sd">    yourself from ``result['requirements'].system`` / ``.gpu``.</span>
-</span><span id="line-310"><span class="sd">    """</span>
-</span><span id="line-311">    <span class="n">req</span> <span class="o">=</span> <span class="n">requirements</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="n">gpu</span><span class="p">)</span>
-</span><span id="line-312">    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="line-313">        <span class="s2">"backend"</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
-</span><span id="line-314">        <span class="s2">"requirements"</span><span class="p">:</span> <span class="n">req</span><span class="p">,</span>
-</span><span id="line-315">        <span class="s2">"ran"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-316">        <span class="s2">"available_before"</span><span class="p">:</span> <span class="n">req</span><span class="o">.</span><span class="n">available</span><span class="p">,</span>
-</span><span id="line-317">    <span class="p">}</span>
-</span><span id="line-318">    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">available</span><span class="p">:</span>
-</span><span id="line-319">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">' is already available — nothing to do."</span>
-</span><span id="line-320">        <span class="k">return</span> <span class="n">result</span>
-</span><span id="line-321">    <span class="k">if</span> <span class="ow">not</span> <span class="n">req</span><span class="o">.</span><span class="n">implemented</span><span class="p">:</span>
-</span><span id="line-322">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
-</span><span id="line-323">        <span class="k">return</span> <span class="n">result</span>
-</span><span id="line-324">    <span class="k">if</span> <span class="ow">not</span> <span class="n">yes</span><span class="p">:</span>
-</span><span id="line-325">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="line-326">            <span class="s2">"Dry run — pass yes=True to run the pip install.</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">req</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
-</span><span id="line-327">        <span class="p">)</span>
-</span><span id="line-328">        <span class="k">return</span> <span class="n">result</span>
-</span><span id="line-329">
-</span><span id="line-330">    <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
-</span><span id="line-331">
-</span><span id="line-332">    <span class="n">target</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"scribed[</span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">extra</span><span class="si">}</span><span class="s2">]"</span> <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">extra</span> <span class="k">else</span> <span class="n">backend_id</span>
-</span><span id="line-333">    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">"-m"</span><span class="p">,</span> <span class="s2">"pip"</span><span class="p">,</span> <span class="s2">"install"</span><span class="p">]</span>
-</span><span id="line-334">    <span class="k">if</span> <span class="n">upgrade</span><span class="p">:</span>
-</span><span id="line-335">        <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"--upgrade"</span><span class="p">)</span>
-</span><span id="line-336">    <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
-</span><span id="line-337">    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="line-338">    <span class="n">result</span><span class="p">[</span><span class="s2">"ran"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="line-339">    <span class="n">result</span><span class="p">[</span><span class="s2">"pip_argv"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmd</span>
-</span><span id="line-340">    <span class="n">result</span><span class="p">[</span><span class="s2">"returncode"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span>
-</span><span id="line-341">    <span class="n">result</span><span class="p">[</span><span class="s2">"stdout_tail"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span>
-</span><span id="line-342">    <span class="n">result</span><span class="p">[</span><span class="s2">"stderr_tail"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span>
-</span><span id="line-343">    <span class="k">if</span> <span class="n">verify</span> <span class="ow">and</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-</span><span id="line-344">        <span class="c1"># Importability is module-cached; probe in a fresh interpreter.</span>
-</span><span id="line-345">        <span class="n">probe</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-</span><span id="line-346">            <span class="p">[</span>
-</span><span id="line-347">                <span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
-</span><span id="line-348">                <span class="s2">"-c"</span><span class="p">,</span>
-</span><span id="line-349">                <span class="sa">f</span><span class="s2">"import scribed; print(scribed.check('</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">'))"</span><span class="p">,</span>
-</span><span id="line-350">            <span class="p">],</span>
-</span><span id="line-351">            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="line-352">            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="line-353">        <span class="p">)</span>
-</span><span id="line-354">        <span class="n">result</span><span class="p">[</span><span class="s2">"available_after"</span><span class="p">]</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"True"</span>
-</span><span id="line-355">    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
-</span><span id="line-356">        <span class="n">result</span><span class="p">[</span><span class="s2">"system_todo"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span>
-</span><span id="line-357">    <span class="k">return</span> <span class="n">result</span></div>
+</span><span id="line-293"><span class="k">def</span><span class="w"> </span><span class="nf">install</span><span class="p">(</span>
+</span><span id="line-294">    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="line-295">    <span class="o">*</span><span class="p">,</span>
+</span><span id="line-296">    <span class="n">yes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-297">    <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-298">    <span class="n">verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="line-299">    <span class="n">upgrade</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-300"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="line-301"><span class="w">    </span><span class="sd">"""Plan (and optionally run) the pip install for a backend.</span>
+</span><span id="line-302">
+</span><span id="line-303"><span class="sd">    With ``yes=False`` (default) this is a **dry run**: it returns the plan</span>
+</span><span id="line-304"><span class="sd">    without changing anything — call ``result['requirements'].instructions()`` to</span>
+</span><span id="line-305"><span class="sd">    show it. With ``yes=True`` it runs ``pip install`` for the backend's extra in</span>
+</span><span id="line-306"><span class="sd">    the current interpreter, then (if ``verify``) checks importability.</span>
+</span><span id="line-307">
+</span><span id="line-308"><span class="sd">    System dependencies and GPU wheels are *surfaced*, never run automatically</span>
+</span><span id="line-309"><span class="sd">    (they need sudo/brew or an environment-specific CUDA choice) — run those</span>
+</span><span id="line-310"><span class="sd">    yourself from ``result['requirements'].system`` / ``.gpu``.</span>
+</span><span id="line-311"><span class="sd">    """</span>
+</span><span id="line-312">    <span class="n">req</span> <span class="o">=</span> <span class="n">requirements</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="n">gpu</span><span class="p">)</span>
+</span><span id="line-313">    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="line-314">        <span class="s2">"backend"</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
+</span><span id="line-315">        <span class="s2">"requirements"</span><span class="p">:</span> <span class="n">req</span><span class="p">,</span>
+</span><span id="line-316">        <span class="s2">"ran"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-317">        <span class="s2">"available_before"</span><span class="p">:</span> <span class="n">req</span><span class="o">.</span><span class="n">available</span><span class="p">,</span>
+</span><span id="line-318">    <span class="p">}</span>
+</span><span id="line-319">    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">available</span><span class="p">:</span>
+</span><span id="line-320">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">' is already available — nothing to do."</span>
+</span><span id="line-321">        <span class="k">return</span> <span class="n">result</span>
+</span><span id="line-322">    <span class="k">if</span> <span class="ow">not</span> <span class="n">req</span><span class="o">.</span><span class="n">implemented</span><span class="p">:</span>
+</span><span id="line-323">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
+</span><span id="line-324">        <span class="k">return</span> <span class="n">result</span>
+</span><span id="line-325">    <span class="k">if</span> <span class="ow">not</span> <span class="n">yes</span><span class="p">:</span>
+</span><span id="line-326">        <span class="n">result</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="line-327">            <span class="s2">"Dry run — pass yes=True to run the pip install.</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">req</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
+</span><span id="line-328">        <span class="p">)</span>
+</span><span id="line-329">        <span class="k">return</span> <span class="n">result</span>
+</span><span id="line-330">
+</span><span id="line-331">    <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+</span><span id="line-332">
+</span><span id="line-333">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+</span><span id="line-334">
+</span><span id="line-335">    <span class="n">target</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"scribed[</span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">extra</span><span class="si">}</span><span class="s2">]"</span> <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">extra</span> <span class="k">else</span> <span class="n">backend_id</span>
+</span><span id="line-336">    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">"-m"</span><span class="p">,</span> <span class="s2">"pip"</span><span class="p">,</span> <span class="s2">"install"</span><span class="p">]</span>
+</span><span id="line-337">    <span class="k">if</span> <span class="n">registry</span><span class="o">.</span><span class="n">sdk_problem</span><span class="p">(</span><span class="n">backend_id</span><span class="p">):</span>
+</span><span id="line-338">        <span class="c1"># The SDK is installed but too old: upgrade just it (never scribed itself).</span>
+</span><span id="line-339">        <span class="n">target</span><span class="p">,</span> <span class="n">upgrade</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)[</span><span class="s2">"sdk_requirement"</span><span class="p">],</span> <span class="kc">True</span>
+</span><span id="line-340">    <span class="k">if</span> <span class="n">upgrade</span><span class="p">:</span>
+</span><span id="line-341">        <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"--upgrade"</span><span class="p">)</span>
+</span><span id="line-342">    <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+</span><span id="line-343">    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="line-344">    <span class="n">registry</span><span class="o">.</span><span class="n">sdk_problem</span><span class="o">.</span><span class="n">cache_clear</span><span class="p">()</span>
+</span><span id="line-345">    <span class="n">result</span><span class="p">[</span><span class="s2">"ran"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="line-346">    <span class="n">result</span><span class="p">[</span><span class="s2">"pip_argv"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmd</span>
+</span><span id="line-347">    <span class="n">result</span><span class="p">[</span><span class="s2">"returncode"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span>
+</span><span id="line-348">    <span class="n">result</span><span class="p">[</span><span class="s2">"stdout_tail"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span>
+</span><span id="line-349">    <span class="n">result</span><span class="p">[</span><span class="s2">"stderr_tail"</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span>
+</span><span id="line-350">    <span class="k">if</span> <span class="n">verify</span> <span class="ow">and</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="line-351">        <span class="c1"># Importability is module-cached; probe in a fresh interpreter.</span>
+</span><span id="line-352">        <span class="n">probe</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+</span><span id="line-353">            <span class="p">[</span>
+</span><span id="line-354">                <span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
+</span><span id="line-355">                <span class="s2">"-c"</span><span class="p">,</span>
+</span><span id="line-356">                <span class="sa">f</span><span class="s2">"import scribed; print(scribed.check('</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">'))"</span><span class="p">,</span>
+</span><span id="line-357">            <span class="p">],</span>
+</span><span id="line-358">            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="line-359">            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="line-360">        <span class="p">)</span>
+</span><span id="line-361">        <span class="n">result</span><span class="p">[</span><span class="s2">"available_after"</span><span class="p">]</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"True"</span>
+</span><span id="line-362">    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
+</span><span id="line-363">        <span class="n">result</span><span class="p">[</span><span class="s2">"system_todo"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span>
+</span><span id="line-364">    <span class="k">return</span> <span class="n">result</span></div>
 
 </span></code></pre></div>
     </div></div>
@@ -566,7 +573,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=c7cdf6fe"></script>
+    <script src="../../_static/documentation_options.js?v=63b572e7"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

@@ -1,4 +1,4 @@
-> built 2026-11-16 23:12 UTC from f4d14d9 (main) · scribed 0.0.16. Details: build_info.json
+> built 2026-11-16 23:21 UTC from 25b4894 (main) · scribed 0.0.17. Details: build_info.json
 
 # index.html.md
 
@@ -2786,14 +2786,15 @@ derive that set with `list_backends("whisper_sized_model")` rather than hardcode
 
 ### Functions
 
-| [`clear_registry`](_autosummary/scribed.registry.html.md#scribed.registry.clear_registry)()                                | Clear all registered backends (useful for tests).                      |
-|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| [`get_backend`](_autosummary/scribed.registry.html.md#scribed.registry.get_backend)(backend_id)                         | Config + lazily-loaded adapter for a backend (raises on missing deps). |
-| [`get_config`](_autosummary/scribed.registry.html.md#scribed.registry.get_config)(backend_id)                          | A backend's `BACKEND_CONFIG` without loading its adapter.              |
-| [`get_default_backend`](_autosummary/scribed.registry.html.md#scribed.registry.get_default_backend)([capability, ...])          | Pick a sensible default backend id for a capability.                   |
-| [`is_local`](_autosummary/scribed.registry.html.md#scribed.registry.is_local)(backend_id)                            | Does `backend_id` run entirely on this machine (never uploads audio)?  |
-| [`list_backends`](_autosummary/scribed.registry.html.md#scribed.registry.list_backends)([capability])                     | Sorted ids of implemented backends, optionally filtered by capability. |
-| [`register_backend`](_autosummary/scribed.registry.html.md#scribed.registry.register_backend)(backend_id, config[, adapter]) | Register a backend at runtime (for third-party plugins).               |
+| [`clear_registry`](_autosummary/scribed.registry.html.md#scribed.registry.clear_registry)()                                | Clear all registered backends (useful for tests).                         |
+|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| [`get_backend`](_autosummary/scribed.registry.html.md#scribed.registry.get_backend)(backend_id)                         | Config + lazily-loaded adapter for a backend (raises on missing deps).    |
+| [`get_config`](_autosummary/scribed.registry.html.md#scribed.registry.get_config)(backend_id)                          | A backend's `BACKEND_CONFIG` without loading its adapter.                 |
+| [`get_default_backend`](_autosummary/scribed.registry.html.md#scribed.registry.get_default_backend)([capability, ...])          | Pick a sensible default backend id for a capability.                      |
+| [`is_local`](_autosummary/scribed.registry.html.md#scribed.registry.is_local)(backend_id)                            | Does `backend_id` run entirely on this machine (never uploads audio)?     |
+| [`list_backends`](_autosummary/scribed.registry.html.md#scribed.registry.list_backends)([capability])                     | Sorted ids of implemented backends, optionally filtered by capability.    |
+| [`register_backend`](_autosummary/scribed.registry.html.md#scribed.registry.register_backend)(backend_id, config[, adapter]) | Register a backend at runtime (for third-party plugins).                  |
+| [`sdk_problem`](_autosummary/scribed.registry.html.md#scribed.registry.sdk_problem)(backend_id)                         | Why the installed SDK does not suit `backend_id`, or `None` when it does. |
 
 ### scribed.registry.PRIMARY_CAPABILITY *= 'transcribe'*
 
@@ -2870,6 +2871,20 @@ Register a backend at runtime (for third-party plugins).
     `config['module_path']` when first used.
 * **Return type:**
   [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
+### scribed.registry.sdk_problem(backend_id)
+
+Why the installed SDK does not suit `backend_id`, or `None` when it does.
+
+A backend whose config states `sdk_requirement` (a requirement string such as
+`groq>=0.20.0`) needs an installed distribution in that range: an older SDK
+lacks parameters the adapter sends, and would otherwise be reported as ready
+and fail on a missing keyword. (A test keeps these equal to the extras in
+`pyproject.toml`.) A distribution that cannot be read counts as fine. Cached:
+reading metadata is slow.
+
+* **Return type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 
 # _autosummary/scribed.status.html.md
@@ -3288,7 +3303,7 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-16 23:12 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/f4d14d94a8e05aa35d9563f0541d0137acde9369"><code>f4d14d9</code></a> on branch <code>main</code>, for **scribed 0.0.16** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-16 23:21 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/25b48948c8df56f9e8343c7039d20597f8132d8b"><code>25b4894</code></a> on branch <code>main</code>, for **scribed 0.0.17** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3297,7 +3312,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/f4d14d94a8e05aa35d9563f0541d0137acde9369"><code>f4d14d94a8e05aa35d9563f0541d0137acde9369</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/25b48948c8df56f9e8343c7039d20597f8132d8b"><code>25b48948c8df56f9e8343c7039d20597f8132d8b</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3308,9 +3323,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43976974022">43976974022</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43978335341">43978335341</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>f4d14d94a8e05aa35d9563f0541d0137acde9369</code> (in the history of the built commit) |
+| Event commit | <code>25b48948c8df56f9e8343c7039d20597f8132d8b</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3335,13 +3350,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.16/">0.0.16</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.17/">0.0.17</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout f4d14d94a8e05aa35d9563f0541d0137acde9369
+git checkout 25b48948c8df56f9e8343c7039d20597f8132d8b
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

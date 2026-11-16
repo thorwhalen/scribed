@@ -177,6 +177,9 @@ derive that set with <code class="docutils literal notranslate"><span class="pre
 <tr class="row-odd"><td><p><a class="reference internal" href="#scribed.registry.register_backend" title="scribed.registry.register_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_backend</span></code></a>(backend_id, config[, adapter])</p></td>
 <td><p>Register a backend at runtime (for third-party plugins).</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.registry.sdk_problem" title="scribed.registry.sdk_problem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sdk_problem</span></code></a>(backend_id)</p></td>
+<td><p>Why the installed SDK does not suit <code class="docutils literal notranslate"><span class="pre">backend_id</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> when it does.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py data">
@@ -276,6 +279,22 @@ the backend is never chosen as an implicit default.</p></li>
 </dd>
 </dl>
 </dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.registry.sdk_problem">
+<span class="sig-prename descclassname"><span class="pre">scribed.registry.</span></span><span class="sig-name descname"><span class="pre">sdk_problem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/registry.html#sdk_problem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.registry.sdk_problem" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.registry.sdk_problem'">¶</a></dt>
+<dd><p>Why the installed SDK does not suit <code class="docutils literal notranslate"><span class="pre">backend_id</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code> when it does.</p>
+<p>A backend whose config states <code class="docutils literal notranslate"><span class="pre">sdk_requirement</span></code> (a requirement string such as
+<code class="docutils literal notranslate"><span class="pre">groq&gt;=0.20.0</span></code>) needs an installed distribution in that range: an older SDK
+lacks parameters the adapter sends, and would otherwise be reported as ready
+and fail on a missing keyword. (A test keeps these equal to the extras in
+<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.) A distribution that cannot be read counts as fine. Cached:
+reading metadata is slow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
 </section>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
@@ -288,6 +307,7 @@ the backend is never chosen as an implicit default.</p></li>
 <li><a :data-current="activeSection === '#scribed.registry.is_local'" class="reference internal" href="#scribed.registry.is_local"><code class="docutils literal notranslate"><span class="pre">is_local()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.registry.list_backends'" class="reference internal" href="#scribed.registry.list_backends"><code class="docutils literal notranslate"><span class="pre">list_backends()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.registry.register_backend'" class="reference internal" href="#scribed.registry.register_backend"><code class="docutils literal notranslate"><span class="pre">register_backend()</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.registry.sdk_problem'" class="reference internal" href="#scribed.registry.sdk_problem"><code class="docutils literal notranslate"><span class="pre">sdk_problem()</span></code></a></li>
 </ul>
 </div>
 </aside>
@@ -301,7 +321,7 @@ the backend is never chosen as an implicit default.</p></li>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=c7cdf6fe"></script>
+<script src="../_static/documentation_options.js?v=63b572e7"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
