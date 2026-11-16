@@ -130,7 +130,9 @@ def register_backend(backend_id: str, config: dict, adapter: Any = None) -> None
 
     Args:
         backend_id: Unique identifier.
-        config: ``BACKEND_CONFIG``-shaped dict (needs at least ``name``).
+        config: ``BACKEND_CONFIG``-shaped dict (needs at least ``name``). Set
+            ``is_local: True`` for a backend that never uploads audio: without it
+            the backend is never chosen as an implicit default.
         adapter: Optional pre-instantiated adapter; else loaded lazily from
             ``config['module_path']`` when first used.
     """
@@ -182,6 +184,16 @@ def get_backend(backend_id: str) -> dict:
     }
 
 
+def is_local(backend_id: str) -> bool:
+    """Does ``backend_id`` run entirely on this machine (never uploads audio)?
+
+    A config lacking ``is_local`` (e.g. a third-party plugin that does not say) or
+    flagged ``is_remote`` counts as *not* local: the safe reading.
+    """
+    cfg = get_config(backend_id)
+    return bool(cfg.get("is_local")) and not cfg.get("is_remote")
+
+
 def get_default_backend(
     capability: str = PRIMARY_CAPABILITY,
     *,
@@ -202,18 +214,20 @@ def get_default_backend(
     """
     _discover_backends()
 
-    def is_local(bid: str) -> bool:
-        return bool(_registry[bid]["config"].get("is_local"))
-
-    candidates = list_backends(capability)
-    if not allow_remote:
-        candidates = [b for b in candidates if is_local(b)]
+    all_candidates = list_backends(capability)
+    candidates = (
+        all_candidates if allow_remote else [b for b in all_candidates if is_local(b)]
+    )
     if not candidates:
         raise ValueError(
-            f"No {'' if allow_remote else 'local '}backends implemented for "
-            f"capability {capability!r}. Install one (see scribed.requirements), "
-            "or name a remote backend explicitly (backend=...) or pass "
-            "allow_remote=True."
+            f"No {'' if allow_remote else 'local '}backends registered for "
+            f"capability {capability!r}. Install one (see scribed.requirements)"
+            + (
+                "."
+                if allow_remote
+                else ", or name a remote backend explicitly "
+                "(backend=...) or pass allow_remote=True."
+            )
         )
 
     flagged = [
@@ -229,6 +243,18 @@ def get_default_backend(
             for bid in pool:
                 if _is_available(bid):
                     return bid
+    if require_available and not allow_remote:
+        skipped = [
+            b for b in all_candidates if b not in candidates and _is_available(b)
+        ]
+        if skipped:
+            warnings.warn(
+                f"No local backend is installed; not using the installed remote "
+                f"backend(s) {skipped} implicitly, as that would upload your audio. "
+                "Name one (backend=...) or pass allow_remote=True to use it, or "
+                "install a local backend (see scribed.requirements).",
+                stacklevel=2,
+            )
     # Fall back to a declared default, else the first candidate.
     return flagged[0] if flagged else by_locality[0]
 

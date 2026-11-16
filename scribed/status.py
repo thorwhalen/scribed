@@ -68,7 +68,7 @@ def is_set_up(backend_id: str) -> bool:
     if not check(backend_id):  # engine / client library importable?
         return False
     cfg = registry.get_config(backend_id)
-    if cfg.get("is_remote") and not cfg.get("is_local"):
+    if cfg.get("is_remote") and not registry.is_local(backend_id):
         # Remote also needs its credential present.
         from scribed.credentials import resolve_credential
 

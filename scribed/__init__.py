@@ -10,7 +10,7 @@ diarization support, and quirks. scribed gives you:
    :class:`~scribed.base.Transcript` back no matter which backend ran::
 
        import scribed
-       t = scribed.transcribe("talk.mp3")          # default (first installed) backend
+       t = scribed.transcribe("talk.mp3")          # default (first installed local) backend
        print(t)                                     # -> the transcript text
        t = scribed.transcribe("talk.mp3", backend="deepgram", diarize=True)
        print(t.srt)                                 # -> SRT subtitles

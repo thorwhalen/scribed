@@ -37,7 +37,7 @@ def transcribe(
     """Transcribe an audio file/URL and print the result.
 
     :param audio: Path or http(s) URL to the audio.
-    :param backend: Backend id (default: first installed). See ``scribed backends``.
+    :param backend: Backend id (default: first installed local one). See ``scribed backends``.
     :param language: Language code hint, e.g. ``en`` (omit to auto-detect).
     :param diarize: Ask the backend to label speakers (if it supports it).
     :param output: ``text`` (default), ``json`` (text + segments), ``srt``, or ``vtt``.
