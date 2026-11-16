@@ -556,7 +556,23 @@ def test_cues_never_have_end_equal_start_and_skip_empty_text():
     t = Transcript.from_segments(segs)
     vtt = t.as_vtt().splitlines()
     assert vtt[2] == "00:00:01.000 --> 00:00:01.001"
-    assert vtt.count("ok") == 1 and "   " not in vtt and "untimed" not in vtt
+    assert sum("-->" in line for line in vtt) == 2  # instant + ok: no empty cue
+    assert vtt.count("ok") == 1 and "untimed" not in vtt
     srt = t.as_srt().splitlines()
     assert srt[0] == "1" and srt[1] == "00:00:01,000 --> 00:00:01,001"
     assert [line for line in srt if line.isdigit()] == ["1", "2"]
+
+
+def test_cue_text_blank_lines_collapse_and_negative_times_clamp():
+    from scribed.base import Segment, TimeSpan, Transcript
+
+    t = Transcript.from_segments([Segment(text="a\n\nb", span=TimeSpan(-1000, 0))])
+    for out in (t.as_srt(), t.as_vtt()):
+        assert "a b" in out.splitlines()
+        assert (
+            "00:00:00.000 --> 00:00:00.001".replace(
+                ".", "," if out == t.as_srt() else "."
+            )
+            in out.splitlines()
+        )
+    assert Transcript.parse(t.as_srt()).text == "a b"

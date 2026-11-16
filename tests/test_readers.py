@@ -114,8 +114,6 @@ def test_unknown_format():
 
 
 def test_json_segments_with_words_keep_their_segments_and_words():
-    import json
-
     seg = lambda text, a, words: {  # noqa: E731
         "text": text,
         "start": a,
@@ -132,8 +130,6 @@ def test_json_segments_with_words_keep_their_segments_and_words():
 
 
 def test_json_segments_without_words_are_segments_not_words():
-    import json
-
     doc = {
         "segments": [
             {"text": "a b", "start": 0, "end": 1},
@@ -142,3 +138,24 @@ def test_json_segments_without_words_are_segments_not_words():
     }
     t = Transcript.parse(json.dumps(doc))
     assert [s.text for s in t] == ["a b", "c"] and t.words == []
+
+
+def test_json_segments_of_bare_words_still_read_as_words():
+    doc = {
+        "segments": [
+            {"word": "hi", "start": 0, "end": 0.5},
+            {"word": "there", "start": 0.5, "end": 1},
+        ]
+    }
+    t = Transcript.parse(json.dumps(doc))
+    assert t.text == "hi there" and [w.text for w in t.words] == ["hi", "there"]
+
+
+def test_json_segment_with_empty_text_is_rebuilt_from_its_words():
+    seg = {
+        "text": "",
+        "start": 0,
+        "end": 1,
+        "words": [{"text": "hi", "start": 0, "end": 1}],
+    }
+    assert Transcript.parse(json.dumps({"segments": [seg]})).text == "hi"

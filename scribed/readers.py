@@ -291,7 +291,9 @@ def _parse_json(text: str) -> List[_Row]:
     """Accepted: ``{"segments": [...]}`` or a list of segments, each ``{"text",
     "start", "end", "speaker", "words": [{"text"|"word", "start", "end"}, ...]}``
     (``start_ms``/``end_ms`` too; a word may be ``[text, start, end]``); or a bare
-    list of words, read as one segment."""
+    list of words, read as one segment. A *top-level list* of ``{"text", "start",
+    "end"}`` without any ``words`` is ambiguous and is read as words; wrap segments
+    in ``{"segments": [...]}`` to keep them apart."""
     obj = json.loads(text)
     maybe_words = False  # could ``items`` be a bare list of words (one line)?
     if isinstance(obj, Mapping):
@@ -317,6 +319,10 @@ def _parse_json(text: str) -> List[_Row]:
         raw_words = item.get("words") or ()
         words = tuple(w for w in (_word_from(x) for x in raw_words) if w)
         body = item.get("text")
+        if not body:  # absent or empty: rebuild it from the words (a word entry too)
+            if not words and _word_from(item):
+                words = (_word_from(item),)
+            body = None
         if body is None:
             body = " ".join(w[0] for w in words)
         start, end = _number(item, "start", "start_ms"), _number(item, "end", "end_ms")
