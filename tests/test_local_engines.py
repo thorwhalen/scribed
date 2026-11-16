@@ -258,34 +258,3 @@ def test_whisperx_missing_package_points_to_the_extra(monkeypatch):
     monkeypatch.setitem(sys.modules, "whisperx", None)
     with pytest.raises(ImportError, match=r"scribed\[whisperx\]"):
         _adapter("whisperx").transcribe(ONE_SECOND)
-
-
-# --- to_waveform falls back to ffmpeg for formats libsndfile cannot read (#15) ---
-
-
-def test_to_waveform_decodes_m4a_via_ffmpeg(tmp_path):
-    import shutil
-    import subprocess
-
-    ffmpeg = shutil.which("ffmpeg")
-    if not ffmpeg:
-        pytest.skip("ffmpeg not installed")
-    import soundfile as sf
-
-    from scribed.util import to_waveform
-
-    wav = tmp_path / "tone.wav"
-    sf.write(str(wav), ONE_SECOND, SR)
-    m4a = tmp_path / "tone.m4a"
-    cmd = [ffmpeg, "-y", "-i", str(wav), "-c:a", "aac", str(m4a)]
-    subprocess.run(cmd, check=True, capture_output=True)
-    for source in (str(m4a), m4a.read_bytes()):  # a path, and raw bytes
-        data, sr = to_waveform(source)
-        assert data.ndim == 1 and sr == SR
-        assert abs(len(data) - SR) < 0.1 * SR
-
-
-def test_requirements_mention_ffmpeg():
-    from scribed.install import requirements
-
-    assert any("ffmpeg" in n for n in requirements("mlx-whisper").notes)

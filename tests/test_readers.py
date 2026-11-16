@@ -72,7 +72,12 @@ def test_vtt_round_trip_voice_tag():
 def test_textgrid_long_form_words_inside_utterance():
     t = Transcript.parse(TEXTGRID_LONG)
     (seg,) = t.segments
-    assert (seg.speaker, seg.text, seg.start, seg.end) == ("carl", "hello there", 0.5, 1.3)
+    assert (seg.speaker, seg.text, seg.start, seg.end) == (
+        "carl",
+        "hello there",
+        0.5,
+        1.3,
+    )
     assert seg.words == (
         Word("hello", TimeSpan(500, 900)),
         Word("there", TimeSpan(900, 1300)),

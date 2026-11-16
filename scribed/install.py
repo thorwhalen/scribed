@@ -54,7 +54,8 @@ def _platform() -> str:
 # entry. ``extra`` is the pyproject extra name when it differs from the backend id.
 # ``system`` maps platform -> shell commands. ``gpu`` is an alternative/extra pip
 # line for GPU. ``weights`` notes first-run model downloads. ``alt`` suggests a
-# lighter/faster backend with comparable results.
+# lighter/faster backend with comparable results. ``decodes_waveform`` marks backends
+# that decode through ``scribed.util.to_waveform`` (so ffmpeg extends their formats).
 # ---------------------------------------------------------------------------
 _RECIPES: Dict[str, dict] = {
     "whisper": {  # openai-whisper, the original PyTorch reference implementation
@@ -90,7 +91,10 @@ _RECIPES: Dict[str, dict] = {
             "Pure C/C++ inference via pywhispercpp — light, CPU-friendly, excellent on Apple Silicon."
         ],
     },
+    "mlx-whisper": {"decodes_waveform": True},
+    "whisperx": {"decodes_waveform": True},
     "vosk": {
+        "decodes_waveform": True,
         "extra": "vosk",
         "weights": "Download a model from https://alphacephei.com/vosk/models and point the backend at it (small models ~50 MB).",
         "notes": [
@@ -102,7 +106,7 @@ _RECIPES: Dict[str, dict] = {
     "groq": {"extra": "groq"},
     "deepgram": {"extra": "deepgram"},
     "assemblyai": {"extra": "assemblyai"},
-    "google-speech": {"extra": "google"},
+    "google-speech": {"extra": "google", "decodes_waveform": True},
     "elevenlabs": {"extra": "elevenlabs"},
 }
 
@@ -224,7 +228,7 @@ def requirements(backend_id: str, *, gpu: bool = False) -> Requirements:
     )
 
     notes = list(recipe.get("notes", []))
-    if implemented:
+    if recipe.get("decodes_waveform"):
         notes.append(_FFMPEG_NOTE)
     if not implemented:
         notes.append(
