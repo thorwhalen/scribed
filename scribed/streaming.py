@@ -147,15 +147,7 @@ def _to_mono_source(
         if sample_rate is None:
             raise ValueError("sample_rate is required when passing a numpy array.")
         return to_mono(audio), int(sample_rate)
-    if isinstance(audio, (bytes, bytearray)):
-        import io
-
-        import soundfile as sf
-
-        data, sr = sf.read(io.BytesIO(bytes(audio)), dtype="float32", always_2d=True)
-        return to_mono(data), int(sr)
-    # str path/URL or Path
-    data, sr = load_audio(audio)
+    data, sr = to_waveform(audio)  # path/URL/bytes/file; ffmpeg fallback inside
     return to_mono(data), int(sr)
 
 

@@ -174,16 +174,18 @@ def audio_path(audio: AudioInput, *, suffix: str = ".wav") -> Iterator[str]:
 def to_waveform(audio: AudioInput, *, sample_rate: int = DFLT_SAMPLE_RATE):
     """Convert any supported input into ``(numpy float32 mono, sample_rate)``.
 
-    Numpy input is returned as-is (paired with ``sample_rate``). Everything else
-    is decoded with soundfile and resampled is *not* performed — the returned
-    sample rate is whatever the source had (numpy inputs excepted).
+    Numpy input is down-mixed and paired with ``sample_rate``. Everything else
+    is decoded by :func:`scribed.audio.load_audio` (libsndfile, falling back to
+    ``ffmpeg`` for mp3/m4a/webm/opus) and down-mixed; *no* resampling is done, so
+    the returned sample rate is whatever the source had (numpy inputs excepted).
     """
-    np = check_import("numpy", install_hint="numpy", feature="waveform conversion")
+    # check_import gives the friendly install hint before scribed.audio imports numpy.
+    check_import("numpy", install_hint="numpy", feature="waveform conversion")
+    from scribed.audio import load_audio, to_mono
+
     if classify_input(audio) == "numpy":
-        return audio, sample_rate
-    sf = check_import("soundfile", install_hint="soundfile", feature="audio decoding")
+        return to_mono(audio), sample_rate
+
     with audio_path(audio) as p:
-        data, sr = sf.read(p, dtype="float32")
-    if getattr(data, "ndim", 1) > 1:  # downmix to mono
-        data = data.mean(axis=1).astype(np.float32)
-    return data, sr
+        data, sr = load_audio(p, always_2d=False)
+    return to_mono(data), sr

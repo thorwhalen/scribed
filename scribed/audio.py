@@ -47,12 +47,14 @@ def load_audio(
     try:
         data, sr = sf.read(str(path), dtype="float32", always_2d=always_2d)
         return data, int(sr)
-    except Exception:
+    except Exception as sf_error:
+        if not Path(path).exists():  # a missing file is not a decoding problem
+            raise FileNotFoundError(f"No such audio file: {path}") from sf_error
         # libsndfile can't read it (e.g. mp3/m4a/webm/opus from a browser
         # recording). Fall back to ffmpeg, which decodes virtually anything.
         import os
 
-        wav = _ffmpeg_decode_to_wav(path)
+        wav = _ffmpeg_decode_to_wav(path, cause=sf_error)
         try:
             data, sr = sf.read(wav, dtype="float32", always_2d=always_2d)
             return data, int(sr)
@@ -63,12 +65,12 @@ def load_audio(
                 pass
 
 
-def _ffmpeg_decode_to_wav(path: Union[str, Path]) -> str:
+def _ffmpeg_decode_to_wav(path: Union[str, Path], *, cause: Exception = None) -> str:
     """Decode any audio file to a temp 16-bit PCM WAV via ffmpeg (channels kept)."""
+    import os
     import shutil
     import subprocess
     import tempfile
-    import os
 
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
@@ -76,14 +78,22 @@ def _ffmpeg_decode_to_wav(path: Union[str, Path]) -> str:
             f"Could not read {path} with libsndfile, and ffmpeg is not on PATH to "
             "convert it. Install ffmpeg (e.g. `brew install ffmpeg`) to handle "
             "mp3/m4a/webm/opus (incl. browser recordings)."
-        )
+        ) from cause
     fd, out = tempfile.mkstemp(suffix=".wav")
     os.close(fd)
-    subprocess.run(
-        [ffmpeg, "-y", "-i", str(path), "-c:a", "pcm_s16le", out],
-        check=True,
-        capture_output=True,
-    )
+    try:
+        subprocess.run(
+            [ffmpeg, "-y", "-i", str(path), "-c:a", "pcm_s16le", out],
+            check=True,
+            capture_output=True,
+        )
+    except subprocess.CalledProcessError as e:
+        os.unlink(out)
+        tail = (e.stderr or b"").decode(errors="replace")[-500:]
+        raise RuntimeError(f"ffmpeg could not decode {path}: {tail}") from e
+    except BaseException:
+        os.unlink(out)
+        raise
     return out
 
 
