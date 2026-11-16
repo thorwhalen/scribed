@@ -502,3 +502,43 @@ def test_vtt_words_falls_back_and_escapes():
     seg = Segment(text="a < b & c", span=TimeSpan.from_seconds(0, 1))
     cue = Transcript.from_segments([seg]).as_vtt(words=True).splitlines()[3]
     assert cue == "a &lt; b &amp; c"
+
+
+def test_vtt_words_unspaced_tokens_are_joined_by_spaces():
+    # Most backends (mlx, whisperx, deepgram, ...) give whole words with no leading space.
+    from scribed.base import Segment, TimeSpan, Transcript, Word
+
+    words = tuple(
+        Word(text=t, span=TimeSpan.from_seconds(a, a + 0.4))
+        for t, a in [("hi", 0.0), ("there", 0.5), ("you", 1.0)]
+    )
+    seg = Segment(text="hi there you", span=TimeSpan.from_seconds(0, 2), words=words)
+    cue = Transcript.from_segments([seg]).as_vtt(words=True).splitlines()[3]
+    assert cue == "hi <00:00:00.500>there <00:00:01.000>you"
+
+
+def test_vtt_escapes_text_and_speaker_in_both_modes_and_round_trips():
+    from scribed.base import Segment, TimeSpan, Transcript
+
+    seg = Segment(
+        text="a --> b <i>&\n\nc",
+        span=TimeSpan.from_seconds(0, 1),
+        speaker="A>B",
+    )
+    t = Transcript.from_segments([seg])
+    for vtt in (t.as_vtt(), t.as_vtt(words=True)):
+        assert "<v A&gt;B>a --&gt; b &lt;i&gt;&amp; c" in vtt
+        parsed = Transcript.parse(vtt)
+        assert parsed.segments[0].text == "a --> b <i>& c"
+        assert parsed.segments[0].speaker == "A>B"
+
+
+def test_vtt_words_partially_timed_falls_back_to_plain_text():
+    from scribed.base import Segment, TimeSpan, Transcript, Word
+
+    seg = Segment(
+        text="x y",
+        span=TimeSpan.from_seconds(0, 1),
+        words=(Word("x", TimeSpan.from_seconds(0, 0.5)), Word(" y")),
+    )
+    assert Transcript.from_segments([seg]).as_vtt(words=True).splitlines()[3] == "x y"

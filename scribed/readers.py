@@ -20,6 +20,7 @@ downstream code can tell it from an ASR result. No dependencies.
 
 from __future__ import annotations
 
+import html
 import json
 import re
 from pathlib import Path
@@ -239,13 +240,19 @@ def _parse_srt(text: str) -> List[_Row]:
     return [r for r in rows if r is not None and r[0]]
 
 
+def _unescape_vtt_row(row: _Row) -> _Row:
+    """WebVTT cue text and voice names are HTML-escaped (``&amp;``, ``&lt;``)."""
+    body, start, end, speaker, words = row
+    return (html.unescape(body), start, end, speaker and html.unescape(speaker), words)
+
+
 def _parse_vtt(text: str) -> List[_Row]:
     rows = (
         _timed_cue(block)
         for block in _cue_blocks(text)
         if not block[0].startswith(("WEBVTT", "NOTE", "STYLE", "REGION"))
     )
-    return [r for r in rows if r is not None and r[0]]
+    return [_unescape_vtt_row(r) for r in rows if r is not None and r[0]]
 
 
 def _parse_plain(text: str) -> List[_Row]:
