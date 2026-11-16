@@ -50,11 +50,11 @@ mlx = [
 whisperx = ["whisperx>=3.3"]
 # cloud / API engines
 openai = ["openai>=1"]
-groq = ["groq>=0.11"]
+groq = ["groq>=0.20.0"]  # first with the `url` field (transcribe from an address)
 deepgram = ["deepgram-sdk>=3,<4"]  # adapter targets the v3 REST API (listen.rest.v("1")); v4+ support is a follow-up
 assemblyai = ["assemblyai>=1.10.1"]
 google = ["google-cloud-speech>=2.21"]
-elevenlabs = ["elevenlabs>=1.0"]
+elevenlabs = ["elevenlabs>=1.57.0,!=2.18.*,!=2.19.*,!=2.20.0"]  # first with `cloud_storage_url` (address) and `timestamps_granularity`; 2.18-2.20.0 made `file` required again
 # --- feature extras ---
 cli = ["cw>=0.1.1,<0.2", "argcomplete>=3"]  # the `scribed` command
 audio = ["soundfile>=0.12", "numpy>=1.23"]  # audio loading / normalization helpers
