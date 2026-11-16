@@ -115,9 +115,39 @@ def _is_available(backend_id: str) -> bool:
         return True
     try:
         importlib.import_module(import_name)
-        return True
     except Exception:
         return False
+    return _sdk_floor_met(backend_id)
+
+
+def _sdk_floor_met(backend_id: str) -> bool:
+    """Is the installed SDK at least the version the backend's extra requires?
+
+    The floor is read from scribed's own package metadata (the requirements of the
+    backend's extra), so ``pyproject.toml`` stays the one place that states it. An
+    SDK older than the floor lacks the parameters the adapter sends, and would
+    otherwise be reported as ready and fail on a missing keyword. Anything that
+    cannot be checked (no metadata, no ``packaging``) counts as met.
+    """
+    from importlib import metadata
+
+    try:
+        from packaging.requirements import Requirement
+        from scribed.install import extra_for
+
+        extra = extra_for(backend_id)
+        for line in metadata.requires("scribed") or ():
+            req = Requirement(line)
+            if req.marker is None or not req.marker.evaluate({"extra": extra}):
+                continue
+            if not req.specifier:
+                continue
+            installed = metadata.version(req.name)
+            if not req.specifier.contains(installed, prereleases=True):
+                return False
+    except Exception:  # noqa: BLE001 - an unverifiable floor never blocks a backend
+        return True
+    return True
 
 
 # ---------------------------------------------------------------------------

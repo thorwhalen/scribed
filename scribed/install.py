@@ -119,6 +119,11 @@ _FFMPEG_NOTE = (
 )
 
 
+def extra_for(backend_id: str) -> str:
+    """The pyproject extra that installs ``backend_id`` (its id unless a recipe says otherwise)."""
+    return _RECIPES.get(backend_id, {}).get("extra") or backend_id
+
+
 @dataclass
 class Requirements:
     """What a backend needs to run — structured for an agent to act on."""
