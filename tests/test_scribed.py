@@ -452,3 +452,53 @@ def test_transcribe_without_backend_never_reaches_a_remote_adapter(monkeypatch):
         chosen = scribed.get_default_backend()
     assert chosen == "faster-whisper"
     assert built == []  # nothing was instantiated, nothing uploaded
+
+
+def _timed_words_segment(*, end=3.0):
+    from scribed.base import Segment, TimeSpan, Word
+
+    def w(text, a, b):
+        return Word(text=text, span=TimeSpan.from_seconds(a, b))
+
+    return Segment(
+        text="Step left con-last.",
+        span=TimeSpan.from_seconds(1.0, end),
+        words=(
+            w("Step", 1.0, 1.5),
+            w(" left", 1.5, 2.0),
+            w(" con", 2.0, 2.2),
+            w("-last.", 2.2, 3.0),
+        ),
+    )
+
+
+def test_vtt_words_inline_timestamps_glue_split_words():
+    from scribed.base import Transcript
+
+    t = Transcript.from_segments([_timed_words_segment()])
+    cue = t.as_vtt(words=True).splitlines()[3]
+    assert cue == "Step <00:00:01.500>left <00:00:02.000>con<00:00:02.200>-last."
+    assert "<00:" not in t.as_vtt().splitlines()[3]  # default unchanged
+
+
+def test_vtt_words_stamps_are_clamped_inside_the_cue():
+    from scribed.base import Segment, TimeSpan, Transcript, Word
+
+    def w(text, a):
+        return Word(text=text, span=TimeSpan.from_seconds(a, a + 0.1))
+
+    seg = Segment(
+        text="a b c d",
+        span=TimeSpan.from_seconds(1.0, 2.0),
+        words=(w("a", 1.0), w(" b", 1.0), w(" c", 1.5), w(" d", 2.5)),
+    )
+    cue = Transcript.from_segments([seg]).as_vtt(words=True).splitlines()[3]
+    assert cue == "a b <00:00:01.500>c d"  # b: not after start; d: past the end
+
+
+def test_vtt_words_falls_back_and_escapes():
+    from scribed.base import Segment, TimeSpan, Transcript
+
+    seg = Segment(text="a < b & c", span=TimeSpan.from_seconds(0, 1))
+    cue = Transcript.from_segments([seg]).as_vtt(words=True).splitlines()[3]
+    assert cue == "a &lt; b &amp; c"

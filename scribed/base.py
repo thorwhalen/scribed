@@ -339,18 +339,26 @@ class Transcript:
             lines.append("")
         return "\n".join(lines)
 
-    def as_vtt(self) -> str:
-        """Render timed segments as WebVTT (.vtt). Segments without times are skipped."""
+    def as_vtt(self, *, words: bool = False) -> str:
+        """Render timed segments as WebVTT (.vtt). Segments without times are skipped.
+
+        With ``words=True``, a segment whose words are all timed carries an inline
+        timestamp before every word after the first (``Step <00:00:01.500>left``),
+        the form YouTube's automatic captions take. Segments without timed words
+        keep their plain text. In this mode cue text is escaped (``&``, ``<``,
+        ``>``) so it cannot be mistaken for cue markup.
+        """
         lines: List[str] = ["WEBVTT", ""]
         for seg in self.segments:
             if seg.start is None or seg.end is None:
                 continue
             speaker = f"<v {seg.speaker}>" if seg.speaker else ""
+            text = _word_timed_text(seg) if words else seg.text.strip()
             lines.append(
                 f"{_format_timestamp(seg.start, comma=False)} --> "
                 f"{_format_timestamp(seg.end, comma=False)}"
             )
-            lines.append(f"{speaker}{seg.text.strip()}")
+            lines.append(f"{speaker}{text}")
             lines.append("")
         return "\n".join(lines)
 
@@ -439,6 +447,35 @@ class Transcript:
             raw=raw,
             meta=meta,
         )
+
+
+def _word_timed_text(seg: Segment) -> str:
+    """Cue text with an inline ``<hh:mm:ss.mmm>`` before each word after the first.
+
+    A word token with no leading space continues the previous word (Whisper
+    splits some words), so it is glued on rather than spaced. Inline stamps are
+    clamped to be strictly increasing inside the cue's span: a word whose start
+    does not fit gets no stamp. Falls back to the plain text unless every word
+    is timed.
+    """
+    words = [w for w in seg.words if w.text.strip()]
+    if not words or any(w.span is None for w in words):
+        return _escape_cue(seg.text.strip())
+    prev_ms, end_ms = seg.span.start_ms, seg.span.end_ms
+    parts = [_escape_cue(words[0].text.strip())]
+    for w in words[1:]:
+        sep = " " if w.text[:1].isspace() else ""
+        stamp = ""
+        if prev_ms < w.span.start_ms < end_ms:
+            prev_ms = w.span.start_ms
+            stamp = f"<{_format_timestamp(prev_ms / 1000.0, comma=False)}>"
+        parts.append(f"{sep}{stamp}{_escape_cue(w.text.strip())}")
+    return "".join(parts)
+
+
+def _escape_cue(text: str) -> str:
+    """Escape ``&``, ``<`` and ``>`` as WebVTT cue text requires."""
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
 def _format_timestamp(seconds: float, *, comma: bool = True) -> str:
