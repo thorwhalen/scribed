@@ -19,3 +19,8 @@ sent as a `(filename, bytes)` tuple via [`scribed.util.load_audio_bytes()`](scri
 Bases: [`BaseTranscriberAdapter`](scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
 
 Groq hosted-Whisper transcription adapter (client cached lazily).
+
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= True*
+
+`True` in a backend that resolves its key through `credential()`, so
+it can be handed one (see `ServiceHandle.with_api_key`).

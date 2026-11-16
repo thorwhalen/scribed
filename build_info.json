@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-16T21:48:22Z",
+  "built_at": "2026-11-16T21:54:21Z",
   "package": {
     "name": "scribed",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "display_name": "scribed",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "363618b2a2a0a6ced497cfb09189c66fc90c41a6",
-    "short_commit": "363618b",
+    "commit": "2153debeb5a2cec52c80f78d20b73266b918ec3c",
+    "short_commit": "2153deb",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/scribed",
-    "commit_url": "https://github.com/thorwhalen/scribed/commit/363618b2a2a0a6ced497cfb09189c66fc90c41a6",
+    "commit_url": "https://github.com/thorwhalen/scribed/commit/2153debeb5a2cec52c80f78d20b73266b918ec3c",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/scribed",
-    "sha": "363618b2a2a0a6ced497cfb09189c66fc90c41a6",
+    "sha": "2153debeb5a2cec52c80f78d20b73266b918ec3c",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "43963541105",
-    "run_url": "https://github.com/thorwhalen/scribed/actions/runs/43963541105",
+    "run_id": "43964511446",
+    "run_url": "https://github.com/thorwhalen/scribed/actions/runs/43964511446",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -56,15 +56,15 @@
   },
   "site": {
     "modules_documented": 51,
-    "objects_documented": 201
+    "objects_documented": 211
   },
   "pypi": {
     "checked": true,
-    "latest": "0.0.11",
+    "latest": "0.0.12",
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/scribed && cd scribed\ngit checkout 363618b2a2a0a6ced497cfb09189c66fc90c41a6\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/scribed && cd scribed\ngit checkout 2153debeb5a2cec52c80f78d20b73266b918ec3c\npip install \"epythet==0.2.22\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,

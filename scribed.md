@@ -1,4 +1,4 @@
-> built 2026-11-16 21:48 UTC from 363618b (main) · scribed 0.0.11. Details: build_info.json
+> built 2026-11-16 21:54 UTC from 2153deb (main) · scribed 0.0.12. Details: build_info.json
 
 # index.html.md
 
@@ -273,6 +273,11 @@ Bases: [`BaseTranscriberAdapter`](_autosummary/scribed.make_backend.html.md#scri
 
 Deepgram (Nova-3) transcription adapter.
 
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= True*
+
+`True` in a backend that resolves its key through `credential()`, so
+it can be handed one (see `ServiceHandle.with_api_key`).
+
 
 # _autosummary/scribed.backends.deepgram.config.html.md
 
@@ -335,6 +340,11 @@ dependency-free.
 Bases: [`BaseTranscriberAdapter`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
 
 ElevenLabs Scribe transcription adapter (caches one client lazily).
+
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= True*
+
+`True` in a backend that resolves its key through `credential()`, so
+it can be handed one (see `ServiceHandle.with_api_key`).
 
 
 # _autosummary/scribed.backends.elevenlabs.config.html.md
@@ -525,6 +535,11 @@ Bases: [`BaseTranscriberAdapter`](_autosummary/scribed.make_backend.html.md#scri
 
 Groq hosted-Whisper transcription adapter (client cached lazily).
 
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= True*
+
+`True` in a backend that resolves its key through `credential()`, so
+it can be handed one (see `ServiceHandle.with_api_key`).
+
 
 # _autosummary/scribed.backends.groq.config.html.md
 
@@ -713,6 +728,11 @@ are resolved lazily so `import scribed` stays dependency-free.
 Bases: [`BaseTranscriberAdapter`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
 
 OpenAI transcription adapter.
+
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= True*
+
+`True` in a backend that resolves its key through `credential()`, so
+it can be handed one (see `ServiceHandle.with_api_key`).
 
 
 # _autosummary/scribed.backends.openai.config.html.md
@@ -1690,6 +1710,24 @@ Adapters are not *required* to subclass this — the registry only needs an
 `Adapter` class with a `transcribe(audio, **kwargs)` method — but doing
 so removes the boilerplate.
 
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= False*
+
+`True` in a backend that resolves its key through [`credential()`](_autosummary/scribed.html.md#scribed.BaseTranscriberAdapter.credential), so
+it can be handed one (see `ServiceHandle.with_api_key`).
+
+#### credential()
+
+This backend’s API key: `config['api_key']`, else the environment.
+
+`config['api_key']` (set via [`with_config()`](_autosummary/scribed.html.md#scribed.BaseTranscriberAdapter.with_config) /
+`services.<id>.with_api_key(key)`, or by a host registering the backend
+with a key) wins, so a host that keeps keys out of its environment can
+still use the backend. See
+[`scribed.credentials.resolve_credential()`](_autosummary/scribed.credentials.html.md#scribed.credentials.resolve_credential) for the rest of the chain.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### natively_streams *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= False*
 
 Override to `True` in a backend that talks a live protocol (WebSocket /
@@ -1704,6 +1742,16 @@ Native-streaming backends set [`natively_streams`](_autosummary/scribed.html.md#
 `_stream_native()`; everyone else streams for free here via the
 VAD-segmented batch fallback. `kwargs` flow to the per-utterance
 `transcribe` (e.g. `language=`).
+
+#### with_config(\*\*overrides)
+
+A new adapter (own client, own state) whose config has `overrides`.
+
+The shared registry adapter and its config are never touched, so a secret
+in `overrides` stays with whoever holds the returned adapter.
+
+* **Return type:**
+  [`BaseTranscriberAdapter`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
 
 ### *class* scribed.Catalog(path=None, , \_records=None)
 
@@ -2419,6 +2467,24 @@ Adapters are not *required* to subclass this — the registry only needs an
 `Adapter` class with a `transcribe(audio, **kwargs)` method — but doing
 so removes the boilerplate.
 
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= False*
+
+`True` in a backend that resolves its key through [`credential()`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter.credential), so
+it can be handed one (see `ServiceHandle.with_api_key`).
+
+#### credential()
+
+This backend’s API key: `config['api_key']`, else the environment.
+
+`config['api_key']` (set via [`with_config()`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter.with_config) /
+`services.<id>.with_api_key(key)`, or by a host registering the backend
+with a key) wins, so a host that keeps keys out of its environment can
+still use the backend. See
+[`scribed.credentials.resolve_credential()`](_autosummary/scribed.credentials.html.md#scribed.credentials.resolve_credential) for the rest of the chain.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### natively_streams *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= False*
 
 Override to `True` in a backend that talks a live protocol (WebSocket /
@@ -2433,6 +2499,16 @@ Native-streaming backends set [`natively_streams`](_autosummary/scribed.make_bac
 `_stream_native()`; everyone else streams for free here via the
 VAD-segmented batch fallback. `kwargs` flow to the per-utterance
 `transcribe` (e.g. `language=`).
+
+#### with_config(\*\*overrides)
+
+A new adapter (own client, own state) whose config has `overrides`.
+
+The shared registry adapter and its config are never touched, so a secret
+in `overrides` stays with whoever holds the returned adapter.
+
+* **Return type:**
+  [`BaseTranscriberAdapter`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
 
 ### scribed.make_backend.make_segment(text, , start=None, end=None, confidence=None, conf_scale=1.0, speaker=None, language=None, words=None, \*\*meta)
 
@@ -3117,7 +3193,7 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-16 21:48 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/363618b2a2a0a6ced497cfb09189c66fc90c41a6"><code>363618b</code></a> on branch <code>main</code>, for **scribed 0.0.11** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-16 21:54 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/2153debeb5a2cec52c80f78d20b73266b918ec3c"><code>2153deb</code></a> on branch <code>main</code>, for **scribed 0.0.12** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3126,7 +3202,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/363618b2a2a0a6ced497cfb09189c66fc90c41a6"><code>363618b2a2a0a6ced497cfb09189c66fc90c41a6</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/2153debeb5a2cec52c80f78d20b73266b918ec3c"><code>2153debeb5a2cec52c80f78d20b73266b918ec3c</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3137,9 +3213,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43963541105">43963541105</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43964511446">43964511446</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>363618b2a2a0a6ced497cfb09189c66fc90c41a6</code> (in the history of the built commit) |
+| Event commit | <code>2153debeb5a2cec52c80f78d20b73266b918ec3c</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3164,13 +3240,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.11/">0.0.11</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.12/">0.0.12</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 363618b2a2a0a6ced497cfb09189c66fc90c41a6
+git checkout 2153debeb5a2cec52c80f78d20b73266b918ec3c
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

@@ -194,6 +194,27 @@ so removes the boilerplate.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="scribed.make_backend.BaseTranscriberAdapter.accepts_api_key">
+<span class="sig-name descname"><span class="pre">accepts_api_key</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">bool</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.make_backend.BaseTranscriberAdapter.accepts_api_key" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.make_backend.BaseTranscriberAdapter.accepts_api_key'">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> in a backend that resolves its key through <a class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.credential" title="scribed.make_backend.BaseTranscriberAdapter.credential"><code class="xref py py-meth docutils literal notranslate"><span class="pre">credential()</span></code></a>, so
+it can be handed one (see <code class="docutils literal notranslate"><span class="pre">ServiceHandle.with_api_key</span></code>).</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="scribed.make_backend.BaseTranscriberAdapter.credential">
+<span class="sig-name descname"><span class="pre">credential</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/make_backend.html#BaseTranscriberAdapter.credential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.make_backend.BaseTranscriberAdapter.credential" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.make_backend.BaseTranscriberAdapter.credential'">¶</a></dt>
+<dd><p>This backend’s API key: <code class="docutils literal notranslate"><span class="pre">config['api_key']</span></code>, else the environment.</p>
+<p><code class="docutils literal notranslate"><span class="pre">config['api_key']</span></code> (set via <a class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.with_config" title="scribed.make_backend.BaseTranscriberAdapter.with_config"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_config()</span></code></a> /
+<code class="docutils literal notranslate"><span class="pre">services.&lt;id&gt;.with_api_key(key)</span></code>, or by a host registering the backend
+with a key) wins, so a host that keeps keys out of its environment can
+still use the backend. See
+<a class="reference internal" href="scribed.credentials.html#scribed.credentials.resolve_credential" title="scribed.credentials.resolve_credential"><code class="xref py py-func docutils literal notranslate"><span class="pre">scribed.credentials.resolve_credential()</span></code></a> for the rest of the chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
 <dt class="sig sig-object py" id="scribed.make_backend.BaseTranscriberAdapter.natively_streams">
 <span class="sig-name descname"><span class="pre">natively_streams</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" rel="nofollow noopener" title="(in Python v3.15)"><span class="pre">bool</span><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.make_backend.BaseTranscriberAdapter.natively_streams" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.make_backend.BaseTranscriberAdapter.natively_streams'">¶</a></dt>
 <dd><p>Override to <code class="docutils literal notranslate"><span class="pre">True</span></code> in a backend that talks a live protocol (WebSocket /
@@ -208,6 +229,18 @@ streaming recognizer) and implements <code class="xref py py-meth docutils liter
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">_stream_native()</span></code>; everyone else streams for free here via the
 VAD-segmented batch fallback. <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> flow to the per-utterance
 <code class="docutils literal notranslate"><span class="pre">transcribe</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">language=</span></code>).</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="scribed.make_backend.BaseTranscriberAdapter.with_config">
+<span class="sig-name descname"><span class="pre">with_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">overrides</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/make_backend.html#BaseTranscriberAdapter.with_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.make_backend.BaseTranscriberAdapter.with_config" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.make_backend.BaseTranscriberAdapter.with_config'">¶</a></dt>
+<dd><p>A new adapter (own client, own state) whose config has <code class="docutils literal notranslate"><span class="pre">overrides</span></code>.</p>
+<p>The shared registry adapter and its config are never touched, so a secret
+in <code class="docutils literal notranslate"><span class="pre">overrides</span></code> stays with whoever holds the returned adapter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter" title="scribed.make_backend.BaseTranscriberAdapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTranscriberAdapter</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 </dd></dl>
 <dl class="py function">
@@ -312,8 +345,11 @@ With <code class="docutils literal notranslate"><span class="pre">expect_text</s
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
 <li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter</span></code></a><ul>
+<li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.accepts_api_key'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.accepts_api_key"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.accepts_api_key</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.credential'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.credential"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.credential()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.natively_streams'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.natively_streams"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.natively_streams</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.transcribe_live'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.transcribe_live"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.transcribe_live()</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.with_config'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.with_config"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.with_config()</span></code></a></li>
 </ul>
 </li>
 <li><a :data-current="activeSection === '#scribed.make_backend.make_segment'" class="reference internal" href="#scribed.make_backend.make_segment"><code class="docutils literal notranslate"><span class="pre">make_segment()</span></code></a></li>
@@ -335,7 +371,7 @@ With <code class="docutils literal notranslate"><span class="pre">expect_text</s
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=0c446633"></script>
+<script src="../_static/documentation_options.js?v=3bbcec59"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

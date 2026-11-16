@@ -29,3 +29,8 @@ v3 `listen.rest.v("1")` accessor first, fall back to the older
 Bases: [`BaseTranscriberAdapter`](scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
 
 Deepgram (Nova-3) transcription adapter.
+
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= True*
+
+`True` in a backend that resolves its key through `credential()`, so
+it can be handed one (see `ServiceHandle.with_api_key`).

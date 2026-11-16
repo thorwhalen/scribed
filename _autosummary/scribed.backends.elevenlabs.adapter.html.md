@@ -27,3 +27,8 @@ dependency-free.
 Bases: [`BaseTranscriberAdapter`](scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter)
 
 ElevenLabs Scribe transcription adapter (caches one client lazily).
+
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= True*
+
+`True` in a backend that resolves its key through `credential()`, so
+it can be handed one (see `ServiceHandle.with_api_key`).

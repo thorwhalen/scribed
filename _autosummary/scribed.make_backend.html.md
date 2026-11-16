@@ -51,6 +51,24 @@ Adapters are not *required* to subclass this — the registry only needs an
 `Adapter` class with a `transcribe(audio, **kwargs)` method — but doing
 so removes the boilerplate.
 
+#### accepts_api_key *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= False*
+
+`True` in a backend that resolves its key through [`credential()`](#scribed.make_backend.BaseTranscriberAdapter.credential), so
+it can be handed one (see `ServiceHandle.with_api_key`).
+
+#### credential()
+
+This backend’s API key: `config['api_key']`, else the environment.
+
+`config['api_key']` (set via [`with_config()`](#scribed.make_backend.BaseTranscriberAdapter.with_config) /
+`services.<id>.with_api_key(key)`, or by a host registering the backend
+with a key) wins, so a host that keeps keys out of its environment can
+still use the backend. See
+[`scribed.credentials.resolve_credential()`](scribed.credentials.html.md#scribed.credentials.resolve_credential) for the rest of the chain.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### natively_streams *: [bool](https://docs.python.org/3/builtins/functions.html#bool)* *= False*
 
 Override to `True` in a backend that talks a live protocol (WebSocket /
@@ -65,6 +83,16 @@ Native-streaming backends set [`natively_streams`](#scribed.make_backend.BaseTra
 `_stream_native()`; everyone else streams for free here via the
 VAD-segmented batch fallback. `kwargs` flow to the per-utterance
 `transcribe` (e.g. `language=`).
+
+#### with_config(\*\*overrides)
+
+A new adapter (own client, own state) whose config has `overrides`.
+
+The shared registry adapter and its config are never touched, so a secret
+in `overrides` stays with whoever holds the returned adapter.
+
+* **Return type:**
+  [`BaseTranscriberAdapter`](#scribed.make_backend.BaseTranscriberAdapter)
 
 ### scribed.make_backend.make_segment(text, , start=None, end=None, confidence=None, conf_scale=1.0, speaker=None, language=None, words=None, \*\*meta)
 

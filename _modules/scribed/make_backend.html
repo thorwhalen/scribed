@@ -255,366 +255,402 @@
 </span><span id="line-76">        <span class="n">native</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_translate</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_translate</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span id="line-77">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="o">**</span><span class="n">native</span><span class="p">)</span>
 </span><span id="line-78">
-</span><span id="line-79">    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-</span><span id="line-80">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-</span><span id="line-81">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">._transcribe is not implemented for "</span>
-</span><span id="line-82">            <span class="sa">f</span><span class="s2">"backend </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">!r}</span><span class="s2">."</span>
-</span><span id="line-83">        <span class="p">)</span>
-</span><span id="line-84">
-<div class="viewcode-block" id="BaseTranscriberAdapter.transcribe_live">
-<a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.BaseTranscriberAdapter.transcribe_live">[docs]</a>
-</span><span id="line-85">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">transcribe_live</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="line-86"><span class="w">        </span><span class="sd">"""Stream :class:`~scribed.base.Segment`\\ s from a live ``AudioSource``.</span>
-</span><span id="line-87">
-</span><span id="line-88"><span class="sd">        Native-streaming backends set :attr:`natively_streams` and override</span>
-</span><span id="line-89"><span class="sd">        :meth:`_stream_native`; everyone else streams for free here via the</span>
-</span><span id="line-90"><span class="sd">        VAD-segmented batch fallback. ``kwargs`` flow to the per-utterance</span>
-</span><span id="line-91"><span class="sd">        ``transcribe`` (e.g. ``language=``).</span>
-</span><span id="line-92"><span class="sd">        """</span>
-</span><span id="line-93">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">natively_streams</span><span class="p">:</span>
-</span><span id="line-94">            <span class="k">async</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_native</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="n">vad</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="line-95">                <span class="k">yield</span> <span class="n">seg</span>
-</span><span id="line-96">        <span class="k">else</span><span class="p">:</span>
-</span><span id="line-97">            <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.streaming</span><span class="w"> </span><span class="kn">import</span> <span class="n">vad_segmented_stream</span>
-</span><span id="line-98">
-</span><span id="line-99">            <span class="k">async</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">vad_segmented_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="n">vad</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="line-100">                <span class="k">yield</span> <span class="n">seg</span></div>
+</span><span id="line-79">    <span class="c1">#: ``True`` in a backend that resolves its key through :meth:`credential`, so</span>
+</span><span id="line-80">    <span class="c1">#: it can be handed one (see ``ServiceHandle.with_api_key``).</span>
+</span><span id="line-81">    <span class="n">accepts_api_key</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="line-82">
+<div class="viewcode-block" id="BaseTranscriberAdapter.with_config">
+<a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.BaseTranscriberAdapter.with_config">[docs]</a>
+</span><span id="line-83">    <span class="k">def</span><span class="w"> </span><span class="nf">with_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">overrides</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"BaseTranscriberAdapter"</span><span class="p">:</span>
+</span><span id="line-84"><span class="w">        </span><span class="sd">"""A new adapter (own client, own state) whose config has ``overrides``.</span>
+</span><span id="line-85">
+</span><span id="line-86"><span class="sd">        The shared registry adapter and its config are never touched, so a secret</span>
+</span><span id="line-87"><span class="sd">        in ``overrides`` stays with whoever holds the returned adapter.</span>
+</span><span id="line-88"><span class="sd">        """</span>
+</span><span id="line-89">        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)({</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">overrides</span><span class="p">})</span></div>
 
+</span><span id="line-90">
+<div class="viewcode-block" id="BaseTranscriberAdapter.credential">
+<a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.BaseTranscriberAdapter.credential">[docs]</a>
+</span><span id="line-91">    <span class="k">def</span><span class="w"> </span><span class="nf">credential</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-92"><span class="w">        </span><span class="sd">"""This backend's API key: ``config['api_key']``, else the environment.</span>
+</span><span id="line-93">
+</span><span id="line-94"><span class="sd">        ``config['api_key']`` (set via :meth:`with_config` /</span>
+</span><span id="line-95"><span class="sd">        ``services.&lt;id&gt;.with_api_key(key)``, or by a host registering the backend</span>
+</span><span id="line-96"><span class="sd">        with a key) wins, so a host that keeps keys out of its environment can</span>
+</span><span id="line-97"><span class="sd">        still use the backend. See</span>
+</span><span id="line-98"><span class="sd">        :func:`scribed.credentials.resolve_credential` for the rest of the chain.</span>
+</span><span id="line-99"><span class="sd">        """</span>
+</span><span id="line-100">        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_credential</span>
 </span><span id="line-101">
-</span><span id="line-102">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_stream_native</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
-</span><span id="line-103">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-</span><span id="line-104">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> set natively_streams=True but did not implement "</span>
-</span><span id="line-105">            <span class="s2">"_stream_native."</span>
-</span><span id="line-106">        <span class="p">)</span>
-</span><span id="line-107">        <span class="k">yield</span>  <span class="c1"># pragma: no cover - makes this an async generator</span></div>
+</span><span id="line-102">        <span class="k">return</span> <span class="n">resolve_credential</span><span class="p">(</span>
+</span><span id="line-103">            <span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span>
+</span><span id="line-104">            <span class="n">api_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_key"</span><span class="p">),</span>
+</span><span id="line-105">            <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_env_var"</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-106">            <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="line-107">        <span class="p">)</span></div>
 
 </span><span id="line-108">
-</span><span id="line-109">
-</span><span id="line-110"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-111"><span class="c1"># Result-building helpers</span>
-</span><span id="line-112"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-113">
+</span><span id="line-109">    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+</span><span id="line-110">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+</span><span id="line-111">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">._transcribe is not implemented for "</span>
+</span><span id="line-112">            <span class="sa">f</span><span class="s2">"backend </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">!r}</span><span class="s2">."</span>
+</span><span id="line-113">        <span class="p">)</span>
 </span><span id="line-114">
+<div class="viewcode-block" id="BaseTranscriberAdapter.transcribe_live">
+<a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.BaseTranscriberAdapter.transcribe_live">[docs]</a>
+</span><span id="line-115">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">transcribe_live</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="line-116"><span class="w">        </span><span class="sd">"""Stream :class:`~scribed.base.Segment`\\ s from a live ``AudioSource``.</span>
+</span><span id="line-117">
+</span><span id="line-118"><span class="sd">        Native-streaming backends set :attr:`natively_streams` and override</span>
+</span><span id="line-119"><span class="sd">        :meth:`_stream_native`; everyone else streams for free here via the</span>
+</span><span id="line-120"><span class="sd">        VAD-segmented batch fallback. ``kwargs`` flow to the per-utterance</span>
+</span><span id="line-121"><span class="sd">        ``transcribe`` (e.g. ``language=``).</span>
+</span><span id="line-122"><span class="sd">        """</span>
+</span><span id="line-123">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">natively_streams</span><span class="p">:</span>
+</span><span id="line-124">            <span class="k">async</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_native</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="n">vad</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="line-125">                <span class="k">yield</span> <span class="n">seg</span>
+</span><span id="line-126">        <span class="k">else</span><span class="p">:</span>
+</span><span id="line-127">            <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.streaming</span><span class="w"> </span><span class="kn">import</span> <span class="n">vad_segmented_stream</span>
+</span><span id="line-128">
+</span><span id="line-129">            <span class="k">async</span> <span class="k">for</span> <span class="n">seg</span> <span class="ow">in</span> <span class="n">vad_segmented_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="n">vad</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="line-130">                <span class="k">yield</span> <span class="n">seg</span></div>
+
+</span><span id="line-131">
+</span><span id="line-132">    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_stream_native</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">vad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+</span><span id="line-133">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+</span><span id="line-134">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> set natively_streams=True but did not implement "</span>
+</span><span id="line-135">            <span class="s2">"_stream_native."</span>
+</span><span id="line-136">        <span class="p">)</span>
+</span><span id="line-137">        <span class="k">yield</span>  <span class="c1"># pragma: no cover - makes this an async generator</span></div>
+
+</span><span id="line-138">
+</span><span id="line-139">
+</span><span id="line-140"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-141"><span class="c1"># Result-building helpers</span>
+</span><span id="line-142"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-143">
+</span><span id="line-144">
 <div class="viewcode-block" id="normalize_confidence">
 <a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.normalize_confidence">[docs]</a>
-</span><span id="line-115"><span class="k">def</span><span class="w"> </span><span class="nf">normalize_confidence</span><span class="p">(</span>
-</span><span id="line-116">    <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
-</span><span id="line-117"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-</span><span id="line-118"><span class="w">    </span><span class="sd">"""Normalize a raw confidence to ``[0, 1]`` (dividing by ``scale``).</span>
-</span><span id="line-119">
-</span><span id="line-120"><span class="sd">    ``None`` passes through. Use ``scale=100`` for engines that report ``0..100``.</span>
-</span><span id="line-121"><span class="sd">    Engines that report a log-probability should convert before calling this.</span>
-</span><span id="line-122"><span class="sd">    """</span>
-</span><span id="line-123">    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-124">        <span class="k">return</span> <span class="kc">None</span>
-</span><span id="line-125">    <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span> <span class="k">if</span> <span class="n">scale</span> <span class="ow">and</span> <span class="n">scale</span> <span class="o">!=</span> <span class="mf">1.0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-</span><span id="line-126">    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span></div>
+</span><span id="line-145"><span class="k">def</span><span class="w"> </span><span class="nf">normalize_confidence</span><span class="p">(</span>
+</span><span id="line-146">    <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+</span><span id="line-147"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+</span><span id="line-148"><span class="w">    </span><span class="sd">"""Normalize a raw confidence to ``[0, 1]`` (dividing by ``scale``).</span>
+</span><span id="line-149">
+</span><span id="line-150"><span class="sd">    ``None`` passes through. Use ``scale=100`` for engines that report ``0..100``.</span>
+</span><span id="line-151"><span class="sd">    Engines that report a log-probability should convert before calling this.</span>
+</span><span id="line-152"><span class="sd">    """</span>
+</span><span id="line-153">    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-154">        <span class="k">return</span> <span class="kc">None</span>
+</span><span id="line-155">    <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span> <span class="k">if</span> <span class="n">scale</span> <span class="ow">and</span> <span class="n">scale</span> <span class="o">!=</span> <span class="mf">1.0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</span><span id="line-156">    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span></div>
 
-</span><span id="line-127">
-</span><span id="line-128">
-</span><span id="line-129"><span class="k">def</span><span class="w"> </span><span class="nf">_span_from_seconds</span><span class="p">(</span>
-</span><span id="line-130">    <span class="n">start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
-</span><span id="line-131"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TimeSpan</span><span class="p">]:</span>
-</span><span id="line-132"><span class="w">    </span><span class="sd">"""Build a :class:`~scribed.base.TimeSpan` from float seconds, or ``None``.</span>
-</span><span id="line-133">
-</span><span id="line-134"><span class="sd">    Returns ``None`` unless *both* bounds are given — a partially-timed unit is</span>
-</span><span id="line-135"><span class="sd">    treated as untimed (matching the old flat-field behavior).</span>
-</span><span id="line-136"><span class="sd">    """</span>
-</span><span id="line-137">    <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-138">        <span class="k">return</span> <span class="kc">None</span>
-</span><span id="line-139">    <span class="k">return</span> <span class="n">TimeSpan</span><span class="o">.</span><span class="n">from_seconds</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">end</span><span class="p">))</span>
-</span><span id="line-140">
-</span><span id="line-141">
+</span><span id="line-157">
+</span><span id="line-158">
+</span><span id="line-159"><span class="k">def</span><span class="w"> </span><span class="nf">_span_from_seconds</span><span class="p">(</span>
+</span><span id="line-160">    <span class="n">start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+</span><span id="line-161"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TimeSpan</span><span class="p">]:</span>
+</span><span id="line-162"><span class="w">    </span><span class="sd">"""Build a :class:`~scribed.base.TimeSpan` from float seconds, or ``None``.</span>
+</span><span id="line-163">
+</span><span id="line-164"><span class="sd">    Returns ``None`` unless *both* bounds are given — a partially-timed unit is</span>
+</span><span id="line-165"><span class="sd">    treated as untimed (matching the old flat-field behavior).</span>
+</span><span id="line-166"><span class="sd">    """</span>
+</span><span id="line-167">    <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-168">        <span class="k">return</span> <span class="kc">None</span>
+</span><span id="line-169">    <span class="k">return</span> <span class="n">TimeSpan</span><span class="o">.</span><span class="n">from_seconds</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">end</span><span class="p">))</span>
+</span><span id="line-170">
+</span><span id="line-171">
 <div class="viewcode-block" id="make_word">
 <a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.make_word">[docs]</a>
-</span><span id="line-142"><span class="k">def</span><span class="w"> </span><span class="nf">make_word</span><span class="p">(</span>
-</span><span id="line-143">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="line-144">    <span class="o">*</span><span class="p">,</span>
-</span><span id="line-145">    <span class="n">start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-146">    <span class="n">end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-147">    <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-148">    <span class="n">conf_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-</span><span id="line-149">    <span class="n">speaker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-150"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Word</span><span class="p">:</span>
-</span><span id="line-151"><span class="w">    </span><span class="sd">"""Build a normalized :class:`~scribed.base.Word`.</span>
-</span><span id="line-152">
-</span><span id="line-153"><span class="sd">    ``start``/``end`` are **seconds** (converted to the millisecond</span>
-</span><span id="line-154"><span class="sd">    :class:`~scribed.base.TimeSpan` internally). ``confidence`` is normalized to</span>
-</span><span id="line-155"><span class="sd">    ``[0, 1]`` via ``conf_scale``.</span>
-</span><span id="line-156"><span class="sd">    """</span>
-</span><span id="line-157">    <span class="k">return</span> <span class="n">Word</span><span class="p">(</span>
-</span><span id="line-158">        <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-</span><span id="line-159">        <span class="n">span</span><span class="o">=</span><span class="n">_span_from_seconds</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">),</span>
-</span><span id="line-160">        <span class="n">confidence</span><span class="o">=</span><span class="n">normalize_confidence</span><span class="p">(</span><span class="n">confidence</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">conf_scale</span><span class="p">),</span>
-</span><span id="line-161">        <span class="n">speaker</span><span class="o">=</span><span class="n">speaker</span><span class="p">,</span>
-</span><span id="line-162">    <span class="p">)</span></div>
-
-</span><span id="line-163">
-</span><span id="line-164">
-<div class="viewcode-block" id="make_segment">
-<a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.make_segment">[docs]</a>
-</span><span id="line-165"><span class="k">def</span><span class="w"> </span><span class="nf">make_segment</span><span class="p">(</span>
-</span><span id="line-166">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="line-167">    <span class="o">*</span><span class="p">,</span>
-</span><span id="line-168">    <span class="n">start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-169">    <span class="n">end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-170">    <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-171">    <span class="n">conf_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-</span><span id="line-172">    <span class="n">speaker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-173">    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-174">    <span class="n">words</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Word</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-175">    <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-</span><span id="line-176"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Segment</span><span class="p">:</span>
-</span><span id="line-177"><span class="w">    </span><span class="sd">"""Build a normalized :class:`~scribed.base.Segment`.</span>
-</span><span id="line-178">
-</span><span id="line-179"><span class="sd">    ``start``/``end`` are **seconds** (converted to the millisecond</span>
-</span><span id="line-180"><span class="sd">    :class:`~scribed.base.TimeSpan` internally). ``confidence`` is normalized to</span>
-</span><span id="line-181"><span class="sd">    ``[0, 1]`` via ``conf_scale`` (e.g. ``conf_scale=100`` for percent-scale</span>
-</span><span id="line-182"><span class="sd">    engines).</span>
-</span><span id="line-183"><span class="sd">    """</span>
-</span><span id="line-184">    <span class="k">return</span> <span class="n">Segment</span><span class="p">(</span>
-</span><span id="line-185">        <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-</span><span id="line-186">        <span class="n">span</span><span class="o">=</span><span class="n">_span_from_seconds</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">),</span>
-</span><span id="line-187">        <span class="n">confidence</span><span class="o">=</span><span class="n">normalize_confidence</span><span class="p">(</span><span class="n">confidence</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">conf_scale</span><span class="p">),</span>
-</span><span id="line-188">        <span class="n">speaker</span><span class="o">=</span><span class="n">speaker</span><span class="p">,</span>
-</span><span id="line-189">        <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
-</span><span id="line-190">        <span class="n">words</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="k">if</span> <span class="n">words</span> <span class="k">else</span> <span class="p">(),</span>
-</span><span id="line-191">        <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
+</span><span id="line-172"><span class="k">def</span><span class="w"> </span><span class="nf">make_word</span><span class="p">(</span>
+</span><span id="line-173">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="line-174">    <span class="o">*</span><span class="p">,</span>
+</span><span id="line-175">    <span class="n">start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-176">    <span class="n">end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-177">    <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-178">    <span class="n">conf_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+</span><span id="line-179">    <span class="n">speaker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-180"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Word</span><span class="p">:</span>
+</span><span id="line-181"><span class="w">    </span><span class="sd">"""Build a normalized :class:`~scribed.base.Word`.</span>
+</span><span id="line-182">
+</span><span id="line-183"><span class="sd">    ``start``/``end`` are **seconds** (converted to the millisecond</span>
+</span><span id="line-184"><span class="sd">    :class:`~scribed.base.TimeSpan` internally). ``confidence`` is normalized to</span>
+</span><span id="line-185"><span class="sd">    ``[0, 1]`` via ``conf_scale``.</span>
+</span><span id="line-186"><span class="sd">    """</span>
+</span><span id="line-187">    <span class="k">return</span> <span class="n">Word</span><span class="p">(</span>
+</span><span id="line-188">        <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+</span><span id="line-189">        <span class="n">span</span><span class="o">=</span><span class="n">_span_from_seconds</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">),</span>
+</span><span id="line-190">        <span class="n">confidence</span><span class="o">=</span><span class="n">normalize_confidence</span><span class="p">(</span><span class="n">confidence</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">conf_scale</span><span class="p">),</span>
+</span><span id="line-191">        <span class="n">speaker</span><span class="o">=</span><span class="n">speaker</span><span class="p">,</span>
 </span><span id="line-192">    <span class="p">)</span></div>
 
 </span><span id="line-193">
 </span><span id="line-194">
-</span><span id="line-195"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-196"><span class="c1"># Scaffolding a new backend from the ledger</span>
-</span><span id="line-197"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-198">
-</span><span id="line-199"><span class="n">_TEMPLATE_LINE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-</span><span id="line-200">    <span class="c1"># A config line tagged for scaffold rewriting. Trailing text after the</span>
-</span><span id="line-201">    <span class="c1"># ``# TEMPLATE`` marker (a usage hint) is allowed and ignored.</span>
-</span><span id="line-202">    <span class="sa">r</span><span class="s1">'^(?P&lt;indent&gt;\s*)"(?P&lt;key&gt;\w+)":\s*(?P&lt;val&gt;.*?),\s*#\s*TEMPLATE\b.*$'</span>
-</span><span id="line-203"><span class="p">)</span>
-</span><span id="line-204">
-</span><span id="line-205">
-</span><span id="line-206"><span class="k">def</span><span class="w"> </span><span class="nf">_fmt_value</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-207">    <span class="c1"># Booleans first (bool is a subclass of int and of json's number handling).</span>
-</span><span id="line-208">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-</span><span id="line-209">        <span class="k">return</span> <span class="s2">"True"</span> <span class="k">if</span> <span class="n">v</span> <span class="k">else</span> <span class="s2">"False"</span>
-</span><span id="line-210">    <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-211">        <span class="k">return</span> <span class="s1">'""'</span>
-</span><span id="line-212">    <span class="c1"># json.dumps emits a correctly-escaped, Python-compatible literal — crucial</span>
-</span><span id="line-213">    <span class="c1"># for strings that contain quotes/backslashes, which naive f-string quoting</span>
-</span><span id="line-214">    <span class="c1"># would turn into invalid code.</span>
-</span><span id="line-215">    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="line-216">
-</span><span id="line-217">
-</span><span id="line-218"><span class="k">def</span><span class="w"> </span><span class="nf">_overrides_from_record</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="line-219"><span class="w">    </span><span class="sd">"""Map a ledger record onto the template's ``# TEMPLATE`` config keys."""</span>
-</span><span id="line-220">    <span class="n">record</span> <span class="o">=</span> <span class="n">record</span> <span class="ow">or</span> <span class="p">{}</span>
-</span><span id="line-221">    <span class="n">pip_install</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"python_install"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</span><span id="line-222">    <span class="n">pip_install</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^\s*pip\s+install\s+"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">pip_install</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</span><span id="line-223">    <span class="n">desc</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="line-224">        <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"best_for"</span><span class="p">)</span>
-</span><span id="line-225">        <span class="ow">or</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pros"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
-</span><span id="line-226">        <span class="ow">or</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
-</span><span id="line-227">        <span class="ow">or</span> <span class="n">backend_id</span>
-</span><span id="line-228">    <span class="p">)</span>
-</span><span id="line-229">    <span class="k">return</span> <span class="p">{</span>
-</span><span id="line-230">        <span class="s2">"id"</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
-</span><span id="line-231">        <span class="s2">"name"</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
-</span><span id="line-232">        <span class="s2">"display_name"</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"display_name"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">backend_id</span><span class="p">,</span>
-</span><span id="line-233">        <span class="s2">"pip_install"</span><span class="p">:</span> <span class="n">pip_install</span> <span class="ow">or</span> <span class="s2">"PACKAGE"</span><span class="p">,</span>
-</span><span id="line-234">        <span class="s2">"import_name"</span><span class="p">:</span> <span class="n">backend_id</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">),</span>
-</span><span id="line-235">        <span class="s2">"license"</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"license"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"unknown"</span><span class="p">,</span>
-</span><span id="line-236">        <span class="s2">"is_local"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_local"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)),</span>
-</span><span id="line-237">        <span class="s2">"is_remote"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_remote"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)),</span>
-</span><span id="line-238">        <span class="s2">"description"</span><span class="p">:</span> <span class="n">desc</span><span class="p">,</span>
-</span><span id="line-239">    <span class="p">}</span>
-</span><span id="line-240">
-</span><span id="line-241">
-</span><span id="line-242"><span class="k">def</span><span class="w"> </span><span class="nf">_render_config</span><span class="p">(</span><span class="n">template_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overrides</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-243">    <span class="n">out_lines</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="line-244">    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">template_text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
-</span><span id="line-245">        <span class="n">m</span> <span class="o">=</span> <span class="n">_TEMPLATE_LINE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span><span id="line-246">        <span class="k">if</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"key"</span><span class="p">)</span> <span class="ow">in</span> <span class="n">overrides</span><span class="p">:</span>
-</span><span id="line-247">            <span class="n">key</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"key"</span><span class="p">)</span>
-</span><span id="line-248">            <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="line-249">                <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"indent"</span><span class="p">)</span><span class="si">}</span><span class="s1">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">": </span><span class="si">{</span><span class="n">_fmt_value</span><span class="p">(</span><span class="n">overrides</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="si">}</span><span class="s1">,'</span>
-</span><span id="line-250">            <span class="p">)</span>
-</span><span id="line-251">        <span class="k">else</span><span class="p">:</span>
-</span><span id="line-252">            <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span><span id="line-253">    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_lines</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="k">if</span> <span class="n">template_text</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
-</span><span id="line-254">
-</span><span id="line-255">
+<div class="viewcode-block" id="make_segment">
+<a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.make_segment">[docs]</a>
+</span><span id="line-195"><span class="k">def</span><span class="w"> </span><span class="nf">make_segment</span><span class="p">(</span>
+</span><span id="line-196">    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="line-197">    <span class="o">*</span><span class="p">,</span>
+</span><span id="line-198">    <span class="n">start</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-199">    <span class="n">end</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-200">    <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-201">    <span class="n">conf_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+</span><span id="line-202">    <span class="n">speaker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-203">    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-204">    <span class="n">words</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Word</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-205">    <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+</span><span id="line-206"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Segment</span><span class="p">:</span>
+</span><span id="line-207"><span class="w">    </span><span class="sd">"""Build a normalized :class:`~scribed.base.Segment`.</span>
+</span><span id="line-208">
+</span><span id="line-209"><span class="sd">    ``start``/``end`` are **seconds** (converted to the millisecond</span>
+</span><span id="line-210"><span class="sd">    :class:`~scribed.base.TimeSpan` internally). ``confidence`` is normalized to</span>
+</span><span id="line-211"><span class="sd">    ``[0, 1]`` via ``conf_scale`` (e.g. ``conf_scale=100`` for percent-scale</span>
+</span><span id="line-212"><span class="sd">    engines).</span>
+</span><span id="line-213"><span class="sd">    """</span>
+</span><span id="line-214">    <span class="k">return</span> <span class="n">Segment</span><span class="p">(</span>
+</span><span id="line-215">        <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+</span><span id="line-216">        <span class="n">span</span><span class="o">=</span><span class="n">_span_from_seconds</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">),</span>
+</span><span id="line-217">        <span class="n">confidence</span><span class="o">=</span><span class="n">normalize_confidence</span><span class="p">(</span><span class="n">confidence</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">conf_scale</span><span class="p">),</span>
+</span><span id="line-218">        <span class="n">speaker</span><span class="o">=</span><span class="n">speaker</span><span class="p">,</span>
+</span><span id="line-219">        <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+</span><span id="line-220">        <span class="n">words</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="k">if</span> <span class="n">words</span> <span class="k">else</span> <span class="p">(),</span>
+</span><span id="line-221">        <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
+</span><span id="line-222">    <span class="p">)</span></div>
+
+</span><span id="line-223">
+</span><span id="line-224">
+</span><span id="line-225"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-226"><span class="c1"># Scaffolding a new backend from the ledger</span>
+</span><span id="line-227"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-228">
+</span><span id="line-229"><span class="n">_TEMPLATE_LINE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+</span><span id="line-230">    <span class="c1"># A config line tagged for scaffold rewriting. Trailing text after the</span>
+</span><span id="line-231">    <span class="c1"># ``# TEMPLATE`` marker (a usage hint) is allowed and ignored.</span>
+</span><span id="line-232">    <span class="sa">r</span><span class="s1">'^(?P&lt;indent&gt;\s*)"(?P&lt;key&gt;\w+)":\s*(?P&lt;val&gt;.*?),\s*#\s*TEMPLATE\b.*$'</span>
+</span><span id="line-233"><span class="p">)</span>
+</span><span id="line-234">
+</span><span id="line-235">
+</span><span id="line-236"><span class="k">def</span><span class="w"> </span><span class="nf">_fmt_value</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-237">    <span class="c1"># Booleans first (bool is a subclass of int and of json's number handling).</span>
+</span><span id="line-238">    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+</span><span id="line-239">        <span class="k">return</span> <span class="s2">"True"</span> <span class="k">if</span> <span class="n">v</span> <span class="k">else</span> <span class="s2">"False"</span>
+</span><span id="line-240">    <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-241">        <span class="k">return</span> <span class="s1">'""'</span>
+</span><span id="line-242">    <span class="c1"># json.dumps emits a correctly-escaped, Python-compatible literal — crucial</span>
+</span><span id="line-243">    <span class="c1"># for strings that contain quotes/backslashes, which naive f-string quoting</span>
+</span><span id="line-244">    <span class="c1"># would turn into invalid code.</span>
+</span><span id="line-245">    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="line-246">
+</span><span id="line-247">
+</span><span id="line-248"><span class="k">def</span><span class="w"> </span><span class="nf">_overrides_from_record</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="line-249"><span class="w">    </span><span class="sd">"""Map a ledger record onto the template's ``# TEMPLATE`` config keys."""</span>
+</span><span id="line-250">    <span class="n">record</span> <span class="o">=</span> <span class="n">record</span> <span class="ow">or</span> <span class="p">{}</span>
+</span><span id="line-251">    <span class="n">pip_install</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"python_install"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span id="line-252">    <span class="n">pip_install</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^\s*pip\s+install\s+"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="n">pip_install</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span><span id="line-253">    <span class="n">desc</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="line-254">        <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"best_for"</span><span class="p">)</span>
+</span><span id="line-255">        <span class="ow">or</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pros"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="line-256">        <span class="ow">or</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
+</span><span id="line-257">        <span class="ow">or</span> <span class="n">backend_id</span>
+</span><span id="line-258">    <span class="p">)</span>
+</span><span id="line-259">    <span class="k">return</span> <span class="p">{</span>
+</span><span id="line-260">        <span class="s2">"id"</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
+</span><span id="line-261">        <span class="s2">"name"</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
+</span><span id="line-262">        <span class="s2">"display_name"</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"display_name"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">backend_id</span><span class="p">,</span>
+</span><span id="line-263">        <span class="s2">"pip_install"</span><span class="p">:</span> <span class="n">pip_install</span> <span class="ow">or</span> <span class="s2">"PACKAGE"</span><span class="p">,</span>
+</span><span id="line-264">        <span class="s2">"import_name"</span><span class="p">:</span> <span class="n">backend_id</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">),</span>
+</span><span id="line-265">        <span class="s2">"license"</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"license"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"unknown"</span><span class="p">,</span>
+</span><span id="line-266">        <span class="s2">"is_local"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_local"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)),</span>
+</span><span id="line-267">        <span class="s2">"is_remote"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_remote"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)),</span>
+</span><span id="line-268">        <span class="s2">"description"</span><span class="p">:</span> <span class="n">desc</span><span class="p">,</span>
+</span><span id="line-269">    <span class="p">}</span>
+</span><span id="line-270">
+</span><span id="line-271">
+</span><span id="line-272"><span class="k">def</span><span class="w"> </span><span class="nf">_render_config</span><span class="p">(</span><span class="n">template_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overrides</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-273">    <span class="n">out_lines</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="line-274">    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">template_text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+</span><span id="line-275">        <span class="n">m</span> <span class="o">=</span> <span class="n">_TEMPLATE_LINE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span id="line-276">        <span class="k">if</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"key"</span><span class="p">)</span> <span class="ow">in</span> <span class="n">overrides</span><span class="p">:</span>
+</span><span id="line-277">            <span class="n">key</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"key"</span><span class="p">)</span>
+</span><span id="line-278">            <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="line-279">                <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"indent"</span><span class="p">)</span><span class="si">}</span><span class="s1">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">": </span><span class="si">{</span><span class="n">_fmt_value</span><span class="p">(</span><span class="n">overrides</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="si">}</span><span class="s1">,'</span>
+</span><span id="line-280">            <span class="p">)</span>
+</span><span id="line-281">        <span class="k">else</span><span class="p">:</span>
+</span><span id="line-282">            <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span id="line-283">    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_lines</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="k">if</span> <span class="n">template_text</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
+</span><span id="line-284">
+</span><span id="line-285">
 <div class="viewcode-block" id="scaffold_backend">
 <a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.scaffold_backend">[docs]</a>
-</span><span id="line-256"><span class="k">def</span><span class="w"> </span><span class="nf">scaffold_backend</span><span class="p">(</span>
-</span><span id="line-257">    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="line-258">    <span class="o">*</span><span class="p">,</span>
-</span><span id="line-259">    <span class="n">dest</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-260">    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-261">    <span class="n">ledger</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-262">    <span class="n">extra_overrides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-263"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-</span><span id="line-264"><span class="w">    </span><span class="sd">"""Create a new ``scribed/backends/&lt;id&gt;/`` package from the template.</span>
-</span><span id="line-265">
-</span><span id="line-266"><span class="sd">    Pre-fills ``config.py`` from the backend's ledger entry (if any) so you only</span>
-</span><span id="line-267"><span class="sd">    have to flesh out ``param_map`` and implement ``adapter.py``'s</span>
-</span><span id="line-268"><span class="sd">    ``_transcribe``.</span>
-</span><span id="line-269">
-</span><span id="line-270"><span class="sd">    Args:</span>
-</span><span id="line-271"><span class="sd">        backend_id: The ledger id (e.g. ``"deepgram"``, ``"faster-whisper"``).</span>
-</span><span id="line-272"><span class="sd">            The on-disk module name uses underscores; the config ``id`` keeps the</span>
-</span><span id="line-273"><span class="sd">            id verbatim.</span>
-</span><span id="line-274"><span class="sd">        dest: Target directory (defaults to ``scribed/backends/&lt;id_underscored&gt;``).</span>
-</span><span id="line-275"><span class="sd">        overwrite: Allow writing into an existing non-empty directory.</span>
-</span><span id="line-276"><span class="sd">        ledger: A :class:`~scribed.catalog.Catalog` to read the record from</span>
-</span><span id="line-277"><span class="sd">            (defaults to the shipped catalog).</span>
-</span><span id="line-278"><span class="sd">        extra_overrides: Extra config-key overrides applied on top of the record.</span>
-</span><span id="line-279">
-</span><span id="line-280"><span class="sd">    Returns:</span>
-</span><span id="line-281"><span class="sd">        The path to the created backend package.</span>
-</span><span id="line-282"><span class="sd">    """</span>
-</span><span id="line-283">    <span class="n">record</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-284">    <span class="k">try</span><span class="p">:</span>
-</span><span id="line-285">        <span class="k">if</span> <span class="n">ledger</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-286">            <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span> <span class="k">as</span> <span class="n">ledger</span>
-</span><span id="line-287">        <span class="k">if</span> <span class="n">backend_id</span> <span class="ow">in</span> <span class="n">ledger</span><span class="p">:</span>
-</span><span id="line-288">            <span class="n">record</span> <span class="o">=</span> <span class="n">ledger</span><span class="p">[</span><span class="n">backend_id</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
-</span><span id="line-289">    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-</span><span id="line-290">        <span class="n">record</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-291">
-</span><span id="line-292">    <span class="n">overrides</span> <span class="o">=</span> <span class="n">_overrides_from_record</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
-</span><span id="line-293">    <span class="k">if</span> <span class="n">extra_overrides</span><span class="p">:</span>
-</span><span id="line-294">        <span class="n">overrides</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extra_overrides</span><span class="p">)</span>
+</span><span id="line-286"><span class="k">def</span><span class="w"> </span><span class="nf">scaffold_backend</span><span class="p">(</span>
+</span><span id="line-287">    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="line-288">    <span class="o">*</span><span class="p">,</span>
+</span><span id="line-289">    <span class="n">dest</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-290">    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-291">    <span class="n">ledger</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-292">    <span class="n">extra_overrides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-293"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+</span><span id="line-294"><span class="w">    </span><span class="sd">"""Create a new ``scribed/backends/&lt;id&gt;/`` package from the template.</span>
 </span><span id="line-295">
-</span><span id="line-296">    <span class="n">module_name</span> <span class="o">=</span> <span class="n">backend_id</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
-</span><span id="line-297">    <span class="n">dest</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span> <span class="k">if</span> <span class="n">dest</span> <span class="k">else</span> <span class="p">(</span><span class="n">_TEMPLATE_DIR</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">module_name</span><span class="p">)</span>
-</span><span id="line-298">    <span class="k">if</span> <span class="n">dest</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">dest</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
-</span><span id="line-299">        <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span>
-</span><span id="line-300">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">dest</span><span class="si">}</span><span class="s2"> already exists and is not empty (pass overwrite=True)."</span>
-</span><span id="line-301">        <span class="p">)</span>
-</span><span id="line-302">    <span class="n">dest</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="line-303">
-</span><span id="line-304">    <span class="n">config_text</span> <span class="o">=</span> <span class="n">_render_config</span><span class="p">(</span>
-</span><span id="line-305">        <span class="p">(</span><span class="n">_TEMPLATE_DIR</span> <span class="o">/</span> <span class="s2">"config.py"</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">),</span> <span class="n">overrides</span>
-</span><span id="line-306">    <span class="p">)</span>
-</span><span id="line-307">    <span class="n">adapter_text</span> <span class="o">=</span> <span class="p">(</span><span class="n">_TEMPLATE_DIR</span> <span class="o">/</span> <span class="s2">"adapter.py"</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
-</span><span id="line-308">    <span class="n">init_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'"""</span><span class="si">{</span><span class="n">overrides</span><span class="p">[</span><span class="s2">"display_name"</span><span class="p">]</span><span class="si">}</span><span class="s1"> backend for scribed."""</span><span class="se">\n</span><span class="s1">'</span>
+</span><span id="line-296"><span class="sd">    Pre-fills ``config.py`` from the backend's ledger entry (if any) so you only</span>
+</span><span id="line-297"><span class="sd">    have to flesh out ``param_map`` and implement ``adapter.py``'s</span>
+</span><span id="line-298"><span class="sd">    ``_transcribe``.</span>
+</span><span id="line-299">
+</span><span id="line-300"><span class="sd">    Args:</span>
+</span><span id="line-301"><span class="sd">        backend_id: The ledger id (e.g. ``"deepgram"``, ``"faster-whisper"``).</span>
+</span><span id="line-302"><span class="sd">            The on-disk module name uses underscores; the config ``id`` keeps the</span>
+</span><span id="line-303"><span class="sd">            id verbatim.</span>
+</span><span id="line-304"><span class="sd">        dest: Target directory (defaults to ``scribed/backends/&lt;id_underscored&gt;``).</span>
+</span><span id="line-305"><span class="sd">        overwrite: Allow writing into an existing non-empty directory.</span>
+</span><span id="line-306"><span class="sd">        ledger: A :class:`~scribed.catalog.Catalog` to read the record from</span>
+</span><span id="line-307"><span class="sd">            (defaults to the shipped catalog).</span>
+</span><span id="line-308"><span class="sd">        extra_overrides: Extra config-key overrides applied on top of the record.</span>
 </span><span id="line-309">
-</span><span id="line-310">    <span class="p">(</span><span class="n">dest</span> <span class="o">/</span> <span class="s2">"__init__.py"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">init_text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
-</span><span id="line-311">    <span class="p">(</span><span class="n">dest</span> <span class="o">/</span> <span class="s2">"config.py"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">config_text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
-</span><span id="line-312">    <span class="p">(</span><span class="n">dest</span> <span class="o">/</span> <span class="s2">"adapter.py"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">adapter_text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
-</span><span id="line-313">    <span class="k">return</span> <span class="n">dest</span></div>
+</span><span id="line-310"><span class="sd">    Returns:</span>
+</span><span id="line-311"><span class="sd">        The path to the created backend package.</span>
+</span><span id="line-312"><span class="sd">    """</span>
+</span><span id="line-313">    <span class="n">record</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-314">    <span class="k">try</span><span class="p">:</span>
+</span><span id="line-315">        <span class="k">if</span> <span class="n">ledger</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-316">            <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span> <span class="k">as</span> <span class="n">ledger</span>
+</span><span id="line-317">        <span class="k">if</span> <span class="n">backend_id</span> <span class="ow">in</span> <span class="n">ledger</span><span class="p">:</span>
+</span><span id="line-318">            <span class="n">record</span> <span class="o">=</span> <span class="n">ledger</span><span class="p">[</span><span class="n">backend_id</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+</span><span id="line-319">    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span id="line-320">        <span class="n">record</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-321">
+</span><span id="line-322">    <span class="n">overrides</span> <span class="o">=</span> <span class="n">_overrides_from_record</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
+</span><span id="line-323">    <span class="k">if</span> <span class="n">extra_overrides</span><span class="p">:</span>
+</span><span id="line-324">        <span class="n">overrides</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extra_overrides</span><span class="p">)</span>
+</span><span id="line-325">
+</span><span id="line-326">    <span class="n">module_name</span> <span class="o">=</span> <span class="n">backend_id</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
+</span><span id="line-327">    <span class="n">dest</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span> <span class="k">if</span> <span class="n">dest</span> <span class="k">else</span> <span class="p">(</span><span class="n">_TEMPLATE_DIR</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">module_name</span><span class="p">)</span>
+</span><span id="line-328">    <span class="k">if</span> <span class="n">dest</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">dest</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+</span><span id="line-329">        <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span>
+</span><span id="line-330">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">dest</span><span class="si">}</span><span class="s2"> already exists and is not empty (pass overwrite=True)."</span>
+</span><span id="line-331">        <span class="p">)</span>
+</span><span id="line-332">    <span class="n">dest</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="line-333">
+</span><span id="line-334">    <span class="n">config_text</span> <span class="o">=</span> <span class="n">_render_config</span><span class="p">(</span>
+</span><span id="line-335">        <span class="p">(</span><span class="n">_TEMPLATE_DIR</span> <span class="o">/</span> <span class="s2">"config.py"</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">),</span> <span class="n">overrides</span>
+</span><span id="line-336">    <span class="p">)</span>
+</span><span id="line-337">    <span class="n">adapter_text</span> <span class="o">=</span> <span class="p">(</span><span class="n">_TEMPLATE_DIR</span> <span class="o">/</span> <span class="s2">"adapter.py"</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+</span><span id="line-338">    <span class="n">init_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'"""</span><span class="si">{</span><span class="n">overrides</span><span class="p">[</span><span class="s2">"display_name"</span><span class="p">]</span><span class="si">}</span><span class="s1"> backend for scribed."""</span><span class="se">\n</span><span class="s1">'</span>
+</span><span id="line-339">
+</span><span id="line-340">    <span class="p">(</span><span class="n">dest</span> <span class="o">/</span> <span class="s2">"__init__.py"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">init_text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+</span><span id="line-341">    <span class="p">(</span><span class="n">dest</span> <span class="o">/</span> <span class="s2">"config.py"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">config_text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+</span><span id="line-342">    <span class="p">(</span><span class="n">dest</span> <span class="o">/</span> <span class="s2">"adapter.py"</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">adapter_text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+</span><span id="line-343">    <span class="k">return</span> <span class="n">dest</span></div>
 
-</span><span id="line-314">
-</span><span id="line-315">
-</span><span id="line-316"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-317"><span class="c1"># Validation</span>
-</span><span id="line-318"><span class="c1"># ---------------------------------------------------------------------------</span>
-</span><span id="line-319">
-</span><span id="line-320">
+</span><span id="line-344">
+</span><span id="line-345">
+</span><span id="line-346"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-347"><span class="c1"># Validation</span>
+</span><span id="line-348"><span class="c1"># ---------------------------------------------------------------------------</span>
+</span><span id="line-349">
+</span><span id="line-350">
 <div class="viewcode-block" id="make_test_audio">
 <a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.make_test_audio">[docs]</a>
-</span><span id="line-321"><span class="k">def</span><span class="w"> </span><span class="nf">make_test_audio</span><span class="p">(</span>
-</span><span id="line-322">    <span class="o">*</span><span class="p">,</span>
-</span><span id="line-323">    <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-</span><span id="line-324">    <span class="n">sample_rate</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16_000</span><span class="p">,</span>
-</span><span id="line-325">    <span class="n">freq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">440.0</span><span class="p">,</span>
-</span><span id="line-326"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
-</span><span id="line-327"><span class="w">    </span><span class="sd">"""Return WAV ``bytes`` of a short sine tone (needs numpy + soundfile).</span>
-</span><span id="line-328">
-</span><span id="line-329"><span class="sd">    A tone carries no speech, so it is a *wiring* smoke test: it proves an</span>
-</span><span id="line-330"><span class="sd">    adapter accepts audio, runs, and returns a :class:`~scribed.base.Transcript`</span>
-</span><span id="line-331"><span class="sd">    of the right shape. To check actual recognition, pass a real speech clip to</span>
-</span><span id="line-332"><span class="sd">    :func:`validate_adapter` via ``audio=`` together with ``expect_text=``.</span>
-</span><span id="line-333"><span class="sd">    """</span>
-</span><span id="line-334">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_import</span>
-</span><span id="line-335">
-</span><span id="line-336">    <span class="n">np</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">"make_test_audio"</span><span class="p">)</span>
-</span><span id="line-337">    <span class="n">sf</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">"soundfile"</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">"soundfile"</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">"make_test_audio"</span><span class="p">)</span>
-</span><span id="line-338">    <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
-</span><span id="line-339">
-</span><span id="line-340">    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">sample_rate</span> <span class="o">*</span> <span class="n">duration</span><span class="p">),</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="line-341">    <span class="n">waveform</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-</span><span id="line-342">    <span class="n">buf</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
-</span><span id="line-343">    <span class="n">sf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"WAV"</span><span class="p">)</span>
-</span><span id="line-344">    <span class="k">return</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
+</span><span id="line-351"><span class="k">def</span><span class="w"> </span><span class="nf">make_test_audio</span><span class="p">(</span>
+</span><span id="line-352">    <span class="o">*</span><span class="p">,</span>
+</span><span id="line-353">    <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+</span><span id="line-354">    <span class="n">sample_rate</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16_000</span><span class="p">,</span>
+</span><span id="line-355">    <span class="n">freq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">440.0</span><span class="p">,</span>
+</span><span id="line-356"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+</span><span id="line-357"><span class="w">    </span><span class="sd">"""Return WAV ``bytes`` of a short sine tone (needs numpy + soundfile).</span>
+</span><span id="line-358">
+</span><span id="line-359"><span class="sd">    A tone carries no speech, so it is a *wiring* smoke test: it proves an</span>
+</span><span id="line-360"><span class="sd">    adapter accepts audio, runs, and returns a :class:`~scribed.base.Transcript`</span>
+</span><span id="line-361"><span class="sd">    of the right shape. To check actual recognition, pass a real speech clip to</span>
+</span><span id="line-362"><span class="sd">    :func:`validate_adapter` via ``audio=`` together with ``expect_text=``.</span>
+</span><span id="line-363"><span class="sd">    """</span>
+</span><span id="line-364">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_import</span>
+</span><span id="line-365">
+</span><span id="line-366">    <span class="n">np</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">"make_test_audio"</span><span class="p">)</span>
+</span><span id="line-367">    <span class="n">sf</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">"soundfile"</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">"soundfile"</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">"make_test_audio"</span><span class="p">)</span>
+</span><span id="line-368">    <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+</span><span id="line-369">
+</span><span id="line-370">    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">sample_rate</span> <span class="o">*</span> <span class="n">duration</span><span class="p">),</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="line-371">    <span class="n">waveform</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span><span id="line-372">    <span class="n">buf</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+</span><span id="line-373">    <span class="n">sf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"WAV"</span><span class="p">)</span>
+</span><span id="line-374">    <span class="k">return</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
-</span><span id="line-345">
-</span><span id="line-346">
+</span><span id="line-375">
+</span><span id="line-376">
 <div class="viewcode-block" id="validate_adapter">
 <a class="viewcode-back" href="../../_autosummary/scribed.make_backend.html#scribed.validate_adapter">[docs]</a>
-</span><span id="line-347"><span class="k">def</span><span class="w"> </span><span class="nf">validate_adapter</span><span class="p">(</span>
-</span><span id="line-348">    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">audio</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">expect_text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="line-349"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="line-350"><span class="w">    </span><span class="sd">"""Smoke-test a backend adapter end to end, returning a report dict.</span>
-</span><span id="line-351">
-</span><span id="line-352"><span class="sd">    Loads the adapter (reporting unavailability instead of raising), runs</span>
-</span><span id="line-353"><span class="sd">    ``transcribe`` on a generated tone (or supplied ``audio``), and checks the</span>
-</span><span id="line-354"><span class="sd">    contract: a :class:`~scribed.base.Transcript` came back. Never raises on a</span>
-</span><span id="line-355"><span class="sd">    *recognition* mismatch — it returns what happened so callers can decide.</span>
-</span><span id="line-356">
-</span><span id="line-357"><span class="sd">    With a tone (no ``audio``), ``ok`` means "ran and returned a Transcript".</span>
-</span><span id="line-358"><span class="sd">    With ``expect_text``, ``ok`` additionally requires the substring to appear.</span>
-</span><span id="line-359"><span class="sd">    """</span>
-</span><span id="line-360">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
-</span><span id="line-361">
-</span><span id="line-362">    <span class="n">report</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="line-363">        <span class="s2">"backend"</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
-</span><span id="line-364">        <span class="s2">"available"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-365">        <span class="s2">"ran"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-366">        <span class="s2">"ok"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-</span><span id="line-367">    <span class="p">}</span>
-</span><span id="line-368">
-</span><span id="line-369">    <span class="k">try</span><span class="p">:</span>
-</span><span id="line-370">        <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
-</span><span id="line-371">    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="line-372">        <span class="n">report</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"not registered: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-373">        <span class="k">return</span> <span class="n">report</span>
-</span><span id="line-374">
-</span><span id="line-375">    <span class="k">try</span><span class="p">:</span>
-</span><span id="line-376">        <span class="n">adapter</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)[</span><span class="s2">"adapter"</span><span class="p">]</span>
-</span><span id="line-377">    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="line-378">        <span class="n">report</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"adapter import failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-379">        <span class="k">return</span> <span class="n">report</span>
-</span><span id="line-380">
-</span><span id="line-381">    <span class="c1"># Adapters import their engine lazily, so the class loads even without it.</span>
-</span><span id="line-382">    <span class="c1"># "Available" must reflect whether the engine dependency is actually present.</span>
-</span><span id="line-383">    <span class="n">report</span><span class="p">[</span><span class="s2">"available"</span><span class="p">]</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
-</span><span id="line-384">    <span class="k">if</span> <span class="ow">not</span> <span class="n">report</span><span class="p">[</span><span class="s2">"available"</span><span class="p">]:</span>
-</span><span id="line-385">        <span class="n">cfg</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
-</span><span id="line-386">        <span class="n">report</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="line-387">            <span class="sa">f</span><span class="s2">"engine not importable (</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'import_name'</span><span class="p">)</span><span class="si">}</span><span class="s2">); "</span>
-</span><span id="line-388">            <span class="sa">f</span><span class="s2">"install with: pip install </span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'pip_install'</span><span class="p">,</span><span class="w"> </span><span class="n">backend_id</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-389">        <span class="p">)</span>
-</span><span id="line-390">        <span class="k">return</span> <span class="n">report</span>
+</span><span id="line-377"><span class="k">def</span><span class="w"> </span><span class="nf">validate_adapter</span><span class="p">(</span>
+</span><span id="line-378">    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">audio</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">expect_text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-379"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="line-380"><span class="w">    </span><span class="sd">"""Smoke-test a backend adapter end to end, returning a report dict.</span>
+</span><span id="line-381">
+</span><span id="line-382"><span class="sd">    Loads the adapter (reporting unavailability instead of raising), runs</span>
+</span><span id="line-383"><span class="sd">    ``transcribe`` on a generated tone (or supplied ``audio``), and checks the</span>
+</span><span id="line-384"><span class="sd">    contract: a :class:`~scribed.base.Transcript` came back. Never raises on a</span>
+</span><span id="line-385"><span class="sd">    *recognition* mismatch — it returns what happened so callers can decide.</span>
+</span><span id="line-386">
+</span><span id="line-387"><span class="sd">    With a tone (no ``audio``), ``ok`` means "ran and returned a Transcript".</span>
+</span><span id="line-388"><span class="sd">    With ``expect_text``, ``ok`` additionally requires the substring to appear.</span>
+</span><span id="line-389"><span class="sd">    """</span>
+</span><span id="line-390">    <span class="kn">from</span><span class="w"> </span><span class="nn">scribed</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
 </span><span id="line-391">
-</span><span id="line-392">    <span class="k">if</span> <span class="n">audio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-393">        <span class="k">try</span><span class="p">:</span>
-</span><span id="line-394">            <span class="n">audio</span> <span class="o">=</span> <span class="n">make_test_audio</span><span class="p">()</span>
-</span><span id="line-395">        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="line-396">            <span class="n">report</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"cannot generate test audio: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-397">            <span class="k">return</span> <span class="n">report</span>
+</span><span id="line-392">    <span class="n">report</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="line-393">        <span class="s2">"backend"</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
+</span><span id="line-394">        <span class="s2">"available"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-395">        <span class="s2">"ran"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-396">        <span class="s2">"ok"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-397">    <span class="p">}</span>
 </span><span id="line-398">
 </span><span id="line-399">    <span class="k">try</span><span class="p">:</span>
-</span><span id="line-400">        <span class="n">result</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
-</span><span id="line-401">        <span class="n">report</span><span class="p">[</span><span class="s2">"ran"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="line-402">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - report any runtime error</span>
-</span><span id="line-403">        <span class="n">report</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-404">        <span class="k">return</span> <span class="n">report</span>
-</span><span id="line-405">
-</span><span id="line-406">    <span class="n">report</span><span class="p">[</span><span class="s2">"returns_transcript"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Transcript</span><span class="p">)</span>
-</span><span id="line-407">    <span class="n">report</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-408">    <span class="n">report</span><span class="p">[</span><span class="s2">"n_segments"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">"segments"</span><span class="p">,</span> <span class="p">[])</span> <span class="ow">or</span> <span class="p">[])</span>
-</span><span id="line-409">    <span class="n">report</span><span class="p">[</span><span class="s2">"has_timing"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
-</span><span id="line-410">        <span class="n">s</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">"segments"</span><span class="p">,</span> <span class="p">[])</span>
-</span><span id="line-411">    <span class="p">)</span>
-</span><span id="line-412">    <span class="k">if</span> <span class="n">expect_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-413">        <span class="n">ok</span> <span class="o">=</span> <span class="n">expect_text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="n">report</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-</span><span id="line-414">    <span class="k">else</span><span class="p">:</span>
-</span><span id="line-415">        <span class="n">ok</span> <span class="o">=</span> <span class="n">report</span><span class="p">[</span><span class="s2">"returns_transcript"</span><span class="p">]</span> <span class="ow">and</span> <span class="n">report</span><span class="p">[</span><span class="s2">"ran"</span><span class="p">]</span>
-</span><span id="line-416">    <span class="n">report</span><span class="p">[</span><span class="s2">"ok"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">report</span><span class="p">[</span><span class="s2">"returns_transcript"</span><span class="p">]</span> <span class="ow">and</span> <span class="n">ok</span><span class="p">)</span>
-</span><span id="line-417">    <span class="k">return</span> <span class="n">report</span></div>
+</span><span id="line-400">        <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
+</span><span id="line-401">    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="line-402">        <span class="n">report</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"not registered: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-403">        <span class="k">return</span> <span class="n">report</span>
+</span><span id="line-404">
+</span><span id="line-405">    <span class="k">try</span><span class="p">:</span>
+</span><span id="line-406">        <span class="n">adapter</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)[</span><span class="s2">"adapter"</span><span class="p">]</span>
+</span><span id="line-407">    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="line-408">        <span class="n">report</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"adapter import failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-409">        <span class="k">return</span> <span class="n">report</span>
+</span><span id="line-410">
+</span><span id="line-411">    <span class="c1"># Adapters import their engine lazily, so the class loads even without it.</span>
+</span><span id="line-412">    <span class="c1"># "Available" must reflect whether the engine dependency is actually present.</span>
+</span><span id="line-413">    <span class="n">report</span><span class="p">[</span><span class="s2">"available"</span><span class="p">]</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
+</span><span id="line-414">    <span class="k">if</span> <span class="ow">not</span> <span class="n">report</span><span class="p">[</span><span class="s2">"available"</span><span class="p">]:</span>
+</span><span id="line-415">        <span class="n">cfg</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
+</span><span id="line-416">        <span class="n">report</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="line-417">            <span class="sa">f</span><span class="s2">"engine not importable (</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'import_name'</span><span class="p">)</span><span class="si">}</span><span class="s2">); "</span>
+</span><span id="line-418">            <span class="sa">f</span><span class="s2">"install with: pip install </span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'pip_install'</span><span class="p">,</span><span class="w"> </span><span class="n">backend_id</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-419">        <span class="p">)</span>
+</span><span id="line-420">        <span class="k">return</span> <span class="n">report</span>
+</span><span id="line-421">
+</span><span id="line-422">    <span class="k">if</span> <span class="n">audio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-423">        <span class="k">try</span><span class="p">:</span>
+</span><span id="line-424">            <span class="n">audio</span> <span class="o">=</span> <span class="n">make_test_audio</span><span class="p">()</span>
+</span><span id="line-425">        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="line-426">            <span class="n">report</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"cannot generate test audio: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-427">            <span class="k">return</span> <span class="n">report</span>
+</span><span id="line-428">
+</span><span id="line-429">    <span class="k">try</span><span class="p">:</span>
+</span><span id="line-430">        <span class="n">result</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+</span><span id="line-431">        <span class="n">report</span><span class="p">[</span><span class="s2">"ran"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="line-432">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - report any runtime error</span>
+</span><span id="line-433">        <span class="n">report</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-434">        <span class="k">return</span> <span class="n">report</span>
+</span><span id="line-435">
+</span><span id="line-436">    <span class="n">report</span><span class="p">[</span><span class="s2">"returns_transcript"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Transcript</span><span class="p">)</span>
+</span><span id="line-437">    <span class="n">report</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="line-438">    <span class="n">report</span><span class="p">[</span><span class="s2">"n_segments"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">"segments"</span><span class="p">,</span> <span class="p">[])</span> <span class="ow">or</span> <span class="p">[])</span>
+</span><span id="line-439">    <span class="n">report</span><span class="p">[</span><span class="s2">"has_timing"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
+</span><span id="line-440">        <span class="n">s</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">"segments"</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="line-441">    <span class="p">)</span>
+</span><span id="line-442">    <span class="k">if</span> <span class="n">expect_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-443">        <span class="n">ok</span> <span class="o">=</span> <span class="n">expect_text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="n">report</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</span><span id="line-444">    <span class="k">else</span><span class="p">:</span>
+</span><span id="line-445">        <span class="n">ok</span> <span class="o">=</span> <span class="n">report</span><span class="p">[</span><span class="s2">"returns_transcript"</span><span class="p">]</span> <span class="ow">and</span> <span class="n">report</span><span class="p">[</span><span class="s2">"ran"</span><span class="p">]</span>
+</span><span id="line-446">    <span class="n">report</span><span class="p">[</span><span class="s2">"ok"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">report</span><span class="p">[</span><span class="s2">"returns_transcript"</span><span class="p">]</span> <span class="ow">and</span> <span class="n">ok</span><span class="p">)</span>
+</span><span id="line-447">    <span class="k">return</span> <span class="n">report</span></div>
 
 </span></code></pre></div>
     </div></div>
@@ -629,7 +665,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=0c446633"></script>
+    <script src="../../_static/documentation_options.js?v=3bbcec59"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
