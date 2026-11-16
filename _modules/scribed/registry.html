@@ -309,112 +309,158 @@
 </span><span id="line-130">
 </span><span id="line-131"><span class="sd">    Args:</span>
 </span><span id="line-132"><span class="sd">        backend_id: Unique identifier.</span>
-</span><span id="line-133"><span class="sd">        config: ``BACKEND_CONFIG``-shaped dict (needs at least ``name``).</span>
-</span><span id="line-134"><span class="sd">        adapter: Optional pre-instantiated adapter; else loaded lazily from</span>
-</span><span id="line-135"><span class="sd">            ``config['module_path']`` when first used.</span>
-</span><span id="line-136"><span class="sd">    """</span>
-</span><span id="line-137">    <span class="n">_discover_backends</span><span class="p">()</span>
-</span><span id="line-138">    <span class="n">_registry</span><span class="p">[</span><span class="n">backend_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="line-139">        <span class="s2">"config"</span><span class="p">:</span> <span class="n">config</span><span class="p">,</span>
-</span><span id="line-140">        <span class="s2">"adapter"</span><span class="p">:</span> <span class="n">adapter</span><span class="p">,</span>
-</span><span id="line-141">        <span class="s2">"module_path"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"module_path"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
-</span><span id="line-142">    <span class="p">}</span></div>
+</span><span id="line-133"><span class="sd">        config: ``BACKEND_CONFIG``-shaped dict (needs at least ``name``). Set</span>
+</span><span id="line-134"><span class="sd">            ``is_local: True`` for a backend that never uploads audio: without it</span>
+</span><span id="line-135"><span class="sd">            the backend is never chosen as an implicit default.</span>
+</span><span id="line-136"><span class="sd">        adapter: Optional pre-instantiated adapter; else loaded lazily from</span>
+</span><span id="line-137"><span class="sd">            ``config['module_path']`` when first used.</span>
+</span><span id="line-138"><span class="sd">    """</span>
+</span><span id="line-139">    <span class="n">_discover_backends</span><span class="p">()</span>
+</span><span id="line-140">    <span class="n">_registry</span><span class="p">[</span><span class="n">backend_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="line-141">        <span class="s2">"config"</span><span class="p">:</span> <span class="n">config</span><span class="p">,</span>
+</span><span id="line-142">        <span class="s2">"adapter"</span><span class="p">:</span> <span class="n">adapter</span><span class="p">,</span>
+</span><span id="line-143">        <span class="s2">"module_path"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"module_path"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+</span><span id="line-144">    <span class="p">}</span></div>
 
-</span><span id="line-143">
-</span><span id="line-144">
+</span><span id="line-145">
+</span><span id="line-146">
 <div class="viewcode-block" id="list_backends">
 <a class="viewcode-back" href="../../_autosummary/scribed.registry.html#scribed.list_backends">[docs]</a>
-</span><span id="line-145"><span class="k">def</span><span class="w"> </span><span class="nf">list_backends</span><span class="p">(</span><span class="n">capability</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="line-146"><span class="w">    </span><span class="sd">"""Sorted ids of implemented backends, optionally filtered by capability.</span>
-</span><span id="line-147">
-</span><span id="line-148"><span class="sd">    A backend matches ``capability`` if it appears in the backend's</span>
-</span><span id="line-149"><span class="sd">    ``capabilities`` list (the primary ``"transcribe"`` is implied for all).</span>
-</span><span id="line-150"><span class="sd">    """</span>
-</span><span id="line-151">    <span class="n">_discover_backends</span><span class="p">()</span>
-</span><span id="line-152">    <span class="k">if</span> <span class="n">capability</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-153">        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_registry</span><span class="p">)</span>
-</span><span id="line-154">    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
-</span><span id="line-155">        <span class="n">bid</span>
-</span><span id="line-156">        <span class="k">for</span> <span class="n">bid</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">_registry</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-</span><span id="line-157">        <span class="k">if</span> <span class="n">capability</span> <span class="o">==</span> <span class="n">PRIMARY_CAPABILITY</span>
-</span><span id="line-158">        <span class="ow">or</span> <span class="n">capability</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s2">"config"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"capabilities"</span><span class="p">,</span> <span class="p">[])</span>
-</span><span id="line-159">    <span class="p">)</span></div>
+</span><span id="line-147"><span class="k">def</span><span class="w"> </span><span class="nf">list_backends</span><span class="p">(</span><span class="n">capability</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="line-148"><span class="w">    </span><span class="sd">"""Sorted ids of implemented backends, optionally filtered by capability.</span>
+</span><span id="line-149">
+</span><span id="line-150"><span class="sd">    A backend matches ``capability`` if it appears in the backend's</span>
+</span><span id="line-151"><span class="sd">    ``capabilities`` list (the primary ``"transcribe"`` is implied for all).</span>
+</span><span id="line-152"><span class="sd">    """</span>
+</span><span id="line-153">    <span class="n">_discover_backends</span><span class="p">()</span>
+</span><span id="line-154">    <span class="k">if</span> <span class="n">capability</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-155">        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_registry</span><span class="p">)</span>
+</span><span id="line-156">    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
+</span><span id="line-157">        <span class="n">bid</span>
+</span><span id="line-158">        <span class="k">for</span> <span class="n">bid</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">_registry</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+</span><span id="line-159">        <span class="k">if</span> <span class="n">capability</span> <span class="o">==</span> <span class="n">PRIMARY_CAPABILITY</span>
+</span><span id="line-160">        <span class="ow">or</span> <span class="n">capability</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s2">"config"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"capabilities"</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="line-161">    <span class="p">)</span></div>
 
-</span><span id="line-160">
-</span><span id="line-161">
+</span><span id="line-162">
+</span><span id="line-163">
 <div class="viewcode-block" id="get_config">
 <a class="viewcode-back" href="../../_autosummary/scribed.registry.html#scribed.get_config">[docs]</a>
-</span><span id="line-162"><span class="k">def</span><span class="w"> </span><span class="nf">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="line-163"><span class="w">    </span><span class="sd">"""A backend's ``BACKEND_CONFIG`` without loading its adapter."""</span>
-</span><span id="line-164">    <span class="n">_discover_backends</span><span class="p">()</span>
-</span><span id="line-165">    <span class="k">if</span> <span class="n">backend_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_registry</span><span class="p">:</span>
-</span><span id="line-166">        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-</span><span id="line-167">            <span class="sa">f</span><span class="s2">"Unknown backend: </span><span class="si">{</span><span class="n">backend_id</span><span class="si">!r}</span><span class="s2">. Available: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_registry</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-168">        <span class="p">)</span>
-</span><span id="line-169">    <span class="k">return</span> <span class="n">_registry</span><span class="p">[</span><span class="n">backend_id</span><span class="p">][</span><span class="s2">"config"</span><span class="p">]</span></div>
+</span><span id="line-164"><span class="k">def</span><span class="w"> </span><span class="nf">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="line-165"><span class="w">    </span><span class="sd">"""A backend's ``BACKEND_CONFIG`` without loading its adapter."""</span>
+</span><span id="line-166">    <span class="n">_discover_backends</span><span class="p">()</span>
+</span><span id="line-167">    <span class="k">if</span> <span class="n">backend_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_registry</span><span class="p">:</span>
+</span><span id="line-168">        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+</span><span id="line-169">            <span class="sa">f</span><span class="s2">"Unknown backend: </span><span class="si">{</span><span class="n">backend_id</span><span class="si">!r}</span><span class="s2">. Available: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_registry</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-170">        <span class="p">)</span>
+</span><span id="line-171">    <span class="k">return</span> <span class="n">_registry</span><span class="p">[</span><span class="n">backend_id</span><span class="p">][</span><span class="s2">"config"</span><span class="p">]</span></div>
 
-</span><span id="line-170">
-</span><span id="line-171">
+</span><span id="line-172">
+</span><span id="line-173">
 <div class="viewcode-block" id="get_backend">
 <a class="viewcode-back" href="../../_autosummary/scribed.registry.html#scribed.get_backend">[docs]</a>
-</span><span id="line-172"><span class="k">def</span><span class="w"> </span><span class="nf">get_backend</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="line-173"><span class="w">    </span><span class="sd">"""Config + lazily-loaded adapter for a backend (raises on missing deps)."""</span>
-</span><span id="line-174">    <span class="n">_discover_backends</span><span class="p">()</span>
-</span><span id="line-175">    <span class="k">if</span> <span class="n">backend_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_registry</span><span class="p">:</span>
-</span><span id="line-176">        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-</span><span id="line-177">            <span class="sa">f</span><span class="s2">"Unknown backend: </span><span class="si">{</span><span class="n">backend_id</span><span class="si">!r}</span><span class="s2">. Available: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_registry</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-</span><span id="line-178">        <span class="p">)</span>
-</span><span id="line-179">    <span class="k">return</span> <span class="p">{</span>
-</span><span id="line-180">        <span class="s2">"config"</span><span class="p">:</span> <span class="n">_registry</span><span class="p">[</span><span class="n">backend_id</span><span class="p">][</span><span class="s2">"config"</span><span class="p">],</span>
-</span><span id="line-181">        <span class="s2">"adapter"</span><span class="p">:</span> <span class="n">_load_adapter</span><span class="p">(</span><span class="n">backend_id</span><span class="p">),</span>
-</span><span id="line-182">    <span class="p">}</span></div>
+</span><span id="line-174"><span class="k">def</span><span class="w"> </span><span class="nf">get_backend</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="line-175"><span class="w">    </span><span class="sd">"""Config + lazily-loaded adapter for a backend (raises on missing deps)."""</span>
+</span><span id="line-176">    <span class="n">_discover_backends</span><span class="p">()</span>
+</span><span id="line-177">    <span class="k">if</span> <span class="n">backend_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_registry</span><span class="p">:</span>
+</span><span id="line-178">        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+</span><span id="line-179">            <span class="sa">f</span><span class="s2">"Unknown backend: </span><span class="si">{</span><span class="n">backend_id</span><span class="si">!r}</span><span class="s2">. Available: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_registry</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+</span><span id="line-180">        <span class="p">)</span>
+</span><span id="line-181">    <span class="k">return</span> <span class="p">{</span>
+</span><span id="line-182">        <span class="s2">"config"</span><span class="p">:</span> <span class="n">_registry</span><span class="p">[</span><span class="n">backend_id</span><span class="p">][</span><span class="s2">"config"</span><span class="p">],</span>
+</span><span id="line-183">        <span class="s2">"adapter"</span><span class="p">:</span> <span class="n">_load_adapter</span><span class="p">(</span><span class="n">backend_id</span><span class="p">),</span>
+</span><span id="line-184">    <span class="p">}</span></div>
 
-</span><span id="line-183">
-</span><span id="line-184">
+</span><span id="line-185">
+</span><span id="line-186">
+<div class="viewcode-block" id="is_local">
+<a class="viewcode-back" href="../../_autosummary/scribed.registry.html#scribed.is_local">[docs]</a>
+</span><span id="line-187"><span class="k">def</span><span class="w"> </span><span class="nf">is_local</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="line-188"><span class="w">    </span><span class="sd">"""Does ``backend_id`` run entirely on this machine (never uploads audio)?</span>
+</span><span id="line-189">
+</span><span id="line-190"><span class="sd">    A config lacking ``is_local`` (e.g. a third-party plugin that does not say) or</span>
+</span><span id="line-191"><span class="sd">    flagged ``is_remote`` counts as *not* local: the safe reading.</span>
+</span><span id="line-192"><span class="sd">    """</span>
+</span><span id="line-193">    <span class="n">cfg</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
+</span><span id="line-194">    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_local"</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_remote"</span><span class="p">)</span></div>
+
+</span><span id="line-195">
+</span><span id="line-196">
 <div class="viewcode-block" id="get_default_backend">
 <a class="viewcode-back" href="../../_autosummary/scribed.registry.html#scribed.get_default_backend">[docs]</a>
-</span><span id="line-185"><span class="k">def</span><span class="w"> </span><span class="nf">get_default_backend</span><span class="p">(</span>
-</span><span id="line-186">    <span class="n">capability</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PRIMARY_CAPABILITY</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">require_available</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="line-187"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="line-188"><span class="w">    </span><span class="sd">"""Pick a sensible default backend id for a capability.</span>
-</span><span id="line-189">
-</span><span id="line-190"><span class="sd">    Strategy (ASR-tuned): prefer a backend explicitly flagged ``default_for`` the</span>
-</span><span id="line-191"><span class="sd">    capability *and* whose dependency is importable; then any importable backend</span>
-</span><span id="line-192"><span class="sd">    for the capability; then — if ``require_available`` is False or nothing is</span>
-</span><span id="line-193"><span class="sd">    installed — the first registered candidate (using it will raise a helpful</span>
-</span><span id="line-194"><span class="sd">    install error).</span>
-</span><span id="line-195"><span class="sd">    """</span>
-</span><span id="line-196">    <span class="n">_discover_backends</span><span class="p">()</span>
-</span><span id="line-197">    <span class="n">candidates</span> <span class="o">=</span> <span class="n">list_backends</span><span class="p">(</span><span class="n">capability</span><span class="p">)</span>
-</span><span id="line-198">    <span class="k">if</span> <span class="ow">not</span> <span class="n">candidates</span><span class="p">:</span>
-</span><span id="line-199">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span id="line-200">            <span class="sa">f</span><span class="s2">"No backends implemented for capability </span><span class="si">{</span><span class="n">capability</span><span class="si">!r}</span><span class="s2">. "</span>
-</span><span id="line-201">            <span class="sa">f</span><span class="s2">"Install/implement one, e.g. pip install 'scribed[faster-whisper]'."</span>
-</span><span id="line-202">        <span class="p">)</span>
-</span><span id="line-203">
-</span><span id="line-204">    <span class="n">flagged</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="line-205">        <span class="n">bid</span>
-</span><span id="line-206">        <span class="k">for</span> <span class="n">bid</span> <span class="ow">in</span> <span class="n">candidates</span>
-</span><span id="line-207">        <span class="k">if</span> <span class="n">capability</span> <span class="ow">in</span> <span class="n">_registry</span><span class="p">[</span><span class="n">bid</span><span class="p">][</span><span class="s2">"config"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"default_for"</span><span class="p">,</span> <span class="p">[])</span>
-</span><span id="line-208">    <span class="p">]</span>
-</span><span id="line-209">
-</span><span id="line-210">    <span class="k">if</span> <span class="n">require_available</span><span class="p">:</span>
-</span><span id="line-211">        <span class="k">for</span> <span class="n">pool</span> <span class="ow">in</span> <span class="p">(</span><span class="n">flagged</span><span class="p">,</span> <span class="n">candidates</span><span class="p">):</span>
-</span><span id="line-212">            <span class="k">for</span> <span class="n">bid</span> <span class="ow">in</span> <span class="n">pool</span><span class="p">:</span>
-</span><span id="line-213">                <span class="k">if</span> <span class="n">_is_available</span><span class="p">(</span><span class="n">bid</span><span class="p">):</span>
-</span><span id="line-214">                    <span class="k">return</span> <span class="n">bid</span>
-</span><span id="line-215">    <span class="c1"># Fall back to a declared default, else the first candidate.</span>
-</span><span id="line-216">    <span class="k">return</span> <span class="n">flagged</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">flagged</span> <span class="k">else</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+</span><span id="line-197"><span class="k">def</span><span class="w"> </span><span class="nf">get_default_backend</span><span class="p">(</span>
+</span><span id="line-198">    <span class="n">capability</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PRIMARY_CAPABILITY</span><span class="p">,</span>
+</span><span id="line-199">    <span class="o">*</span><span class="p">,</span>
+</span><span id="line-200">    <span class="n">require_available</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="line-201">    <span class="n">allow_remote</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="line-202"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="line-203"><span class="w">    </span><span class="sd">"""Pick a sensible default backend id for a capability.</span>
+</span><span id="line-204">
+</span><span id="line-205"><span class="sd">    Strategy (ASR-tuned): prefer a backend explicitly flagged ``default_for`` the</span>
+</span><span id="line-206"><span class="sd">    capability *and* whose dependency is importable; then any importable backend</span>
+</span><span id="line-207"><span class="sd">    for the capability; then — if ``require_available`` is False or nothing is</span>
+</span><span id="line-208"><span class="sd">    installed — the first registered candidate (using it will raise a helpful</span>
+</span><span id="line-209"><span class="sd">    install error).</span>
+</span><span id="line-210">
+</span><span id="line-211"><span class="sd">    Only **local** backends (``is_local``) are ever chosen implicitly, so a default</span>
+</span><span id="line-212"><span class="sd">    call never uploads audio to a third party. Pass ``allow_remote=True`` to let</span>
+</span><span id="line-213"><span class="sd">    remote services be chosen too, after every local candidate.</span>
+</span><span id="line-214"><span class="sd">    """</span>
+</span><span id="line-215">    <span class="n">_discover_backends</span><span class="p">()</span>
+</span><span id="line-216">
+</span><span id="line-217">    <span class="n">all_candidates</span> <span class="o">=</span> <span class="n">list_backends</span><span class="p">(</span><span class="n">capability</span><span class="p">)</span>
+</span><span id="line-218">    <span class="n">candidates</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="line-219">        <span class="n">all_candidates</span> <span class="k">if</span> <span class="n">allow_remote</span> <span class="k">else</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">all_candidates</span> <span class="k">if</span> <span class="n">is_local</span><span class="p">(</span><span class="n">b</span><span class="p">)]</span>
+</span><span id="line-220">    <span class="p">)</span>
+</span><span id="line-221">    <span class="k">if</span> <span class="ow">not</span> <span class="n">candidates</span><span class="p">:</span>
+</span><span id="line-222">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span id="line-223">            <span class="sa">f</span><span class="s2">"No </span><span class="si">{</span><span class="s1">''</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">allow_remote</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'local '</span><span class="si">}</span><span class="s2">backends registered for "</span>
+</span><span id="line-224">            <span class="sa">f</span><span class="s2">"capability </span><span class="si">{</span><span class="n">capability</span><span class="si">!r}</span><span class="s2">. Install one (see scribed.requirements)"</span>
+</span><span id="line-225">            <span class="o">+</span> <span class="p">(</span>
+</span><span id="line-226">                <span class="s2">"."</span>
+</span><span id="line-227">                <span class="k">if</span> <span class="n">allow_remote</span>
+</span><span id="line-228">                <span class="k">else</span> <span class="s2">", or name a remote backend explicitly "</span>
+</span><span id="line-229">                <span class="s2">"(backend=...) or pass allow_remote=True."</span>
+</span><span id="line-230">            <span class="p">)</span>
+</span><span id="line-231">        <span class="p">)</span>
+</span><span id="line-232">
+</span><span id="line-233">    <span class="n">flagged</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="line-234">        <span class="n">bid</span>
+</span><span id="line-235">        <span class="k">for</span> <span class="n">bid</span> <span class="ow">in</span> <span class="n">candidates</span>
+</span><span id="line-236">        <span class="k">if</span> <span class="n">capability</span> <span class="ow">in</span> <span class="n">_registry</span><span class="p">[</span><span class="n">bid</span><span class="p">][</span><span class="s2">"config"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"default_for"</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="line-237">    <span class="p">]</span>
+</span><span id="line-238">    <span class="c1"># Local before remote (a no-op unless allow_remote); sorted() is stable.</span>
+</span><span id="line-239">    <span class="n">by_locality</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">b</span><span class="p">:</span> <span class="ow">not</span> <span class="n">is_local</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+</span><span id="line-240">
+</span><span id="line-241">    <span class="k">if</span> <span class="n">require_available</span><span class="p">:</span>
+</span><span id="line-242">        <span class="k">for</span> <span class="n">pool</span> <span class="ow">in</span> <span class="p">(</span><span class="n">flagged</span><span class="p">,</span> <span class="n">by_locality</span><span class="p">):</span>
+</span><span id="line-243">            <span class="k">for</span> <span class="n">bid</span> <span class="ow">in</span> <span class="n">pool</span><span class="p">:</span>
+</span><span id="line-244">                <span class="k">if</span> <span class="n">_is_available</span><span class="p">(</span><span class="n">bid</span><span class="p">):</span>
+</span><span id="line-245">                    <span class="k">return</span> <span class="n">bid</span>
+</span><span id="line-246">    <span class="k">if</span> <span class="n">require_available</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_remote</span><span class="p">:</span>
+</span><span id="line-247">        <span class="n">skipped</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="line-248">            <span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">all_candidates</span> <span class="k">if</span> <span class="n">b</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="ow">and</span> <span class="n">_is_available</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</span><span id="line-249">        <span class="p">]</span>
+</span><span id="line-250">        <span class="k">if</span> <span class="n">skipped</span><span class="p">:</span>
+</span><span id="line-251">            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+</span><span id="line-252">                <span class="sa">f</span><span class="s2">"No local backend is installed; not using the installed remote "</span>
+</span><span id="line-253">                <span class="sa">f</span><span class="s2">"backend(s) </span><span class="si">{</span><span class="n">skipped</span><span class="si">}</span><span class="s2"> implicitly, as that would upload your audio. "</span>
+</span><span id="line-254">                <span class="s2">"Name one (backend=...) or pass allow_remote=True to use it, or "</span>
+</span><span id="line-255">                <span class="s2">"install a local backend (see scribed.requirements)."</span><span class="p">,</span>
+</span><span id="line-256">                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+</span><span id="line-257">            <span class="p">)</span>
+</span><span id="line-258">    <span class="c1"># Fall back to a declared default, else the first candidate.</span>
+</span><span id="line-259">    <span class="k">return</span> <span class="n">flagged</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">flagged</span> <span class="k">else</span> <span class="n">by_locality</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-</span><span id="line-217">
-</span><span id="line-218">
+</span><span id="line-260">
+</span><span id="line-261">
 <div class="viewcode-block" id="clear_registry">
 <a class="viewcode-back" href="../../_autosummary/scribed.registry.html#scribed.clear_registry">[docs]</a>
-</span><span id="line-219"><span class="k">def</span><span class="w"> </span><span class="nf">clear_registry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-220"><span class="w">    </span><span class="sd">"""Clear all registered backends (useful for tests)."""</span>
-</span><span id="line-221">    <span class="k">global</span> <span class="n">_discovered</span>
-</span><span id="line-222">    <span class="n">_registry</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-</span><span id="line-223">    <span class="n">_discovered</span> <span class="o">=</span> <span class="kc">False</span></div>
+</span><span id="line-262"><span class="k">def</span><span class="w"> </span><span class="nf">clear_registry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-263"><span class="w">    </span><span class="sd">"""Clear all registered backends (useful for tests)."""</span>
+</span><span id="line-264">    <span class="k">global</span> <span class="n">_discovered</span>
+</span><span id="line-265">    <span class="n">_registry</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</span><span id="line-266">    <span class="n">_discovered</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 </span></code></pre></div>
     </div></div>
@@ -429,7 +475,7 @@
 </footer>
     </div>
     
-    <script src="../../_static/documentation_options.js?v=f7cdbf68"></script>
+    <script src="../../_static/documentation_options.js?v=a83ce22a"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

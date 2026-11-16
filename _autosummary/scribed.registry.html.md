@@ -34,6 +34,7 @@ derive that set with `list_backends("whisper_sized_model")` rather than hardcode
 | [`get_backend`](#scribed.registry.get_backend)(backend_id)                         | Config + lazily-loaded adapter for a backend (raises on missing deps). |
 | [`get_config`](#scribed.registry.get_config)(backend_id)                          | A backend's `BACKEND_CONFIG` without loading its adapter.              |
 | [`get_default_backend`](#scribed.registry.get_default_backend)([capability, ...])          | Pick a sensible default backend id for a capability.                   |
+| [`is_local`](#scribed.registry.is_local)(backend_id)                            | Does `backend_id` run entirely on this machine (never uploads audio)?  |
 | [`list_backends`](#scribed.registry.list_backends)([capability])                     | Sorted ids of implemented backends, optionally filtered by capability. |
 | [`register_backend`](#scribed.registry.register_backend)(backend_id, config[, adapter]) | Register a backend at runtime (for third-party plugins).               |
 
@@ -62,7 +63,7 @@ A backend’s `BACKEND_CONFIG` without loading its adapter.
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
-### scribed.registry.get_default_backend(capability='transcribe', , require_available=True)
+### scribed.registry.get_default_backend(capability='transcribe', , require_available=True, allow_remote=False)
 
 Pick a sensible default backend id for a capability.
 
@@ -72,8 +73,22 @@ for the capability; then — if `require_available` is False or nothing is
 installed — the first registered candidate (using it will raise a helpful
 install error).
 
+Only **local** backends (`is_local`) are ever chosen implicitly, so a default
+call never uploads audio to a third party. Pass `allow_remote=True` to let
+remote services be chosen too, after every local candidate.
+
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### scribed.registry.is_local(backend_id)
+
+Does `backend_id` run entirely on this machine (never uploads audio)?
+
+A config lacking `is_local` (e.g. a third-party plugin that does not say) or
+flagged `is_remote` counts as *not* local: the safe reading.
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
 ### scribed.registry.list_backends(capability=None)
 
@@ -91,7 +106,9 @@ Register a backend at runtime (for third-party plugins).
 
 * **Parameters:**
   * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Unique identifier.
-  * **config** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)) – `BACKEND_CONFIG`-shaped dict (needs at least `name`).
+  * **config** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)) – `BACKEND_CONFIG`-shaped dict (needs at least `name`). Set
+    `is_local: True` for a backend that never uploads audio: without it
+    the backend is never chosen as an implicit default.
   * **adapter** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Optional pre-instantiated adapter; else loaded lazily from
     `config['module_path']` when first used.
 * **Return type:**

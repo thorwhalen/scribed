@@ -12,7 +12,7 @@ diarization support, and quirks. scribed gives you:
    [`Transcript`](scribed.base.html.md#scribed.base.Transcript) back no matter which backend ran:
    ```default
    import scribed
-   t = scribed.transcribe("talk.mp3")          # default (first installed) backend
+   t = scribed.transcribe("talk.mp3")          # default (first installed local) backend
    print(t)                                     # -> the transcript text
    t = scribed.transcribe("talk.mp3", backend="deepgram", diarize=True)
    print(t.srt)                                 # -> SRT subtitles
@@ -557,7 +557,7 @@ A backend’s `BACKEND_CONFIG` without loading its adapter.
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
-### scribed.get_default_backend(capability='transcribe', , require_available=True)
+### scribed.get_default_backend(capability='transcribe', , require_available=True, allow_remote=False)
 
 Pick a sensible default backend id for a capability.
 
@@ -566,6 +566,10 @@ capability *and* whose dependency is importable; then any importable backend
 for the capability; then — if `require_available` is False or nothing is
 installed — the first registered candidate (using it will raise a helpful
 install error).
+
+Only **local** backends (`is_local`) are ever chosen implicitly, so a default
+call never uploads audio to a third party. Pass `allow_remote=True` to let
+remote services be chosen too, after every local candidate.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
@@ -670,7 +674,9 @@ Register a backend at runtime (for third-party plugins).
 
 * **Parameters:**
   * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Unique identifier.
-  * **config** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)) – `BACKEND_CONFIG`-shaped dict (needs at least `name`).
+  * **config** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)) – `BACKEND_CONFIG`-shaped dict (needs at least `name`). Set
+    `is_local: True` for a backend that never uploads audio: without it
+    the backend is never chosen as an implicit default.
   * **adapter** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Optional pre-instantiated adapter; else loaded lazily from
     `config['module_path']` when first used.
 * **Return type:**
@@ -732,7 +738,8 @@ Transcribe audio with any backend, returning a normalized result.
   * **audio** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), Path, [`bytes`](https://docs.python.org/3/builtins/stdtypes.html#bytes), BinaryIO, NDArray]) – A path, `http(s)` URL, `bytes`, file-like object, or numpy
     waveform.
   * **backend** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Backend id (see [`list_backends()`](#scribed.list_backends)). Defaults to the first
-    *installed* implemented backend (see [`get_default_backend()`](#scribed.get_default_backend)).
+    *installed* **local** backend (see [`get_default_backend()`](#scribed.get_default_backend)); a
+    remote service is never picked implicitly, name it here.
   * **\*\*kwargs** – Normalized, backend-translated options (e.g. `language`,
     `diarize`, `word_timestamps`). Unknown options for the chosen
     backend are warned about and dropped.

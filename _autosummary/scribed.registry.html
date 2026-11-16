@@ -168,10 +168,13 @@ derive that set with <code class="docutils literal notranslate"><span class="pre
 <tr class="row-even"><td><p><a class="reference internal" href="#scribed.registry.get_default_backend" title="scribed.registry.get_default_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_backend</span></code></a>([capability, ...])</p></td>
 <td><p>Pick a sensible default backend id for a capability.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.registry.list_backends" title="scribed.registry.list_backends"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_backends</span></code></a>([capability])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.registry.is_local" title="scribed.registry.is_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_local</span></code></a>(backend_id)</p></td>
+<td><p>Does <code class="docutils literal notranslate"><span class="pre">backend_id</span></code> run entirely on this machine (never uploads audio)?</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#scribed.registry.list_backends" title="scribed.registry.list_backends"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_backends</span></code></a>([capability])</p></td>
 <td><p>Sorted ids of implemented backends, optionally filtered by capability.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#scribed.registry.register_backend" title="scribed.registry.register_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_backend</span></code></a>(backend_id, config[, adapter])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.registry.register_backend" title="scribed.registry.register_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_backend</span></code></a>(backend_id, config[, adapter])</p></td>
 <td><p>Register a backend at runtime (for third-party plugins).</p></td>
 </tr>
 </tbody>
@@ -213,16 +216,31 @@ derive that set with <code class="docutils literal notranslate"><span class="pre
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="scribed.registry.get_default_backend">
-<span class="sig-prename descclassname"><span class="pre">scribed.registry.</span></span><span class="sig-name descname"><span class="pre">get_default_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'transcribe'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_available</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/registry.html#get_default_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.registry.get_default_backend" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.registry.get_default_backend'">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">scribed.registry.</span></span><span class="sig-name descname"><span class="pre">get_default_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'transcribe'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_available</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_remote</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/registry.html#get_default_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.registry.get_default_backend" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.registry.get_default_backend'">¶</a></dt>
 <dd><p>Pick a sensible default backend id for a capability.</p>
 <p>Strategy (ASR-tuned): prefer a backend explicitly flagged <code class="docutils literal notranslate"><span class="pre">default_for</span></code> the
 capability <em>and</em> whose dependency is importable; then any importable backend
 for the capability; then — if <code class="docutils literal notranslate"><span class="pre">require_available</span></code> is False or nothing is
 installed — the first registered candidate (using it will raise a helpful
 install error).</p>
+<p>Only <strong>local</strong> backends (<code class="docutils literal notranslate"><span class="pre">is_local</span></code>) are ever chosen implicitly, so a default
+call never uploads audio to a third party. Pass <code class="docutils literal notranslate"><span class="pre">allow_remote=True</span></code> to let
+remote services be chosen too, after every local candidate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.registry.is_local">
+<span class="sig-prename descclassname"><span class="pre">scribed.registry.</span></span><span class="sig-name descname"><span class="pre">is_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/registry.html#is_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.registry.is_local" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.registry.is_local'">¶</a></dt>
+<dd><p>Does <code class="docutils literal notranslate"><span class="pre">backend_id</span></code> run entirely on this machine (never uploads audio)?</p>
+<p>A config lacking <code class="docutils literal notranslate"><span class="pre">is_local</span></code> (e.g. a third-party plugin that does not say) or
+flagged <code class="docutils literal notranslate"><span class="pre">is_remote</span></code> counts as <em>not</em> local: the safe reading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -246,7 +264,9 @@ install error).</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>backend_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – Unique identifier.</p></li>
-<li><p><strong>config</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – <code class="docutils literal notranslate"><span class="pre">BACKEND_CONFIG</span></code>-shaped dict (needs at least <code class="docutils literal notranslate"><span class="pre">name</span></code>).</p></li>
+<li><p><strong>config</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – <code class="docutils literal notranslate"><span class="pre">BACKEND_CONFIG</span></code>-shaped dict (needs at least <code class="docutils literal notranslate"><span class="pre">name</span></code>). Set
+<code class="docutils literal notranslate"><span class="pre">is_local:</span> <span class="pre">True</span></code> for a backend that never uploads audio: without it
+the backend is never chosen as an implicit default.</p></li>
 <li><p><strong>adapter</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span>) – Optional pre-instantiated adapter; else loaded lazily from
 <code class="docutils literal notranslate"><span class="pre">config['module_path']</span></code> when first used.</p></li>
 </ul>
@@ -265,6 +285,7 @@ install error).</p>
 <li><a :data-current="activeSection === '#scribed.registry.get_backend'" class="reference internal" href="#scribed.registry.get_backend"><code class="docutils literal notranslate"><span class="pre">get_backend()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.registry.get_config'" class="reference internal" href="#scribed.registry.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.registry.get_default_backend'" class="reference internal" href="#scribed.registry.get_default_backend"><code class="docutils literal notranslate"><span class="pre">get_default_backend()</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.registry.is_local'" class="reference internal" href="#scribed.registry.is_local"><code class="docutils literal notranslate"><span class="pre">is_local()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.registry.list_backends'" class="reference internal" href="#scribed.registry.list_backends"><code class="docutils literal notranslate"><span class="pre">list_backends()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.registry.register_backend'" class="reference internal" href="#scribed.registry.register_backend"><code class="docutils literal notranslate"><span class="pre">register_backend()</span></code></a></li>
 </ul>
@@ -280,7 +301,7 @@ install error).</p>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=f7cdbf68"></script>
+<script src="../_static/documentation_options.js?v=a83ce22a"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

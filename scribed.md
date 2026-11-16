@@ -1,4 +1,4 @@
-> built 2026-11-16 21:37 UTC from 803f3ed (main) · scribed 0.0.9. Details: build_info.json
+> built 2026-11-16 21:42 UTC from 0b25364 (main) · scribed 0.0.10. Details: build_info.json
 
 # index.html.md
 
@@ -1577,7 +1577,7 @@ diarization support, and quirks. scribed gives you:
    [`Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript) back no matter which backend ran:
    ```default
    import scribed
-   t = scribed.transcribe("talk.mp3")          # default (first installed) backend
+   t = scribed.transcribe("talk.mp3")          # default (first installed local) backend
    print(t)                                     # -> the transcript text
    t = scribed.transcribe("talk.mp3", backend="deepgram", diarize=True)
    print(t.srt)                                 # -> SRT subtitles
@@ -2122,7 +2122,7 @@ A backend’s `BACKEND_CONFIG` without loading its adapter.
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
-### scribed.get_default_backend(capability='transcribe', , require_available=True)
+### scribed.get_default_backend(capability='transcribe', , require_available=True, allow_remote=False)
 
 Pick a sensible default backend id for a capability.
 
@@ -2131,6 +2131,10 @@ capability *and* whose dependency is importable; then any importable backend
 for the capability; then — if `require_available` is False or nothing is
 installed — the first registered candidate (using it will raise a helpful
 install error).
+
+Only **local** backends (`is_local`) are ever chosen implicitly, so a default
+call never uploads audio to a third party. Pass `allow_remote=True` to let
+remote services be chosen too, after every local candidate.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
@@ -2235,7 +2239,9 @@ Register a backend at runtime (for third-party plugins).
 
 * **Parameters:**
   * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Unique identifier.
-  * **config** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)) – `BACKEND_CONFIG`-shaped dict (needs at least `name`).
+  * **config** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)) – `BACKEND_CONFIG`-shaped dict (needs at least `name`). Set
+    `is_local: True` for a backend that never uploads audio: without it
+    the backend is never chosen as an implicit default.
   * **adapter** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Optional pre-instantiated adapter; else loaded lazily from
     `config['module_path']` when first used.
 * **Return type:**
@@ -2297,7 +2303,8 @@ Transcribe audio with any backend, returning a normalized result.
   * **audio** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), Path, [`bytes`](https://docs.python.org/3/builtins/stdtypes.html#bytes), BinaryIO, NDArray]) – A path, `http(s)` URL, `bytes`, file-like object, or numpy
     waveform.
   * **backend** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Backend id (see [`list_backends()`](_autosummary/scribed.html.md#scribed.list_backends)). Defaults to the first
-    *installed* implemented backend (see [`get_default_backend()`](_autosummary/scribed.html.md#scribed.get_default_backend)).
+    *installed* **local** backend (see [`get_default_backend()`](_autosummary/scribed.html.md#scribed.get_default_backend)); a
+    remote service is never picked implicitly, name it here.
   * **\*\*kwargs** – Normalized, backend-translated options (e.g. `language`,
     `diarize`, `word_timestamps`). Unknown options for the chosen
     backend are warned about and dropped.
@@ -2624,6 +2631,7 @@ derive that set with `list_backends("whisper_sized_model")` rather than hardcode
 | [`get_backend`](_autosummary/scribed.registry.html.md#scribed.registry.get_backend)(backend_id)                         | Config + lazily-loaded adapter for a backend (raises on missing deps). |
 | [`get_config`](_autosummary/scribed.registry.html.md#scribed.registry.get_config)(backend_id)                          | A backend's `BACKEND_CONFIG` without loading its adapter.              |
 | [`get_default_backend`](_autosummary/scribed.registry.html.md#scribed.registry.get_default_backend)([capability, ...])          | Pick a sensible default backend id for a capability.                   |
+| [`is_local`](_autosummary/scribed.registry.html.md#scribed.registry.is_local)(backend_id)                            | Does `backend_id` run entirely on this machine (never uploads audio)?  |
 | [`list_backends`](_autosummary/scribed.registry.html.md#scribed.registry.list_backends)([capability])                     | Sorted ids of implemented backends, optionally filtered by capability. |
 | [`register_backend`](_autosummary/scribed.registry.html.md#scribed.registry.register_backend)(backend_id, config[, adapter]) | Register a backend at runtime (for third-party plugins).               |
 
@@ -2652,7 +2660,7 @@ A backend’s `BACKEND_CONFIG` without loading its adapter.
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
-### scribed.registry.get_default_backend(capability='transcribe', , require_available=True)
+### scribed.registry.get_default_backend(capability='transcribe', , require_available=True, allow_remote=False)
 
 Pick a sensible default backend id for a capability.
 
@@ -2662,8 +2670,22 @@ for the capability; then — if `require_available` is False or nothing is
 installed — the first registered candidate (using it will raise a helpful
 install error).
 
+Only **local** backends (`is_local`) are ever chosen implicitly, so a default
+call never uploads audio to a third party. Pass `allow_remote=True` to let
+remote services be chosen too, after every local candidate.
+
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### scribed.registry.is_local(backend_id)
+
+Does `backend_id` run entirely on this machine (never uploads audio)?
+
+A config lacking `is_local` (e.g. a third-party plugin that does not say) or
+flagged `is_remote` counts as *not* local: the safe reading.
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
 ### scribed.registry.list_backends(capability=None)
 
@@ -2681,7 +2703,9 @@ Register a backend at runtime (for third-party plugins).
 
 * **Parameters:**
   * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Unique identifier.
-  * **config** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)) – `BACKEND_CONFIG`-shaped dict (needs at least `name`).
+  * **config** ([`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)) – `BACKEND_CONFIG`-shaped dict (needs at least `name`). Set
+    `is_local: True` for a backend that never uploads audio: without it
+    the backend is never chosen as an implicit default.
   * **adapter** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – Optional pre-instantiated adapter; else loaded lazily from
     `config['module_path']` when first used.
 * **Return type:**
@@ -2897,7 +2921,7 @@ Transcribe an audio file/URL and print the result.
 
 * **Parameters:**
   * **audio** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Path or http(s) URL to the audio.
-  * **backend** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Backend id (default: first installed). See `scribed backends`.
+  * **backend** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Backend id (default: first installed local one). See `scribed backends`.
   * **language** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Language code hint, e.g. `en` (omit to auto-detect).
   * **diarize** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Ask the backend to label speakers (if it supports it).
   * **output** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – `text` (default), `json` (text + segments), `srt`, or `vtt`.
@@ -3081,18 +3105,16 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-16 21:37 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/803f3ed88a326e94c31052e3154949e1ab173870"><code>803f3ed</code></a> on branch <code>main</code>, for **scribed 0.0.9** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-16 21:42 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/0b25364ebc062c09ac8eaac47bbf2f0ef23e672f"><code>0b25364</code></a> on branch <code>main</code>, for **scribed 0.0.10** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (0.0.9) is behind the latest release on PyPI (0.0.10): `pip install scribed` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/803f3ed88a326e94c31052e3154949e1ab173870"><code>803f3ed88a326e94c31052e3154949e1ab173870</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/0b25364ebc062c09ac8eaac47bbf2f0ef23e672f"><code>0b25364ebc062c09ac8eaac47bbf2f0ef23e672f</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3103,9 +3125,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43961723871">43961723871</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43962595795">43962595795</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>803f3ed88a326e94c31052e3154949e1ab173870</code> (in the history of the built commit) |
+| Event commit | <code>0b25364ebc062c09ac8eaac47bbf2f0ef23e672f</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3130,13 +3152,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.10/">0.0.10</a>, newer than the documented version (0.0.9).
+Latest release: <a href="https://pypi.org/project/scribed/0.0.10/">0.0.10</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 803f3ed88a326e94c31052e3154949e1ab173870
+git checkout 0b25364ebc062c09ac8eaac47bbf2f0ef23e672f
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

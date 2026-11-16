@@ -98,7 +98,7 @@ Transcribe an audio file/URL and print the result.
 
 * **Parameters:**
   * **audio** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Path or http(s) URL to the audio.
-  * **backend** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Backend id (default: first installed). See `scribed backends`.
+  * **backend** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Backend id (default: first installed local one). See `scribed backends`.
   * **language** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Language code hint, e.g. `en` (omit to auto-detect).
   * **diarize** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Ask the backend to label speakers (if it supports it).
   * **output** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – `text` (default), `json` (text + segments), `srt`, or `vtt`.

@@ -2,18 +2,16 @@
 
 # About this build
 
-This documentation was built on **2026-11-16 21:37 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/803f3ed88a326e94c31052e3154949e1ab173870"><code>803f3ed</code></a> on branch <code>main</code>, for **scribed 0.0.9** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-16 21:42 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/0b25364ebc062c09ac8eaac47bbf2f0ef23e672f"><code>0b25364</code></a> on branch <code>main</code>, for **scribed 0.0.10** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (0.0.9) is behind the latest release on PyPI (0.0.10): `pip install scribed` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/803f3ed88a326e94c31052e3154949e1ab173870"><code>803f3ed88a326e94c31052e3154949e1ab173870</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/0b25364ebc062c09ac8eaac47bbf2f0ef23e672f"><code>0b25364ebc062c09ac8eaac47bbf2f0ef23e672f</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -24,9 +22,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43961723871">43961723871</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43962595795">43962595795</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>803f3ed88a326e94c31052e3154949e1ab173870</code> (in the history of the built commit) |
+| Event commit | <code>0b25364ebc062c09ac8eaac47bbf2f0ef23e672f</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -51,13 +49,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.10/">0.0.10</a>, newer than the documented version (0.0.9).
+Latest release: <a href="https://pypi.org/project/scribed/0.0.10/">0.0.10</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 803f3ed88a326e94c31052e3154949e1ab173870
+git checkout 0b25364ebc062c09ac8eaac47bbf2f0ef23e672f
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
