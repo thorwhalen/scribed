@@ -111,3 +111,34 @@ def test_detection_by_suffix_beats_content(tmp_path):
 def test_unknown_format():
     with pytest.raises(ValueError, match="unknown transcript format"):
         Transcript.parse("hi", fmt="docx")
+
+
+def test_json_segments_with_words_keep_their_segments_and_words():
+    import json
+
+    seg = lambda text, a, words: {  # noqa: E731
+        "text": text,
+        "start": a,
+        "end": a + 2,
+        "words": [
+            {"text": w, "start": a + i, "end": a + i + 1} for i, w in enumerate(words)
+        ],
+    }
+    doc = {"segments": [seg("hi there", 0, ["hi", "there"]), seg("you", 2, ["you"])]}
+    for payload in (doc, doc["segments"]):  # object or bare list of segments
+        t = Transcript.parse(json.dumps(payload))
+        assert [s.text for s in t] == ["hi there", "you"]
+        assert [[w.text for w in s.words] for s in t] == [["hi", "there"], ["you"]]
+
+
+def test_json_segments_without_words_are_segments_not_words():
+    import json
+
+    doc = {
+        "segments": [
+            {"text": "a b", "start": 0, "end": 1},
+            {"text": "c", "start": 1, "end": 2},
+        ]
+    }
+    t = Transcript.parse(json.dumps(doc))
+    assert [s.text for s in t] == ["a b", "c"] and t.words == []

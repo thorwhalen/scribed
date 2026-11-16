@@ -293,8 +293,9 @@ def _parse_json(text: str) -> List[_Row]:
     (``start_ms``/``end_ms`` too; a word may be ``[text, start, end]``); or a bare
     list of words, read as one segment."""
     obj = json.loads(text)
+    maybe_words = False  # could ``items`` be a bare list of words (one line)?
     if isinstance(obj, Mapping):
-        items = obj.get("segments")
+        items = obj.get("segments")  # entries here are segments, never words
         if items is None:
             items = obj.get("words")
             if items is None:
@@ -304,8 +305,11 @@ def _parse_json(text: str) -> List[_Row]:
             items = [{"words": items}]
     else:
         items = list(obj)
-    if items and all(_word_from(it) is not None for it in items):
-        items = [{"words": items}]  # a bare list of words: one line
+        # An entry with its own "words" is a segment; text/start/end alone is ambiguous
+        # (a word or an untimed-words segment), and reads as a word.
+        maybe_words = not any(isinstance(it, Mapping) and "words" in it for it in items)
+    if maybe_words and items and all(_word_from(it) is not None for it in items):
+        items = [{"words": items}]
     out: List[_Row] = []
     for item in items:
         if not isinstance(item, Mapping):

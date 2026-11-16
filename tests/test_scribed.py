@@ -542,3 +542,21 @@ def test_vtt_words_partially_timed_falls_back_to_plain_text():
         words=(Word("x", TimeSpan.from_seconds(0, 0.5)), Word(" y")),
     )
     assert Transcript.from_segments([seg]).as_vtt(words=True).splitlines()[3] == "x y"
+
+
+def test_cues_never_have_end_equal_start_and_skip_empty_text():
+    from scribed.base import Segment, TimeSpan, Transcript
+
+    segs = [
+        Segment(text="instant", span=TimeSpan(1000, 1000)),
+        Segment(text="   ", span=TimeSpan(2000, 3000)),
+        Segment(text="untimed"),
+        Segment(text="ok", span=TimeSpan(4000, 5000)),
+    ]
+    t = Transcript.from_segments(segs)
+    vtt = t.as_vtt().splitlines()
+    assert vtt[2] == "00:00:01.000 --> 00:00:01.001"
+    assert vtt.count("ok") == 1 and "   " not in vtt and "untimed" not in vtt
+    srt = t.as_srt().splitlines()
+    assert srt[0] == "1" and srt[1] == "00:00:01,000 --> 00:00:01,001"
+    assert [line for line in srt if line.isdigit()] == ["1", "2"]

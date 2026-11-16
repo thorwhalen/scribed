@@ -322,26 +322,33 @@ class Transcript:
         """WebVTT subtitles built from timed segments (empty string if untimed)."""
         return self.as_vtt()
 
-    def as_srt(self) -> str:
-        """Render timed segments as SubRip (.srt). Segments without times are skipped."""
-        lines: List[str] = []
-        i = 0
+    def _timed_cues(self) -> Iterator[Tuple[Segment, float, float]]:
+        """``(segment, start, end)`` seconds for each subtitle cue.
+
+        Skips segments without times and without text (an empty cue is invalid), and
+        keeps ``end`` after ``start`` (a cue must last at least a millisecond).
+        """
         for seg in self.segments:
-            if seg.start is None or seg.end is None:
+            if seg.start is None or seg.end is None or not seg.text.strip():
                 continue
-            i += 1
+            yield seg, seg.start, max(seg.end, seg.start + _MIN_CUE_S)
+
+    def as_srt(self) -> str:
+        """Render timed segments as SubRip (.srt). Segments without times or text are skipped."""
+        lines: List[str] = []
+        for i, (seg, start, end) in enumerate(self._timed_cues(), 1):
             speaker = f"[{seg.speaker}] " if seg.speaker else ""
             lines.append(str(i))
             lines.append(
-                f"{_format_timestamp(seg.start, comma=True)} --> "
-                f"{_format_timestamp(seg.end, comma=True)}"
+                f"{_format_timestamp(start, comma=True)} --> "
+                f"{_format_timestamp(end, comma=True)}"
             )
             lines.append(f"{speaker}{seg.text.strip()}")
             lines.append("")
         return "\n".join(lines)
 
     def as_vtt(self, *, words: bool = False) -> str:
-        """Render timed segments as WebVTT (.vtt). Segments without times are skipped.
+        """Render timed segments as WebVTT (.vtt). Segments without times or text are skipped.
 
         With ``words=True``, a segment whose words are all timed carries an inline
         timestamp before every word after the first (``Step <00:00:01.500>left``),
@@ -350,14 +357,12 @@ class Transcript:
         ``<``, ``>``) so they cannot be mistaken for cue markup.
         """
         lines: List[str] = ["WEBVTT", ""]
-        for seg in self.segments:
-            if seg.start is None or seg.end is None:
-                continue
+        for seg, start, end in self._timed_cues():
             speaker = f"<v {_cue_text(seg.speaker)}>" if seg.speaker else ""
             text = _word_timed_text(seg) if words else _cue_text(seg.text)
             lines.append(
-                f"{_format_timestamp(seg.start, comma=False)} --> "
-                f"{_format_timestamp(seg.end, comma=False)}"
+                f"{_format_timestamp(start, comma=False)} --> "
+                f"{_format_timestamp(end, comma=False)}"
             )
             lines.append(f"{speaker}{text}")
             lines.append("")
@@ -448,6 +453,10 @@ class Transcript:
             raw=raw,
             meta=meta,
         )
+
+
+#: The shortest a subtitle cue may last: its end must come after its start.
+_MIN_CUE_S = 0.001
 
 
 def _cue_text(text: str) -> str:
