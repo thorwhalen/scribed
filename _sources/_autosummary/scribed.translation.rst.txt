@@ -10,4 +10,5 @@ scribed.translation
    
       make_kwargs_translator
       validate_param
+      word_granularities
    

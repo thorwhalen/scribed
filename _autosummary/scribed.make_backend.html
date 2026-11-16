@@ -200,6 +200,17 @@ so removes the boilerplate.</p>
 it can be handed one (see <code class="docutils literal notranslate"><span class="pre">ServiceHandle.with_api_key</span></code>).</p>
 </dd></dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="scribed.make_backend.BaseTranscriberAdapter.can_fetch_url">
+<span class="sig-name descname"><span class="pre">can_fetch_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/make_backend.html#BaseTranscriberAdapter.can_fetch_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.make_backend.BaseTranscriberAdapter.can_fetch_url" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.make_backend.BaseTranscriberAdapter.can_fetch_url'">¶</a></dt>
+<dd><p>Can the service fetch <code class="docutils literal notranslate"><span class="pre">url</span></code> itself? (capability <code class="docutils literal notranslate"><span class="pre">remote_fetch</span></code>, and a
+public address: one only this machine can reach is downloaded here instead).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="scribed.make_backend.BaseTranscriberAdapter.credential">
 <span class="sig-name descname"><span class="pre">credential</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/make_backend.html#BaseTranscriberAdapter.credential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.make_backend.BaseTranscriberAdapter.credential" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.make_backend.BaseTranscriberAdapter.credential'">¶</a></dt>
 <dd><p>This backend’s API key: <code class="docutils literal notranslate"><span class="pre">config['api_key']</span></code>, else the environment.</p>
@@ -220,6 +231,21 @@ still use the backend. See
 <dd><p>Override to <code class="docutils literal notranslate"><span class="pre">True</span></code> in a backend that talks a live protocol (WebSocket /
 streaming recognizer) and implements <code class="xref py py-meth docutils literal notranslate"><span class="pre">_stream_native()</span></code>. When <code class="docutils literal notranslate"><span class="pre">False</span></code>
 (the default), live transcription is synthesized from batch <code class="docutils literal notranslate"><span class="pre">transcribe</span></code>.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="scribed.make_backend.BaseTranscriberAdapter.transcribe">
+<span class="sig-name descname"><span class="pre">transcribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_fetch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/make_backend.html#BaseTranscriberAdapter.transcribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.make_backend.BaseTranscriberAdapter.transcribe" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.make_backend.BaseTranscriberAdapter.transcribe'">¶</a></dt>
+<dd><p>Transcribe <code class="docutils literal notranslate"><span class="pre">audio</span></code>; kwargs are translated to the engine’s own.</p>
+<p>An <code class="docutils literal notranslate"><span class="pre">http(s)</span></code> address given to a backend that can fetch it itself (capability
+<code class="docutils literal notranslate"><span class="pre">remote_fetch</span></code>) is handed to the service as is: nothing is downloaded here.
+Pass <code class="docutils literal notranslate"><span class="pre">remote_fetch=False</span></code> to download it first (an address the service
+cannot reach, such as a private one); backends without the capability
+always download first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="scribed.base.html#scribed.base.Transcript" title="scribed.base.Transcript"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transcript</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="scribed.make_backend.BaseTranscriberAdapter.transcribe_live">
@@ -346,8 +372,10 @@ With <code class="docutils literal notranslate"><span class="pre">expect_text</s
 <ul>
 <li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter</span></code></a><ul>
 <li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.accepts_api_key'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.accepts_api_key"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.accepts_api_key</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.can_fetch_url'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.can_fetch_url"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.can_fetch_url()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.credential'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.credential"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.credential()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.natively_streams'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.natively_streams"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.natively_streams</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.transcribe'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.transcribe"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.transcribe()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.transcribe_live'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.transcribe_live"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.transcribe_live()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.make_backend.BaseTranscriberAdapter.with_config'" class="reference internal" href="#scribed.make_backend.BaseTranscriberAdapter.with_config"><code class="docutils literal notranslate"><span class="pre">BaseTranscriberAdapter.with_config()</span></code></a></li>
 </ul>
@@ -371,7 +399,7 @@ With <code class="docutils literal notranslate"><span class="pre">expect_text</s
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=3bbcec59"></script>
+<script src="../_static/documentation_options.js?v=9fc46840"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

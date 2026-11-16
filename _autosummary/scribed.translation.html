@@ -145,6 +145,9 @@ two packages feel the same to read and extend.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#scribed.translation.validate_param" title="scribed.translation.validate_param"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_param</span></code></a>(name, value, config)</p></td>
 <td><p>Validate a single parameter against <code class="docutils literal notranslate"><span class="pre">min</span></code>/<code class="docutils literal notranslate"><span class="pre">max</span></code>/<code class="docutils literal notranslate"><span class="pre">choices</span></code> in config.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.translation.word_granularities" title="scribed.translation.word_granularities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">word_granularities</span></code></a>(on)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">coerce</span></code> for OpenAI-style <code class="docutils literal notranslate"><span class="pre">timestamp_granularities</span></code>: word times <em>and</em> segments.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py function">
@@ -162,6 +165,8 @@ the normalized name).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">coerce</span></code> (callable): transform the value (e.g. a bool -&gt; the
 string a vendor expects, <code class="docutils literal notranslate"><span class="pre">["en"]</span> <span class="pre">-&gt;</span> <span class="pre">"en"</span></code>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">default</span></code> (Any): value to inject when the caller omits the param.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">always_on</span></code> (bool): the backend already does this (e.g. word
+timestamps); the parameter is accepted and nothing is passed on.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> as the whole value: the parameter is explicitly <em>not</em>
 supported by this backend.</p></li>
 </ul>
@@ -188,12 +193,23 @@ supported by this backend.</p></li>
 </dd>
 </dl>
 </dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="scribed.translation.word_granularities">
+<span class="sig-prename descclassname"><span class="pre">scribed.translation.</span></span><span class="sig-name descname"><span class="pre">word_granularities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/translation.html#word_granularities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.translation.word_granularities" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.translation.word_granularities'">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">coerce</span></code> for OpenAI-style <code class="docutils literal notranslate"><span class="pre">timestamp_granularities</span></code>: word times <em>and</em> segments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
 </section>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
 <li><a :data-current="activeSection === '#scribed.translation.make_kwargs_translator'" class="reference internal" href="#scribed.translation.make_kwargs_translator"><code class="docutils literal notranslate"><span class="pre">make_kwargs_translator()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.translation.validate_param'" class="reference internal" href="#scribed.translation.validate_param"><code class="docutils literal notranslate"><span class="pre">validate_param()</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.translation.word_granularities'" class="reference internal" href="#scribed.translation.word_granularities"><code class="docutils literal notranslate"><span class="pre">word_granularities()</span></code></a></li>
 </ul>
 </div>
 </aside>
@@ -207,7 +223,7 @@ supported by this backend.</p></li>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=3bbcec59"></script>
+<script src="../_static/documentation_options.js?v=9fc46840"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

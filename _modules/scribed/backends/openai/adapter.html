@@ -184,88 +184,59 @@
 </span><span id="line-7">
 </span><span id="line-8"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="line-9">
-</span><span id="line-10"><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+</span><span id="line-10"><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 </span><span id="line-11">
-</span><span id="line-12"><span class="kn">from</span><span class="w"> </span><span class="nn">scribed.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transcript</span>
-</span><span id="line-13"><span class="kn">from</span><span class="w"> </span><span class="nn">scribed.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseTranscriberAdapter</span><span class="p">,</span> <span class="n">make_segment</span>
-</span><span id="line-14">
+</span><span id="line-12"><span class="kn">from</span><span class="w"> </span><span class="nn">scribed.backends._verbose_json</span><span class="w"> </span><span class="kn">import</span> <span class="n">verbose_json_to_transcript</span>
+</span><span id="line-13"><span class="kn">from</span><span class="w"> </span><span class="nn">scribed.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Transcript</span>
+</span><span id="line-14"><span class="kn">from</span><span class="w"> </span><span class="nn">scribed.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseTranscriberAdapter</span>
 </span><span id="line-15">
-</span><span id="line-16"><span class="k">def</span><span class="w"> </span><span class="nf">_get</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-</span><span id="line-17"><span class="w">    </span><span class="sd">"""Read ``key`` from a pydantic-ish object or a plain dict."""</span>
-</span><span id="line-18">    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span id="line-19">
-</span><span id="line-20">
+</span><span id="line-16">
 <div class="viewcode-block" id="Adapter">
 <a class="viewcode-back" href="../../../../_autosummary/scribed.backends.openai.adapter.html#scribed.backends.openai.adapter.Adapter">[docs]</a>
-</span><span id="line-21"><span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseTranscriberAdapter</span><span class="p">):</span>
-</span><span id="line-22"><span class="w">    </span><span class="sd">"""OpenAI transcription adapter."""</span>
-</span><span id="line-23">
-</span><span id="line-24">    <span class="n">accepts_api_key</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="line-17"><span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseTranscriberAdapter</span><span class="p">):</span>
+</span><span id="line-18"><span class="w">    </span><span class="sd">"""OpenAI transcription adapter."""</span>
+</span><span id="line-19">
+</span><span id="line-20">    <span class="n">accepts_api_key</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="line-21">
+</span><span id="line-22">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="line-23">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</span><span id="line-24">        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="line-25">
-</span><span id="line-26">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-</span><span id="line-27">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-</span><span id="line-28">        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="line-26">    <span class="k">def</span><span class="w"> </span><span class="nf">_get_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="line-27">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="line-28">            <span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
 </span><span id="line-29">
-</span><span id="line-30">    <span class="k">def</span><span class="w"> </span><span class="nf">_get_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="line-31">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="line-32">            <span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+</span><span id="line-30">            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">credential</span><span class="p">()</span>
+</span><span id="line-31">            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+</span><span id="line-32">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
 </span><span id="line-33">
-</span><span id="line-34">            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">credential</span><span class="p">()</span>
-</span><span id="line-35">            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
-</span><span id="line-36">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
-</span><span id="line-37">
-</span><span id="line-38">    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"whisper-1"</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
-</span><span id="line-39">        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">cleanup_temp</span><span class="p">,</span> <span class="n">ensure_file_path</span>
-</span><span id="line-40">
-</span><span id="line-41">        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_client</span><span class="p">()</span>
-</span><span id="line-42">        <span class="c1"># whisper-1 supports verbose_json (segments); gpt-4o models do not.</span>
-</span><span id="line-43">        <span class="n">verbose</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"gpt-4o"</span><span class="p">)</span>
-</span><span id="line-44">        <span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span> <span class="o">=</span> <span class="n">ensure_file_path</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">".wav"</span><span class="p">)</span>
-</span><span id="line-45">        <span class="k">try</span><span class="p">:</span>
-</span><span id="line-46">            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-</span><span id="line-47">                <span class="n">create_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span>
-</span><span id="line-48">                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-</span><span id="line-49">                    <span class="n">create_kwargs</span><span class="p">[</span><span class="s2">"response_format"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"verbose_json"</span>
-</span><span id="line-50">                <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">transcriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">create_kwargs</span><span class="p">)</span>
-</span><span id="line-51">        <span class="k">finally</span><span class="p">:</span>
-</span><span id="line-52">            <span class="n">cleanup_temp</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span><span class="p">)</span>
-</span><span id="line-53">
-</span><span id="line-54">        <span class="n">text</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
-</span><span id="line-55">        <span class="n">language</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"language"</span><span class="p">)</span>
-</span><span id="line-56">        <span class="n">duration</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"duration"</span><span class="p">)</span>
-</span><span id="line-57">        <span class="n">raw_segments</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"segments"</span><span class="p">)</span>
-</span><span id="line-58">
-</span><span id="line-59">        <span class="k">if</span> <span class="n">raw_segments</span><span class="p">:</span>
-</span><span id="line-60">            <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="line-61">            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">raw_segments</span><span class="p">:</span>
-</span><span id="line-62">                <span class="n">alp</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"avg_logprob"</span><span class="p">)</span>
-</span><span id="line-63">                <span class="n">conf</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">alp</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alp</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="k">else</span> <span class="kc">None</span>
-</span><span id="line-64">                <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="line-65">                    <span class="n">make_segment</span><span class="p">(</span>
-</span><span id="line-66">                        <span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
-</span><span id="line-67">                        <span class="n">start</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"start"</span><span class="p">),</span>
-</span><span id="line-68">                        <span class="n">end</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">),</span>
-</span><span id="line-69">                        <span class="n">confidence</span><span class="o">=</span><span class="n">conf</span><span class="p">,</span>
-</span><span id="line-70">                        <span class="n">avg_logprob</span><span class="o">=</span><span class="n">alp</span><span class="p">,</span>
-</span><span id="line-71">                        <span class="n">no_speech_prob</span><span class="o">=</span><span class="n">_get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s2">"no_speech_prob"</span><span class="p">),</span>
-</span><span id="line-72">                    <span class="p">)</span>
-</span><span id="line-73">                <span class="p">)</span>
-</span><span id="line-74">            <span class="k">return</span> <span class="n">Transcript</span><span class="o">.</span><span class="n">from_segments</span><span class="p">(</span>
-</span><span id="line-75">                <span class="n">segments</span><span class="p">,</span>
-</span><span id="line-76">                <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span>
-</span><span id="line-77">                <span class="n">raw</span><span class="o">=</span><span class="n">resp</span><span class="p">,</span>
-</span><span id="line-78">                <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-</span><span id="line-79">                <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
-</span><span id="line-80">                <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
-</span><span id="line-81">            <span class="p">)</span>
-</span><span id="line-82">
-</span><span id="line-83">        <span class="k">return</span> <span class="n">Transcript</span><span class="o">.</span><span class="n">from_text</span><span class="p">(</span>
-</span><span id="line-84">            <span class="n">text</span><span class="p">,</span>
-</span><span id="line-85">            <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span>
-</span><span id="line-86">            <span class="n">raw</span><span class="o">=</span><span class="n">resp</span><span class="p">,</span>
-</span><span id="line-87">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
-</span><span id="line-88">            <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
-</span><span id="line-89">        <span class="p">)</span></div>
+</span><span id="line-34">    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span>
+</span><span id="line-35">        <span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"whisper-1"</span><span class="p">,</span> <span class="n">timestamp_granularities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span>
+</span><span id="line-36">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
+</span><span id="line-37">        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">cleanup_temp</span><span class="p">,</span> <span class="n">ensure_file_path</span>
+</span><span id="line-38">
+</span><span id="line-39">        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_client</span><span class="p">()</span>
+</span><span id="line-40">        <span class="c1"># whisper-1 supports verbose_json (segments, words); gpt-4o models do not.</span>
+</span><span id="line-41">        <span class="n">verbose</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"gpt-4o"</span><span class="p">)</span>
+</span><span id="line-42">        <span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span> <span class="o">=</span> <span class="n">ensure_file_path</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">".wav"</span><span class="p">)</span>
+</span><span id="line-43">        <span class="k">try</span><span class="p">:</span>
+</span><span id="line-44">            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+</span><span id="line-45">                <span class="n">create_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">fh</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span>
+</span><span id="line-46">                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+</span><span id="line-47">                    <span class="n">create_kwargs</span><span class="p">[</span><span class="s2">"response_format"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"verbose_json"</span>
+</span><span id="line-48">                    <span class="k">if</span> <span class="n">timestamp_granularities</span><span class="p">:</span>
+</span><span id="line-49">                        <span class="n">create_kwargs</span><span class="p">[</span><span class="s2">"timestamp_granularities"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="line-50">                            <span class="n">timestamp_granularities</span>
+</span><span id="line-51">                        <span class="p">)</span>
+</span><span id="line-52">                <span class="k">elif</span> <span class="n">timestamp_granularities</span><span class="p">:</span>
+</span><span id="line-53">                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+</span><span id="line-54">                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">model</span><span class="si">!r}</span><span class="s2"> returns no word timestamps; use model='whisper-1'."</span><span class="p">,</span>
+</span><span id="line-55">                        <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+</span><span id="line-56">                    <span class="p">)</span>
+</span><span id="line-57">                <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">transcriptions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">create_kwargs</span><span class="p">)</span>
+</span><span id="line-58">        <span class="k">finally</span><span class="p">:</span>
+</span><span id="line-59">            <span class="n">cleanup_temp</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span><span class="p">)</span>
+</span><span id="line-60">        <span class="k">return</span> <span class="n">verbose_json_to_transcript</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">backend_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">)</span></div>
 
 </span></code></pre></div>
     </div></div>
@@ -280,7 +251,7 @@
 </footer>
     </div>
     
-    <script src="../../../../_static/documentation_options.js?v=3bbcec59"></script>
+    <script src="../../../../_static/documentation_options.js?v=9fc46840"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>

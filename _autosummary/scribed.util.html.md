@@ -23,6 +23,7 @@ The key converters:
 | [`classify_input`](#scribed.util.classify_input)(audio)                              | Classify an audio input as `url`/`path`/`bytes`/`file`/`numpy`.                                                         |
 |-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
 | [`is_url`](#scribed.util.is_url)(x)                                          | True if `x` is a string that looks like an http(s) URL.                                                                 |
+| [`is_public_url`](#scribed.util.is_public_url)(url)                                 | Could a third party's server plausibly fetch `url`? (no DNS lookup)                                                     |
 | [`load_audio_bytes`](#scribed.util.load_audio_bytes)(audio, \*[, sample_rate])         | Return encoded audio `bytes` for any supported input.                                                                   |
 | [`ensure_file_path`](#scribed.util.ensure_file_path)(audio, \*[, suffix, sample_rate]) | Return `(path, is_temp)` for any supported input.                                                                       |
 | [`cleanup_temp`](#scribed.util.cleanup_temp)(path, is_temp)                        | Delete `path` iff `is_temp` (the flag returned by [`ensure_file_path()`](#scribed.util.ensure_file_path)). |
@@ -79,6 +80,18 @@ the [`audio_path()`](#scribed.util.audio_path) context manager).
 
 * **Return type:**
   [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]
+
+### scribed.util.is_public_url(url)
+
+Could a third party’s server plausibly fetch `url`? (no DNS lookup)
+
+False for a URL with credentials, `localhost`, single-label and `.local` /
+`.internal` hosts, and loopback / private / link-local IP literals: those
+are reachable only from here, and handing them over would leak the name (or
+the credentials) for nothing.
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
 ### scribed.util.is_url(x)
 

@@ -15,9 +15,10 @@ two packages feel the same to read and extend.
 
 ### Functions
 
-| [`make_kwargs_translator`](#scribed.translation.make_kwargs_translator)(param_map, \*[, ...])   | Create a function that translates normalized kwargs to native kwargs.   |
-|-------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
-| [`validate_param`](#scribed.translation.validate_param)(name, value, config)            | Validate a single parameter against `min`/`max`/`choices` in config.    |
+| [`make_kwargs_translator`](#scribed.translation.make_kwargs_translator)(param_map, \*[, ...])   | Create a function that translates normalized kwargs to native kwargs.           |
+|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| [`validate_param`](#scribed.translation.validate_param)(name, value, config)            | Validate a single parameter against `min`/`max`/`choices` in config.            |
+| [`word_granularities`](#scribed.translation.word_granularities)(on)                         | `coerce` for OpenAI-style `timestamp_granularities`: word times *and* segments. |
 
 ### scribed.translation.make_kwargs_translator(param_map, , on_unsupported='warn')
 
@@ -33,6 +34,8 @@ Create a function that translates normalized kwargs to native kwargs.
     - `coerce` (callable): transform the value (e.g. a bool -> the
       string a vendor expects, `["en"] -> "en"`).
     - `default` (Any): value to inject when the caller omits the param.
+    - `always_on` (bool): the backend already does this (e.g. word
+      timestamps); the parameter is accepted and nothing is passed on.
     - `None` as the whole value: the parameter is explicitly *not*
       supported by this backend.
   * **on_unsupported** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – What to do with caller params absent from `param_map`:
@@ -48,3 +51,10 @@ Validate a single parameter against `min`/`max`/`choices` in config.
 
 * **Return type:**
   [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
+
+### scribed.translation.word_granularities(on)
+
+`coerce` for OpenAI-style `timestamp_granularities`: word times *and* segments.
+
+* **Return type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`list`](https://docs.python.org/3/builtins/stdtypes.html#list)]

@@ -124,6 +124,14 @@ so removes the boilerplate.
 `True` in a backend that resolves its key through [`credential()`](#scribed.BaseTranscriberAdapter.credential), so
 it can be handed one (see `ServiceHandle.with_api_key`).
 
+#### can_fetch_url(url)
+
+Can the service fetch `url` itself? (capability `remote_fetch`, and a
+public address: one only this machine can reach is downloaded here instead).
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 #### credential()
 
 This backend’s API key: `config['api_key']`, else the environment.
@@ -142,6 +150,19 @@ still use the backend. See
 Override to `True` in a backend that talks a live protocol (WebSocket /
 streaming recognizer) and implements `_stream_native()`. When `False`
 (the default), live transcription is synthesized from batch `transcribe`.
+
+#### transcribe(audio, , remote_fetch=True, \*\*kwargs)
+
+Transcribe `audio`; kwargs are translated to the engine’s own.
+
+An `http(s)` address given to a backend that can fetch it itself (capability
+`remote_fetch`) is handed to the service as is: nothing is downloaded here.
+Pass `remote_fetch=False` to download it first (an address the service
+cannot reach, such as a private one); backends without the capability
+always download first.
+
+* **Return type:**
+  [`Transcript`](scribed.base.html.md#scribed.base.Transcript)
 
 #### *async* transcribe_live(source, , vad=None, \*\*kwargs)
 

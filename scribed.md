@@ -1,4 +1,4 @@
-> built 2026-11-16 21:54 UTC from 2153deb (main) · scribed 0.0.12. Details: build_info.json
+> built 2026-11-16 22:03 UTC from e092450 (main) · scribed 0.0.13. Details: build_info.json
 
 # index.html.md
 
@@ -117,6 +117,20 @@ t.srt  # SRT subtitles
 t.vtt  # WebVTT subtitles
 t.raw  # the untouched backend response
 ```
+
+## Transcribe from an address, and find who can do what
+
+Some hosted services fetch the audio themselves, so nothing is downloaded or uploaded
+by you (handy on a small server, or for a recording over the upload limit):
+
+```python
+t = scribed.transcribe("https://example.org/episode.mp3", backend="groq", word_timestamps=True)
+scribed.list_backends("remote_fetch")  # backends that take an address: ['elevenlabs', 'groq']
+scribed.list_backends("word_timestamps")  # backends that return word times
+```
+
+Any other backend downloads the address first. The address is handed to the third party,
+so for one it cannot reach (a private network) pass `remote_fetch=False` to download it here.
 
 ## Three tiers of access
 
@@ -345,6 +359,13 @@ ElevenLabs Scribe transcription adapter (caches one client lazily).
 
 `True` in a backend that resolves its key through `credential()`, so
 it can be handed one (see `ServiceHandle.with_api_key`).
+
+#### can_fetch_url(url)
+
+Scribe fetches only HTTPS addresses (`cloud_storage_url`).
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
 
 # _autosummary/scribed.backends.elevenlabs.config.html.md
@@ -1715,6 +1736,14 @@ so removes the boilerplate.
 `True` in a backend that resolves its key through [`credential()`](_autosummary/scribed.html.md#scribed.BaseTranscriberAdapter.credential), so
 it can be handed one (see `ServiceHandle.with_api_key`).
 
+#### can_fetch_url(url)
+
+Can the service fetch `url` itself? (capability `remote_fetch`, and a
+public address: one only this machine can reach is downloaded here instead).
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 #### credential()
 
 This backend’s API key: `config['api_key']`, else the environment.
@@ -1733,6 +1762,19 @@ still use the backend. See
 Override to `True` in a backend that talks a live protocol (WebSocket /
 streaming recognizer) and implements `_stream_native()`. When `False`
 (the default), live transcription is synthesized from batch `transcribe`.
+
+#### transcribe(audio, , remote_fetch=True, \*\*kwargs)
+
+Transcribe `audio`; kwargs are translated to the engine’s own.
+
+An `http(s)` address given to a backend that can fetch it itself (capability
+`remote_fetch`) is handed to the service as is: nothing is downloaded here.
+Pass `remote_fetch=False` to download it first (an address the service
+cannot reach, such as a private one); backends without the capability
+always download first.
+
+* **Return type:**
+  [`Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript)
 
 #### *async* transcribe_live(source, , vad=None, \*\*kwargs)
 
@@ -2472,6 +2514,14 @@ so removes the boilerplate.
 `True` in a backend that resolves its key through [`credential()`](_autosummary/scribed.make_backend.html.md#scribed.make_backend.BaseTranscriberAdapter.credential), so
 it can be handed one (see `ServiceHandle.with_api_key`).
 
+#### can_fetch_url(url)
+
+Can the service fetch `url` itself? (capability `remote_fetch`, and a
+public address: one only this machine can reach is downloaded here instead).
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 #### credential()
 
 This backend’s API key: `config['api_key']`, else the environment.
@@ -2490,6 +2540,19 @@ still use the backend. See
 Override to `True` in a backend that talks a live protocol (WebSocket /
 streaming recognizer) and implements `_stream_native()`. When `False`
 (the default), live transcription is synthesized from batch `transcribe`.
+
+#### transcribe(audio, , remote_fetch=True, \*\*kwargs)
+
+Transcribe `audio`; kwargs are translated to the engine’s own.
+
+An `http(s)` address given to a backend that can fetch it itself (capability
+`remote_fetch`) is handed to the service as is: nothing is downloaded here.
+Pass `remote_fetch=False` to download it first (an address the service
+cannot reach, such as a private one); backends without the capability
+always download first.
+
+* **Return type:**
+  [`Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript)
 
 #### *async* transcribe_live(source, , vad=None, \*\*kwargs)
 
@@ -3041,9 +3104,10 @@ two packages feel the same to read and extend.
 
 ### Functions
 
-| [`make_kwargs_translator`](_autosummary/scribed.translation.html.md#scribed.translation.make_kwargs_translator)(param_map, \*[, ...])   | Create a function that translates normalized kwargs to native kwargs.   |
-|-------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
-| [`validate_param`](_autosummary/scribed.translation.html.md#scribed.translation.validate_param)(name, value, config)            | Validate a single parameter against `min`/`max`/`choices` in config.    |
+| [`make_kwargs_translator`](_autosummary/scribed.translation.html.md#scribed.translation.make_kwargs_translator)(param_map, \*[, ...])   | Create a function that translates normalized kwargs to native kwargs.           |
+|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| [`validate_param`](_autosummary/scribed.translation.html.md#scribed.translation.validate_param)(name, value, config)            | Validate a single parameter against `min`/`max`/`choices` in config.            |
+| [`word_granularities`](_autosummary/scribed.translation.html.md#scribed.translation.word_granularities)(on)                         | `coerce` for OpenAI-style `timestamp_granularities`: word times *and* segments. |
 
 ### scribed.translation.make_kwargs_translator(param_map, , on_unsupported='warn')
 
@@ -3059,6 +3123,8 @@ Create a function that translates normalized kwargs to native kwargs.
     - `coerce` (callable): transform the value (e.g. a bool -> the
       string a vendor expects, `["en"] -> "en"`).
     - `default` (Any): value to inject when the caller omits the param.
+    - `always_on` (bool): the backend already does this (e.g. word
+      timestamps); the parameter is accepted and nothing is passed on.
     - `None` as the whole value: the parameter is explicitly *not*
       supported by this backend.
   * **on_unsupported** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – What to do with caller params absent from `param_map`:
@@ -3074,6 +3140,13 @@ Validate a single parameter against `min`/`max`/`choices` in config.
 
 * **Return type:**
   [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
+
+### scribed.translation.word_granularities(on)
+
+`coerce` for OpenAI-style `timestamp_granularities`: word times *and* segments.
+
+* **Return type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`list`](https://docs.python.org/3/builtins/stdtypes.html#list)]
 
 
 # _autosummary/scribed.util.html.md
@@ -3103,6 +3176,7 @@ The key converters:
 | [`classify_input`](_autosummary/scribed.util.html.md#scribed.util.classify_input)(audio)                              | Classify an audio input as `url`/`path`/`bytes`/`file`/`numpy`.                                                         |
 |-----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
 | [`is_url`](_autosummary/scribed.util.html.md#scribed.util.is_url)(x)                                          | True if `x` is a string that looks like an http(s) URL.                                                                 |
+| [`is_public_url`](_autosummary/scribed.util.html.md#scribed.util.is_public_url)(url)                                 | Could a third party's server plausibly fetch `url`? (no DNS lookup)                                                     |
 | [`load_audio_bytes`](_autosummary/scribed.util.html.md#scribed.util.load_audio_bytes)(audio, \*[, sample_rate])         | Return encoded audio `bytes` for any supported input.                                                                   |
 | [`ensure_file_path`](_autosummary/scribed.util.html.md#scribed.util.ensure_file_path)(audio, \*[, suffix, sample_rate]) | Return `(path, is_temp)` for any supported input.                                                                       |
 | [`cleanup_temp`](_autosummary/scribed.util.html.md#scribed.util.cleanup_temp)(path, is_temp)                        | Delete `path` iff `is_temp` (the flag returned by [`ensure_file_path()`](_autosummary/scribed.util.html.md#scribed.util.ensure_file_path)). |
@@ -3160,6 +3234,18 @@ the [`audio_path()`](_autosummary/scribed.util.html.md#scribed.util.audio_path) 
 * **Return type:**
   [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]
 
+### scribed.util.is_public_url(url)
+
+Could a third party’s server plausibly fetch `url`? (no DNS lookup)
+
+False for a URL with credentials, `localhost`, single-label and `.local` /
+`.internal` hosts, and loopback / private / link-local IP literals: those
+are reachable only from here, and handing them over would leak the name (or
+the credentials) for nothing.
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 ### scribed.util.is_url(x)
 
 True if `x` is a string that looks like an http(s) URL.
@@ -3193,7 +3279,7 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-16 21:54 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/2153debeb5a2cec52c80f78d20b73266b918ec3c"><code>2153deb</code></a> on branch <code>main</code>, for **scribed 0.0.12** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-16 22:03 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/e092450d12d9a7bd18017378625ee2a9e3aa5713"><code>e092450</code></a> on branch <code>main</code>, for **scribed 0.0.13** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3202,7 +3288,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/2153debeb5a2cec52c80f78d20b73266b918ec3c"><code>2153debeb5a2cec52c80f78d20b73266b918ec3c</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/e092450d12d9a7bd18017378625ee2a9e3aa5713"><code>e092450d12d9a7bd18017378625ee2a9e3aa5713</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3213,9 +3299,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43964511446">43964511446</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43965945838">43965945838</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>2153debeb5a2cec52c80f78d20b73266b918ec3c</code> (in the history of the built commit) |
+| Event commit | <code>e092450d12d9a7bd18017378625ee2a9e3aa5713</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3240,13 +3326,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.12/">0.0.12</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.13/">0.0.13</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 2153debeb5a2cec52c80f78d20b73266b918ec3c
+git checkout e092450d12d9a7bd18017378625ee2a9e3aa5713
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

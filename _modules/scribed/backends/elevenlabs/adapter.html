@@ -236,19 +236,19 @@
 </span><span id="line-57">            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">ElevenLabs</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
 </span><span id="line-58">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
 </span><span id="line-59">
-</span><span id="line-60">    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span>
-</span><span id="line-61">        <span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">model_id</span><span class="o">=</span><span class="s2">"scribe_v1"</span><span class="p">,</span> <span class="n">diarize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span>
-</span><span id="line-62">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
-</span><span id="line-63">        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_audio_bytes</span>
-</span><span id="line-64">
-</span><span id="line-65">        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_client</span><span class="p">()</span>
-</span><span id="line-66">        <span class="n">audio_bytes</span> <span class="o">=</span> <span class="n">load_audio_bytes</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
-</span><span id="line-67">        <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">speech_to_text</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span>
-</span><span id="line-68">            <span class="n">file</span><span class="o">=</span><span class="n">audio_bytes</span><span class="p">,</span>
+</span><span id="line-60">    <span class="k">def</span><span class="w"> </span><span class="nf">_convert</span><span class="p">(</span>
+</span><span id="line-61">        <span class="bp">self</span><span class="p">,</span>
+</span><span id="line-62">        <span class="o">*</span><span class="p">,</span>
+</span><span id="line-63">        <span class="n">model_id</span><span class="o">=</span><span class="s2">"scribe_v1"</span><span class="p">,</span>
+</span><span id="line-64">        <span class="n">diarize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="line-65">        <span class="o">**</span><span class="n">source_and_native</span><span class="p">,</span>
+</span><span id="line-66">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
+</span><span id="line-67"><span class="w">        </span><span class="sd">"""One ``speech_to_text.convert`` call; the source is ``file=`` or ``cloud_storage_url=``."""</span>
+</span><span id="line-68">        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_client</span><span class="p">()</span><span class="o">.</span><span class="n">speech_to_text</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span>
 </span><span id="line-69">            <span class="n">model_id</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span>
 </span><span id="line-70">            <span class="n">diarize</span><span class="o">=</span><span class="n">diarize</span><span class="p">,</span>
-</span><span id="line-71">            <span class="n">timestamps_granularity</span><span class="o">=</span><span class="s2">"word"</span><span class="p">,</span>
-</span><span id="line-72">            <span class="o">**</span><span class="n">native_kwargs</span><span class="p">,</span>
+</span><span id="line-71">            <span class="n">timestamps_granularity</span><span class="o">=</span><span class="s2">"word"</span><span class="p">,</span>  <span class="c1"># the words build the segments</span>
+</span><span id="line-72">            <span class="o">**</span><span class="n">source_and_native</span><span class="p">,</span>
 </span><span id="line-73">        <span class="p">)</span>
 </span><span id="line-74">
 </span><span id="line-75">        <span class="n">text</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
@@ -276,58 +276,77 @@
 </span><span id="line-97">            <span class="n">raw</span><span class="o">=</span><span class="n">resp</span><span class="p">,</span>
 </span><span id="line-98">            <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
 </span><span id="line-99">            <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span>
-</span><span id="line-100">        <span class="p">)</span></div>
-
+</span><span id="line-100">        <span class="p">)</span>
 </span><span id="line-101">
-</span><span id="line-102">
-</span><span id="line-103"><span class="k">def</span><span class="w"> </span><span class="nf">_segments_from_words</span><span class="p">(</span><span class="n">raw_words</span><span class="p">):</span>
-</span><span id="line-104"><span class="w">    </span><span class="sd">"""Group consecutive Scribe words by ``speaker_id`` into segments.</span>
-</span><span id="line-105">
-</span><span id="line-106"><span class="sd">    Skips ``spacing``/``audio_event`` items, building a normalized</span>
-</span><span id="line-107"><span class="sd">    :class:`~scribed.base.Word` per actual word and starting a new segment</span>
-</span><span id="line-108"><span class="sd">    whenever ``speaker_id`` changes. If no speaker ids are present, all words</span>
-</span><span id="line-109"><span class="sd">    end up in a single segment.</span>
-</span><span id="line-110"><span class="sd">    """</span>
-</span><span id="line-111">    <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="line-112">    <span class="n">cur_words</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="line-113">    <span class="n">cur_speaker</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># sentinel-free: track via a flag</span>
-</span><span id="line-114">    <span class="n">have_group</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="line-115">
-</span><span id="line-116">    <span class="k">def</span><span class="w"> </span><span class="nf">flush</span><span class="p">():</span>
-</span><span id="line-117">        <span class="k">if</span> <span class="ow">not</span> <span class="n">cur_words</span><span class="p">:</span>
-</span><span id="line-118">            <span class="k">return</span>
-</span><span id="line-119">        <span class="n">starts</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">start</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">cur_words</span> <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
-</span><span id="line-120">        <span class="n">ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">end</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">cur_words</span> <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
-</span><span id="line-121">        <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="line-122">            <span class="n">make_segment</span><span class="p">(</span>
-</span><span id="line-123">                <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">cur_words</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
-</span><span id="line-124">                <span class="n">start</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">starts</span><span class="p">)</span> <span class="k">if</span> <span class="n">starts</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-125">                <span class="n">end</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span> <span class="k">if</span> <span class="n">ends</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="line-126">                <span class="n">speaker</span><span class="o">=</span><span class="n">cur_speaker</span><span class="p">,</span>
-</span><span id="line-127">                <span class="n">words</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">cur_words</span><span class="p">),</span>
-</span><span id="line-128">            <span class="p">)</span>
-</span><span id="line-129">        <span class="p">)</span>
-</span><span id="line-130">
-</span><span id="line-131">    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">raw_words</span><span class="p">:</span>
-</span><span id="line-132">        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"word"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"word"</span><span class="p">:</span>
-</span><span id="line-133">            <span class="k">continue</span>  <span class="c1"># skip "spacing" / "audio_event"</span>
-</span><span id="line-134">        <span class="n">speaker</span> <span class="o">=</span> <span class="n">_speaker_str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"speaker_id"</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-</span><span id="line-135">        <span class="n">word</span> <span class="o">=</span> <span class="n">make_word</span><span class="p">(</span>
-</span><span id="line-136">            <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
-</span><span id="line-137">            <span class="n">start</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"start"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-</span><span id="line-138">            <span class="n">end</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-</span><span id="line-139">            <span class="n">confidence</span><span class="o">=</span><span class="n">_logprob_to_conf</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"logprob"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
-</span><span id="line-140">            <span class="n">speaker</span><span class="o">=</span><span class="n">speaker</span><span class="p">,</span>
-</span><span id="line-141">        <span class="p">)</span>
-</span><span id="line-142">        <span class="k">if</span> <span class="n">have_group</span> <span class="ow">and</span> <span class="n">speaker</span> <span class="o">!=</span> <span class="n">cur_speaker</span><span class="p">:</span>
-</span><span id="line-143">            <span class="n">flush</span><span class="p">()</span>
-</span><span id="line-144">            <span class="n">cur_words</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="line-145">        <span class="n">cur_speaker</span> <span class="o">=</span> <span class="n">speaker</span>
-</span><span id="line-146">        <span class="n">cur_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-</span><span id="line-147">        <span class="n">have_group</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span id="line-148">
-</span><span id="line-149">    <span class="n">flush</span><span class="p">()</span>
-</span><span id="line-150">    <span class="k">return</span> <span class="n">segments</span>
+</span><span id="line-102">    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
+</span><span id="line-103">        <span class="kn">from</span><span class="w"> </span><span class="nn">scribed.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_audio_bytes</span>
+</span><span id="line-104">
+</span><span id="line-105">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">load_audio_bytes</span><span class="p">(</span><span class="n">audio</span><span class="p">),</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span>
+</span><span id="line-106">
+<div class="viewcode-block" id="Adapter.can_fetch_url">
+<a class="viewcode-back" href="../../../../_autosummary/scribed.backends.elevenlabs.adapter.html#scribed.backends.elevenlabs.adapter.Adapter.can_fetch_url">[docs]</a>
+</span><span id="line-107">    <span class="k">def</span><span class="w"> </span><span class="nf">can_fetch_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="line-108"><span class="w">        </span><span class="sd">"""Scribe fetches only HTTPS addresses (``cloud_storage_url``)."""</span>
+</span><span id="line-109">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">can_fetch_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="ow">and</span> <span class="n">url</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"https://"</span><span class="p">)</span></div>
+
+</span><span id="line-110">
+</span><span id="line-111">    <span class="k">def</span><span class="w"> </span><span class="nf">_transcribe_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transcript</span><span class="p">:</span>
+</span><span id="line-112"><span class="w">        </span><span class="sd">"""Scribe fetches ``url`` itself (up to 2 GB; pre-signed URLs work).</span>
+</span><span id="line-113">
+</span><span id="line-114"><span class="sd">        Direct file addresses only: page URLs (YouTube, ...) are the SDK's ``source_url``.</span>
+</span><span id="line-115"><span class="sd">        """</span>
+</span><span id="line-116">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span><span class="p">(</span><span class="n">cloud_storage_url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span></div>
+
+</span><span id="line-117">
+</span><span id="line-118">
+</span><span id="line-119"><span class="k">def</span><span class="w"> </span><span class="nf">_segments_from_words</span><span class="p">(</span><span class="n">raw_words</span><span class="p">):</span>
+</span><span id="line-120"><span class="w">    </span><span class="sd">"""Group consecutive Scribe words by ``speaker_id`` into segments.</span>
+</span><span id="line-121">
+</span><span id="line-122"><span class="sd">    Skips ``spacing``/``audio_event`` items, building a normalized</span>
+</span><span id="line-123"><span class="sd">    :class:`~scribed.base.Word` per actual word and starting a new segment</span>
+</span><span id="line-124"><span class="sd">    whenever ``speaker_id`` changes. If no speaker ids are present, all words</span>
+</span><span id="line-125"><span class="sd">    end up in a single segment.</span>
+</span><span id="line-126"><span class="sd">    """</span>
+</span><span id="line-127">    <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="line-128">    <span class="n">cur_words</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="line-129">    <span class="n">cur_speaker</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># sentinel-free: track via a flag</span>
+</span><span id="line-130">    <span class="n">have_group</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span id="line-131">
+</span><span id="line-132">    <span class="k">def</span><span class="w"> </span><span class="nf">flush</span><span class="p">():</span>
+</span><span id="line-133">        <span class="k">if</span> <span class="ow">not</span> <span class="n">cur_words</span><span class="p">:</span>
+</span><span id="line-134">            <span class="k">return</span>
+</span><span id="line-135">        <span class="n">starts</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">start</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">cur_words</span> <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+</span><span id="line-136">        <span class="n">ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">end</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">cur_words</span> <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+</span><span id="line-137">        <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="line-138">            <span class="n">make_segment</span><span class="p">(</span>
+</span><span id="line-139">                <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">cur_words</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+</span><span id="line-140">                <span class="n">start</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">starts</span><span class="p">)</span> <span class="k">if</span> <span class="n">starts</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-141">                <span class="n">end</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span> <span class="k">if</span> <span class="n">ends</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="line-142">                <span class="n">speaker</span><span class="o">=</span><span class="n">cur_speaker</span><span class="p">,</span>
+</span><span id="line-143">                <span class="n">words</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">cur_words</span><span class="p">),</span>
+</span><span id="line-144">            <span class="p">)</span>
+</span><span id="line-145">        <span class="p">)</span>
+</span><span id="line-146">
+</span><span id="line-147">    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">raw_words</span><span class="p">:</span>
+</span><span id="line-148">        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"word"</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">"word"</span><span class="p">:</span>
+</span><span id="line-149">            <span class="k">continue</span>  <span class="c1"># skip "spacing" / "audio_event"</span>
+</span><span id="line-150">        <span class="n">speaker</span> <span class="o">=</span> <span class="n">_speaker_str</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"speaker_id"</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+</span><span id="line-151">        <span class="n">word</span> <span class="o">=</span> <span class="n">make_word</span><span class="p">(</span>
+</span><span id="line-152">            <span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+</span><span id="line-153">            <span class="n">start</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"start"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+</span><span id="line-154">            <span class="n">end</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+</span><span id="line-155">            <span class="n">confidence</span><span class="o">=</span><span class="n">_logprob_to_conf</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="s2">"logprob"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+</span><span id="line-156">            <span class="n">speaker</span><span class="o">=</span><span class="n">speaker</span><span class="p">,</span>
+</span><span id="line-157">        <span class="p">)</span>
+</span><span id="line-158">        <span class="k">if</span> <span class="n">have_group</span> <span class="ow">and</span> <span class="n">speaker</span> <span class="o">!=</span> <span class="n">cur_speaker</span><span class="p">:</span>
+</span><span id="line-159">            <span class="n">flush</span><span class="p">()</span>
+</span><span id="line-160">            <span class="n">cur_words</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="line-161">        <span class="n">cur_speaker</span> <span class="o">=</span> <span class="n">speaker</span>
+</span><span id="line-162">        <span class="n">cur_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</span><span id="line-163">        <span class="n">have_group</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="line-164">
+</span><span id="line-165">    <span class="n">flush</span><span class="p">()</span>
+</span><span id="line-166">    <span class="k">return</span> <span class="n">segments</span>
 </span></code></pre></div>
     </div></div>
           </main>
@@ -341,7 +360,7 @@
 </footer>
     </div>
     
-    <script src="../../../../_static/documentation_options.js?v=3bbcec59"></script>
+    <script src="../../../../_static/documentation_options.js?v=9fc46840"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>

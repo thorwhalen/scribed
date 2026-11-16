@@ -10,6 +10,7 @@ scribed.util
    
       classify_input
       is_url
+      is_public_url
       load_audio_bytes
       ensure_file_path
       cleanup_temp

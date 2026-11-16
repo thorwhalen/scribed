@@ -32,3 +32,10 @@ ElevenLabs Scribe transcription adapter (caches one client lazily).
 
 `True` in a backend that resolves its key through `credential()`, so
 it can be handed one (see `ServiceHandle.with_api_key`).
+
+#### can_fetch_url(url)
+
+Scribe fetches only HTTPS addresses (`cloud_storage_url`).
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
