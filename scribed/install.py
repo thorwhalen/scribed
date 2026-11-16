@@ -107,6 +107,14 @@ _RECIPES: Dict[str, dict] = {
 }
 
 
+#: Compressed inputs (m4a/aac/mp3/opus/webm) that libsndfile cannot read are decoded
+#: by ``scribed.audio.load_audio`` through the system ``ffmpeg``.
+_FFMPEG_NOTE = (
+    "Optional: install ffmpeg (https://ffmpeg.org/download.html) to transcribe "
+    "compressed inputs such as .m4a/.aac/.opus/.webm, which libsndfile cannot decode."
+)
+
+
 @dataclass
 class Requirements:
     """What a backend needs to run — structured for an agent to act on."""
@@ -216,6 +224,8 @@ def requirements(backend_id: str, *, gpu: bool = False) -> Requirements:
     )
 
     notes = list(recipe.get("notes", []))
+    if implemented:
+        notes.append(_FFMPEG_NOTE)
     if not implemented:
         notes.append(
             f"scribed does not yet ship a facade for '{backend_id}' — it's in the ledger "
