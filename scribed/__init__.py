@@ -157,7 +157,8 @@ def transcribe(audio: AudioInput, *, backend: str = None, **kwargs) -> Transcrip
         audio: A path, ``http(s)`` URL, ``bytes``, file-like object, or numpy
             waveform.
         backend: Backend id (see :func:`list_backends`). Defaults to the first
-            *installed* implemented backend (see :func:`get_default_backend`).
+            *installed* **local** backend (see :func:`get_default_backend`); a
+            remote service is never picked implicitly, name it here.
         **kwargs: Normalized, backend-translated options (e.g. ``language``,
             ``diarize``, ``word_timestamps``). Unknown options for the chosen
             backend are warned about and dropped.
