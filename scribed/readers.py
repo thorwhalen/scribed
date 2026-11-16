@@ -27,6 +27,7 @@ from pathlib import Path
 from typing import Any, Iterable, List, Mapping, Optional, Sequence, Tuple, Union
 
 from scribed.base import Segment, TimeSpan, Transcript, Word
+from scribed.textgrid import read_tiers
 
 __all__ = ["FORMATS", "detect_format", "parse_timestamp", "read_transcript"]
 
@@ -346,16 +347,6 @@ def _parse_json(text: str) -> List[_Row]:
     return out
 
 
-_TG_TIER_RE = re.compile(
-    r'class\s*=\s*"IntervalTier"\s*\n\s*name\s*=\s*"(?P<name>[^"]*)"', re.S
-)
-_TG_INTERVAL_RE = re.compile(
-    r'xmin\s*=\s*(?P<a>[\d.]+)\s*\n\s*xmax\s*=\s*(?P<b>[\d.]+)\s*\n\s*text\s*=\s*"(?P<t>(?:[^"]|"")*)"'
-)
-_TG_SHORT_TIER_RE = re.compile(r'"IntervalTier"\s*\n\s*"(?P<name>[^"]*)"\s*\n')
-_TG_SHORT_INTERVAL_RE = re.compile(
-    r'(?P<a>\d+(?:\.\d+)?)\s*\n\s*(?P<b>\d+(?:\.\d+)?)\s*\n\s*"(?P<t>(?:[^"]|"")*)"'
-)
 #: Tier names whose intervals are the LINES (one segment each), by preference.
 _TG_LINE_TIERS = (
     "utterances",
@@ -370,44 +361,26 @@ _TG_LINE_TIERS = (
 _TG_WORD_TIERS = ("words", "word", "ortho", "orthography")
 
 
-def _textgrid_tiers(text: str) -> dict:
-    """``{tier name: [(xmin, xmax, text), ...]}`` for every interval tier (long or short form)."""
-    tiers: dict = {}
-    long_form = list(_TG_TIER_RE.finditer(text))
-    heads = long_form if long_form else list(_TG_SHORT_TIER_RE.finditer(text))
-    interval_re = _TG_INTERVAL_RE if long_form else _TG_SHORT_INTERVAL_RE
-    for i, head in enumerate(heads):
-        end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
-        intervals = [
-            (
-                float(m.group("a")),
-                float(m.group("b")),
-                m.group("t").replace('""', '"').strip(),
-            )
-            for m in interval_re.finditer(text[head.end() : end])
-        ]
-        if not long_form and len(intervals) > 1 and intervals[0][2] == "":
-            # the short form's tier header (xmin/xmax) is matched as a first interval
-            intervals = intervals[1:]
-        tiers[head.group("name")] = intervals
-    return tiers
-
-
 def _parse_textgrid(text: str) -> List[_Row]:
     """Words come from a tier named ``words`` (else the first interval tier); a tier
     named ``utterances``/``lines``/``sentences`` gives one segment per non-empty
     interval, with the words inside it; without one, the whole grid is one segment."""
-    tiers = _textgrid_tiers(text)
+    tiers = read_tiers(text)
     if not tiers:
         raise ValueError("no IntervalTier found in the TextGrid")
     lowered = {name.lower(): name for name in tiers}
+    line_tier = next((lowered[n] for n in _TG_LINE_TIERS if n in lowered), None)
+    # Words: a tier named like one, else the first tier that is not the line tier
+    # (a grid of lines alone has no words: a line is never read as a word).
     word_tier = next(
-        (lowered[n] for n in _TG_WORD_TIERS if n in lowered), next(iter(tiers))
+        (lowered[n] for n in _TG_WORD_TIERS if n in lowered),
+        next((name for name in tiers if name != line_tier), None),
     )
     words = [
-        (t, a, b) for a, b, t in tiers[word_tier] if t and t not in _TEXTGRID_NON_WORDS
+        (t, a, b)
+        for a, b, t in (tiers[word_tier] if word_tier is not None else ())
+        if t and t not in _TEXTGRID_NON_WORDS
     ]
-    line_tier = next((lowered[n] for n in _TG_LINE_TIERS if n in lowered), None)
     if line_tier is None:
         if not words:
             return []

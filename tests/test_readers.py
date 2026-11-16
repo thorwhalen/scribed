@@ -159,3 +159,147 @@ def test_json_segment_with_empty_text_is_rebuilt_from_its_words():
         "words": [{"text": "hi", "start": 0, "end": 1}],
     }
     assert Transcript.parse(json.dumps({"segments": [seg]})).text == "hi"
+
+
+def test_textgrid_round_trip_with_words_and_speakers():
+    from scribed.base import Segment, TimeSpan, Word
+
+    def w(text, a, b):
+        return Word(text, TimeSpan.from_seconds(a, b))
+
+    t = Transcript.from_segments(
+        [
+            Segment(
+                "Hi there.",
+                span=TimeSpan.from_seconds(0.5, 1.5),
+                speaker="carl",
+                words=(w("Hi", 0.5, 0.9), w("there.", 1.0, 1.5)),
+            ),
+            Segment(
+                'Say "no".',
+                span=TimeSpan.from_seconds(1.5, 3.0),
+                speaker="ana",
+                words=(w("Say", 1.6, 2.0), w('"no".', 2.1, 3.0)),
+            ),
+        ]
+    )
+    grid = t.as_textgrid()
+    assert 'name = "utterances"' in grid and 'name = "words"' in grid
+    back = Transcript.parse(grid)
+    assert [(s.speaker, s.text) for s in back] == [
+        ("carl", "Hi there."),
+        ("ana", 'Say "no".'),
+    ]
+    assert [x.text for x in back.words] == ["Hi", "there.", "Say", '"no".']
+    assert "words" not in t.as_textgrid(words=False).split('name = "utterances"')[1]
+
+
+def test_textgrid_tiers_are_the_one_home_for_the_format():
+    from scribed.textgrid import read_tiers, write_tiers
+
+    tiers = {"take": [(0.5, 1.2, 'say "hi"')], 'odd "name"': [(0, 1, "x")]}
+    back = read_tiers(write_tiers(tiers, xmax=2.0))
+    assert back["take"] == [(0.0, 0.5, ""), (0.5, 1.2, 'say "hi"'), (1.2, 2.0, "")]
+    assert 'odd "name"' in back
+    with pytest.raises(ValueError, match="overlaps"):
+        write_tiers({"t": [(0, 1, "a"), (0.5, 2, "b")]}, xmax=2)
+    with pytest.raises(ValueError, match="outside"):
+        write_tiers({"t": [(0, 3, "a")]}, xmax=2)
+
+
+def test_textgrid_overlapping_speakers_are_trimmed_not_rejected():
+    from scribed.base import Segment, TimeSpan
+
+    t = Transcript.from_segments(
+        [
+            Segment("a", span=TimeSpan.from_seconds(0, 2), speaker="x"),
+            Segment("b", span=TimeSpan.from_seconds(1, 3), speaker="y"),
+        ]
+    )
+    back = Transcript.parse(t.as_textgrid())
+    assert [(s.speaker, s.start, s.end) for s in back] == [
+        ("x", 0.0, 1.0),
+        ("y", 1.0, 3.0),
+    ]
+
+
+SHORT_GRID = """File type = "ooTextFile"
+Object class = "TextGrid"
+
+0
+2
+<exists>
+2
+"IntervalTier"
+"words"
+0
+2
+3
+0
+0.5
+""
+0.5
+1
+"hi"
+1
+2
+""
+"TextTier"
+"p"
+0
+2
+1
+1.0
+"x"
+"""
+
+
+def test_short_form_keeps_leading_silence_and_skips_point_tiers():
+    from scribed.textgrid import read_tiers
+
+    assert read_tiers(SHORT_GRID) == {
+        "words": [(0.0, 0.5, ""), (0.5, 1.0, "hi"), (1.0, 2.0, "")]
+    }
+    assert Transcript.parse(SHORT_GRID, fmt="textgrid").text == "hi"
+
+
+def test_textgrid_exponent_times_are_read():
+    from scribed.textgrid import read_tiers
+
+    grid = (
+        'class = "IntervalTier"\nname = "t"\nxmin = 0\nxmax = 1e0\nintervals: size = 1\n'
+        'intervals [1]:\n  xmin = 0\n  xmax = 1e0\n  text = "a"\n'
+    )
+    assert read_tiers(grid) == {"t": [(0.0, 1.0, "a")]}
+
+
+def test_lines_without_a_words_tier_do_not_invent_words():
+    from scribed.base import Segment, TimeSpan
+
+    t = Transcript.from_segments(
+        [Segment("hello", span=TimeSpan.from_seconds(0, 1), speaker="a")]
+    )
+    for grid in (t.as_textgrid(), t.as_textgrid(words=False)):
+        assert Transcript.parse(grid).words == []
+
+
+def test_overlapping_lines_omit_the_words_tier_and_same_start_keeps_the_later_one():
+    from scribed.base import Segment, TimeSpan, Word
+
+    def seg(text, a, b, who):
+        word = Word(text, TimeSpan.from_seconds(a, b))
+        return Segment(
+            text, span=TimeSpan.from_seconds(a, b), speaker=who, words=(word,)
+        )
+
+    t = Transcript.from_segments([seg("a", 0, 2, "x"), seg("b", 1, 3, "y")])
+    assert 'name = "words"' not in t.as_textgrid()
+    same = Transcript.from_segments([seg("a", 0, 2, "x"), seg("b", 0, 3, "y")])
+    assert [s.text for s in Transcript.parse(same.as_textgrid())] == ["b"]
+
+
+def test_write_tiers_checks_times_after_rounding():
+    from scribed.textgrid import write_tiers
+
+    grid = write_tiers({"t": [(0, 0.1 + 0.2, "a"), (0.3, 1, "b")]}, xmax=1)
+    assert 'text = "b"' in grid

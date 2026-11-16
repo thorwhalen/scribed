@@ -372,6 +372,36 @@ class Transcript:
             lines.append("")
         return "\n".join(lines)
 
+    def as_textgrid(self, *, words: bool = True) -> str:
+        """Render as a Praat TextGrid (long form): an ``utterances`` tier of the lines
+        (``speaker: text``) and, with ``words=True``, a ``words`` tier when every
+        timed segment carries timed words and no two lines overlap (one flat tier
+        cannot hold overlapping speakers' words). :meth:`parse` reads it back.
+
+        Overlapping lines are trimmed so each ends where the next begins (a segment
+        trimmed to nothing is dropped). A line's text is ``speaker: text``, so text
+        of an unspeakered line that itself begins ``Word:`` reads back as a speaker.
+        """
+        from scribed.textgrid import trim_overlaps, write_tiers
+
+        cues = list(self._timed_cues())
+        raw = sorted(
+            (start, end, f"{seg.speaker}: {text}" if seg.speaker else text)
+            for seg, start, end, text in cues
+        )
+        lines = trim_overlaps(raw)
+        tiers = {"utterances": lines}
+        timed = [seg for seg, *_ in cues]
+        if words and timed and lines == raw and all(seg.words for seg in timed):
+            tiers["words"] = trim_overlaps(
+                (w.span.start_ms / 1000.0, w.span.end_ms / 1000.0, w.text)
+                for seg in timed
+                for w in seg.words
+                if w.span is not None and w.text.strip()
+            )
+        xmax = max((b for cells in tiers.values() for _, b, _ in cells), default=0.0)
+        return write_tiers(tiers, xmax=max(xmax, self.duration or 0.0))
+
     def filter_confidence(self, min_confidence: float) -> "Transcript":
         """Return a copy keeping only segments at or above ``min_confidence``.
 
