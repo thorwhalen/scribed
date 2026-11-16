@@ -23,6 +23,7 @@ derive that set with ``list_backends("whisper_sized_model")`` rather than hardco
 
 from __future__ import annotations
 
+import functools
 import importlib
 import pkgutil
 import warnings
@@ -117,37 +118,38 @@ def _is_available(backend_id: str) -> bool:
         importlib.import_module(import_name)
     except Exception:
         return False
-    return _sdk_floor_met(backend_id)
+    return sdk_problem(backend_id) is None
 
 
-def _sdk_floor_met(backend_id: str) -> bool:
-    """Is the installed SDK at least the version the backend's extra requires?
+@functools.lru_cache(maxsize=None)
+def sdk_problem(backend_id: str) -> Optional[str]:
+    """Why the installed SDK is too old for ``backend_id``, or ``None`` when it is fine.
 
-    The floor is read from scribed's own package metadata (the requirements of the
-    backend's extra), so ``pyproject.toml`` stays the one place that states it. An
-    SDK older than the floor lacks the parameters the adapter sends, and would
-    otherwise be reported as ready and fail on a missing keyword. Anything that
-    cannot be checked (no metadata, no ``packaging``) counts as met.
+    A backend whose config states ``min_sdk_version`` needs at least that version of
+    its distribution (``pip_install``): an older SDK lacks parameters the adapter
+    sends, and would otherwise be reported as ready and fail on a missing keyword.
+    (A test keeps these in step with the floors in ``pyproject.toml``.) Anything
+    that cannot be checked counts as fine. Cached: reading metadata is slow.
     """
-    from importlib import metadata
-
+    _discover_backends()
+    config = (_registry.get(backend_id) or {}).get("config", {})
+    floor, dist = config.get("min_sdk_version"), config.get("pip_install")
+    if not floor or not dist:
+        return None
     try:
-        from packaging.requirements import Requirement
-        from scribed.install import extra_for
+        from importlib import metadata
 
-        extra = extra_for(backend_id)
-        for line in metadata.requires("scribed") or ():
-            req = Requirement(line)
-            if req.marker is None or not req.marker.evaluate({"extra": extra}):
-                continue
-            if not req.specifier:
-                continue
-            installed = metadata.version(req.name)
-            if not req.specifier.contains(installed, prereleases=True):
-                return False
+        from packaging.version import Version
+
+        installed = metadata.version(dist)
+        if Version(installed) >= Version(floor):
+            return None
+        return (
+            f"{dist} {installed} is installed, but {backend_id!r} needs {dist}>={floor}"
+            f" (pip install -U {dist})"
+        )
     except Exception:  # noqa: BLE001 - an unverifiable floor never blocks a backend
-        return True
-    return True
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -293,4 +295,5 @@ def clear_registry() -> None:
     """Clear all registered backends (useful for tests)."""
     global _discovered
     _registry.clear()
+    sdk_problem.cache_clear()
     _discovered = False

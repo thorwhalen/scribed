@@ -119,11 +119,6 @@ _FFMPEG_NOTE = (
 )
 
 
-def extra_for(backend_id: str) -> str:
-    """The pyproject extra that installs ``backend_id`` (its id unless a recipe says otherwise)."""
-    return _RECIPES.get(backend_id, {}).get("extra") or backend_id
-
-
 @dataclass
 class Requirements:
     """What a backend needs to run — structured for an agent to act on."""
@@ -281,13 +276,14 @@ def doctor() -> dict:
     """
     from scribed import registry
 
+    registry.sdk_problem.cache_clear()  # an SDK may have been upgraded since
     available, missing = [], {}
     for bid in registry.list_backends():
         if registry._is_available(bid):
             available.append(bid)
         else:
             req = requirements(bid)
-            hint = req.pip_command
+            hint = registry.sdk_problem(bid) or req.pip_command
             if req.system:
                 hint = f"{req.system[0]} ; {hint}"
             missing[bid] = hint
@@ -340,6 +336,9 @@ def install(
         cmd.append("--upgrade")
     cmd.append(target)
     proc = subprocess.run(cmd, capture_output=True, text=True)
+    from scribed import registry
+
+    registry.sdk_problem.cache_clear()
     result["ran"] = True
     result["pip_argv"] = cmd
     result["returncode"] = proc.returncode
