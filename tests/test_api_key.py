@@ -78,7 +78,7 @@ def test_with_api_key_reaches_the_client_once_and_never_the_shared_adapter(
     assert shared.adapter._client is None
 
 
-@pytest.mark.parametrize("backend_id", ["vosk", "google-speech", "assemblyai"])
+@pytest.mark.parametrize("backend_id", ["vosk", "google-speech"])
 def test_backends_that_cannot_take_a_key_say_so(backend_id):
     from scribed.services import ServiceHandle
 
@@ -94,3 +94,55 @@ def test_status_counts_a_key_registered_in_config(monkeypatch):
     assert status.is_set_up("openai") is False
     monkeypatch.setitem(cfg, "api_key", "k")
     assert status.is_set_up("openai") is True
+
+
+def _fake_assemblyai(monkeypatch):
+    made = []
+
+    class Transcriber:
+        def __init__(self, api_key=None):
+            made.append({} if api_key is None else {"api_key": api_key})
+
+        def transcribe(self, path, config=None):
+            return types.SimpleNamespace(
+                status="completed",
+                error=None,
+                text="hi",
+                words=[],
+                utterances=None,
+                language_code="en",
+            )
+
+    aai = types.SimpleNamespace(
+        settings=types.SimpleNamespace(api_key=None),
+        Transcriber=Transcriber,
+        TranscriptionConfig=lambda **kw: kw,
+    )
+    monkeypatch.setitem(sys.modules, "assemblyai", aai)
+    return aai, made
+
+
+def test_assemblyai_handed_key_is_scoped_not_global(monkeypatch):
+    from scribed.services import ServiceHandle
+
+    aai, made = _fake_assemblyai(monkeypatch)
+    mine = ServiceHandle("assemblyai").with_api_key("handed")
+    mine.transcribe(b"RIFFfake")
+    mine.transcribe(b"RIFFfake")
+    assert made == [{"api_key": "handed"}]  # one scoped transcriber, reused
+    assert aai.settings.api_key is None  # the process-wide setting is untouched
+
+
+def test_assemblyai_env_key_is_scoped_too_and_order_does_not_matter(monkeypatch):
+    from scribed.services import ServiceHandle
+
+    aai, made = _fake_assemblyai(monkeypatch)
+    monkeypatch.setenv("ASSEMBLYAI_API_KEY", "from-env")
+    _adapter("assemblyai").transcribe(b"RIFFfake")
+    shared = ServiceHandle("assemblyai")
+    shared.with_api_key("handed").transcribe(b"RIFFfake")
+    assert made == [{"api_key": "from-env"}, {"api_key": "handed"}]
+    assert aai.settings.api_key is None
+    assert (
+        shared.adapter._transcriber is None and "api_key" not in shared.adapter.config
+    )
