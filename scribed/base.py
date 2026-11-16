@@ -374,22 +374,26 @@ class Transcript:
 
     def as_textgrid(self, *, words: bool = True) -> str:
         """Render as a Praat TextGrid (long form): an ``utterances`` tier of the lines
-        (``speaker: text``) and, with ``words=True`` and every timed segment carrying
-        timed words, a ``words`` tier. :meth:`parse` reads it back.
+        (``speaker: text``) and, with ``words=True``, a ``words`` tier when every
+        timed segment carries timed words and no two lines overlap (one flat tier
+        cannot hold overlapping speakers' words). :meth:`parse` reads it back.
 
-        Overlapping intervals (diarized speakers talking over each other) are trimmed
-        so each ends where the next begins: a TextGrid tier cannot overlap.
+        Overlapping lines are trimmed so each ends where the next begins (a segment
+        trimmed to nothing is dropped). A line's text is ``speaker: text``, so text
+        of an unspeakered line that itself begins ``Word:`` reads back as a speaker.
         """
-        from scribed.textgrid import write_tiers
+        from scribed.textgrid import trim_overlaps, write_tiers
 
-        lines = [
+        cues = list(self._timed_cues())
+        raw = sorted(
             (start, end, f"{seg.speaker}: {text}" if seg.speaker else text)
-            for seg, start, end, text in self._timed_cues()
-        ]
-        tiers = {"utterances": _non_overlapping(lines)}
-        timed = [seg for seg, *_ in self._timed_cues()]
-        if words and timed and all(seg.words for seg in timed):
-            tiers["words"] = _non_overlapping(
+            for seg, start, end, text in cues
+        )
+        lines = trim_overlaps(raw)
+        tiers = {"utterances": lines}
+        timed = [seg for seg, *_ in cues]
+        if words and timed and lines == raw and all(seg.words for seg in timed):
+            tiers["words"] = trim_overlaps(
                 (w.span.start_ms / 1000.0, w.span.end_ms / 1000.0, w.text)
                 for seg in timed
                 for w in seg.words
@@ -487,18 +491,6 @@ class Transcript:
 
 #: The shortest a subtitle cue may last: its end must come after its start.
 _MIN_CUE_S = 0.001
-
-
-def _non_overlapping(intervals) -> List[Tuple[float, float, str]]:
-    """Sorted ``(start, end, label)`` intervals, each trimmed to end where the next begins."""
-    ordered = sorted(intervals)
-    out: List[Tuple[float, float, str]] = []
-    for i, (start, end, label) in enumerate(ordered):
-        if i + 1 < len(ordered):
-            end = min(end, ordered[i + 1][0])
-        if end > start:
-            out.append((start, end, label))
-    return out
 
 
 def _cue_text(text: str) -> str:

@@ -369,13 +369,18 @@ def _parse_textgrid(text: str) -> List[_Row]:
     if not tiers:
         raise ValueError("no IntervalTier found in the TextGrid")
     lowered = {name.lower(): name for name in tiers}
+    line_tier = next((lowered[n] for n in _TG_LINE_TIERS if n in lowered), None)
+    # Words: a tier named like one, else the first tier that is not the line tier
+    # (a grid of lines alone has no words: a line is never read as a word).
     word_tier = next(
-        (lowered[n] for n in _TG_WORD_TIERS if n in lowered), next(iter(tiers))
+        (lowered[n] for n in _TG_WORD_TIERS if n in lowered),
+        next((name for name in tiers if name != line_tier), None),
     )
     words = [
-        (t, a, b) for a, b, t in tiers[word_tier] if t and t not in _TEXTGRID_NON_WORDS
+        (t, a, b)
+        for a, b, t in (tiers[word_tier] if word_tier is not None else ())
+        if t and t not in _TEXTGRID_NON_WORDS
     ]
-    line_tier = next((lowered[n] for n in _TG_LINE_TIERS if n in lowered), None)
     if line_tier is None:
         if not words:
             return []
