@@ -276,13 +276,14 @@ def doctor() -> dict:
     """
     from scribed import registry
 
+    registry.sdk_problem.cache_clear()  # an SDK may have been upgraded since
     available, missing = [], {}
     for bid in registry.list_backends():
         if registry._is_available(bid):
             available.append(bid)
         else:
             req = requirements(bid)
-            hint = req.pip_command
+            hint = registry.sdk_problem(bid) or req.pip_command
             if req.system:
                 hint = f"{req.system[0]} ; {hint}"
             missing[bid] = hint
@@ -329,12 +330,18 @@ def install(
 
     import subprocess
 
+    from scribed import registry
+
     target = f"scribed[{req.extra}]" if req.extra else backend_id
     cmd = [sys.executable, "-m", "pip", "install"]
+    if registry.sdk_problem(backend_id):
+        # The SDK is installed but too old: upgrade just it (never scribed itself).
+        target, upgrade = registry.get_config(backend_id)["sdk_requirement"], True
     if upgrade:
         cmd.append("--upgrade")
     cmd.append(target)
     proc = subprocess.run(cmd, capture_output=True, text=True)
+    registry.sdk_problem.cache_clear()
     result["ran"] = True
     result["pip_argv"] = cmd
     result["returncode"] = proc.returncode

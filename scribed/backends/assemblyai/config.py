@@ -18,6 +18,7 @@ BACKEND_CONFIG = {
     "name": "AssemblyAI",
     "display_name": "AssemblyAI (Universal)",
     "pip_install": "assemblyai",
+    "sdk_requirement": "assemblyai>=1.10.1",  # same as its pyproject extra (tested)
     "import_name": "assemblyai",
     "license": "proprietary",
     "is_local": False,

@@ -23,6 +23,7 @@ derive that set with ``list_backends("whisper_sized_model")`` rather than hardco
 
 from __future__ import annotations
 
+import functools
 import importlib
 import pkgutil
 import warnings
@@ -115,9 +116,42 @@ def _is_available(backend_id: str) -> bool:
         return True
     try:
         importlib.import_module(import_name)
-        return True
     except Exception:
         return False
+    return sdk_problem(backend_id) is None
+
+
+@functools.lru_cache(maxsize=None)
+def sdk_problem(backend_id: str) -> Optional[str]:
+    """Why the installed SDK does not suit ``backend_id``, or ``None`` when it does.
+
+    A backend whose config states ``sdk_requirement`` (a requirement string such as
+    ``groq>=0.20.0``) needs an installed distribution in that range: an older SDK
+    lacks parameters the adapter sends, and would otherwise be reported as ready
+    and fail on a missing keyword. (A test keeps these equal to the extras in
+    ``pyproject.toml``.) A distribution that cannot be read counts as fine. Cached:
+    reading metadata is slow.
+    """
+    _discover_backends()
+    config = (_registry.get(backend_id) or {}).get("config", {})
+    spec = config.get("sdk_requirement")
+    if not spec:
+        return None
+    from importlib import metadata
+
+    from packaging.requirements import Requirement
+
+    req = Requirement(spec)
+    try:
+        installed = metadata.version(req.name)
+    except metadata.PackageNotFoundError:
+        return None
+    if req.specifier.contains(installed, prereleases=True):
+        return None
+    return (
+        f"{req.name} {installed} is installed, but {backend_id!r} needs {spec}"
+        f" (pip install -U '{spec}')"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -263,4 +297,5 @@ def clear_registry() -> None:
     """Clear all registered backends (useful for tests)."""
     global _discovered
     _registry.clear()
+    sdk_problem.cache_clear()
     _discovered = False

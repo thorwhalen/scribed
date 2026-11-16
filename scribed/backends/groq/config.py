@@ -16,6 +16,7 @@ BACKEND_CONFIG = {
     "name": "Groq",
     "display_name": "Groq (Whisper large-v3 / turbo)",
     "pip_install": "groq",
+    "sdk_requirement": "groq>=0.20.0",  # same as its pyproject extra (tested)
     "import_name": "groq",
     "license": "proprietary",
     "is_local": False,
