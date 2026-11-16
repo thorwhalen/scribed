@@ -1,4 +1,4 @@
-> built 2026-11-16 22:03 UTC from e092450 (main) · scribed 0.0.13. Details: build_info.json
+> built 2026-11-16 22:56 UTC from 7b3d10e (main) · scribed 0.0.14. Details: build_info.json
 
 # index.html.md
 
@@ -124,8 +124,12 @@ Some hosted services fetch the audio themselves, so nothing is downloaded or upl
 by you (handy on a small server, or for a recording over the upload limit):
 
 ```python
-t = scribed.transcribe("https://example.org/episode.mp3", backend="groq", word_timestamps=True)
-scribed.list_backends("remote_fetch")  # backends that take an address: ['elevenlabs', 'groq']
+t = scribed.transcribe(
+    "https://example.org/episode.mp3", backend="groq", word_timestamps=True
+)
+scribed.list_backends(
+    "remote_fetch"
+)  # backends that take an address: ['elevenlabs', 'groq']
 scribed.list_backends("word_timestamps")  # backends that return word times
 ```
 
@@ -1369,14 +1373,14 @@ t.raw                    # -> engine-specific structure
 
 #### as_srt()
 
-Render timed segments as SubRip (.srt). Segments without times are skipped.
+Render timed segments as SubRip (.srt). Segments without times or text are skipped.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### as_vtt(, words=False)
 
-Render timed segments as WebVTT (.vtt). Segments without times are skipped.
+Render timed segments as WebVTT (.vtt). Segments without times or text are skipped.
 
 With `words=True`, a segment whose words are all timed carries an inline
 timestamp before every word after the first (`Step <00:00:01.500>left`),
@@ -2017,14 +2021,14 @@ t.raw                    # -> engine-specific structure
 
 #### as_srt()
 
-Render timed segments as SubRip (.srt). Segments without times are skipped.
+Render timed segments as SubRip (.srt). Segments without times or text are skipped.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### as_vtt(, words=False)
 
-Render timed segments as WebVTT (.vtt). Segments without times are skipped.
+Render timed segments as WebVTT (.vtt). Segments without times or text are skipped.
 
 With `words=True`, a segment whose words are all timed carries an inline
 timestamp before every word after the first (`Step <00:00:01.500>left`),
@@ -3279,7 +3283,7 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-16 22:03 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/e092450d12d9a7bd18017378625ee2a9e3aa5713"><code>e092450</code></a> on branch <code>main</code>, for **scribed 0.0.13** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-16 22:56 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b"><code>7b3d10e</code></a> on branch <code>main</code>, for **scribed 0.0.14** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3288,7 +3292,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/e092450d12d9a7bd18017378625ee2a9e3aa5713"><code>e092450d12d9a7bd18017378625ee2a9e3aa5713</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b"><code>7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3299,9 +3303,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43965945838">43965945838</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43974489491">43974489491</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>e092450d12d9a7bd18017378625ee2a9e3aa5713</code> (in the history of the built commit) |
+| Event commit | <code>7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3326,13 +3330,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.13/">0.0.13</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.14/">0.0.14</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout e092450d12d9a7bd18017378625ee2a9e3aa5713
+git checkout 7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

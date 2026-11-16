@@ -303,9 +303,13 @@ the text” to full structure:</p>
 <h2>Transcribe from an address, and find who can do what<a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#transcribe-from-an-address-and-find-who-can-do-what" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#transcribe-from-an-address-and-find-who-can-do-what'">¶</a></h2>
 <p>Some hosted services fetch the audio themselves, so nothing is downloaded or uploaded
 by you (handy on a small server, or for a recording over the upload limit):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">t</span> <span class="o">=</span> <span class="n">scribed</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="s2">"https://example.org/episode.mp3"</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">"groq"</span><span class="p">,</span> <span class="n">word_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="line-2"><span class="n">scribed</span><span class="o">.</span><span class="n">list_backends</span><span class="p">(</span><span class="s2">"remote_fetch"</span><span class="p">)</span>  <span class="c1"># backends that take an address: ['elevenlabs', 'groq']</span>
-</span><span id="line-3"><span class="n">scribed</span><span class="o">.</span><span class="n">list_backends</span><span class="p">(</span><span class="s2">"word_timestamps"</span><span class="p">)</span>  <span class="c1"># backends that return word times</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="n">t</span> <span class="o">=</span> <span class="n">scribed</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span>
+</span><span id="line-2">    <span class="s2">"https://example.org/episode.mp3"</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">"groq"</span><span class="p">,</span> <span class="n">word_timestamps</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="line-3"><span class="p">)</span>
+</span><span id="line-4"><span class="n">scribed</span><span class="o">.</span><span class="n">list_backends</span><span class="p">(</span>
+</span><span id="line-5">    <span class="s2">"remote_fetch"</span>
+</span><span id="line-6"><span class="p">)</span>  <span class="c1"># backends that take an address: ['elevenlabs', 'groq']</span>
+</span><span id="line-7"><span class="n">scribed</span><span class="o">.</span><span class="n">list_backends</span><span class="p">(</span><span class="s2">"word_timestamps"</span><span class="p">)</span>  <span class="c1"># backends that return word times</span>
 </span></code></pre></div>
 </div>
 <p>Any other backend downloads the address first. The address is handed to the third party,
@@ -373,7 +377,7 @@ per-engine via each backend’s <code class="docutils literal notranslate"><span
 
 </section>
 </section>
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-16 22:03 UTC from <a href="https://github.com/thorwhalen/scribed/commit/e092450d12d9a7bd18017378625ee2a9e3aa5713">e092450</a> (main) · scribed 0.0.13 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-16 22:56 UTC from <a href="https://github.com/thorwhalen/scribed/commit/7b3d10e2b90f0c7dc87e0c7a6409fcd2197f792b">7b3d10e</a> (main) · scribed 0.0.14 · <a href="about-this-build.html">about this build</a></p>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
@@ -403,7 +407,7 @@ per-engine via each backend’s <code class="docutils literal notranslate"><span
 </div>
 </footer>
 </div>
-<script src="_static/documentation_options.js?v=9fc46840"></script>
+<script src="_static/documentation_options.js?v=544df88d"></script>
 <script src="_static/doctools.js?v=fd6eb6e6"></script>
 <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="_static/clipboard.min.js?v=a7894cd8"></script>

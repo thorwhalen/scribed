@@ -405,14 +405,14 @@ t.raw                    # -> engine-specific structure
 
 #### as_srt()
 
-Render timed segments as SubRip (.srt). Segments without times are skipped.
+Render timed segments as SubRip (.srt). Segments without times or text are skipped.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### as_vtt(, words=False)
 
-Render timed segments as WebVTT (.vtt). Segments without times are skipped.
+Render timed segments as WebVTT (.vtt). Segments without times or text are skipped.
 
 With `words=True`, a segment whose words are all timed carries an inline
 timestamp before every word after the first (`Step <00:00:01.500>left`),
