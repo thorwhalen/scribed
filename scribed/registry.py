@@ -123,33 +123,35 @@ def _is_available(backend_id: str) -> bool:
 
 @functools.lru_cache(maxsize=None)
 def sdk_problem(backend_id: str) -> Optional[str]:
-    """Why the installed SDK is too old for ``backend_id``, or ``None`` when it is fine.
+    """Why the installed SDK does not suit ``backend_id``, or ``None`` when it does.
 
-    A backend whose config states ``min_sdk_version`` needs at least that version of
-    its distribution (``pip_install``): an older SDK lacks parameters the adapter
-    sends, and would otherwise be reported as ready and fail on a missing keyword.
-    (A test keeps these in step with the floors in ``pyproject.toml``.) Anything
-    that cannot be checked counts as fine. Cached: reading metadata is slow.
+    A backend whose config states ``sdk_requirement`` (a requirement string such as
+    ``groq>=0.20.0``) needs an installed distribution in that range: an older SDK
+    lacks parameters the adapter sends, and would otherwise be reported as ready
+    and fail on a missing keyword. (A test keeps these equal to the extras in
+    ``pyproject.toml``.) A distribution that cannot be read counts as fine. Cached:
+    reading metadata is slow.
     """
     _discover_backends()
     config = (_registry.get(backend_id) or {}).get("config", {})
-    floor, dist = config.get("min_sdk_version"), config.get("pip_install")
-    if not floor or not dist:
+    spec = config.get("sdk_requirement")
+    if not spec:
         return None
+    from importlib import metadata
+
+    from packaging.requirements import Requirement
+
+    req = Requirement(spec)
     try:
-        from importlib import metadata
-
-        from packaging.version import Version
-
-        installed = metadata.version(dist)
-        if Version(installed) >= Version(floor):
-            return None
-        return (
-            f"{dist} {installed} is installed, but {backend_id!r} needs {dist}>={floor}"
-            f" (pip install -U {dist})"
-        )
-    except Exception:  # noqa: BLE001 - an unverifiable floor never blocks a backend
+        installed = metadata.version(req.name)
+    except metadata.PackageNotFoundError:
         return None
+    if req.specifier.contains(installed, prereleases=True):
+        return None
+    return (
+        f"{req.name} {installed} is installed, but {backend_id!r} needs {spec}"
+        f" (pip install -U '{spec}')"
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -13,7 +13,7 @@ BACKEND_CONFIG = {
     "name": "ElevenLabs Scribe",
     "display_name": "ElevenLabs Scribe v1",
     "pip_install": "elevenlabs",
-    "min_sdk_version": "1.57.0",  # keep in step with pyproject's extra (tested)
+    "sdk_requirement": "elevenlabs>=1.57.0,!=2.18.*,!=2.19.*,!=2.20.0",  # same as its pyproject extra (tested)
     "import_name": "elevenlabs",
     "license": "proprietary",
     "is_local": False,

@@ -330,14 +330,17 @@ def install(
 
     import subprocess
 
+    from scribed import registry
+
     target = f"scribed[{req.extra}]" if req.extra else backend_id
     cmd = [sys.executable, "-m", "pip", "install"]
+    if registry.sdk_problem(backend_id):
+        # The SDK is installed but too old: upgrade just it (never scribed itself).
+        target, upgrade = registry.get_config(backend_id)["sdk_requirement"], True
     if upgrade:
         cmd.append("--upgrade")
     cmd.append(target)
     proc = subprocess.run(cmd, capture_output=True, text=True)
-    from scribed import registry
-
     registry.sdk_problem.cache_clear()
     result["ran"] = True
     result["pip_argv"] = cmd
