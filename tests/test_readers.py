@@ -159,3 +159,65 @@ def test_json_segment_with_empty_text_is_rebuilt_from_its_words():
         "words": [{"text": "hi", "start": 0, "end": 1}],
     }
     assert Transcript.parse(json.dumps({"segments": [seg]})).text == "hi"
+
+
+def test_textgrid_round_trip_with_words_and_speakers():
+    from scribed.base import Segment, TimeSpan, Word
+
+    def w(text, a, b):
+        return Word(text, TimeSpan.from_seconds(a, b))
+
+    t = Transcript.from_segments(
+        [
+            Segment(
+                "Hi there.",
+                span=TimeSpan.from_seconds(0.5, 1.5),
+                speaker="carl",
+                words=(w("Hi", 0.5, 0.9), w("there.", 1.0, 1.5)),
+            ),
+            Segment(
+                'Say "no".',
+                span=TimeSpan.from_seconds(1.5, 3.0),
+                speaker="ana",
+                words=(w("Say", 1.6, 2.0), w('"no".', 2.1, 3.0)),
+            ),
+        ]
+    )
+    grid = t.as_textgrid()
+    assert 'name = "utterances"' in grid and 'name = "words"' in grid
+    back = Transcript.parse(grid)
+    assert [(s.speaker, s.text) for s in back] == [
+        ("carl", "Hi there."),
+        ("ana", 'Say "no".'),
+    ]
+    assert [x.text for x in back.words] == ["Hi", "there.", "Say", '"no".']
+    assert "words" not in t.as_textgrid(words=False).split('name = "utterances"')[1]
+
+
+def test_textgrid_tiers_are_the_one_home_for_the_format():
+    from scribed.textgrid import read_tiers, write_tiers
+
+    tiers = {"take": [(0.5, 1.2, 'say "hi"')], 'odd "name"': [(0, 1, "x")]}
+    back = read_tiers(write_tiers(tiers, xmax=2.0))
+    assert back["take"] == [(0.0, 0.5, ""), (0.5, 1.2, 'say "hi"'), (1.2, 2.0, "")]
+    assert 'odd "name"' in back
+    with pytest.raises(ValueError, match="overlaps"):
+        write_tiers({"t": [(0, 1, "a"), (0.5, 2, "b")]}, xmax=2)
+    with pytest.raises(ValueError, match="outside"):
+        write_tiers({"t": [(0, 3, "a")]}, xmax=2)
+
+
+def test_textgrid_overlapping_speakers_are_trimmed_not_rejected():
+    from scribed.base import Segment, TimeSpan
+
+    t = Transcript.from_segments(
+        [
+            Segment("a", span=TimeSpan.from_seconds(0, 2), speaker="x"),
+            Segment("b", span=TimeSpan.from_seconds(1, 3), speaker="y"),
+        ]
+    )
+    back = Transcript.parse(t.as_textgrid())
+    assert [(s.speaker, s.start, s.end) for s in back] == [
+        ("x", 0.0, 1.0),
+        ("y", 1.0, 3.0),
+    ]

@@ -372,6 +372,32 @@ class Transcript:
             lines.append("")
         return "\n".join(lines)
 
+    def as_textgrid(self, *, words: bool = True) -> str:
+        """Render as a Praat TextGrid (long form): an ``utterances`` tier of the lines
+        (``speaker: text``) and, with ``words=True`` and every timed segment carrying
+        timed words, a ``words`` tier. :meth:`parse` reads it back.
+
+        Overlapping intervals (diarized speakers talking over each other) are trimmed
+        so each ends where the next begins: a TextGrid tier cannot overlap.
+        """
+        from scribed.textgrid import write_tiers
+
+        lines = [
+            (start, end, f"{seg.speaker}: {text}" if seg.speaker else text)
+            for seg, start, end, text in self._timed_cues()
+        ]
+        tiers = {"utterances": _non_overlapping(lines)}
+        timed = [seg for seg, *_ in self._timed_cues()]
+        if words and timed and all(seg.words for seg in timed):
+            tiers["words"] = _non_overlapping(
+                (w.span.start_ms / 1000.0, w.span.end_ms / 1000.0, w.text)
+                for seg in timed
+                for w in seg.words
+                if w.span is not None and w.text.strip()
+            )
+        xmax = max((b for cells in tiers.values() for _, b, _ in cells), default=0.0)
+        return write_tiers(tiers, xmax=max(xmax, self.duration or 0.0))
+
     def filter_confidence(self, min_confidence: float) -> "Transcript":
         """Return a copy keeping only segments at or above ``min_confidence``.
 
@@ -461,6 +487,18 @@ class Transcript:
 
 #: The shortest a subtitle cue may last: its end must come after its start.
 _MIN_CUE_S = 0.001
+
+
+def _non_overlapping(intervals) -> List[Tuple[float, float, str]]:
+    """Sorted ``(start, end, label)`` intervals, each trimmed to end where the next begins."""
+    ordered = sorted(intervals)
+    out: List[Tuple[float, float, str]] = []
+    for i, (start, end, label) in enumerate(ordered):
+        if i + 1 < len(ordered):
+            end = min(end, ordered[i + 1][0])
+        if end > start:
+            out.append((start, end, label))
+    return out
 
 
 def _cue_text(text: str) -> str:
