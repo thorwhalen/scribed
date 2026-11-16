@@ -10,15 +10,9 @@ sent as a ``(filename, bytes)`` tuple via :func:`scribed.util.load_audio_bytes`.
 
 from __future__ import annotations
 
-import math
-
+from scribed.backends._verbose_json import verbose_json_to_transcript
 from scribed.base import Transcript
-from scribed.make_backend import BaseTranscriberAdapter, make_segment
-
-
-def _get(obj, key):
-    """Read ``key`` from a pydantic-ish object or a plain dict."""
-    return obj.get(key) if isinstance(obj, dict) else getattr(obj, key, None)
+from scribed.make_backend import BaseTranscriberAdapter
 
 
 class Adapter(BaseTranscriberAdapter):
@@ -38,53 +32,25 @@ class Adapter(BaseTranscriberAdapter):
             self._client = Groq(api_key=key)
         return self._client
 
-    def _transcribe(
-        self, audio, *, model="whisper-large-v3-turbo", **native_kwargs
+    def _create(
+        self, *, model="whisper-large-v3-turbo", timestamp_granularities=None, **source
     ) -> Transcript:
-        from scribed.util import load_audio_bytes
-
-        client = self._get_client()
-        audio_bytes = load_audio_bytes(audio)
-        resp = client.audio.transcriptions.create(
-            file=("audio.wav", audio_bytes),
+        """One ``audio.transcriptions.create`` call; ``source`` is ``file=`` or ``url=``."""
+        extra = {"timestamp_granularities": timestamp_granularities}
+        resp = self._get_client().audio.transcriptions.create(
             model=model,
             response_format="verbose_json",
-            **native_kwargs,
+            **{k: v for k, v in extra.items() if v},
+            **source,
         )
+        return verbose_json_to_transcript(resp, backend_id=self.backend_id)
 
-        text = _get(resp, "text") or ""
-        language = _get(resp, "language")
-        duration = _get(resp, "duration")
-        raw_segments = _get(resp, "segments")
+    def _transcribe(self, audio, **native_kwargs) -> Transcript:
+        from scribed.util import load_audio_bytes
 
-        if raw_segments:
-            segments = []
-            for s in raw_segments:
-                alp = _get(s, "avg_logprob")
-                conf = math.exp(alp) if isinstance(alp, (int, float)) else None
-                segments.append(
-                    make_segment(
-                        _get(s, "text") or "",
-                        start=_get(s, "start"),
-                        end=_get(s, "end"),
-                        confidence=conf,
-                        avg_logprob=alp,
-                        no_speech_prob=_get(s, "no_speech_prob"),
-                    )
-                )
-            return Transcript.from_segments(
-                segments,
-                backend=self.backend_id,
-                raw=resp,
-                text=text,
-                language=language,
-                duration=duration,
-            )
+        file = ("audio.wav", load_audio_bytes(audio))
+        return self._create(file=file, **native_kwargs)
 
-        return Transcript.from_text(
-            text,
-            backend=self.backend_id,
-            raw=resp,
-            language=language,
-            duration=duration,
-        )
+    def _transcribe_url(self, url: str, **native_kwargs) -> Transcript:
+        """Groq fetches ``url`` itself (its ``url`` field; no 25 MB upload limit)."""
+        return self._create(url=url, **native_kwargs)

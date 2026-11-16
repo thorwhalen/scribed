@@ -30,6 +30,7 @@ BACKEND_CONFIG = {
         "diarization, word timestamps, and audio intelligence."
     ),
     "param_map": {
+        "word_timestamps": {"always_on": True},  # word times are always returned
         # Feed native kwargs to assemblyai.TranscriptionConfig(**native_kwargs).
         "language": {"native_name": "language_code"},  # None => auto-detect
         "diarize": {"native_name": "speaker_labels"},  # bool

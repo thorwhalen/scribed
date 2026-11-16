@@ -39,6 +39,7 @@ BACKEND_CONFIG = {
     # ``_transcribe`` (language_code, diarize, model) to build the
     # RecognitionConfig — they are not all forwarded 1:1 to a single call.
     "param_map": {
+        "word_timestamps": {"always_on": True},  # word times are always returned
         "language": {"native_name": "language_code"},  # None => "en-US"
         "diarize": {"native_name": "diarize"},  # bool
         "model": {"native_name": "model"},  # e.g. "latest_long"

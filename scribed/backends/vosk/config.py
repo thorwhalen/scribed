@@ -34,6 +34,6 @@ BACKEND_CONFIG = {
         # path is set; consumed in the adapter, not passed to a native engine.
         "language": {"native_name": "language"},
         "diarize": None,  # Vosk does not diarize
-        "word_timestamps": None,  # always on (SetWords(True)); not a native kwarg
+        "word_timestamps": {"always_on": True},  # always on (SetWords(True))
     },
 }
