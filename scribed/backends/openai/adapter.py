@@ -21,6 +21,8 @@ def _get(obj, key):
 class Adapter(BaseTranscriberAdapter):
     """OpenAI transcription adapter."""
 
+    accepts_api_key = True
+
     def __init__(self, config: dict):
         super().__init__(config)
         self._client = None

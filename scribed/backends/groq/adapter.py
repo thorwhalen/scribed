@@ -24,6 +24,8 @@ def _get(obj, key):
 class Adapter(BaseTranscriberAdapter):
     """Groq hosted-Whisper transcription adapter (client cached lazily)."""
 
+    accepts_api_key = True
+
     def __init__(self, config: dict):
         super().__init__(config)
         self._client = None

@@ -27,8 +27,23 @@ from scribed import registry
 class ServiceHandle:
     """Per-backend access point: normalized ``transcribe`` + native ``adapter``."""
 
-    def __init__(self, backend_id: str):
+    def __init__(self, backend_id: str, *, adapter: Any = None):
         self._id = backend_id
+        if adapter is not None:  # a private adapter (see with_api_key)
+            self.__dict__["adapter"] = adapter
+
+    def with_api_key(self, api_key: str) -> "ServiceHandle":
+        """A handle on a private copy of this backend that uses ``api_key``.
+
+        For hosts that keep keys out of the environment. The shared adapter and
+        the registry never hold the key; reuse the returned handle (one client)
+        for a batch loop or a live session. Raises ``TypeError`` for a backend
+        that cannot be handed a key.
+        """
+        adapter = self.adapter
+        if not getattr(adapter, "accepts_api_key", False):
+            raise TypeError(f"Backend {self._id!r} cannot be handed an API key.")
+        return ServiceHandle(self._id, adapter=adapter.with_config(api_key=api_key))
 
     @property
     def name(self) -> str:

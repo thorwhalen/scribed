@@ -43,6 +43,8 @@ def _speaker_str(speaker):
 class Adapter(BaseTranscriberAdapter):
     """ElevenLabs Scribe transcription adapter (caches one client lazily)."""
 
+    accepts_api_key = True
+
     def __init__(self, config: dict):
         super().__init__(config)
         self._client = None

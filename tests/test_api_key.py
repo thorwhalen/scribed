@@ -43,7 +43,7 @@ def test_no_key_anywhere_still_raises_guidance(backend_id):
         _adapter(backend_id).credential()
 
 
-def test_elevenlabs_transcribe_api_key_option_reaches_the_client(monkeypatch):
+def _fake_elevenlabs(monkeypatch):
     seen = []
 
     class FakeClient:
@@ -58,15 +58,39 @@ def test_elevenlabs_transcribe_api_key_option_reaches_the_client(monkeypatch):
     sub.ElevenLabs = FakeClient
     monkeypatch.setitem(sys.modules, "elevenlabs", pkg)
     monkeypatch.setitem(sys.modules, "elevenlabs.client", sub)
+    return seen
 
-    adapter = _adapter("elevenlabs")
-    t = adapter.transcribe(b"RIFFfake", api_key="per-call-key")
+
+def test_with_api_key_reaches_the_client_once_and_never_the_shared_adapter(
+    monkeypatch,
+):
+    from scribed.services import ServiceHandle
+
+    seen = _fake_elevenlabs(monkeypatch)
+    shared = ServiceHandle("elevenlabs")
+    mine = shared.with_api_key("handed-key")
+    for _ in range(3):  # a batch loop reuses one client
+        t = mine.transcribe(b"RIFFfake")
     assert isinstance(t, Transcript) and t.text == "hi"
-    assert seen == ["per-call-key"]
-    assert adapter.config.get("api_key") is None  # the shared adapter never held it
-    assert adapter._client is None  # ... nor cached a client built with it
+    assert seen == ["handed-key"]
+    assert "api_key" not in registry.get_config("elevenlabs")
+    assert shared.adapter.config.get("api_key") is None
+    assert shared.adapter._client is None
 
 
-def test_local_backends_do_not_swallow_api_key():
-    adapter = _adapter("vosk")
-    assert adapter._takes_api_key is False
+@pytest.mark.parametrize("backend_id", ["vosk", "google-speech", "assemblyai"])
+def test_backends_that_cannot_take_a_key_say_so(backend_id):
+    from scribed.services import ServiceHandle
+
+    with pytest.raises(TypeError, match="API key"):
+        ServiceHandle(backend_id).with_api_key("k")
+
+
+def test_status_counts_a_key_registered_in_config(monkeypatch):
+    from scribed import status
+
+    monkeypatch.setattr(sys.modules["scribed.install"], "check", lambda b: True)
+    cfg = registry.get_config("openai")
+    assert status.is_set_up("openai") is False
+    monkeypatch.setitem(cfg, "api_key", "k")
+    assert status.is_set_up("openai") is True
