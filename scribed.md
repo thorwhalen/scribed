@@ -1,4 +1,4 @@
-> built 2026-11-16 23:03 UTC from 4ac1c54 (main) · scribed 0.0.15. Details: build_info.json
+> built 2026-11-16 23:12 UTC from f4d14d9 (main) · scribed 0.0.16. Details: build_info.json
 
 # index.html.md
 
@@ -3288,7 +3288,7 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-16 23:03 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/4ac1c540aaa335294610515b0d05215b3cebbb0b"><code>4ac1c54</code></a> on branch <code>main</code>, for **scribed 0.0.15** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-16 23:12 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/f4d14d94a8e05aa35d9563f0541d0137acde9369"><code>f4d14d9</code></a> on branch <code>main</code>, for **scribed 0.0.16** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3297,7 +3297,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/4ac1c540aaa335294610515b0d05215b3cebbb0b"><code>4ac1c540aaa335294610515b0d05215b3cebbb0b</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/f4d14d94a8e05aa35d9563f0541d0137acde9369"><code>f4d14d94a8e05aa35d9563f0541d0137acde9369</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3308,9 +3308,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43975664661">43975664661</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43976974022">43976974022</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>4ac1c540aaa335294610515b0d05215b3cebbb0b</code> (in the history of the built commit) |
+| Event commit | <code>f4d14d94a8e05aa35d9563f0541d0137acde9369</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3335,13 +3335,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.15/">0.0.15</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.16/">0.0.16</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 4ac1c540aaa335294610515b0d05215b3cebbb0b
+git checkout f4d14d94a8e05aa35d9563f0541d0137acde9369
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
