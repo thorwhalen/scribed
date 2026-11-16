@@ -410,6 +410,20 @@ Render timed segments as SubRip (.srt). Segments without times or text are skipp
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
+#### as_textgrid(, words=True)
+
+Render as a Praat TextGrid (long form): an `utterances` tier of the lines
+(`speaker: text`) and, with `words=True`, a `words` tier when every
+timed segment carries timed words and no two lines overlap (one flat tier
+cannot hold overlapping speakers’ words). [`parse()`](#scribed.Transcript.parse) reads it back.
+
+Overlapping lines are trimmed so each ends where the next begins (a segment
+trimmed to nothing is dropped). A line’s text is `speaker: text`, so text
+of an unspeakered line that itself begins `Word:` reads back as a speaker.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### as_vtt(, words=False)
 
 Render timed segments as WebVTT (.vtt). Segments without times or text are skipped.
@@ -837,6 +851,7 @@ With `expect_text`, `ok` additionally requires the substring to appear.
 | [`readers`](scribed.readers.html.md#module-scribed.readers)           | Read a transcript back into a [`Transcript`](scribed.base.html.md#scribed.base.Transcript). |
 | [`registry`](scribed.registry.html.md#module-scribed.registry)         | Backend discovery, registration, and lazy loading.                                                                 |
 | [`status`](scribed.status.html.md#module-scribed.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                   |
+| [`textgrid`](scribed.textgrid.html.md#module-scribed.textgrid)         | Praat TextGrid interval tiers, in and out: the one home for the format.                                            |
 | [`tools`](scribed.tools.html.md#module-scribed.tools)               | Command-line tools for scribed (dispatched via `cw` in `__main__`).                                                |
 | [`translation`](scribed.translation.html.md#module-scribed.translation)   | Parameter translation between scribed's normalized kwargs and native engines.                                      |
 | [`util`](scribed.util.html.md#module-scribed.util)                 | Audio-input normalization and small shared helpers.                                                                |

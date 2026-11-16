@@ -1,4 +1,4 @@
-> built 2026-11-16 23:21 UTC from 25b4894 (main) · scribed 0.0.17. Details: build_info.json
+> built 2026-11-16 23:30 UTC from 1e5f1f4 (main) · scribed 0.0.18. Details: build_info.json
 
 # index.html.md
 
@@ -115,6 +115,7 @@ t.words  # flattened word-level units (when the engine reports them)
 t.speakers  # ['speaker_0', 'speaker_1', ...] when diarized
 t.srt  # SRT subtitles
 t.vtt  # WebVTT subtitles
+t.as_textgrid()  # Praat TextGrid (tiers in/out: scribed.textgrid)
 t.raw  # the untouched backend response
 ```
 
@@ -1383,6 +1384,20 @@ Render timed segments as SubRip (.srt). Segments without times or text are skipp
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
+#### as_textgrid(, words=True)
+
+Render as a Praat TextGrid (long form): an `utterances` tier of the lines
+(`speaker: text`) and, with `words=True`, a `words` tier when every
+timed segment carries timed words and no two lines overlap (one flat tier
+cannot hold overlapping speakers’ words). [`parse()`](_autosummary/scribed.base.html.md#scribed.base.Transcript.parse) reads it back.
+
+Overlapping lines are trimmed so each ends where the next begins (a segment
+trimmed to nothing is dropped). A line’s text is `speaker: text`, so text
+of an unspeakered line that itself begins `Word:` reads back as a speaker.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### as_vtt(, words=False)
 
 Render timed segments as WebVTT (.vtt). Segments without times or text are skipped.
@@ -2031,6 +2046,20 @@ Render timed segments as SubRip (.srt). Segments without times or text are skipp
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
+#### as_textgrid(, words=True)
+
+Render as a Praat TextGrid (long form): an `utterances` tier of the lines
+(`speaker: text`) and, with `words=True`, a `words` tier when every
+timed segment carries timed words and no two lines overlap (one flat tier
+cannot hold overlapping speakers’ words). [`parse()`](_autosummary/scribed.html.md#scribed.Transcript.parse) reads it back.
+
+Overlapping lines are trimmed so each ends where the next begins (a segment
+trimmed to nothing is dropped). A line’s text is `speaker: text`, so text
+of an unspeakered line that itself begins `Word:` reads back as a speaker.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### as_vtt(, words=False)
 
 Render timed segments as WebVTT (.vtt). Segments without times or text are skipped.
@@ -2458,6 +2487,7 @@ With `expect_text`, `ok` additionally requires the substring to appear.
 | [`readers`](_autosummary/scribed.readers.html.md#module-scribed.readers)           | Read a transcript back into a [`Transcript`](_autosummary/scribed.base.html.md#scribed.base.Transcript). |
 | [`registry`](_autosummary/scribed.registry.html.md#module-scribed.registry)         | Backend discovery, registration, and lazy loading.                                                                 |
 | [`status`](_autosummary/scribed.status.html.md#module-scribed.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                   |
+| [`textgrid`](_autosummary/scribed.textgrid.html.md#module-scribed.textgrid)         | Praat TextGrid interval tiers, in and out: the one home for the format.                                            |
 | [`tools`](_autosummary/scribed.tools.html.md#module-scribed.tools)               | Command-line tools for scribed (dispatched via `cw` in `__main__`).                                                |
 | [`translation`](_autosummary/scribed.translation.html.md#module-scribed.translation)   | Parameter translation between scribed's normalized kwargs and native engines.                                      |
 | [`util`](_autosummary/scribed.util.html.md#module-scribed.util)                 | Audio-input normalization and small shared helpers.                                                                |
@@ -2994,6 +3024,113 @@ tests; otherwise `run_tests` controls which set-up backends get tested.
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 
+# _autosummary/scribed.textgrid.html.md
+
+# scribed.textgrid
+
+Praat TextGrid interval tiers, in and out: the one home for the format.
+
+A TextGrid holds named *interval tiers*: `{name: [(start, end, label), ...]}` in
+seconds. [`read_tiers()`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.read_tiers) reads them from the long or the short text form (point
+tiers are skipped); [`write_tiers()`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.write_tiers) writes the long form, padding the gaps with
+empty intervals (Praat requires a tier to cover its whole span); [`trim_overlaps()`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.trim_overlaps)
+makes intervals that overlap (speakers talking over each other) writable. What to *do* with tiers (which
+one holds the words, speaker prefixes, phone tiers) is the caller’s business:
+[`scribed.readers`](_autosummary/scribed.readers.html.md#module-scribed.readers) turns them into a transcript, and `Transcript.as_textgrid`
+writes one.
+
+```pycon
+>>> grid = write_tiers({"take": [(0.5, 1.2, 'say "hi"')]}, xmax=2.0)
+>>> read_tiers(grid)
+{'take': [(0.0, 0.5, ''), (0.5, 1.2, 'say "hi"'), (1.2, 2.0, '')]}
+```
+
+### Module Attributes
+
+| [`Interval`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.Interval)      | `(start, end, label)`, in seconds.   |
+|----------------------------------------------------------------|--------------------------------------|
+| [`Tiers`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.Tiers)         | `{tier name: intervals}`.            |
+| [`TIME_DECIMALS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.TIME_DECIMALS) | the reader takes no exponent).       |
+
+### Functions
+
+| [`read_tiers`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.read_tiers)(text)             | `{tier name: [(start, end, label), ...]}` for every interval tier (long or short form).   |
+|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| [`write_tiers`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.write_tiers)(tiers, \*, xmax) | A long-form TextGrid of interval `tiers` spanning `0..xmax`.                              |
+| [`trim_overlaps`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.trim_overlaps)(intervals)     | `intervals` sorted, each ending no later than the next begins.                            |
+
+### scribed.textgrid.Interval
+
+`(start, end, label)`, in seconds.
+
+alias of `Tuple`[[`float`](https://docs.python.org/3/builtins/functions.html#float), [`float`](https://docs.python.org/3/builtins/functions.html#float), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
+### scribed.textgrid.TIME_DECIMALS *= 6*
+
+the reader takes no exponent).
+
+* **Type:**
+  Decimal places written for a time (fixed-point
+
+### scribed.textgrid.Tiers
+
+`{tier name: intervals}`.
+
+alias of [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[`Tuple`[[`float`](https://docs.python.org/3/builtins/functions.html#float), [`float`](https://docs.python.org/3/builtins/functions.html#float), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]]
+
+### scribed.textgrid.read_tiers(text)
+
+`{tier name: [(start, end, label), ...]}` for every interval tier (long or short form).
+
+Labels are stripped; a doubled `""` is a quote.
+
+```pycon
+>>> read_tiers(write_tiers({"a": [(0, 1, "x")]}, xmax=1))
+{'a': [(0.0, 1.0, 'x')]}
+```
+
+* **Return type:**
+  [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`float`](https://docs.python.org/3/builtins/functions.html#float), [`float`](https://docs.python.org/3/builtins/functions.html#float), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]]
+
+### scribed.textgrid.trim_overlaps(intervals)
+
+`intervals` sorted, each ending no later than the next begins.
+
+For speakers talking over each other, which a single tier cannot hold. An
+interval that is trimmed to nothing (it starts where another starts) is
+dropped (of two intervals with the same start, the later-sorting one is kept).
+
+```pycon
+>>> trim_overlaps([(1, 3, "b"), (0, 2, "a")])
+[(0, 1, 'a'), (1, 3, 'b')]
+```
+
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`float`](https://docs.python.org/3/builtins/functions.html#float), [`float`](https://docs.python.org/3/builtins/functions.html#float), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]
+
+### scribed.textgrid.write_tiers(tiers, , xmax)
+
+A long-form TextGrid of interval `tiers` spanning `0..xmax`.
+
+What [`read_tiers()`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.read_tiers) reads back, and what a forced aligner takes as a
+transcript of timed lines. Gaps between intervals are filled with empty ones;
+a `"` in a label or tier name is doubled. Times are rounded to
+[`TIME_DECIMALS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.TIME_DECIMALS) places before they are checked. Nothing is clamped: an
+interval outside `0..xmax`, empty, or overlapping another is a `ValueError`
+(use [`trim_overlaps()`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.trim_overlaps) first where overlap is expected). The reader strips
+labels, so a label’s surrounding whitespace does not survive a round trip.
+
+```pycon
+>>> write_tiers({"take": [(0.5, 1.2, "a"), (1.0, 1.5, "b")]}, xmax=2.0)
+Traceback (most recent call last):
+  ...
+ValueError: tier 'take': interval (1.0, 1.5, 'b') overlaps the one before, which ends at 1.2
+```
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+
 # _autosummary/scribed.tools.html.md
 
 # scribed.tools
@@ -3303,7 +3440,7 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-16 23:21 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/25b48948c8df56f9e8343c7039d20597f8132d8b"><code>25b4894</code></a> on branch <code>main</code>, for **scribed 0.0.17** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-16 23:30 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/1e5f1f47ce2d34ec3770f5d796eca0c603e3853b"><code>1e5f1f4</code></a> on branch <code>main</code>, for **scribed 0.0.18** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3312,7 +3449,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/25b48948c8df56f9e8343c7039d20597f8132d8b"><code>25b48948c8df56f9e8343c7039d20597f8132d8b</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/1e5f1f47ce2d34ec3770f5d796eca0c603e3853b"><code>1e5f1f47ce2d34ec3770f5d796eca0c603e3853b</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3323,9 +3460,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43978335341">43978335341</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43979659804">43979659804</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>25b48948c8df56f9e8343c7039d20597f8132d8b</code> (in the history of the built commit) |
+| Event commit | <code>1e5f1f47ce2d34ec3770f5d796eca0c603e3853b</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3350,13 +3487,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.17/">0.0.17</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.18/">0.0.18</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 25b48948c8df56f9e8343c7039d20597f8132d8b
+git checkout 1e5f1f47ce2d34ec3770f5d796eca0c603e3853b
 pip install "epythet==0.2.22"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

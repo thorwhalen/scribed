@@ -244,6 +244,20 @@ Render timed segments as SubRip (.srt). Segments without times or text are skipp
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
+#### as_textgrid(, words=True)
+
+Render as a Praat TextGrid (long form): an `utterances` tier of the lines
+(`speaker: text`) and, with `words=True`, a `words` tier when every
+timed segment carries timed words and no two lines overlap (one flat tier
+cannot hold overlapping speakers’ words). [`parse()`](#scribed.base.Transcript.parse) reads it back.
+
+Overlapping lines are trimmed so each ends where the next begins (a segment
+trimmed to nothing is dropped). A line’s text is `speaker: text`, so text
+of an unspeakered line that itself begins `Word:` reads back as a speaker.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### as_vtt(, words=False)
 
 Render timed segments as WebVTT (.vtt). Segments without times or text are skipped.

@@ -111,6 +111,7 @@ t.words  # flattened word-level units (when the engine reports them)
 t.speakers  # ['speaker_0', 'speaker_1', ...] when diarized
 t.srt  # SRT subtitles
 t.vtt  # WebVTT subtitles
+t.as_textgrid()  # Praat TextGrid (tiers in/out: scribed.textgrid)
 t.raw  # the untouched backend response
 ```
 

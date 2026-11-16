@@ -1,0 +1,22 @@
+scribed.textgrid
+================
+
+.. automodule:: scribed.textgrid
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      Interval
+      Tiers
+      TIME_DECIMALS
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      read_tiers
+      write_tiers
+      trim_overlaps
+   

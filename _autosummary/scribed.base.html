@@ -92,6 +92,7 @@
 <li class="toctree-l3"><a class="reference internal" href="scribed.readers.html">scribed.readers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.registry.html">scribed.registry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.status.html">scribed.status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scribed.textgrid.html">scribed.textgrid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.tools.html">scribed.tools</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.translation.html">scribed.translation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scribed.util.html">scribed.util</a></li>
@@ -423,6 +424,22 @@ derive variants with <a class="reference internal" href="#scribed.base.Transcrip
 </dl>
 </dd></dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="scribed.base.Transcript.as_textgrid">
+<span class="sig-name descname"><span class="pre">as_textgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/base.html#Transcript.as_textgrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.base.Transcript.as_textgrid" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.base.Transcript.as_textgrid'">¶</a></dt>
+<dd><p>Render as a Praat TextGrid (long form): an <code class="docutils literal notranslate"><span class="pre">utterances</span></code> tier of the lines
+(<code class="docutils literal notranslate"><span class="pre">speaker:</span> <span class="pre">text</span></code>) and, with <code class="docutils literal notranslate"><span class="pre">words=True</span></code>, a <code class="docutils literal notranslate"><span class="pre">words</span></code> tier when every
+timed segment carries timed words and no two lines overlap (one flat tier
+cannot hold overlapping speakers’ words). <a class="reference internal" href="#scribed.base.Transcript.parse" title="scribed.base.Transcript.parse"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse()</span></code></a> reads it back.</p>
+<p>Overlapping lines are trimmed so each ends where the next begins (a segment
+trimmed to nothing is dropped). A line’s text is <code class="docutils literal notranslate"><span class="pre">speaker:</span> <span class="pre">text</span></code>, so text
+of an unspeakered line that itself begins <code class="docutils literal notranslate"><span class="pre">Word:</span></code> reads back as a speaker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="scribed.base.Transcript.as_vtt">
 <span class="sig-name descname"><span class="pre">as_vtt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/base.html#Transcript.as_vtt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.base.Transcript.as_vtt" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.base.Transcript.as_vtt'">¶</a></dt>
 <dd><p>Render timed segments as WebVTT (.vtt). Segments without times or text are skipped.</p>
@@ -625,6 +642,7 @@ from whatever scale the backend used), if available.</p>
 </li>
 <li><a :data-current="activeSection === '#scribed.base.Transcript'" class="reference internal" href="#scribed.base.Transcript"><code class="docutils literal notranslate"><span class="pre">Transcript</span></code></a><ul>
 <li><a :data-current="activeSection === '#scribed.base.Transcript.as_srt'" class="reference internal" href="#scribed.base.Transcript.as_srt"><code class="docutils literal notranslate"><span class="pre">Transcript.as_srt()</span></code></a></li>
+<li><a :data-current="activeSection === '#scribed.base.Transcript.as_textgrid'" class="reference internal" href="#scribed.base.Transcript.as_textgrid"><code class="docutils literal notranslate"><span class="pre">Transcript.as_textgrid()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.base.Transcript.as_vtt'" class="reference internal" href="#scribed.base.Transcript.as_vtt"><code class="docutils literal notranslate"><span class="pre">Transcript.as_vtt()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.base.Transcript.at_speaker'" class="reference internal" href="#scribed.base.Transcript.at_speaker"><code class="docutils literal notranslate"><span class="pre">Transcript.at_speaker()</span></code></a></li>
 <li><a :data-current="activeSection === '#scribed.base.Transcript.duration_ms'" class="reference internal" href="#scribed.base.Transcript.duration_ms"><code class="docutils literal notranslate"><span class="pre">Transcript.duration_ms</span></code></a></li>
@@ -662,7 +680,7 @@ from whatever scale the backend used), if available.</p>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=63b572e7"></script>
+<script src="../_static/documentation_options.js?v=8bafd125"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
