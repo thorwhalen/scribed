@@ -33,25 +33,18 @@ class Adapter(BaseTranscriberAdapter):
 
     def __init__(self, config: dict):
         super().__init__(config)
-        self._configured = False
         self._transcriber = None
 
     def _get_transcriber(self, aai):
-        """A transcriber that authenticates as this adapter's key.
+        """A transcriber authenticating as this adapter's key (cached).
 
-        A key handed to the adapter (``config['api_key']``) goes to a transcriber of
-        its own (``aai.Transcriber(api_key=...)``, SDK >= 1.10), so it never touches
-        the SDK's process-wide ``aai.settings``. A key from the environment keeps
-        the SDK's global setting (any SDK version).
+        ``aai.Transcriber(api_key=...)`` (SDK >= 1.10.1) keeps the key on the
+        transcriber's own client, so it never touches the SDK's process-wide
+        ``aai.settings`` (which a host may have set for another account).
         """
-        if self.config.get("api_key"):
-            if self._transcriber is None:
-                self._transcriber = aai.Transcriber(api_key=self.credential())
-            return self._transcriber
-        if not self._configured:
-            aai.settings.api_key = self.credential()
-            self._configured = True
-        return aai.Transcriber()
+        if self._transcriber is None:
+            self._transcriber = aai.Transcriber(api_key=self.credential())
+        return self._transcriber
 
     def _transcribe(self, audio, **native_kwargs) -> Transcript:
         import assemblyai as aai

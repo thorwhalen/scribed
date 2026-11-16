@@ -100,8 +100,8 @@ def _fake_assemblyai(monkeypatch):
     made = []
 
     class Transcriber:
-        def __init__(self, **kw):
-            made.append(kw)
+        def __init__(self, api_key=None):
+            made.append({} if api_key is None else {"api_key": api_key})
 
         def transcribe(self, path, config=None):
             return types.SimpleNamespace(
@@ -133,8 +133,16 @@ def test_assemblyai_handed_key_is_scoped_not_global(monkeypatch):
     assert aai.settings.api_key is None  # the process-wide setting is untouched
 
 
-def test_assemblyai_env_key_still_uses_the_global_setting(monkeypatch):
+def test_assemblyai_env_key_is_scoped_too_and_order_does_not_matter(monkeypatch):
+    from scribed.services import ServiceHandle
+
     aai, made = _fake_assemblyai(monkeypatch)
     monkeypatch.setenv("ASSEMBLYAI_API_KEY", "from-env")
     _adapter("assemblyai").transcribe(b"RIFFfake")
-    assert aai.settings.api_key == "from-env" and made == [{}]
+    shared = ServiceHandle("assemblyai")
+    shared.with_api_key("handed").transcribe(b"RIFFfake")
+    assert made == [{"api_key": "from-env"}, {"api_key": "handed"}]
+    assert aai.settings.api_key is None
+    assert (
+        shared.adapter._transcriber is None and "api_key" not in shared.adapter.config
+    )
