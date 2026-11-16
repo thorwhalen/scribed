@@ -43,6 +43,8 @@ def _speaker_str(speaker):
 class Adapter(BaseTranscriberAdapter):
     """ElevenLabs Scribe transcription adapter (caches one client lazily)."""
 
+    accepts_api_key = True
+
     def __init__(self, config: dict):
         super().__init__(config)
         self._client = None
@@ -51,13 +53,7 @@ class Adapter(BaseTranscriberAdapter):
         if self._client is None:
             from elevenlabs.client import ElevenLabs
 
-            from scribed.credentials import resolve_credential
-
-            key = resolve_credential(
-                "elevenlabs",
-                env_var=self.config.get("api_env_var") or None,
-                required=True,
-            )
+            key = self.credential()
             self._client = ElevenLabs(api_key=key)
         return self._client
 

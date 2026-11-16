@@ -70,6 +70,8 @@ def _speaker_str(speaker):
 class Adapter(BaseTranscriberAdapter):
     """Deepgram (Nova-3) transcription adapter."""
 
+    accepts_api_key = True
+
     def __init__(self, config: dict):
         super().__init__(config)
         self._client = None
@@ -78,13 +80,7 @@ class Adapter(BaseTranscriberAdapter):
         if self._client is None:
             from deepgram import DeepgramClient
 
-            from scribed.credentials import resolve_credential
-
-            key = resolve_credential(
-                "deepgram",
-                env_var=self.config.get("api_env_var") or None,
-                required=True,
-            )
+            key = self.credential()
             self._client = DeepgramClient(key)
         return self._client
 

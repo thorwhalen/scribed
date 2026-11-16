@@ -76,6 +76,36 @@ class BaseTranscriberAdapter:
         native = self._translate(**kwargs) if self._translate else dict(kwargs)
         return self._transcribe(audio, **native)
 
+    #: ``True`` in a backend that resolves its key through :meth:`credential`, so
+    #: it can be handed one (see ``ServiceHandle.with_api_key``).
+    accepts_api_key: bool = False
+
+    def with_config(self, **overrides) -> "BaseTranscriberAdapter":
+        """A new adapter (own client, own state) whose config has ``overrides``.
+
+        The shared registry adapter and its config are never touched, so a secret
+        in ``overrides`` stays with whoever holds the returned adapter.
+        """
+        return type(self)({**self.config, **overrides})
+
+    def credential(self) -> str:
+        """This backend's API key: ``config['api_key']``, else the environment.
+
+        ``config['api_key']`` (set via :meth:`with_config` /
+        ``services.<id>.with_api_key(key)``, or by a host registering the backend
+        with a key) wins, so a host that keeps keys out of its environment can
+        still use the backend. See
+        :func:`scribed.credentials.resolve_credential` for the rest of the chain.
+        """
+        from scribed.credentials import resolve_credential
+
+        return resolve_credential(
+            self.backend_id,
+            api_key=self.config.get("api_key"),
+            env_var=self.config.get("api_env_var") or None,
+            required=True,
+        )
+
     def _transcribe(self, audio, **native_kwargs) -> Transcript:  # pragma: no cover
         raise NotImplementedError(
             f"{type(self).__name__}._transcribe is not implemented for "

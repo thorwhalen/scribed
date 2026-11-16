@@ -21,6 +21,8 @@ def _get(obj, key):
 class Adapter(BaseTranscriberAdapter):
     """OpenAI transcription adapter."""
 
+    accepts_api_key = True
+
     def __init__(self, config: dict):
         super().__init__(config)
         self._client = None
@@ -29,11 +31,7 @@ class Adapter(BaseTranscriberAdapter):
         if self._client is None:
             from openai import OpenAI
 
-            from scribed.credentials import resolve_credential
-
-            key = resolve_credential(
-                "openai", env_var=self.config.get("api_env_var") or None, required=True
-            )
+            key = self.credential()
             self._client = OpenAI(api_key=key)
         return self._client
 

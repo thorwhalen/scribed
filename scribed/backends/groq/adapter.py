@@ -24,6 +24,8 @@ def _get(obj, key):
 class Adapter(BaseTranscriberAdapter):
     """Groq hosted-Whisper transcription adapter (client cached lazily)."""
 
+    accepts_api_key = True
+
     def __init__(self, config: dict):
         super().__init__(config)
         self._client = None
@@ -32,11 +34,7 @@ class Adapter(BaseTranscriberAdapter):
         if self._client is None:
             from groq import Groq
 
-            from scribed.credentials import resolve_credential
-
-            key = resolve_credential(
-                "groq", env_var=self.config.get("api_env_var") or None, required=True
-            )
+            key = self.credential()
             self._client = Groq(api_key=key)
         return self._client
 
