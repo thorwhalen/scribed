@@ -414,8 +414,11 @@ Render timed segments as SubRip (.srt). Segments without times or text are skipp
 
 Render as a Praat TextGrid (long form): an `utterances` tier of the lines
 (`speaker: text`) and, with `words=True`, a `words` tier when every
-timed segment carries timed words and no two lines overlap (one flat tier
-cannot hold overlapping speakers’ words). [`parse()`](#scribed.Transcript.parse) reads it back.
+timed segment carries timed words. When lines overlap (speakers talking over
+each other) and every line has a speaker, the lines and words go one tier per
+speaker, `"<speaker> - utterances"` and `"<speaker> - words"` (MFA’s
+convention) instead of the flat `utterances` tier; overlapping lines with an
+unspeakered line get no word tier. [`parse()`](#scribed.Transcript.parse) reads it back.
 
 Overlapping lines are trimmed so each ends where the next begins (a segment
 trimmed to nothing is dropped). A line’s text is `speaker: text`, so text

@@ -428,8 +428,11 @@ derive variants with <a class="reference internal" href="#scribed.base.Transcrip
 <span class="sig-name descname"><span class="pre">as_textgrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/base.html#Transcript.as_textgrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.base.Transcript.as_textgrid" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.base.Transcript.as_textgrid'">¶</a></dt>
 <dd><p>Render as a Praat TextGrid (long form): an <code class="docutils literal notranslate"><span class="pre">utterances</span></code> tier of the lines
 (<code class="docutils literal notranslate"><span class="pre">speaker:</span> <span class="pre">text</span></code>) and, with <code class="docutils literal notranslate"><span class="pre">words=True</span></code>, a <code class="docutils literal notranslate"><span class="pre">words</span></code> tier when every
-timed segment carries timed words and no two lines overlap (one flat tier
-cannot hold overlapping speakers’ words). <a class="reference internal" href="#scribed.base.Transcript.parse" title="scribed.base.Transcript.parse"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse()</span></code></a> reads it back.</p>
+timed segment carries timed words. When lines overlap (speakers talking over
+each other) and every line has a speaker, the lines and words go one tier per
+speaker, <code class="docutils literal notranslate"><span class="pre">"&lt;speaker&gt;</span> <span class="pre">-</span> <span class="pre">utterances"</span></code> and <code class="docutils literal notranslate"><span class="pre">"&lt;speaker&gt;</span> <span class="pre">-</span> <span class="pre">words"</span></code> (MFA’s
+convention) instead of the flat <code class="docutils literal notranslate"><span class="pre">utterances</span></code> tier; overlapping lines with an
+unspeakered line get no word tier. <a class="reference internal" href="#scribed.base.Transcript.parse" title="scribed.base.Transcript.parse"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse()</span></code></a> reads it back.</p>
 <p>Overlapping lines are trimmed so each ends where the next begins (a segment
 trimmed to nothing is dropped). A line’s text is <code class="docutils literal notranslate"><span class="pre">speaker:</span> <span class="pre">text</span></code>, so text
 of an unspeakered line that itself begins <code class="docutils literal notranslate"><span class="pre">Word:</span></code> reads back as a speaker.</p>
@@ -680,7 +683,7 @@ from whatever scale the backend used), if available.</p>
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=2fd7553c"></script>
+<script src="../_static/documentation_options.js?v=056c92e6"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
