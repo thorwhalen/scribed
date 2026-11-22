@@ -1,4 +1,4 @@
-> built 2026-11-22 11:55 UTC from fd7387e (main) · scribed 0.0.20. Details: build_info.json
+> built 2026-11-22 19:09 UTC from 341e999 (main) · scribed 0.0.21. Details: build_info.json
 
 # index.html.md
 
@@ -1395,8 +1395,10 @@ convention) instead of the flat `utterances` tier; overlapping lines with an
 unspeakered line get no word tier. [`parse()`](_autosummary/scribed.base.html.md#scribed.base.Transcript.parse) reads it back.
 
 Overlapping lines are trimmed so each ends where the next begins (a segment
-trimmed to nothing is dropped). A line’s text is `speaker: text`, so text
-of an unspeakered line that itself begins `Word:` reads back as a speaker.
+trimmed to nothing is dropped). A line’s text is `speaker: text`, unless
+that would not read back (an unspeakered line whose text itself begins
+`Word:`, or a speaker name with a space): then the `utterances` tier holds
+the bare text and a `speakers` tier, over the same intervals, the speakers.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
@@ -2060,8 +2062,10 @@ convention) instead of the flat `utterances` tier; overlapping lines with an
 unspeakered line get no word tier. [`parse()`](_autosummary/scribed.html.md#scribed.Transcript.parse) reads it back.
 
 Overlapping lines are trimmed so each ends where the next begins (a segment
-trimmed to nothing is dropped). A line’s text is `speaker: text`, so text
-of an unspeakered line that itself begins `Word:` reads back as a speaker.
+trimmed to nothing is dropped). A line’s text is `speaker: text`, unless
+that would not read back (an unspeakered line whose text itself begins
+`Word:`, or a speaker name with a space): then the `utterances` tier holds
+the bare text and a `speakers` tier, over the same intervals, the speakers.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
@@ -3077,6 +3081,13 @@ one holds the words, speaker prefixes, phone tiers) is the caller’s business:
 [`scribed.readers`](_autosummary/scribed.readers.html.md#module-scribed.readers) turns them into a transcript, and `Transcript.as_textgrid`
 writes one.
 
+The tier *conventions* the fleet’s readers share live here too, so they cannot drift
+apart: which tier names hold lines, words and phones ([`LINE_TIERS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.LINE_TIERS),
+[`WORD_TIERS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.WORD_TIERS), [`PHONE_TIERS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.PHONE_TIERS)), MFA’s `"<speaker> - <tier>"` names
+([`speaker_and_tier()`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.speaker_and_tier)), the tier that names each line’s speaker
+([`SPEAKER_TIERS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.SPEAKER_TIERS)), and which labels are speech rather than silence or a marker
+([`is_speech()`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.is_speech)).
+
 ```pycon
 >>> grid = write_tiers({"take": [(0.5, 1.2, 'say "hi"')]}, xmax=2.0)
 >>> read_tiers(grid)
@@ -3085,23 +3096,74 @@ writes one.
 
 ### Module Attributes
 
-| [`Interval`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.Interval)      | `(start, end, label)`, in seconds.   |
-|----------------------------------------------------------------|--------------------------------------|
-| [`Tiers`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.Tiers)         | `{tier name: intervals}`.            |
-| [`TIME_DECIMALS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.TIME_DECIMALS) | the reader takes no exponent).       |
+| [`Interval`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.Interval)        | `(start, end, label)`, in seconds.                                                                                                              |
+|------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`Tiers`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.Tiers)           | `{tier name: intervals}`.                                                                                                                       |
+| [`TIME_DECIMALS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.TIME_DECIMALS)   | the reader takes no exponent).                                                                                                                  |
+| [`LINE_TIERS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.LINE_TIERS)      | Tier names whose intervals are the LINES (one segment each), by preference.                                                                     |
+| [`WORD_TIERS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.WORD_TIERS)      | Tier names whose intervals are the WORDS, by preference.                                                                                        |
+| [`PHONE_TIERS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.PHONE_TIERS)     | `MAU`).                                                                                                                                         |
+| [`SPEAKER_TIERS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.SPEAKER_TIERS)   | none).                                                                                                                                          |
+| [`KNOWN_TIERS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.KNOWN_TIERS)     | Every tier name a `"<speaker> - <tier>"` name may end with (lower case), so a tier called `"notes - draft"` is not a speaker's.                 |
+| [`SPEAKER_SEP`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.SPEAKER_SEP)     | MFA's separator between a speaker and its tier's name (`"carl - words"`).                                                                       |
+| [`SILENCE_LABELS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.SILENCE_LABELS)  | Labels that are silence or an unknown word, not speech (compared lower case): MFA's `sil`, `sp` and `spn`, Gentle's `oov`, and the empty label. |
+| [`MARKER_BRACKETS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.MARKER_BRACKETS) | A label wrapped in one of these pairs is a marker, not speech (`<unk>`, WebMAUS's `<p:>`, `[noise]`, `+breath+`).                               |
 
 ### Functions
 
-| [`read_tiers`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.read_tiers)(text)             | `{tier name: [(start, end, label), ...]}` for every interval tier (long or short form).   |
-|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| [`write_tiers`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.write_tiers)(tiers, \*, xmax) | A long-form TextGrid of interval `tiers` spanning `0..xmax`.                              |
-| [`trim_overlaps`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.trim_overlaps)(intervals)     | `intervals` sorted, each ending no later than the next begins.                            |
+| [`read_tiers`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.read_tiers)(text)             | `{tier name: [(start, end, label), ...]}` for every interval tier (long or short form).                                                                                                                                 |
+|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`write_tiers`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.write_tiers)(tiers, \*, xmax) | A long-form TextGrid of interval `tiers` spanning `0..xmax`.                                                                                                                                                            |
+| [`trim_overlaps`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.trim_overlaps)(intervals)     | `intervals` sorted, each ending no later than the next begins.                                                                                                                                                          |
+| [`is_speech`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.is_speech)(label)             | Whether an interval label is speech, not silence ([`SILENCE_LABELS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.SILENCE_LABELS), any case) or a marker (wrapped in [`MARKER_BRACKETS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.MARKER_BRACKETS)). |
+| [`speaker_and_tier`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.speaker_and_tier)(name)       | MFA's `"<speaker> - words"` -> `("<speaker>", "words")`.                                                                                                                                                                |
+| [`tier_named`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.tier_named)(tiers, names)     | The name of the tier in `tiers` called one of `names` (any case, a speaker's prefix aside), by the order of `names`; None if there is none.                                                                             |
 
 ### scribed.textgrid.Interval
 
 `(start, end, label)`, in seconds.
 
 alias of `Tuple`[[`float`](https://docs.python.org/3/builtins/functions.html#float), [`float`](https://docs.python.org/3/builtins/functions.html#float), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
+### scribed.textgrid.KNOWN_TIERS *= frozenset({'line', 'lines', 'mau', 'ortho', 'orthography', 'phone', 'phoneme', 'phonemes', 'phones', 'segments', 'sentence', 'sentences', 'utterance', 'utterances', 'word', 'words'})*
+
+Every tier name a `"<speaker> - <tier>"` name may end with (lower case), so a
+tier called `"notes - draft"` is not a speaker’s.
+
+### scribed.textgrid.LINE_TIERS *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), ...]* *= ('utterances', 'utterance', 'lines', 'line', 'sentences', 'sentence', 'segments')*
+
+Tier names whose intervals are the LINES (one segment each), by preference.
+
+### scribed.textgrid.MARKER_BRACKETS *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), [str](https://docs.python.org/3/builtins/stdtypes.html#str)], ...]* *= (('<', '>'), ('[', ']'), ('+', '+'))*
+
+A label wrapped in one of these pairs is a marker, not speech (`<unk>`,
+WebMAUS’s `<p:>`, `[noise]`, `+breath+`).
+
+### scribed.textgrid.PHONE_TIERS *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), ...]* *= ('phones', 'phone', 'phonemes', 'phoneme', 'mau')*
+
+`MAU`).
+
+* **Type:**
+  Tier names a forced aligner gives its phones (MFA
+* **Type:**
+  `phones`; WebMAUS
+
+### scribed.textgrid.SILENCE_LABELS *= frozenset({'', 'oov', 'sil', 'sp', 'spn'})*
+
+Labels that are silence or an unknown word, not speech (compared lower case):
+MFA’s `sil`, `sp` and `spn`, Gentle’s `oov`, and the empty label.
+
+### scribed.textgrid.SPEAKER_SEP *= ' - '*
+
+MFA’s separator between a speaker and its tier’s name (`"carl - words"`).
+
+### scribed.textgrid.SPEAKER_TIERS *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), ...]* *= ('speakers', 'speaker')*
+
+none).
+Written beside a lines tier when a `speaker: text` prefix would be ambiguous.
+
+* **Type:**
+  Tier names whose intervals name the speaker of the line they cover (empty
 
 ### scribed.textgrid.TIME_DECIMALS *= 6*
 
@@ -3116,6 +3178,23 @@ the reader takes no exponent).
 
 alias of [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[`Tuple`[[`float`](https://docs.python.org/3/builtins/functions.html#float), [`float`](https://docs.python.org/3/builtins/functions.html#float), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]]
 
+### scribed.textgrid.WORD_TIERS *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[str](https://docs.python.org/3/builtins/stdtypes.html#str), ...]* *= ('words', 'word', 'ortho', 'orthography')*
+
+Tier names whose intervals are the WORDS, by preference.
+
+### scribed.textgrid.is_speech(label)
+
+Whether an interval label is speech, not silence ([`SILENCE_LABELS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.SILENCE_LABELS), any
+case) or a marker (wrapped in [`MARKER_BRACKETS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.MARKER_BRACKETS)).
+
+```pycon
+>>> [is_speech(x) for x in ("hello", "SIL", "spn", "<p:>", "+breath+", "[noise]", "AH0")]
+[True, False, False, False, False, False, True]
+```
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 ### scribed.textgrid.read_tiers(text)
 
 `{tier name: [(start, end, label), ...]}` for every interval tier (long or short form).
@@ -3129,6 +3208,33 @@ Labels are stripped; a doubled `""` is a quote.
 
 * **Return type:**
   [`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`float`](https://docs.python.org/3/builtins/functions.html#float), [`float`](https://docs.python.org/3/builtins/functions.html#float), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]]
+
+### scribed.textgrid.speaker_and_tier(name)
+
+MFA’s `"<speaker> - words"` -> `("<speaker>", "words")`. Only a known tier
+name after the separator ([`KNOWN_TIERS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.KNOWN_TIERS), any case) makes a speaker; any
+other name -> `(None, name)`.
+
+```pycon
+>>> speaker_and_tier("carl - words"), speaker_and_tier("notes - draft")
+(('carl', 'words'), (None, 'notes - draft'))
+```
+
+* **Return type:**
+  [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
+### scribed.textgrid.tier_named(tiers, names)
+
+The name of the tier in `tiers` called one of `names` (any case, a
+speaker’s prefix aside), by the order of `names`; None if there is none.
+
+```pycon
+>>> tier_named({"Carl - Words": [], "notes": []}, WORD_TIERS)
+'Carl - Words'
+```
+
+* **Return type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### scribed.textgrid.trim_overlaps(intervals)
 
@@ -3478,18 +3584,16 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-22 11:55 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/fd7387ee37b4f12fae96e120c8c90b7491751160"><code>fd7387e</code></a> on branch <code>main</code>, for **scribed 0.0.20** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 19:09 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/341e999579819ad227486e8846d3edfb0cf97e74"><code>341e999</code></a> on branch <code>main</code>, for **scribed 0.0.21** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (0.0.20) is behind the latest release on PyPI (0.0.21): `pip install scribed` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/fd7387ee37b4f12fae96e120c8c90b7491751160"><code>fd7387ee37b4f12fae96e120c8c90b7491751160</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/341e999579819ad227486e8846d3edfb0cf97e74"><code>341e999579819ad227486e8846d3edfb0cf97e74</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3500,9 +3604,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/45019607465">45019607465</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/45058995217">45058995217</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>fd7387ee37b4f12fae96e120c8c90b7491751160</code> (in the history of the built commit) |
+| Event commit | <code>341e999579819ad227486e8846d3edfb0cf97e74</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3527,13 +3631,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.21/">0.0.21</a>, newer than the documented version (0.0.20).
+Latest release: <a href="https://pypi.org/project/scribed/0.0.21/">0.0.21</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout fd7387ee37b4f12fae96e120c8c90b7491751160
+git checkout 341e999579819ad227486e8846d3edfb0cf97e74
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

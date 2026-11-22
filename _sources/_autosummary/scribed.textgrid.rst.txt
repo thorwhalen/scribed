@@ -11,6 +11,14 @@ scribed.textgrid
       Interval
       Tiers
       TIME_DECIMALS
+      LINE_TIERS
+      WORD_TIERS
+      PHONE_TIERS
+      SPEAKER_TIERS
+      KNOWN_TIERS
+      SPEAKER_SEP
+      SILENCE_LABELS
+      MARKER_BRACKETS
    
    .. rubric:: Functions
 
@@ -19,4 +27,7 @@ scribed.textgrid
       read_tiers
       write_tiers
       trim_overlaps
+      is_speech
+      speaker_and_tier
+      tier_named
    

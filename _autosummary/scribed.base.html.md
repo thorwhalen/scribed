@@ -255,8 +255,10 @@ convention) instead of the flat `utterances` tier; overlapping lines with an
 unspeakered line get no word tier. [`parse()`](#scribed.base.Transcript.parse) reads it back.
 
 Overlapping lines are trimmed so each ends where the next begins (a segment
-trimmed to nothing is dropped). A line’s text is `speaker: text`, so text
-of an unspeakered line that itself begins `Word:` reads back as a speaker.
+trimmed to nothing is dropped). A line’s text is `speaker: text`, unless
+that would not read back (an unspeakered line whose text itself begins
+`Word:`, or a speaker name with a space): then the `utterances` tier holds
+the bare text and a `speakers` tier, over the same intervals, the speakers.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
