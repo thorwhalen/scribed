@@ -370,38 +370,40 @@ def _per_speaker_rows(tiers) -> List[_Row]:
     for speaker, cells in lines.items():
         pool = [(t, a, b) for a, b, t in words.get(speaker, ()) if is_speech(t)]
         for a, b, t in cells:
-            if is_speech(t):
+            if t.strip():  # a line's label is kept whatever it says ("[Music]")
                 inside = tuple(w for w in pool if w[1] >= a - 1e-6 and w[2] <= b + 1e-6)
                 out.append((t.strip(), a, b, speaker, inside or None))
     return sorted(out, key=lambda r: (r[1], r[2]))
 
 
-def _speaker_at(cells, a: float, b: float) -> Optional[str]:
-    """The label of the speaker-tier interval covering most of ``a..b``; None if empty."""
-    best, most = None, 0.0
+def _speaker_on(cells, a: float, b: float) -> Optional[str]:
+    """The label of the speaker-tier interval spanning exactly ``a..b`` (``""``: no
+    speaker), or None when no interval does (a coarser speaker tier from elsewhere,
+    which then does not override the line's own ``speaker:`` prefix)."""
     for x, y, label in cells:
-        overlap = min(b, y) - max(a, x)
-        if overlap > most:
-            best, most = label.strip() or None, overlap
-    return best
+        if abs(x - a) < 1e-6 and abs(y - b) < 1e-6:
+            return label.strip()
+    return None
 
 
 def _parse_textgrid(text: str) -> List[_Row]:
     """Words come from a tier named ``words`` (else the first interval tier that is not
     the lines or speakers tier); a tier named ``utterances``/``lines``/``sentences``
-    gives one segment per spoken interval, with the words inside it; without one, the
-    whole grid is one segment. A line's speaker is its ``speaker: text`` prefix, or,
-    when the grid has a ``speakers`` tier, that tier's label over the line (and the
-    line's text is then taken whole). Silence and markers are not words
-    (:func:`scribed.textgrid.is_speech`)."""
+    gives one segment per non-empty interval, with the words inside it; without one,
+    the whole grid is one segment. Without a flat lines tier, MFA's per-speaker tiers
+    are read. A line's speaker is the label of a ``speakers`` tier interval spanning
+    exactly the line (the line's text is then taken whole), else its ``speaker: text``
+    prefix. Silence and markers are not words (:func:`scribed.textgrid.is_speech`)."""
     tiers = read_tiers(text)
     if not tiers:
         raise ValueError("no IntervalTier found in the TextGrid")
-    spoken = _per_speaker_rows(tiers)
-    if spoken:
-        return spoken
     lowered = {name.lower(): name for name in tiers}
     line_tier = next((lowered[n] for n in LINE_TIERS if n in lowered), None)
+    # speakers' own tiers, unless the grid has a flat lines tier (then a tier such
+    # as "intro - segments" is one more tier, not the transcript)
+    spoken = _per_speaker_rows(tiers) if line_tier is None else []
+    if spoken:
+        return spoken
     speaker_tier = next((lowered[n] for n in SPEAKER_TIERS if n in lowered), None)
     # Words: a tier named like one, else the first tier that is neither the lines nor
     # the speakers tier (a grid of lines alone has no words: a line is never a word).
@@ -428,11 +430,12 @@ def _parse_textgrid(text: str) -> List[_Row]:
         ]
     out: List[_Row] = []
     for a, b, t in tiers[line_tier]:
-        if not is_speech(t):
+        if not t.strip():
             continue
         inside = tuple(w for w in words if w[1] >= a - 1e-6 and w[2] <= b + 1e-6)
-        if speaker_tier is not None:
-            speaker, body = _speaker_at(tiers[speaker_tier], a, b), t.strip()
+        named = _speaker_on(tiers[speaker_tier], a, b) if speaker_tier else None
+        if named is not None:
+            speaker, body = named or None, t.strip()
         else:
             speaker, body = _speaker_and_text(t)
         out.append((body, a, b, speaker, inside or None))

@@ -345,7 +345,7 @@ def test_silence_markers_and_unknown_words_are_not_words_in_any_case():
 
     grid = write_tiers(
         {
-            "utterances": [(0, 3, "hello there"), (3, 4, "SIL")],
+            "utterances": [(0, 3, "hello there"), (3, 4, "[music]")],
             "words": [
                 (0, 1, "hello"),
                 (1, 1.5, "spn"),
@@ -358,7 +358,7 @@ def test_silence_markers_and_unknown_words_are_not_words_in_any_case():
         xmax=4,
     )
     back = Transcript.parse(grid)
-    assert [s.text for s in back] == ["hello there"]  # a "SIL" line is no line
+    assert [s.text for s in back] == ["hello there", "[music]"]  # lines are kept
     assert [w.text for w in back.words] == ["hello", "there"]
 
 
@@ -417,3 +417,32 @@ def test_a_speakers_tier_is_never_taken_for_words():
     back = Transcript.parse(grid)
     assert [(s.speaker, s.text) for s in back] == [("carl", "a: b")]
     assert back.words == []
+
+
+def test_review_cases_flat_lines_win_and_a_coarse_speaker_tier_does_not_override():
+    from scribed.base import Segment, TimeSpan
+    from scribed.textgrid import write_tiers
+
+    grid = write_tiers(
+        {
+            "utterances": [(0, 1, "carl: hi"), (1, 2, "chapter one")],
+            "intro - segments": [(1, 2, "chapter one")],
+            "Speaker": [(0, 2, "SPK0")],
+        },
+        xmax=2,
+    )
+    back = Transcript.parse(grid)
+    assert [(s.speaker, s.text) for s in back] == [
+        ("carl", "hi"),
+        (None, "chapter one"),
+    ]
+    music = Transcript.from_segments(
+        [
+            Segment("[Music]", span=TimeSpan.from_seconds(0, 1)),
+            Segment("hello", span=TimeSpan.from_seconds(1, 2), speaker="carl"),
+        ]
+    )
+    assert [s.text for s in Transcript.parse(music.as_textgrid())] == [
+        "[Music]",
+        "hello",
+    ]
