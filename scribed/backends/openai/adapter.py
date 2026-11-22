@@ -12,6 +12,7 @@ import warnings
 from scribed.backends._verbose_json import verbose_json_to_transcript
 from scribed.base import Transcript
 from scribed.make_backend import BaseTranscriberAdapter
+from scribed.registry import has_capability
 
 
 class Adapter(BaseTranscriberAdapter):
@@ -38,7 +39,7 @@ class Adapter(BaseTranscriberAdapter):
 
         client = self._get_client()
         # whisper-1 supports verbose_json (segments, words); gpt-4o models do not.
-        verbose = not str(model).startswith("gpt-4o")
+        verbose = has_capability(self.backend_id, "word_timestamps", model)
         path, is_temp = ensure_file_path(audio, suffix=".wav")
         try:
             with open(path, "rb") as fh:
