@@ -324,7 +324,9 @@ def test_textgrid_overlapping_speakers_get_one_tier_pair_each_and_keep_their_wor
             ),
         )
 
-    t = Transcript.from_segments([seg("one two", 0, 2, "x"), seg("three four", 1, 3, "y")])
+    t = Transcript.from_segments(
+        [seg("one two", 0, 2, "x"), seg("three four", 1, 3, "y")]
+    )
     grid = t.as_textgrid()
     assert 'name = "x - utterances"' in grid and 'name = "y - words"' in grid
     back = Transcript.parse(grid)
@@ -333,3 +335,85 @@ def test_textgrid_overlapping_speakers_get_one_tier_pair_each_and_keep_their_wor
         ("y", "three four", 1.0, 3.0),
     ]
     assert [w.text for s in back for w in s.words] == ["one", "two", "three", "four"]
+
+
+# --------------------------------------------------------------- shared tier conventions (#32)
+
+
+def test_silence_markers_and_unknown_words_are_not_words_in_any_case():
+    from scribed.textgrid import write_tiers
+
+    grid = write_tiers(
+        {
+            "utterances": [(0, 3, "hello there"), (3, 4, "SIL")],
+            "words": [
+                (0, 1, "hello"),
+                (1, 1.5, "spn"),
+                (1.5, 2, "<p:>"),
+                (2, 2.5, "[noise]"),
+                (2.5, 3, "there"),
+                (3, 4, "SIL"),
+            ],
+        },
+        xmax=4,
+    )
+    back = Transcript.parse(grid)
+    assert [s.text for s in back] == ["hello there"]  # a "SIL" line is no line
+    assert [w.text for w in back.words] == ["hello", "there"]
+
+
+def test_mfa_speaker_tiers_with_other_known_names_are_read_per_speaker():
+    from scribed.textgrid import write_tiers
+
+    grid = write_tiers(
+        {
+            "carl - lines": [(0, 1, "hi")],
+            "carl - word": [(0, 1, "hi")],
+            "ana - utterances": [(1, 2, "yo")],
+            "notes - draft": [(0, 2, "not a speaker")],
+        },
+        xmax=2,
+    )
+    back = Transcript.parse(grid)
+    assert [(s.speaker, s.text) for s in back] == [("carl", "hi"), ("ana", "yo")]
+    assert [w.text for w in back.words] == ["hi"]
+
+
+def test_a_line_that_looks_like_a_speaker_prefix_round_trips_through_a_speakers_tier():
+    from scribed.base import Segment, TimeSpan
+
+    def seg(text, a, b, who=None):
+        return Segment(text, span=TimeSpan.from_seconds(a, b), speaker=who)
+
+    t = Transcript.from_segments(
+        [
+            seg("Note: this is not a speaker.", 0, 1),
+            seg("Hi.", 1, 2, "carl"),
+            seg("Hello.", 2, 3, "Dr Who"),  # a name with a space has no prefix form
+        ]
+    )
+    grid = t.as_textgrid()
+    assert 'name = "speakers"' in grid
+    assert [(s.speaker, s.text) for s in Transcript.parse(grid)] == [
+        (None, "Note: this is not a speaker."),
+        ("carl", "Hi."),
+        ("Dr Who", "Hello."),
+    ]
+    # nothing ambiguous: the prefix form, no speakers tier (the format did not change)
+    plain = Transcript.from_segments([seg("Hi.", 0, 1, "carl"), seg("Yo.", 1, 2)])
+    assert 'name = "speakers"' not in plain.as_textgrid()
+    assert [(s.speaker, s.text) for s in Transcript.parse(plain.as_textgrid())] == [
+        ("carl", "Hi."),
+        (None, "Yo."),
+    ]
+
+
+def test_a_speakers_tier_is_never_taken_for_words():
+    from scribed.textgrid import write_tiers
+
+    grid = write_tiers(
+        {"speakers": [(0, 1, "carl")], "utterances": [(0, 1, "a: b")]}, xmax=1
+    )
+    back = Transcript.parse(grid)
+    assert [(s.speaker, s.text) for s in back] == [("carl", "a: b")]
+    assert back.words == []

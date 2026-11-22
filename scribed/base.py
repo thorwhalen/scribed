@@ -382,9 +382,12 @@ class Transcript:
         unspeakered line get no word tier. :meth:`parse` reads it back.
 
         Overlapping lines are trimmed so each ends where the next begins (a segment
-        trimmed to nothing is dropped). A line's text is ``speaker: text``, so text
-        of an unspeakered line that itself begins ``Word:`` reads back as a speaker.
+        trimmed to nothing is dropped). A line's text is ``speaker: text``, unless
+        that would not read back (an unspeakered line whose text itself begins
+        ``Word:``, or a speaker name with a space): then the ``utterances`` tier holds
+        the bare text and a ``speakers`` tier, over the same intervals, the speakers.
         """
+        from scribed.readers import _speaker_and_text
         from scribed.textgrid import trim_overlaps, write_tiers
 
         cues = list(self._timed_cues())
@@ -394,6 +397,28 @@ class Transcript:
         )
         lines = trim_overlaps(raw)
         tiers = {"utterances": lines}
+        if any(
+            _speaker_and_text(f"{seg.speaker}: {text}" if seg.speaker else text)
+            != (seg.speaker, text.strip())
+            for seg, _, _, text in cues
+        ):
+            # trim by position, so the text and speaker tiers keep the same intervals
+            order = sorted(range(len(cues)), key=lambda i: cues[i][1:3])
+            kept = trim_overlaps(
+                (cues[i][1], cues[i][2], f"{k:09d}") for k, i in enumerate(order)
+            )
+            at = [cues[order[int(label)]] for _, _, label in kept]
+            lines = [(a, b, c[3]) for (a, b, _), c in zip(kept, at)]
+            tiers = {
+                "utterances": lines,
+                "speakers": [
+                    (a, b, c[0].speaker or "") for (a, b, _), c in zip(kept, at)
+                ],
+            }
+            untrimmed = len(kept) == len(cues) and all(
+                (a, b) == (c[1], c[2]) for (a, b, _), c in zip(kept, at)
+            )
+            raw = lines if untrimmed else None  # what `lines == raw` asks: no overlap
         timed = [seg for seg, *_ in cues]
         if words and timed and all(seg.words for seg in timed):
 

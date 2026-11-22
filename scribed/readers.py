@@ -27,7 +27,14 @@ from pathlib import Path
 from typing import Any, Iterable, List, Mapping, Optional, Sequence, Tuple, Union
 
 from scribed.base import Segment, TimeSpan, Transcript, Word
-from scribed.textgrid import read_tiers
+from scribed.textgrid import (
+    LINE_TIERS,
+    SPEAKER_TIERS,
+    WORD_TIERS,
+    is_speech,
+    read_tiers,
+    speaker_and_tier,
+)
 
 __all__ = ["FORMATS", "detect_format", "parse_timestamp", "read_transcript"]
 
@@ -49,8 +56,6 @@ _SUFFIX_FORMATS = {
 _MAX_PATH_LEN = 4096
 #: Leading slice of a TextGrid searched for its tier markers.
 _TEXTGRID_SNIFF_LEN = 4000
-#: TextGrid labels that mark silence/non-words, not speech.
-_TEXTGRID_NON_WORDS = ("sil", "sp", "<unk>")
 
 _TIME_RE = re.compile(
     r"^\s*(?:(?P<h>\d+):)?(?P<m>\d{1,2}):(?P<s>\d{1,2})(?:[.,](?P<ms>\d{1,3}))?\s*$"
@@ -347,54 +352,48 @@ def _parse_json(text: str) -> List[_Row]:
     return out
 
 
-#: Tier names whose intervals are the LINES (one segment each), by preference.
-_TG_LINE_TIERS = (
-    "utterances",
-    "utterance",
-    "lines",
-    "line",
-    "sentences",
-    "sentence",
-    "segments",
-)
-#: Tier names whose intervals are the WORDS, by preference.
-_TG_WORD_TIERS = ("words", "word", "ortho", "orthography")
-
-
-_SPEAKER_TIER_RE = re.compile(
-    r"^(?P<speaker>.+?)\s+-\s+(?P<kind>utterances|words)$", re.I
-)
-
-
 def _per_speaker_rows(tiers) -> List[_Row]:
-    """Rows from ``"<speaker> - utterances"`` / ``"<speaker> - words"`` tier pairs
-    (one pair per speaker, so overlapping speakers keep their own words); ``[]`` when
-    the grid has no ``- utterances`` tier."""
+    """Rows from ``"<speaker> - <lines tier>"`` / ``"<speaker> - <words tier>"`` tier
+    pairs (MFA's names, :func:`scribed.textgrid.speaker_and_tier`; one pair per
+    speaker, so overlapping speakers keep their own words); ``[]`` when the grid has
+    no speaker's lines tier."""
     lines, words = {}, {}
     for name, cells in tiers.items():
-        m = _SPEAKER_TIER_RE.match(name)
-        if m:
-            (lines if m.group("kind").lower() == "utterances" else words)[
-                m.group("speaker").strip()
-            ] = cells
+        speaker, bare = speaker_and_tier(name)
+        if speaker is None:
+            continue
+        if bare.lower() in LINE_TIERS:
+            lines.setdefault(speaker, cells)
+        elif bare.lower() in WORD_TIERS:
+            words.setdefault(speaker, cells)
     out: List[_Row] = []
     for speaker, cells in lines.items():
-        pool = [
-            (t, a, b)
-            for a, b, t in words.get(speaker, ())
-            if t and t not in _TEXTGRID_NON_WORDS
-        ]
+        pool = [(t, a, b) for a, b, t in words.get(speaker, ()) if is_speech(t)]
         for a, b, t in cells:
-            if t:
+            if is_speech(t):
                 inside = tuple(w for w in pool if w[1] >= a - 1e-6 and w[2] <= b + 1e-6)
                 out.append((t.strip(), a, b, speaker, inside or None))
     return sorted(out, key=lambda r: (r[1], r[2]))
 
 
+def _speaker_at(cells, a: float, b: float) -> Optional[str]:
+    """The label of the speaker-tier interval covering most of ``a..b``; None if empty."""
+    best, most = None, 0.0
+    for x, y, label in cells:
+        overlap = min(b, y) - max(a, x)
+        if overlap > most:
+            best, most = label.strip() or None, overlap
+    return best
+
+
 def _parse_textgrid(text: str) -> List[_Row]:
-    """Words come from a tier named ``words`` (else the first interval tier); a tier
-    named ``utterances``/``lines``/``sentences`` gives one segment per non-empty
-    interval, with the words inside it; without one, the whole grid is one segment."""
+    """Words come from a tier named ``words`` (else the first interval tier that is not
+    the lines or speakers tier); a tier named ``utterances``/``lines``/``sentences``
+    gives one segment per spoken interval, with the words inside it; without one, the
+    whole grid is one segment. A line's speaker is its ``speaker: text`` prefix, or,
+    when the grid has a ``speakers`` tier, that tier's label over the line (and the
+    line's text is then taken whole). Silence and markers are not words
+    (:func:`scribed.textgrid.is_speech`)."""
     tiers = read_tiers(text)
     if not tiers:
         raise ValueError("no IntervalTier found in the TextGrid")
@@ -402,17 +401,18 @@ def _parse_textgrid(text: str) -> List[_Row]:
     if spoken:
         return spoken
     lowered = {name.lower(): name for name in tiers}
-    line_tier = next((lowered[n] for n in _TG_LINE_TIERS if n in lowered), None)
-    # Words: a tier named like one, else the first tier that is not the line tier
-    # (a grid of lines alone has no words: a line is never read as a word).
+    line_tier = next((lowered[n] for n in LINE_TIERS if n in lowered), None)
+    speaker_tier = next((lowered[n] for n in SPEAKER_TIERS if n in lowered), None)
+    # Words: a tier named like one, else the first tier that is neither the lines nor
+    # the speakers tier (a grid of lines alone has no words: a line is never a word).
     word_tier = next(
-        (lowered[n] for n in _TG_WORD_TIERS if n in lowered),
-        next((name for name in tiers if name != line_tier), None),
+        (lowered[n] for n in WORD_TIERS if n in lowered),
+        next((n for n in tiers if n not in (line_tier, speaker_tier)), None),
     )
     words = [
         (t, a, b)
         for a, b, t in (tiers[word_tier] if word_tier is not None else ())
-        if t and t not in _TEXTGRID_NON_WORDS
+        if is_speech(t)
     ]
     if line_tier is None:
         if not words:
@@ -428,10 +428,13 @@ def _parse_textgrid(text: str) -> List[_Row]:
         ]
     out: List[_Row] = []
     for a, b, t in tiers[line_tier]:
-        if not t:
+        if not is_speech(t):
             continue
         inside = tuple(w for w in words if w[1] >= a - 1e-6 and w[2] <= b + 1e-6)
-        speaker, body = _speaker_and_text(t)
+        if speaker_tier is not None:
+            speaker, body = _speaker_at(tiers[speaker_tier], a, b), t.strip()
+        else:
+            speaker, body = _speaker_and_text(t)
         out.append((body, a, b, speaker, inside or None))
     return out
 
