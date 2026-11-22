@@ -283,7 +283,7 @@ def test_lines_without_a_words_tier_do_not_invent_words():
         assert Transcript.parse(grid).words == []
 
 
-def test_overlapping_lines_omit_the_words_tier_and_same_start_keeps_the_later_one():
+def test_overlapping_speakers_with_words_get_per_speaker_tiers_not_a_flat_words_tier():
     from scribed.base import Segment, TimeSpan, Word
 
     def seg(text, a, b, who):
@@ -295,7 +295,10 @@ def test_overlapping_lines_omit_the_words_tier_and_same_start_keeps_the_later_on
     t = Transcript.from_segments([seg("a", 0, 2, "x"), seg("b", 1, 3, "y")])
     assert 'name = "words"' not in t.as_textgrid()
     same = Transcript.from_segments([seg("a", 0, 2, "x"), seg("b", 0, 3, "y")])
-    assert [s.text for s in Transcript.parse(same.as_textgrid())] == ["b"]
+    assert [s.text for s in Transcript.parse(same.as_textgrid())] == ["a", "b"]
+    # unspeakered overlap still has no word tier (nothing to key a tier on)
+    anon = Transcript.from_segments([seg("a", 0, 2, None), seg("b", 1, 3, None)])
+    assert "words" not in anon.as_textgrid().split('name = "utterances"')[1]
 
 
 def test_write_tiers_checks_times_after_rounding():
@@ -303,3 +306,30 @@ def test_write_tiers_checks_times_after_rounding():
 
     grid = write_tiers({"t": [(0, 0.1 + 0.2, "a"), (0.3, 1, "b")]}, xmax=1)
     assert 'text = "b"' in grid
+
+
+def test_textgrid_overlapping_speakers_get_one_tier_pair_each_and_keep_their_words():
+    from scribed.base import Segment, TimeSpan, Word
+
+    def seg(text, a, b, speaker):
+        ws = text.split()
+        step = (b - a) / len(ws)
+        return Segment(
+            text,
+            span=TimeSpan.from_seconds(a, b),
+            speaker=speaker,
+            words=tuple(
+                Word(w, TimeSpan.from_seconds(a + i * step, a + (i + 1) * step))
+                for i, w in enumerate(ws)
+            ),
+        )
+
+    t = Transcript.from_segments([seg("one two", 0, 2, "x"), seg("three four", 1, 3, "y")])
+    grid = t.as_textgrid()
+    assert 'name = "x - utterances"' in grid and 'name = "y - words"' in grid
+    back = Transcript.parse(grid)
+    assert [(s.speaker, s.text, s.start, s.end) for s in back] == [
+        ("x", "one two", 0.0, 2.0),
+        ("y", "three four", 1.0, 3.0),
+    ]
+    assert [w.text for s in back for w in s.words] == ["one", "two", "three", "four"]
