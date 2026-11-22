@@ -375,8 +375,11 @@ class Transcript:
     def as_textgrid(self, *, words: bool = True) -> str:
         """Render as a Praat TextGrid (long form): an ``utterances`` tier of the lines
         (``speaker: text``) and, with ``words=True``, a ``words`` tier when every
-        timed segment carries timed words and no two lines overlap (one flat tier
-        cannot hold overlapping speakers' words). :meth:`parse` reads it back.
+        timed segment carries timed words. When lines overlap (speakers talking over
+        each other) and every line has a speaker, the lines and words go one tier per
+        speaker, ``"<speaker> - utterances"`` and ``"<speaker> - words"`` (MFA's
+        convention) instead of the flat ``utterances`` tier; overlapping lines with an
+        unspeakered line get no word tier. :meth:`parse` reads it back.
 
         Overlapping lines are trimmed so each ends where the next begins (a segment
         trimmed to nothing is dropped). A line's text is ``speaker: text``, so text
@@ -392,13 +395,26 @@ class Transcript:
         lines = trim_overlaps(raw)
         tiers = {"utterances": lines}
         timed = [seg for seg, *_ in cues]
-        if words and timed and lines == raw and all(seg.words for seg in timed):
-            tiers["words"] = trim_overlaps(
-                (w.span.start_ms / 1000.0, w.span.end_ms / 1000.0, w.text)
-                for seg in timed
-                for w in seg.words
-                if w.span is not None and w.text.strip()
-            )
+        if words and timed and all(seg.words for seg in timed):
+
+            def _word_cells(segs):
+                return trim_overlaps(
+                    (w.span.start_ms / 1000.0, w.span.end_ms / 1000.0, w.text)
+                    for seg in segs
+                    for w in seg.words
+                    if w.span is not None and w.text.strip()
+                )
+
+            if lines == raw:
+                tiers["words"] = _word_cells(timed)
+            elif all(seg.speaker for seg in timed):
+                tiers = {}
+                for speaker in dict.fromkeys(seg.speaker for seg in timed):
+                    mine = [c for c in cues if c[0].speaker == speaker]
+                    tiers[f"{speaker} - utterances"] = trim_overlaps(
+                        sorted((a, b, text) for _, a, b, text in mine)
+                    )
+                    tiers[f"{speaker} - words"] = _word_cells(s for s, *_ in mine)
         xmax = max((b for cells in tiers.values() for _, b, _ in cells), default=0.0)
         return write_tiers(tiers, xmax=max(xmax, self.duration or 0.0))
 

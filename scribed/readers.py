@@ -361,6 +361,36 @@ _TG_LINE_TIERS = (
 _TG_WORD_TIERS = ("words", "word", "ortho", "orthography")
 
 
+_SPEAKER_TIER_RE = re.compile(
+    r"^(?P<speaker>.+?)\s+-\s+(?P<kind>utterances|words)$", re.I
+)
+
+
+def _per_speaker_rows(tiers) -> List[_Row]:
+    """Rows from ``"<speaker> - utterances"`` / ``"<speaker> - words"`` tier pairs
+    (one pair per speaker, so overlapping speakers keep their own words); ``[]`` when
+    the grid has no ``- utterances`` tier."""
+    lines, words = {}, {}
+    for name, cells in tiers.items():
+        m = _SPEAKER_TIER_RE.match(name)
+        if m:
+            (lines if m.group("kind").lower() == "utterances" else words)[
+                m.group("speaker").strip()
+            ] = cells
+    out: List[_Row] = []
+    for speaker, cells in lines.items():
+        pool = [
+            (t, a, b)
+            for a, b, t in words.get(speaker, ())
+            if t and t not in _TEXTGRID_NON_WORDS
+        ]
+        for a, b, t in cells:
+            if t:
+                inside = tuple(w for w in pool if w[1] >= a - 1e-6 and w[2] <= b + 1e-6)
+                out.append((t.strip(), a, b, speaker, inside or None))
+    return sorted(out, key=lambda r: (r[1], r[2]))
+
+
 def _parse_textgrid(text: str) -> List[_Row]:
     """Words come from a tier named ``words`` (else the first interval tier); a tier
     named ``utterances``/``lines``/``sentences`` gives one segment per non-empty
@@ -368,6 +398,9 @@ def _parse_textgrid(text: str) -> List[_Row]:
     tiers = read_tiers(text)
     if not tiers:
         raise ValueError("no IntervalTier found in the TextGrid")
+    spoken = _per_speaker_rows(tiers)
+    if spoken:
+        return spoken
     lowered = {name.lower(): name for name in tiers}
     line_tier = next((lowered[n] for n in _TG_LINE_TIERS if n in lowered), None)
     # Words: a tier named like one, else the first tier that is not the line tier
