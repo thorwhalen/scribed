@@ -9,6 +9,13 @@ one holds the words, speaker prefixes, phone tiers) is the caller's business:
 :mod:`scribed.readers` turns them into a transcript, and ``Transcript.as_textgrid``
 writes one.
 
+The tier *conventions* the fleet's readers share live here too, so they cannot drift
+apart: which tier names hold lines, words and phones (:data:`LINE_TIERS`,
+:data:`WORD_TIERS`, :data:`PHONE_TIERS`), MFA's ``"<speaker> - <tier>"`` names
+(:func:`speaker_and_tier`), the tier that names each line's speaker
+(:data:`SPEAKER_TIERS`), and which labels are speech rather than silence or a marker
+(:func:`is_speech`).
+
 >>> grid = write_tiers({"take": [(0.5, 1.2, 'say "hi"')]}, xmax=2.0)
 >>> read_tiers(grid)
 {'take': [(0.0, 0.5, ''), (0.5, 1.2, 'say "hi"'), (1.2, 2.0, '')]}
@@ -17,15 +24,26 @@ writes one.
 from __future__ import annotations
 
 import re
-from typing import Dict, List, Mapping, Sequence, Tuple
+from typing import Dict, List, Mapping, Optional, Sequence, Tuple
 
 __all__ = [
     "read_tiers",
     "write_tiers",
     "trim_overlaps",
+    "is_speech",
+    "speaker_and_tier",
+    "tier_named",
     "Interval",
     "Tiers",
     "TIME_DECIMALS",
+    "LINE_TIERS",
+    "WORD_TIERS",
+    "PHONE_TIERS",
+    "SPEAKER_TIERS",
+    "KNOWN_TIERS",
+    "SPEAKER_SEP",
+    "SILENCE_LABELS",
+    "MARKER_BRACKETS",
 ]
 
 #: ``(start, end, label)``, in seconds.
@@ -35,6 +53,35 @@ Tiers = Dict[str, List[Interval]]
 
 #: Decimal places written for a time (fixed-point: the reader takes no exponent).
 TIME_DECIMALS = 6
+
+#: Tier names whose intervals are the LINES (one segment each), by preference.
+LINE_TIERS: Tuple[str, ...] = (
+    "utterances",
+    "utterance",
+    "lines",
+    "line",
+    "sentences",
+    "sentence",
+    "segments",
+)
+#: Tier names whose intervals are the WORDS, by preference.
+WORD_TIERS: Tuple[str, ...] = ("words", "word", "ortho", "orthography")
+#: Tier names a forced aligner gives its phones (MFA: ``phones``; WebMAUS: ``MAU``).
+PHONE_TIERS: Tuple[str, ...] = ("phones", "phone", "phonemes", "phoneme", "mau")
+#: Tier names whose intervals name the speaker of the line they cover (empty: none).
+#: Written beside a lines tier when a ``speaker: text`` prefix would be ambiguous.
+SPEAKER_TIERS: Tuple[str, ...] = ("speakers", "speaker")
+#: Every tier name a ``"<speaker> - <tier>"`` name may end with (lower case), so a
+#: tier called ``"notes - draft"`` is not a speaker's.
+KNOWN_TIERS = frozenset(LINE_TIERS + WORD_TIERS + PHONE_TIERS)
+#: MFA's separator between a speaker and its tier's name (``"carl - words"``).
+SPEAKER_SEP = " - "
+#: Labels that are silence or an unknown word, not speech (compared lower case):
+#: MFA's ``sil``, ``sp`` and ``spn``, Gentle's ``oov``, and the empty label.
+SILENCE_LABELS = frozenset({"sil", "sp", "spn", "oov", ""})
+#: A label wrapped in one of these pairs is a marker, not speech (``<unk>``,
+#: WebMAUS's ``<p:>``, ``[noise]``, ``+breath+``).
+MARKER_BRACKETS: Tuple[Tuple[str, str], ...] = (("<", ">"), ("[", "]"), ("+", "+"))
 
 _TIER_RE = re.compile(
     r'class\s*=\s*"IntervalTier"\s*\n\s*name\s*=\s*"(?P<name>(?:[^"]|"")*)"', re.S
@@ -176,3 +223,46 @@ def trim_overlaps(intervals: Sequence[Interval]) -> List[Interval]:
         if end > start:
             out.append((start, end, label))
     return out
+
+
+def is_speech(label: str) -> bool:
+    """Whether an interval label is speech, not silence (:data:`SILENCE_LABELS`, any
+    case) or a marker (wrapped in :data:`MARKER_BRACKETS`).
+
+    >>> [is_speech(x) for x in ("hello", "SIL", "spn", "<p:>", "+breath+", "[noise]", "AH0")]
+    [True, False, False, False, False, False, True]
+    """
+    text = label.strip()
+    if text.lower() in SILENCE_LABELS:
+        return False
+    return not any(
+        len(text) >= 2 and text.startswith(a) and text.endswith(b)
+        for a, b in MARKER_BRACKETS
+    )
+
+
+def speaker_and_tier(name: str) -> Tuple[Optional[str], str]:
+    """MFA's ``"<speaker> - words"`` -> ``("<speaker>", "words")``. Only a known tier
+    name after the separator (:data:`KNOWN_TIERS`, any case) makes a speaker; any
+    other name -> ``(None, name)``.
+
+    >>> speaker_and_tier("carl - words"), speaker_and_tier("notes - draft")
+    (('carl', 'words'), (None, 'notes - draft'))
+    """
+    speaker, sep, bare = name.rpartition(SPEAKER_SEP)
+    if sep and speaker.strip() and bare.strip().lower() in KNOWN_TIERS:
+        return speaker.strip(), bare.strip()
+    return None, name
+
+
+def tier_named(tiers: Mapping[str, object], names: Sequence[str]) -> Optional[str]:
+    """The name of the tier in ``tiers`` called one of ``names`` (any case, a
+    speaker's prefix aside), by the order of ``names``; None if there is none.
+
+    >>> tier_named({"Carl - Words": [], "notes": []}, WORD_TIERS)
+    'Carl - Words'
+    """
+    bare = {}
+    for name in tiers:
+        bare.setdefault(speaker_and_tier(name)[1].lower(), name)
+    return next((bare[n] for n in names if n in bare), None)
