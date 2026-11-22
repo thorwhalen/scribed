@@ -29,19 +29,38 @@ derive that set with `list_backends("whisper_sized_model")` rather than hardcode
 
 ### Functions
 
-| [`clear_registry`](#scribed.registry.clear_registry)()                                | Clear all registered backends (useful for tests).                         |
+| [`backend_capabilities`](#scribed.registry.backend_capabilities)(backend_id[, model])       | Capabilities of `backend_id`, narrowed to `model` when one is given.      |
 |--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| [`clear_registry`](#scribed.registry.clear_registry)()                                | Clear all registered backends (useful for tests).                         |
 | [`get_backend`](#scribed.registry.get_backend)(backend_id)                         | Config + lazily-loaded adapter for a backend (raises on missing deps).    |
 | [`get_config`](#scribed.registry.get_config)(backend_id)                          | A backend's `BACKEND_CONFIG` without loading its adapter.                 |
 | [`get_default_backend`](#scribed.registry.get_default_backend)([capability, ...])          | Pick a sensible default backend id for a capability.                      |
+| [`has_capability`](#scribed.registry.has_capability)(backend_id, capability[, model]) | Does `backend_id` (running `model`, if given) have `capability`?          |
 | [`is_local`](#scribed.registry.is_local)(backend_id)                            | Does `backend_id` run entirely on this machine (never uploads audio)?     |
-| [`list_backends`](#scribed.registry.list_backends)([capability])                     | Sorted ids of implemented backends, optionally filtered by capability.    |
+| [`list_backends`](#scribed.registry.list_backends)([capability, model])              | Sorted ids of implemented backends, optionally filtered by capability.    |
 | [`register_backend`](#scribed.registry.register_backend)(backend_id, config[, adapter]) | Register a backend at runtime (for third-party plugins).                  |
 | [`sdk_problem`](#scribed.registry.sdk_problem)(backend_id)                         | Why the installed SDK does not suit `backend_id`, or `None` when it does. |
 
 ### scribed.registry.PRIMARY_CAPABILITY *= 'transcribe'*
 
 The capability every general ASR backend provides.
+
+### scribed.registry.backend_capabilities(backend_id, model=None)
+
+Capabilities of `backend_id`, narrowed to `model` when one is given.
+
+A config may declare per-model overrides, keys being model names or
+`fnmatch` globs:
+
+```default
+"capabilities_by_model": {"gpt-4o*": {"remove": ["word_timestamps"]}}
+```
+
+`"add"` works the same way. Without `model` (or without a matching key)
+this is the backend-wide `capabilities` list.
+
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### scribed.registry.clear_registry()
 
@@ -81,6 +100,13 @@ remote services be chosen too, after every local candidate.
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
+### scribed.registry.has_capability(backend_id, capability, model=None)
+
+Does `backend_id` (running `model`, if given) have `capability`?
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 ### scribed.registry.is_local(backend_id)
 
 Does `backend_id` run entirely on this machine (never uploads audio)?
@@ -91,12 +117,15 @@ flagged `is_remote` counts as *not* local: the safe reading.
 * **Return type:**
   [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
-### scribed.registry.list_backends(capability=None)
+### scribed.registry.list_backends(capability=None, , model=None)
 
 Sorted ids of implemented backends, optionally filtered by capability.
 
 A backend matches `capability` if it appears in the backend’s
 `capabilities` list (the primary `"transcribe"` is implied for all).
+With `model`, per-model overrides (`capabilities_by_model`) apply, so
+`list_backends("word_timestamps", model="gpt-4o-transcribe")` omits
+`openai`.
 
 * **Return type:**
   [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]

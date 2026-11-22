@@ -60,7 +60,7 @@ scribed.services.deepgram.adapter                      # raw engine adapter
 | [`transcribe`](#scribed.transcribe)(audio, \*[, backend])                   | Transcribe audio with any backend, returning a normalized result.                                               |
 | [`transcribe_text`](#scribed.transcribe_text)(audio, \*[, backend])              | Like [`transcribe()`](#scribed.transcribe) but returns just the transcript text string. |
 | [`find`](#scribed.find)(\*\*criteria)                                 | Filter the ledger; shorthand for `scribed.catalog.Catalog.filter()`.                                            |
-| [`list_backends`](#scribed.list_backends)([capability])                        | Sorted ids of implemented backends, optionally filtered by capability.                                          |
+| [`list_backends`](#scribed.list_backends)([capability, model])                 | Sorted ids of implemented backends, optionally filtered by capability.                                          |
 | [`register_backend`](#scribed.register_backend)(backend_id, config[, adapter])    | Register a backend at runtime (for third-party plugins).                                                        |
 | [`get_default_backend`](#scribed.get_default_backend)([capability, ...])             | Pick a sensible default backend id for a capability.                                                            |
 | [`get_config`](#scribed.get_config)(backend_id)                             | A backend's `BACKEND_CONFIG` without loading its adapter.                                                       |
@@ -681,12 +681,15 @@ backend isn’t set up or the run fails.
 * **Return type:**
   [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
-### scribed.list_backends(capability=None)
+### scribed.list_backends(capability=None, , model=None)
 
 Sorted ids of implemented backends, optionally filtered by capability.
 
 A backend matches `capability` if it appears in the backend’s
 `capabilities` list (the primary `"transcribe"` is implied for all).
+With `model`, per-model overrides (`capabilities_by_model`) apply, so
+`list_backends("word_timestamps", model="gpt-4o-transcribe")` omits
+`openai`.
 
 * **Return type:**
   [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]

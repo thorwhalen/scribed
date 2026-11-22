@@ -195,7 +195,7 @@ other one in minutes:</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#scribed.find" title="scribed.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(**criteria)</p></td>
 <td><p>Filter the ledger; shorthand for <code class="xref py py-meth docutils literal notranslate"><span class="pre">scribed.catalog.Catalog.filter()</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.list_backends" title="scribed.list_backends"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_backends</span></code></a>([capability])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#scribed.list_backends" title="scribed.list_backends"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_backends</span></code></a>([capability, model])</p></td>
 <td><p>Sorted ids of implemented backends, optionally filtered by capability.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#scribed.register_backend" title="scribed.register_backend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_backend</span></code></a>(backend_id, config[, adapter])</p></td>
@@ -1009,10 +1009,13 @@ backend isn’t set up or the run fails.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="scribed.list_backends">
-<span class="sig-prename descclassname"><span class="pre">scribed.</span></span><span class="sig-name descname"><span class="pre">list_backends</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/registry.html#list_backends"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.list_backends" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.list_backends'">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">scribed.</span></span><span class="sig-name descname"><span class="pre">list_backends</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scribed/registry.html#list_backends"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a @click.prevent="window.navigator.clipboard.writeText($el.href); $el.setAttribute('data-tooltip', 'Copied!'); setTimeout(() =&gt; $el.setAttribute('data-tooltip', 'Copy link to this element'), 2000)" aria-label="Copy link to this element" class="headerlink" data-tooltip="Copy link to this element" href="#scribed.list_backends" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#scribed.list_backends'">¶</a></dt>
 <dd><p>Sorted ids of implemented backends, optionally filtered by capability.</p>
 <p>A backend matches <code class="docutils literal notranslate"><span class="pre">capability</span></code> if it appears in the backend’s
-<code class="docutils literal notranslate"><span class="pre">capabilities</span></code> list (the primary <code class="docutils literal notranslate"><span class="pre">"transcribe"</span></code> is implied for all).</p>
+<code class="docutils literal notranslate"><span class="pre">capabilities</span></code> list (the primary <code class="docutils literal notranslate"><span class="pre">"transcribe"</span></code> is implied for all).
+With <code class="docutils literal notranslate"><span class="pre">model</span></code>, per-model overrides (<code class="docutils literal notranslate"><span class="pre">capabilities_by_model</span></code>) apply, so
+<code class="docutils literal notranslate"><span class="pre">list_backends("word_timestamps",</span> <span class="pre">model="gpt-4o-transcribe")</span></code> omits
+<code class="docutils literal notranslate"><span class="pre">openai</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" rel="nofollow noopener" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code><svg fill="currentColor" height="1em" stroke="none" viewbox="0 96 960 960" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M188 868q-11-11-11-28t11-28l436-436H400q-17 0-28.5-11.5T360 336q0-17 11.5-28.5T400 296h320q17 0 28.5 11.5T760 336v320q0 17-11.5 28.5T720 696q-17 0-28.5-11.5T680 656V432L244 868q-11 11-28 11t-28-11Z"></path></svg></a>]</span></p>
@@ -1355,7 +1358,7 @@ With <code class="docutils literal notranslate"><span class="pre">expect_text</s
 </div>
 </footer>
 </div>
-<script src="../_static/documentation_options.js?v=8bafd125"></script>
+<script src="../_static/documentation_options.js?v=2fd7553c"></script>
 <script src="../_static/doctools.js?v=fd6eb6e6"></script>
 <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
 <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

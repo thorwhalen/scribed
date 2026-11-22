@@ -1,4 +1,4 @@
-> built 2026-11-16 23:30 UTC from 1e5f1f4 (main) · scribed 0.0.18. Details: build_info.json
+> built 2026-11-22 11:53 UTC from 97de4d7 (main) · scribed 0.0.19. Details: build_info.json
 
 # index.html.md
 
@@ -1696,7 +1696,7 @@ scribed.services.deepgram.adapter                      # raw engine adapter
 | [`transcribe`](_autosummary/scribed.html.md#scribed.transcribe)(audio, \*[, backend])                   | Transcribe audio with any backend, returning a normalized result.                                               |
 | [`transcribe_text`](_autosummary/scribed.html.md#scribed.transcribe_text)(audio, \*[, backend])              | Like [`transcribe()`](_autosummary/scribed.html.md#scribed.transcribe) but returns just the transcript text string. |
 | [`find`](_autosummary/scribed.html.md#scribed.find)(\*\*criteria)                                 | Filter the ledger; shorthand for `scribed.catalog.Catalog.filter()`.                                            |
-| [`list_backends`](_autosummary/scribed.html.md#scribed.list_backends)([capability])                        | Sorted ids of implemented backends, optionally filtered by capability.                                          |
+| [`list_backends`](_autosummary/scribed.html.md#scribed.list_backends)([capability, model])                 | Sorted ids of implemented backends, optionally filtered by capability.                                          |
 | [`register_backend`](_autosummary/scribed.html.md#scribed.register_backend)(backend_id, config[, adapter])    | Register a backend at runtime (for third-party plugins).                                                        |
 | [`get_default_backend`](_autosummary/scribed.html.md#scribed.get_default_backend)([capability, ...])             | Pick a sensible default backend id for a capability.                                                            |
 | [`get_config`](_autosummary/scribed.html.md#scribed.get_config)(backend_id)                             | A backend's `BACKEND_CONFIG` without loading its adapter.                                                       |
@@ -2317,12 +2317,15 @@ backend isn’t set up or the run fails.
 * **Return type:**
   [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
-### scribed.list_backends(capability=None)
+### scribed.list_backends(capability=None, , model=None)
 
 Sorted ids of implemented backends, optionally filtered by capability.
 
 A backend matches `capability` if it appears in the backend’s
 `capabilities` list (the primary `"transcribe"` is implied for all).
+With `model`, per-model overrides (`capabilities_by_model`) apply, so
+`list_backends("word_timestamps", model="gpt-4o-transcribe")` omits
+`openai`.
 
 * **Return type:**
   [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
@@ -2816,19 +2819,38 @@ derive that set with `list_backends("whisper_sized_model")` rather than hardcode
 
 ### Functions
 
-| [`clear_registry`](_autosummary/scribed.registry.html.md#scribed.registry.clear_registry)()                                | Clear all registered backends (useful for tests).                         |
+| [`backend_capabilities`](_autosummary/scribed.registry.html.md#scribed.registry.backend_capabilities)(backend_id[, model])       | Capabilities of `backend_id`, narrowed to `model` when one is given.      |
 |--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| [`clear_registry`](_autosummary/scribed.registry.html.md#scribed.registry.clear_registry)()                                | Clear all registered backends (useful for tests).                         |
 | [`get_backend`](_autosummary/scribed.registry.html.md#scribed.registry.get_backend)(backend_id)                         | Config + lazily-loaded adapter for a backend (raises on missing deps).    |
 | [`get_config`](_autosummary/scribed.registry.html.md#scribed.registry.get_config)(backend_id)                          | A backend's `BACKEND_CONFIG` without loading its adapter.                 |
 | [`get_default_backend`](_autosummary/scribed.registry.html.md#scribed.registry.get_default_backend)([capability, ...])          | Pick a sensible default backend id for a capability.                      |
+| [`has_capability`](_autosummary/scribed.registry.html.md#scribed.registry.has_capability)(backend_id, capability[, model]) | Does `backend_id` (running `model`, if given) have `capability`?          |
 | [`is_local`](_autosummary/scribed.registry.html.md#scribed.registry.is_local)(backend_id)                            | Does `backend_id` run entirely on this machine (never uploads audio)?     |
-| [`list_backends`](_autosummary/scribed.registry.html.md#scribed.registry.list_backends)([capability])                     | Sorted ids of implemented backends, optionally filtered by capability.    |
+| [`list_backends`](_autosummary/scribed.registry.html.md#scribed.registry.list_backends)([capability, model])              | Sorted ids of implemented backends, optionally filtered by capability.    |
 | [`register_backend`](_autosummary/scribed.registry.html.md#scribed.registry.register_backend)(backend_id, config[, adapter]) | Register a backend at runtime (for third-party plugins).                  |
 | [`sdk_problem`](_autosummary/scribed.registry.html.md#scribed.registry.sdk_problem)(backend_id)                         | Why the installed SDK does not suit `backend_id`, or `None` when it does. |
 
 ### scribed.registry.PRIMARY_CAPABILITY *= 'transcribe'*
 
 The capability every general ASR backend provides.
+
+### scribed.registry.backend_capabilities(backend_id, model=None)
+
+Capabilities of `backend_id`, narrowed to `model` when one is given.
+
+A config may declare per-model overrides, keys being model names or
+`fnmatch` globs:
+
+```default
+"capabilities_by_model": {"gpt-4o*": {"remove": ["word_timestamps"]}}
+```
+
+`"add"` works the same way. Without `model` (or without a matching key)
+this is the backend-wide `capabilities` list.
+
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### scribed.registry.clear_registry()
 
@@ -2868,6 +2890,13 @@ remote services be chosen too, after every local candidate.
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
+### scribed.registry.has_capability(backend_id, capability, model=None)
+
+Does `backend_id` (running `model`, if given) have `capability`?
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 ### scribed.registry.is_local(backend_id)
 
 Does `backend_id` run entirely on this machine (never uploads audio)?
@@ -2878,12 +2907,15 @@ flagged `is_remote` counts as *not* local: the safe reading.
 * **Return type:**
   [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
-### scribed.registry.list_backends(capability=None)
+### scribed.registry.list_backends(capability=None, , model=None)
 
 Sorted ids of implemented backends, optionally filtered by capability.
 
 A backend matches `capability` if it appears in the backend’s
 `capabilities` list (the primary `"transcribe"` is implied for all).
+With `model`, per-model overrides (`capabilities_by_model`) apply, so
+`list_backends("word_timestamps", model="gpt-4o-transcribe")` omits
+`openai`.
 
 * **Return type:**
   [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
@@ -3440,16 +3472,18 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-16 23:30 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/1e5f1f47ce2d34ec3770f5d796eca0c603e3853b"><code>1e5f1f4</code></a> on branch <code>main</code>, for **scribed 0.0.18** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 11:53 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/97de4d7dc1b271cc1f52da3f833923a29277b158"><code>97de4d7</code></a> on branch <code>main</code>, for **scribed 0.0.19** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.0.19) is behind the latest release on PyPI (0.0.20): `pip install scribed` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/1e5f1f47ce2d34ec3770f5d796eca0c603e3853b"><code>1e5f1f47ce2d34ec3770f5d796eca0c603e3853b</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/97de4d7dc1b271cc1f52da3f833923a29277b158"><code>97de4d7dc1b271cc1f52da3f833923a29277b158</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3460,15 +3494,15 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/43979659804">43979659804</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/45019389088">45019389088</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>1e5f1f47ce2d34ec3770f5d796eca0c603e3853b</code> (in the history of the built commit) |
+| Event commit | <code>97de4d7dc1b271cc1f52da3f833923a29277b158</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.22  |
+| epythet  | 0.2.23  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.16 |
@@ -3487,14 +3521,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.18/">0.0.18</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.20/">0.0.20</a>, newer than the documented version (0.0.19).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 1e5f1f47ce2d34ec3770f5d796eca0c603e3853b
-pip install "epythet==0.2.22"
+git checkout 97de4d7dc1b271cc1f52da3f833923a29277b158
+pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

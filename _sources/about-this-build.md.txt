@@ -5,17 +5,19 @@ orphan: true
 
 # About this build
 
-This documentation was built on **2026-11-16 23:30 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/1e5f1f47ce2d34ec3770f5d796eca0c603e3853b"><code>1e5f1f4</code></a> on branch <code>main</code>, for **scribed 0.0.18** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 11:53 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/97de4d7dc1b271cc1f52da3f833923a29277b158"><code>97de4d7</code></a> on branch <code>main</code>, for **scribed 0.0.19** (from <code>pyproject.toml</code>).
 
-:::{note}
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+:::{warning}
+The documentation and the package may be misaligned:
+
+- The documented version (0.0.19) is behind the latest release on PyPI (0.0.20): `pip install scribed` gives newer code than these docs describe.
 :::
 
 ## Source
 
 | | |
 |---|---|
-| Commit | <a href="https://github.com/thorwhalen/scribed/commit/1e5f1f47ce2d34ec3770f5d796eca0c603e3853b"><code>1e5f1f47ce2d34ec3770f5d796eca0c603e3853b</code></a> |
+| Commit | <a href="https://github.com/thorwhalen/scribed/commit/97de4d7dc1b271cc1f52da3f833923a29277b158"><code>97de4d7dc1b271cc1f52da3f833923a29277b158</code></a> |
 | Branch | <code>main</code> |
 | Tags at this commit | none |
 | Working tree | clean |
@@ -26,15 +28,15 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 | | |
 |---|---|
 | Repository | <code>thorwhalen/scribed</code> |
-| Run | <a href="https://github.com/thorwhalen/scribed/actions/runs/43979659804">43979659804</a> |
+| Run | <a href="https://github.com/thorwhalen/scribed/actions/runs/45019389088">45019389088</a> |
 | Ref | <code>refs/heads/main</code> |
-| Event commit | <code>1e5f1f47ce2d34ec3770f5d796eca0c603e3853b</code> (in the history of the built commit) |
+| Event commit | <code>97de4d7dc1b271cc1f52da3f833923a29277b158</code> (in the history of the built commit) |
 
 ## Tools
 
 | | |
 |---|---|
-| epythet | 0.2.22 |
+| epythet | 0.2.23 |
 | Sphinx | 9.1.1 |
 | docutils | 0.22.4 |
 | Python | 3.12.16 |
@@ -53,14 +55,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.18/">0.0.18</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.20/">0.0.20</a>, newer than the documented version (0.0.19).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 1e5f1f47ce2d34ec3770f5d796eca0c603e3853b
-pip install "epythet==0.2.22"
+git checkout 97de4d7dc1b271cc1f52da3f833923a29277b158
+pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 
