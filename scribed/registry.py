@@ -224,9 +224,7 @@ def list_backends(
     _discover_backends()
     if capability is None:
         return sorted(_registry)
-    return sorted(
-        bid for bid in _registry if has_capability(bid, capability, model)
-    )
+    return sorted(bid for bid in _registry if has_capability(bid, capability, model))
 
 
 def get_config(backend_id: str) -> dict:
