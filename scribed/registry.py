@@ -23,6 +23,7 @@ derive that set with ``list_backends("whisper_sized_model")`` rather than hardco
 
 from __future__ import annotations
 
+import fnmatch
 import functools
 import importlib
 import pkgutil
@@ -178,20 +179,53 @@ def register_backend(backend_id: str, config: dict, adapter: Any = None) -> None
     }
 
 
-def list_backends(capability: Optional[str] = None) -> List[str]:
+def backend_capabilities(backend_id: str, model: Optional[str] = None) -> List[str]:
+    """Capabilities of ``backend_id``, narrowed to ``model`` when one is given.
+
+    A config may declare per-model overrides, keys being model names or
+    ``fnmatch`` globs::
+
+        "capabilities_by_model": {"gpt-4o*": {"remove": ["word_timestamps"]}}
+
+    ``"add"`` works the same way. Without ``model`` (or without a matching key)
+    this is the backend-wide ``capabilities`` list.
+    """
+    cfg = get_config(backend_id)
+    caps = list(cfg.get("capabilities", []))
+    if model is None:
+        return caps
+    for pattern, change in cfg.get("capabilities_by_model", {}).items():
+        if fnmatch.fnmatchcase(str(model), pattern):
+            caps = [c for c in caps if c not in change.get("remove", ())]
+            caps += [c for c in change.get("add", ()) if c not in caps]
+    return caps
+
+
+def has_capability(
+    backend_id: str, capability: str, model: Optional[str] = None
+) -> bool:
+    """Does ``backend_id`` (running ``model``, if given) have ``capability``?"""
+    return capability == PRIMARY_CAPABILITY or capability in backend_capabilities(
+        backend_id, model
+    )
+
+
+def list_backends(
+    capability: Optional[str] = None, *, model: Optional[str] = None
+) -> List[str]:
     """Sorted ids of implemented backends, optionally filtered by capability.
 
     A backend matches ``capability`` if it appears in the backend's
     ``capabilities`` list (the primary ``"transcribe"`` is implied for all).
+    With ``model``, per-model overrides (``capabilities_by_model``) apply, so
+    ``list_backends("word_timestamps", model="gpt-4o-transcribe")`` omits
+    ``openai``.
     """
     _discover_backends()
     if capability is None:
         return sorted(_registry)
     return sorted(
-        bid
-        for bid, entry in _registry.items()
-        if capability == PRIMARY_CAPABILITY
-        or capability in entry["config"].get("capabilities", [])
+        bid for bid in _registry if has_capability(bid, capability, model)
     )
 
 

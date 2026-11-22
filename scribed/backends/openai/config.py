@@ -17,6 +17,8 @@ BACKEND_CONFIG = {
     "is_local": False,
     "is_remote": True,
     "capabilities": ["word_timestamps", "translate"],
+    # gpt-4o models return text/json only: no word times or segments (whisper-1 does).
+    "capabilities_by_model": {"gpt-4o*": {"remove": ["word_timestamps"]}},
     "default_for": [],
     "api_env_var": "OPENAI_API_KEY",
     "description": "OpenAI hosted transcription (whisper-1 / gpt-4o-transcribe).",
