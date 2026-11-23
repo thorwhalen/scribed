@@ -82,6 +82,7 @@ SILENCE_LABELS = frozenset({"sil", "sp", "spn", "oov", ""})
 #: A label wrapped in one of these pairs is a marker, not speech (``<unk>``,
 #: WebMAUS's ``<p:>``, ``[noise]``, ``+breath+``).
 MARKER_BRACKETS: Tuple[Tuple[str, str], ...] = (("<", ">"), ("[", "]"), ("+", "+"))
+_BRACKET_CHARS = frozenset("".join(a + b for a, b in MARKER_BRACKETS))
 
 _TIER_RE = re.compile(
     r'class\s*=\s*"IntervalTier"\s*\n\s*name\s*=\s*"(?P<name>(?:[^"]|"")*)"', re.S
@@ -92,8 +93,9 @@ _INTERVAL_RE = re.compile(
 _SHORT_TIER_RE = re.compile(
     r'"(?P<kind>IntervalTier|TextTier)"\s*\n\s*"(?P<name>(?:[^"]|"")*)"\s*\n'
 )
+_SHORT_NUM = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?"
 _SHORT_INTERVAL_RE = re.compile(
-    r'(?P<a>\d+(?:\.\d+)?)\s*\n\s*(?P<b>\d+(?:\.\d+)?)\s*\n\s*"(?P<t>(?:[^"]|"")*)"'
+    rf'(?P<a>{_SHORT_NUM})\s*\n\s*(?P<b>{_SHORT_NUM})\s*\n\s*"(?P<t>(?:[^"]|"")*)"'
 )
 
 
@@ -229,11 +231,15 @@ def is_speech(label: str) -> bool:
     """Whether an interval label is speech, not silence (:data:`SILENCE_LABELS`, any
     case) or a marker (wrapped in :data:`MARKER_BRACKETS`).
 
-    >>> [is_speech(x) for x in ("hello", "SIL", "spn", "<p:>", "+breath+", "[noise]", "AH0")]
-    [True, False, False, False, False, False, True]
+    A label made only of bracket characters (a lone ``+``, ``<>``) is a marker too.
+
+    >>> [is_speech(x) for x in ("hello", "SIL", "spn", "<p:>", "+breath+", "[noise]", "AH0", "+")]
+    [True, False, False, False, False, False, True, False]
     """
     text = label.strip()
     if text.lower() in SILENCE_LABELS:
+        return False
+    if set(text) <= _BRACKET_CHARS:
         return False
     return not any(
         len(text) >= 2 and text.startswith(a) and text.endswith(b)
@@ -261,8 +267,10 @@ def tier_named(tiers: Mapping[str, object], names: Sequence[str]) -> Optional[st
 
     >>> tier_named({"Carl - Words": [], "notes": []}, WORD_TIERS)
     'Carl - Words'
+    >>> tier_named({" phones": [], "words ": []}, WORD_TIERS)  # surrounding spaces aside
+    'words '
     """
     bare = {}
     for name in tiers:
-        bare.setdefault(speaker_and_tier(name)[1].lower(), name)
+        bare.setdefault(speaker_and_tier(name)[1].strip().lower(), name)
     return next((bare[n] for n in names if n in bare), None)

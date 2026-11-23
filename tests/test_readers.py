@@ -446,3 +446,27 @@ def test_review_cases_flat_lines_win_and_a_coarse_speaker_tier_does_not_override
         "[Music]",
         "hello",
     ]
+
+
+def test_textgrid_conventions_review_regressions():
+    """reeleehq/an's review of the scribed.textgrid swap (thorwhalen/scribed#14)."""
+    from scribed.textgrid import (
+        is_speech,
+        read_tiers,
+        tier_named,
+        WORD_TIERS,
+        PHONE_TIERS,
+    )
+
+    # An unprefixed tier name with surrounding spaces is still found (an#491's guard).
+    tiers = {" phones": [], "words ": []}
+    assert tier_named(tiers, WORD_TIERS) == "words "
+    assert tier_named(tiers, PHONE_TIERS) == " phones"
+    # A lone bracket character is a marker, not speech.
+    assert not is_speech("+") and not is_speech("<>") and is_speech("a+")
+    # The short form reads times with an exponent, as the long form does.
+    short = (
+        'File type = "ooTextFile"\nObject class = "TextGrid"\n\n0\n2\n<exists>\n1\n'
+        '"IntervalTier"\n"words"\n0\n2\n2\n0\n1.5e-05\n""\n1.5e-05\n2\n"hi"\n'
+    )
+    assert read_tiers(short) == {"words": [(0.0, 1.5e-05, ""), (1.5e-05, 2.0, "hi")]}
