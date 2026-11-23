@@ -104,6 +104,33 @@ New fields added to the JSON are available at once (`info.price_note`,
 `info["price_note"]`) with no code change; a few common fields get typed
 properties.
 
+#### *property* id *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The backend id (`""` if absent).
+
+#### *property* implemented *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether a working facade exists for this backend.
+
+#### *property* is_local *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine runs locally.
+
+#### *property* is_remote *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine is a remote service.
+
+#### *property* name *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The display name, falling back to the id.
+
+#### to_dict()
+
+A plain-dict copy of the record.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### *class* scribed.BaseTranscriberAdapter(config)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)

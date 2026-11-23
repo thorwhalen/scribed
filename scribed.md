@@ -1,4 +1,4 @@
-> built 2026-11-22 19:09 UTC from 341e999 (main) · scribed 0.0.21. Details: build_info.json
+> built 2026-11-23 03:40 UTC from f28db49 (main) · scribed 0.0.22. Details: build_info.json
 
 # index.html.md
 
@@ -1745,6 +1745,33 @@ New fields added to the JSON are available at once (`info.price_note`,
 `info["price_note"]`) with no code change; a few common fields get typed
 properties.
 
+#### *property* id *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The backend id (`""` if absent).
+
+#### *property* implemented *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether a working facade exists for this backend.
+
+#### *property* is_local *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine runs locally.
+
+#### *property* is_remote *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine is a remote service.
+
+#### *property* name *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The display name, falling back to the id.
+
+#### to_dict()
+
+A plain-dict copy of the record.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### *class* scribed.BaseTranscriberAdapter(config)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
@@ -3187,9 +3214,11 @@ Tier names whose intervals are the WORDS, by preference.
 Whether an interval label is speech, not silence ([`SILENCE_LABELS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.SILENCE_LABELS), any
 case) or a marker (wrapped in [`MARKER_BRACKETS`](_autosummary/scribed.textgrid.html.md#scribed.textgrid.MARKER_BRACKETS)).
 
+A label made only of bracket characters (a lone `+`, `<>`) is a marker too.
+
 ```pycon
->>> [is_speech(x) for x in ("hello", "SIL", "spn", "<p:>", "+breath+", "[noise]", "AH0")]
-[True, False, False, False, False, False, True]
+>>> [is_speech(x) for x in ("hello", "SIL", "spn", "<p:>", "+breath+", "[noise]", "AH0", "+")]
+[True, False, False, False, False, False, True, False]
 ```
 
 * **Return type:**
@@ -3231,6 +3260,8 @@ speaker’s prefix aside), by the order of `names`; None if there is none.
 ```pycon
 >>> tier_named({"Carl - Words": [], "notes": []}, WORD_TIERS)
 'Carl - Words'
+>>> tier_named({" phones": [], "words ": []}, WORD_TIERS)  # surrounding spaces aside
+'words '
 ```
 
 * **Return type:**
@@ -3584,7 +3615,7 @@ the returned sample rate is whatever the source had (numpy inputs excepted).
 
 # About this build
 
-This documentation was built on **2026-11-22 19:09 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/341e999579819ad227486e8846d3edfb0cf97e74"><code>341e999</code></a> on branch <code>main</code>, for **scribed 0.0.21** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-23 03:40 UTC** from commit <a href="https://github.com/thorwhalen/scribed/commit/f28db498eb486ec8328f924a42fa004d297184ce"><code>f28db49</code></a> on branch <code>main</code>, for **scribed 0.0.22** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3593,7 +3624,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                           |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/341e999579819ad227486e8846d3edfb0cf97e74"><code>341e999579819ad227486e8846d3edfb0cf97e74</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/scribed/commit/f28db498eb486ec8328f924a42fa004d297184ce"><code>f28db498eb486ec8328f924a42fa004d297184ce</code></a> |
 | Branch              | <code>main</code>                                                                                                                                         |
 | Tags at this commit | none                                                                                                                                                      |
 | Working tree        | clean                                                                                                                                                     |
@@ -3604,9 +3635,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/scribed</code>                                                            |
-| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/45058995217">45058995217</a>   |
+| Run          | <a href="https://github.com/thorwhalen/scribed/actions/runs/45107187420">45107187420</a>   |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>341e999579819ad227486e8846d3edfb0cf97e74</code> (in the history of the built commit) |
+| Event commit | <code>f28db498eb486ec8328f924a42fa004d297184ce</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3631,13 +3662,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/scribed/0.0.21/">0.0.21</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/scribed/0.0.22/">0.0.22</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/scribed && cd scribed
-git checkout 341e999579819ad227486e8846d3edfb0cf97e74
+git checkout f28db498eb486ec8328f924a42fa004d297184ce
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

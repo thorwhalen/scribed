@@ -117,9 +117,11 @@ Tier names whose intervals are the WORDS, by preference.
 Whether an interval label is speech, not silence ([`SILENCE_LABELS`](#scribed.textgrid.SILENCE_LABELS), any
 case) or a marker (wrapped in [`MARKER_BRACKETS`](#scribed.textgrid.MARKER_BRACKETS)).
 
+A label made only of bracket characters (a lone `+`, `<>`) is a marker too.
+
 ```pycon
->>> [is_speech(x) for x in ("hello", "SIL", "spn", "<p:>", "+breath+", "[noise]", "AH0")]
-[True, False, False, False, False, False, True]
+>>> [is_speech(x) for x in ("hello", "SIL", "spn", "<p:>", "+breath+", "[noise]", "AH0", "+")]
+[True, False, False, False, False, False, True, False]
 ```
 
 * **Return type:**
@@ -161,6 +163,8 @@ speaker’s prefix aside), by the order of `names`; None if there is none.
 ```pycon
 >>> tier_named({"Carl - Words": [], "notes": []}, WORD_TIERS)
 'Carl - Words'
+>>> tier_named({" phones": [], "words ": []}, WORD_TIERS)  # surrounding spaces aside
+'words '
 ```
 
 * **Return type:**
